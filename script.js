@@ -4,6 +4,17 @@ const vocabs = [
   { deutsch: "bitte (beim Anbieten)", romaji: "douzo", kana: "どうぞ" }
 ];
 
-var start = new Vue({
+var status = new Vue({
+  el: '#status',
+  data: {
+    scores: [
+      {name: 'Punkte', number: 0},
+      {name: 'Bla', number: 0},
+      {name: 'Münzen', number: 0}
+    ]
+  }
+});
+
+var mainMenu = new Vue({
   el: '#mainMenu'
 });

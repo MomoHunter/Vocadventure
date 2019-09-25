@@ -1,65 +1,25 @@
 <!DOCTYPE html>
 <html lang="de">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
     <title>
         Vocadventure
     </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="script.js"></script>
   </head>
   <body onload="">
-    <div id="mainMenu"></div>
-    <nav class="level">
-      <div class="level-item has-text-centered">
+    <nav id="status" class="level is-mobile">
+      <div class="level-item has-text-centered" v-for="score in scores">
         <div>
-          <p class="heading">Tweets</p>
-          <p class="title">3,456</p>
-        </div>
-      </div>
-      <div class="level-item has-text-centered">
-        <div>
-          <p class="heading">Following</p>
-          <p class="title">123</p>
-        </div>
-      </div>
-      <div class="level-item has-text-centered">
-        <div>
-          <p class="heading">Followers</p>
-          <p class="title">456K</p>
-        </div>
-      </div>
-      <div class="level-item has-text-centered">
-        <div>
-          <p class="heading">Likes</p>
-          <p class="title">789</p>
+          <p class="heading">{{score.name}}</p>
+          <p class="title">{{score.number}}</p>
         </div>
       </div>
     </nav>
-    <div class="field is-horizontal">
-      <div class="field-label is-large">
-        <label class="label">Romaji</label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <input class="input is-rounded is-large" type="text" placeholder="Romaji">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="field is-horizontal">
-      <div class="field-label is-large">
-        <label class="label">Kana</label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <input class="input is-rounded is-large" type="text" placeholder="Kana">
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="mainMenu"></div>
+    <script src="script.js"></script>
   </body>
 </html>
