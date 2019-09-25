@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+        Learning some nicer dicer Vokabeln. Woop Woop!
+    </title>
+    <style type="text/css">
+      html, body {
+        margin: 0px;
+        padding: 0px;
+        font-family: Arial, sans-serif;
+      }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+  </head>
+  <body onload="">
+    <script type="text/javascript">
+      const vocabs = [
+        { deutsch: "ja", romaji: "hai", kana: "はい" },
+        { deutsch: "nein", romaji: "iie", kana: "いいえ" },
+        { deutsch: "bitte (beim Anbieten)", romaji: "douzo", kana: "どうぞ" }
+      ];
+    </script>
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Tweets</p>
+          <p class="title">3,456</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Following</p>
+          <p class="title">123</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Followers</p>
+          <p class="title">456K</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Likes</p>
+          <p class="title">789</p>
+        </div>
+      </div>
+    </nav>
+    <div class="field is-horizontal">
+      <div class="field-label is-large">
+        <label class="label">Romaji</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <input class="input is-rounded is-large" type="text" placeholder="Romaji">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="field is-horizontal">
+      <div class="field-label is-large">
+        <label class="label">Kana</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <input class="input is-rounded is-large" type="text" placeholder="Kana">
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
