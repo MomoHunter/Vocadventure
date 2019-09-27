@@ -1,7 +1,25 @@
+html, body {
+    overflow: hidden;
+    height: 100%;
+}
+
 h1 {
     text-align: center;
 }
 
 h2 {
     text-align: center;
+}
+
+.page {
+    width: 100%;
+    height: calc(100% - 71px);
+}
+
+.top-padding {
+    padding-top: 3rem;
+}
+
+.bottom-padding {
+    padding-bottom: 3rem;
 }
