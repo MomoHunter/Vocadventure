@@ -4,19 +4,21 @@ const vocabs = [
   { deutsch: "bitte (beim Anbieten)", romaji: "douzo", kana: "どうぞ" }
 ];
 
-var scores = {
-  scores: [
-    {name: 'Punkte', number: 0},
-    {name: 'Bla', number: 0},
-    {name: 'Münzen', number: 0}
-  ]
-};
-var bla = 0;
-var muenzen = 0;
+function GlobalDict() {
+  this.scores = {
+    scores: [
+      {name: 'Punkte', number: 0},
+      {name: 'Test', number: 0},
+      {name: 'Münzen', number: 0}
+    ]
+  };
+}
+
+const gD = new GlobalDict();
 
 var status = new Vue({
   el: '#status',
-  data: scores
+  data: gD.scores
 });
 
 var mainMenu = new Vue({
