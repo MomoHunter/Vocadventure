@@ -13,13 +13,13 @@ h2 {
 
 .page {
     width: 100%;
-    height: calc(100% - 71px);
+    height: calc(100% - 142px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.top-padding {
-    padding-top: 3rem;
-}
-
-.bottom-padding {
-    padding-bottom: 3rem;
+.padding {
+    padding-top: 12rem;
+    padding-bottom: 12rem;
 }
