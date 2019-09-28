@@ -31,22 +31,8 @@ h2 {
     justify-content: center;
 }
 
-.test {
-    height: 33%;
-}
-
-.orange {
-    background-color: orange;
-}
-
-.blue {
-    background-color: blue;
-}
-
-.lightblue {
-    background-color: lightblue;
-}
-
-.violet {
-    background-color: violet;
+.is-grey {
+    border-color: hsl(0, 0%, 50%);
+    background-color: transparent;
+    color: hsl(0, 0%, 50%);
 }

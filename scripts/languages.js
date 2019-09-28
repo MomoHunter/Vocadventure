@@ -11,6 +11,7 @@ const languages = {
     titleSettings: "Einstellungen",
     design1: "Hell",
     design2: "Dunkel",
+    design3: "Slate",
     settingsButton1: "Anwenden",
     settingsButton2: "Zurück"
   },
@@ -26,6 +27,7 @@ const languages = {
     titleSettings: "Settings",
     design1: "Light",
     design2: "Dark",
+    design3: "Slate",
     settingsButton1: "Apply",
     settingsButton2: "Back"
   }

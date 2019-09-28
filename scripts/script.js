@@ -7,7 +7,17 @@ const vocabs = [
 function GlobalDict() {
   this.lang = "Deutsch";
   this.languages = languages;
-  this.designs = designs;
+  this.designs = {
+    "design1": {
+      link: "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css"
+    },
+    "design2": {
+      link: "css/bulmaswatch.darkly.min.css"
+    },
+    "design3": {
+      link: "css/bulmaswatch.slate.min.css"
+    }
+  };
   this.page = 'mainMenu';
   this.scores = {
     scores: [
@@ -65,7 +75,7 @@ var settings = new Vue({
     },
     applySettings: function () {
       this.lang = document.getElementById('languageSelection').value;
-      console.log(document.getElementById('themeSelection').value);
+      document.getElementById('bulmaCSS').href = this.designs[document.getElementById('themeSelection').value].link;
     }
   }
 });
