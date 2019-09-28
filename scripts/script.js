@@ -5,11 +5,12 @@ const vocabs = [
 ];
 
 function GlobalDict() {
+  this.lang = "de";
   this.scores = {
     scores: [
-      {name: 'Punkte', number: 0},
-      {name: 'Test', number: 0},
-      {name: 'Münzen', number: 0}
+      {id: 'statusLeft', number: 0},
+      {id: 'statusMiddle', number: 0},
+      {id: 'statusRight', number: 0}
     ]
   };
 }
@@ -18,9 +19,20 @@ const gD = new GlobalDict();
 
 var status = new Vue({
   el: '#status',
-  data: gD.scores
+  data: gD,
+  methods: {
+    getText: function (id) {
+      return languages[this.lang][id];
+    }
+  }
 });
 
 var mainMenu = new Vue({
-  el: '#mainMenu'
+  el: '#mainMenu',
+  data: gD,
+  methods: {
+    getText: function (id) {
+      return languages[this.lang][id];
+    }
+  }
 });

@@ -14,39 +14,51 @@
   </head>
   <body onload="">
     <nav id="status" class="level is-mobile">
-      <div class="level-item has-text-centered" v-for="score in scores">
+      <div class="level-item has-text-centered" v-for="score in scores.scores">
         <div>
-          <p class="heading">{{score.name}}</p>
-          <p class="title">{{score.number}}</p>
+          <p class="heading">{{ getText(score.id) }}</p>
+          <p class="title">{{ score.number }}</p>
         </div>
       </div>
     </nav>
     <div id="mainMenu" class="page">
-        <div class="columns is-multiline is-centered is-mobile">
-          <div class="column is-full">
-            <div class="container">
-              <h1 class="title">Vocadventure</h1>
-              <h2 class="subtitle">Ein Vokabeltrainer mit Gamification für Japanisch</h2>
-            </div>
-          </div>
-          <div class="column is-10 padding">
-            <p class="buttons">
-              <a class="button is-large is-info is-rounded is-outlined is-fullwidth">
-                <span class="icon">
-                  <i class="fas fa-book"></i>
-                </span>
-                <span>Training</span>
-              </a>
-              <a class="button is-large is-link is-rounded is-outlined is-fullwidth">
-                <span class="icon">
-                  <i class="fas fa-gem"></i>
-                </span>
-                <span>Abenteuer</span>
-              </a>
-            </p>
+      <!--a class="button is-outlined is-rounded is-dark is-right settings">
+        <span class="icon">
+          <i class="fas fa-cog"></i>
+        </span>
+      </a-->
+      <div class="columns is-multiline is-centered is-mobile">
+        <div class="column is-full">
+          <div class="container">
+            <h1 class="title">{{ getText('title') }}</h1>
+            <h2 class="subtitle">{{ getText('description') }}</h2>
           </div>
         </div>
+        <div class="column is-10">
+          <p class="buttons">
+            <a class="button is-large is-info is-rounded is-outlined is-fullwidth">
+              <span class="icon">
+                <i class="fas fa-book"></i>
+              </span>
+              <span>{{ getText('menuButton1') }}</span>
+            </a>
+            <a class="button is-large is-link is-rounded is-outlined is-fullwidth">
+              <span class="icon">
+                <i class="fas fa-gem"></i>
+              </span>
+              <span>{{ getText('menuButton2') }}</span>
+            </a>
+            <a class="button is-large is-dark is-rounded is-outlined is-fullwidth">
+              <span class="icon">
+                <i class="fas fa-cog"></i>
+              </span>
+              <span>{{ getText('menuButton3') }}</span>
+            </a>
+          </p>
+        </div>
+      </div>
     </div>
-    <script src="script.js"></script>
+    <script src="scripts/languages.js"></script>
+    <script src="scripts/script.js"></script>
   </body>
 </html>

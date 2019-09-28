@@ -18,8 +18,3 @@ h2 {
     flex-direction: column;
     justify-content: center;
 }
-
-.padding {
-    padding-top: 12rem;
-    padding-bottom: 12rem;
-}
