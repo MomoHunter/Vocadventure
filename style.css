@@ -14,7 +14,39 @@ h2 {
 .page {
     width: 100%;
     height: calc(100% - 142px);
+}
+
+.topBottomMargin {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.maxHeight {
+    height: 100%;
+}
+
+.centerContent {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.test {
+    height: 33%;
+}
+
+.orange {
+    background-color: orange;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.lightblue {
+    background-color: lightblue;
+}
+
+.violet {
+    background-color: violet;
 }

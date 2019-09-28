@@ -5,7 +5,10 @@ const vocabs = [
 ];
 
 function GlobalDict() {
-  this.lang = "de";
+  this.lang = "Deutsch";
+  this.languages = languages;
+  this.designs = designs;
+  this.page = 'mainMenu';
   this.scores = {
     scores: [
       {id: 'statusLeft', number: 0},
@@ -22,7 +25,7 @@ var status = new Vue({
   data: gD,
   methods: {
     getText: function (id) {
-      return languages[this.lang][id];
+      return this.languages[this.lang][id];
     }
   }
 });
@@ -30,9 +33,39 @@ var status = new Vue({
 var mainMenu = new Vue({
   el: '#mainMenu',
   data: gD,
+  computed: {
+    isSeen: function () {
+      return this.page === 'mainMenu';
+    }
+  },
   methods: {
     getText: function (id) {
-      return languages[this.lang][id];
+      return this.languages[this.lang][id];
+    },
+    navigateTo: function (id) {
+      this.page = id;
+    }
+  }
+});
+
+var settings = new Vue({
+  el: '#settings',
+  data: gD,
+  computed: {
+    isSeen: function () {
+      return this.page === 'settings';
+    }
+  },
+  methods: {
+    getText: function (id) {
+      return this.languages[this.lang][id];
+    },
+    navigateTo: function (id) {
+      this.page = id;
+    },
+    applySettings: function () {
+      this.lang = document.getElementById('languageSelection').value;
+      console.log(document.getElementById('themeSelection').value);
     }
   }
 });

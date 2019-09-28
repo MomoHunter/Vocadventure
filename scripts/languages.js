@@ -1,5 +1,5 @@
 const languages = {
-  "de": {
+  "Deutsch": {
     statusLeft: "Punkte",
     statusMiddle: "Test",
     statusRight: "Münzen",
@@ -7,9 +7,14 @@ const languages = {
     description: "Ein Vokabeltrainer mit Gamification für Japanisch",
     menuButton1: "Training",
     menuButton2: "Abenteuer",
-    menuButton3: "Einstellungen"
+    menuButton3: "Einstellungen",
+    titleSettings: "Einstellungen",
+    design1: "Hell",
+    design2: "Dunkel",
+    settingsButton1: "Anwenden",
+    settingsButton2: "Zurück"
   },
-  "en": {
+  "English": {
     statusLeft: "Points",
     statusMiddle: "Test",
     statusRight: "Coins",
@@ -17,6 +22,11 @@ const languages = {
     description: "A vocabulary trainer with gamification for japanese",
     menuButton1: "Training",
     menuButton2: "Adventure",
-    menuButton3: "Settings"
+    menuButton3: "Settings",
+    titleSettings: "Settings",
+    design1: "Light",
+    design2: "Dark",
+    settingsButton1: "Apply",
+    settingsButton2: "Back"
   }
 };
