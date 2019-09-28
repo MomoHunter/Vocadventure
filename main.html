@@ -31,13 +31,13 @@
         </div>
         <div class="column is-10">
           <p class="buttons">
-            <a class="button is-large is-info is-rounded is-outlined is-fullwidth">
+            <a class="button is-large is-info is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('selection','training')">
               <span class="icon">
                 <i class="fas fa-book"></i>
               </span>
               <span>{{ getText('menuButton1') }}</span>
             </a>
-            <a class="button is-large is-link is-rounded is-outlined is-fullwidth">
+            <a class="button is-large is-link is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('selection','adventure')">
               <span class="icon">
                 <i class="fas fa-gem"></i>
               </span>
@@ -53,8 +53,26 @@
         </div>
       </div>
     </div>
+    <div id="selection" class="page" v-show="isSeen">
+      <div class="columns is-multiline is-centered is-mobile maxHeight">
+        <div class="column is-full">
+          <section class="hero">
+            <div class="hero-body">
+              <div class="container">
+                <h1 class="title">
+                  {{ getText(option) }}
+                </h1>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="column is-10">
+
+        </div>
+      </div>
+    </div>
     <div id="settings" class="page" v-show="isSeen">
-      <div class="columns is-multiline is-centered is-vcentered is-mobile maxHeight">
+      <div class="columns is-multiline is-centered is-mobile maxHeight">
         <div class="column is-full">
           <section class="hero">
             <div class="hero-body">
@@ -71,7 +89,9 @@
             <p class="control has-icons-left topBottomMargin">
               <span class="select is-fullwidth is-large">
                 <select id="languageSelection">
-                  <option v-for="lang in Object.keys(languages)">{{ lang }}</option>
+                  <option v-for="language in Object.keys(languages)" v-bind:selected="language === lang">
+                    {{ language }}
+                  </option>
                 </select>
               </span>
               <span class="icon is-small is-left">
@@ -81,8 +101,8 @@
             <p class="control has-icons-left topBottomMargin">
               <span class="select is-fullwidth is-large">
                 <select id="themeSelection">
-                  <option v-for="design in Object.keys(designs)" v-bind:value="design">
-                    {{ languages[lang][design] }}
+                  <option v-for="designId in Object.keys(designs)" v-bind:selected="designId === design" v-bind:value="designId">
+                    {{ languages[lang][designId] }}
                   </option>
                 </select>
               </span>
@@ -114,6 +134,7 @@
       </div>
     </div>
     <script src="scripts/languages.js"></script>
+    <script src="scripts/vocabs.js"></script>
     <script src="scripts/script.js"></script>
   </body>
 </html>
