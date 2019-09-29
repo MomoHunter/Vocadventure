@@ -1,7 +1,7 @@
 {
   "background_color": "#f6f6f6",
   "description": "A Vocabtrainer with gamification for japanese",
-  "display": "fullscreen",
+  "display": "standalone",
   "orientation":  "portrait",
   "icons": [
     {
