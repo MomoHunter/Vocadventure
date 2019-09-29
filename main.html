@@ -7,6 +7,7 @@
         Vocadventure
     </title>
     <link id="bulmaCSS" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.4.95/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="Vocadventure.webmanifest">
     <script src="https://kit.fontawesome.com/1b4a3ddbae.js" crossorigin="anonymous"></script>
@@ -67,7 +68,106 @@
           </section>
         </div>
         <div class="column is-10">
-
+          <div id="selectionDifficulty" class="buttons has-addons is-centered">
+            <a class="button is-large is-success is-rounded is-outlined one-third" v-on:click="">
+              <span class="icon">
+                <span class="mdi mdi-speedometer-slow"></span>
+              </span>
+              <span>{{ getText('difficulty1') }}</span>
+            </a>
+            <a class="button is-large is-warning is-rounded is-outlined one-third" v-on:click="">
+              <span class="icon">
+                <span class="mdi mdi-speedometer-medium"></span>
+              </span>
+              <span>{{ getText('difficulty2') }}</span>
+            </a>
+            <a class="button is-large is-danger is-rounded is-outlined one-third" v-on:click="">
+              <span class="icon">
+                <span class="mdi mdi-speedometer"></span>
+              </span>
+              <span>{{ getText('difficulty3') }}</span>
+            </a>
+          </div>
+        </div>
+        <div class="column is-10">
+          <div class="columns is-mobile is-centered">
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                  <span>10</span>
+                </a>
+              </div>
+            </div>
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                  <span>20</span>
+                </a>
+              </div>
+            </div>
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                  <span>50</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-10">
+          <div class="columns is-mobile is-centered">
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                  <span>100</span>
+                </a>
+              </div>
+            </div>
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                  <span>200</span>
+                </a>
+              </div>
+            </div>
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                  <span>500</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-10">
+          <div class="columns is-mobile is-centered">
+            <div class="column is-two-thirds">
+              <input class="input is-large is-rounded is-primary centerText maxWidth" type="text" v-bind:placeholder="getText('custom')">
+            </div>
+            <div class="column is-one-third">
+              <div class="buttons is-centered">
+                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                  <span>{{ getText('all') }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-10">
+          <p class="buttons">
+            <a class="button is-large is-success is-rounded is-outlined is-fullwidth" v-on:click="">
+              <span class="icon">
+                <i class="fas fa-check"></i>
+              </span>
+              <span>{{ getText('selectionButton1') }}</span>
+            </a>
+            <a class="button is-large is-danger is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('mainMenu')">
+              <span class="icon">
+                <i class="fas fa-arrow-left"></i>
+              </span>
+              <span>{{ getText('selectionButton2') }}</span>
+            </a>
+          </p>
         </div>
       </div>
     </div>

@@ -31,8 +31,29 @@ h2 {
     justify-content: center;
 }
 
+.centerText {
+    text-align: center;
+}
+
 .is-grey {
     border-color: hsl(0, 0%, 50%);
     background-color: transparent;
     color: hsl(0, 0%, 50%);
+}
+
+.is-grey:hover {
+    border-color: hsl(0, 0%, 50%);
+    background-color: hsl(0, 0%, 50%);
+}
+
+.orange {
+    background-color: orange;
+}
+
+.maxWidth {
+    width: 100%;
+}
+
+.one-third {
+    width: 33%;
 }
