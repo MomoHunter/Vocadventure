@@ -70,19 +70,19 @@
         </div>
         <div class="column is-10">
           <div id="selectionDifficulty" class="buttons has-addons is-centered">
-            <a class="button is-large is-success is-rounded is-outlined one-third" v-on:click="">
+            <a id="difficulty1" class="button is-large is-success is-rounded is-outlined one-third" v-on:click="selectDifficulty('1')">
               <span class="icon">
                 <span class="mdi mdi-speedometer-slow"></span>
               </span>
               <span>{{ getText('difficulty1') }}</span>
             </a>
-            <a class="button is-large is-warning is-rounded is-outlined one-third" v-on:click="">
+            <a id="difficulty2" class="button is-large is-warning is-rounded is-outlined one-third" v-on:click="selectDifficulty('2')">
               <span class="icon">
                 <span class="mdi mdi-speedometer-medium"></span>
               </span>
               <span>{{ getText('difficulty2') }}</span>
             </a>
-            <a class="button is-large is-danger is-rounded is-outlined one-third" v-on:click="">
+            <a id="difficulty3" class="button is-large is-danger is-outlined is-rounded one-third" v-on:click="selectDifficulty('3')">
               <span class="icon">
                 <span class="mdi mdi-speedometer"></span>
               </span>
@@ -94,21 +94,21 @@
           <div class="columns is-mobile is-centered">
             <div class="column">
               <div class="buttons is-centered">
-                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                <a id="count10" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount(10)">
                   <span>10</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                <a id="count20" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount(20)">
                   <span>20</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                <a id="count50" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount(50)">
                   <span>50</span>
                 </a>
               </div>
@@ -119,21 +119,21 @@
           <div class="columns is-mobile is-centered">
             <div class="column">
               <div class="buttons is-centered">
-                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                <a id="count100" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount(100)">
                   <span>100</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                <a id="count200" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount(200)">
                   <span>200</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                <a id="count500" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount(500)">
                   <span>500</span>
                 </a>
               </div>
@@ -143,11 +143,12 @@
         <div class="column is-10">
           <div class="columns is-mobile is-centered">
             <div class="column is-two-thirds">
-              <input class="input is-large is-rounded is-primary centerText maxWidth" type="text" v-bind:placeholder="getText('custom')">
+              <input id="countCustom" class="input is-large is-rounded is-primary has-text-centered maxWidth"
+                     type="text" v-bind:placeholder="getText('custom')" v-on:click="selectCount('Custom')">
             </div>
             <div class="column is-one-third">
               <div class="buttons is-centered">
-                <a class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="">
+                <a id="countAll" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount('All')">
                   <span>{{ getText('all') }}</span>
                 </a>
               </div>
@@ -156,7 +157,7 @@
         </div>
         <div class="column is-10">
           <p class="buttons">
-            <a class="button is-large is-success is-rounded is-outlined is-fullwidth" v-on:click="">
+            <a class="button is-large is-success is-rounded is-outlined is-fullwidth" v-on:click="start()">
               <span class="icon">
                 <i class="fas fa-check"></i>
               </span>
@@ -169,6 +170,106 @@
               <span>{{ getText('selectionButton2') }}</span>
             </a>
           </p>
+        </div>
+      </div>
+    </div>
+    <div id="training" class="page" v-show="isSeen">
+      <div class="columns is-multiline is-centered is-mobile maxHeight">
+        <div class="column is-full">
+          <section class="hero">
+            <div class="hero-body">
+              <div class="container">
+                <h1 class="title">
+                  {{ getText('training') }}
+                </h1>
+              </div>
+            </div>
+            <div class="hero-foot">
+              <div class="field is-flex justifyContent">
+                <div class="control leftRightMargin">
+                  <div class="tags has-addons">
+                    <span class="tag">{{ getText('difficulty') }}</span>
+                    <span id="difficultyTag" class="tag">{{ getText('difficultyTag') }}</span>
+                  </div>
+                </div>
+                <div class="control leftRightMargin">
+                  <div class="tags has-addons">
+                    <span class="tag">{{ getText('words') }}</span>
+                    <span class="tag is-primary">{{ getText('wordTag') }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="column is-10">
+          <div class="box">
+            <article class="media">
+              <div class="media-content">
+                <h1 class="content is-large centerText">{{ getCurrentWord('german') }}</h1>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="column is-10">
+          <div class="field">
+            <label class="label is-large">{{ getText('romajiLabel') }}</label>
+            <div class="control">
+              <input class="input is-large is-rounded" type="text" v-bind:value="getCurrentWord('romaji')" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="column is-10">
+          <div class="field">
+            <label class="label is-large">{{ getText('kanaLabel') }}</label>
+            <div class="control">
+              <input class="input is-large is-rounded" type="text" v-bind:value="getCurrentWord('kana')" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="column is-10">
+          <div class="columns is-mobile is-centered">
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-large is-danger is-rounded is-outlined is-fullwidth" v-show="finishedTraining" v-on:click="navigateTo('selection')">
+                  <span class="icon">
+                    <i class="fas fa-times"></i>
+                  </span>
+                  <span>{{ getText('trainingButton1') }}</span>
+                </a>
+              </div>
+            </div>
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-large is-warning is-rounded is-outlined is-fullwidth" v-show="isInTraining" v-on:click="move(false)">
+                  <span class="icon">
+                    <i class="fas fa-arrow-left"></i>
+                  </span>
+                  <span>{{ getText('trainingButton2') }}</span>
+                </a>
+              </div>
+            </div>
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-large is-success is-rounded is-outlined is-fullwidth" v-show="finishedTraining" v-on:click="move(true)">
+                  <span class="icon">
+                    <i class="fas fa-check"></i>
+                  </span>
+                  <span>{{ getText('trainingButton3') }}</span>
+                </a>
+                <a class="button is-large is-success is-rounded is-outlined is-fullwidth" v-show="!finishedTraining" v-on:click="navigateTo('mainMenu')">
+                  <span class="icon">
+                    <i class="fas fa-check"></i>
+                  </span>
+                  <span>{{ getText('trainingButton4') }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-10">
+          <progress class="progress is-success is-large" v-bind:value="getProgress" max="1"></progress>
+          <p class="content is-large centerText">{{ getProgressText }}</p>
         </div>
       </div>
     </div>
