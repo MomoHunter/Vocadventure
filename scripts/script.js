@@ -254,6 +254,7 @@ var training = new Vue({
       if (id === 'mainMenu') {
         selection.selectDifficulty(this.difficulty);
         selection.selectCount(this.wordCount);
+        document.getElementById('countCustom').value = '';
         this.option = '';
       }
       this.currentWord = 0;
