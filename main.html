@@ -9,10 +9,19 @@
     </title>
     <link id="bulmaCSS" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.4.95/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="Vocadventure.webmanifest">
     <script src="https://kit.fontawesome.com/1b4a3ddbae.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--for offline use-->
+    <!--link id="bulmaCSS" rel="stylesheet" href="css/bulma.min.css">
+    <link rel="stylesheet" href="MaterialDesign-Webfont-master/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="Vocadventure.webmanifest">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <script src="fontawesome-free-5.11.2-web/js/all.min.js"></script>
+    <script src="scripts/vue.js"></script-->
   </head>
   <body onload="">
     <nav id="status" class="level is-mobile">
@@ -45,11 +54,17 @@
               </span>
               <span>{{ getText('menuButton2') }}</span>
             </a>
+            <a class="button is-large is-warning is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('shop','shop')">
+              <span class="icon">
+                <i class="fas fa-shopping-cart"></i>
+              </span>
+              <span>{{ getText('menuButton3') }}</span>
+            </a>
             <a class="button is-large is-grey is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('settings')">
               <span class="icon">
                 <i class="fas fa-cog"></i>
               </span>
-              <span>{{ getText('menuButton3') }}</span>
+              <span>{{ getText('menuButton4') }}</span>
             </a>
           </p>
         </div>
@@ -94,21 +109,21 @@
           <div class="columns is-mobile is-centered">
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count10" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount(10)">
+                <a id="count10" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount(10)">
                   <span>10</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count20" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount(20)">
+                <a id="count20" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount(20)">
                   <span>20</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count50" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount(50)">
+                <a id="count50" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount(50)">
                   <span>50</span>
                 </a>
               </div>
@@ -119,21 +134,21 @@
           <div class="columns is-mobile is-centered">
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count100" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount(100)">
+                <a id="count100" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount(100)">
                   <span>100</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count200" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount(200)">
+                <a id="count200" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount(200)">
                   <span>200</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count500" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount(500)">
+                <a id="count500" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount(500)">
                   <span>500</span>
                 </a>
               </div>
@@ -143,12 +158,27 @@
         <div class="column is-10">
           <div class="columns is-mobile is-centered">
             <div class="column is-two-thirds">
-              <input id="countCustom" class="input is-large is-rounded is-primary has-text-centered maxWidth"
-                     type="text" v-bind:placeholder="getText('custom')" v-on:click="selectCount('Custom')">
+              <div class="buttons is-centered noBottomMargin" v-show="!isCustomSelected">
+                <a id="countCustomButton" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="showCustom(true)">
+                  <span>{{ getText('custom') }}</span>
+                </a>
+              </div>
+              <div class="field has-addons" v-show="isCustomSelected">
+                <div class="control smallBottomMargin maxWidth">
+                  <input id="countCustom" class="input is-large is-rounded is-primary" type="text">
+                </div>
+                <div class="control smallBottomMargin">
+                  <a class="button is-large is-success is-outlined is-rounded" v-on:click="showCustom(false)">
+                    <span class="icon is-right">
+                      <i class="fas fa-check"></i>
+                    </span>
+                  </a>
+                </div>
+              </div>
             </div>
             <div class="column is-one-third">
               <div class="buttons is-centered">
-                <a id="countAll" class="button is-large is-rounded is-outlined is-primary maxWidth" v-on:click="selectCount('All')">
+                <a id="countAll" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount('All')">
                   <span>{{ getText('all') }}</span>
                 </a>
               </div>
@@ -206,7 +236,7 @@
           <div class="box">
             <article class="media">
               <div class="media-content">
-                <h1 class="content is-large centerText">{{ getCurrentWord('german') }}</h1>
+                <h1 class="content is-large centerText">{{ getCurrentWord(lang) }}</h1>
               </div>
             </article>
           </div>
@@ -270,6 +300,76 @@
         <div class="column is-10">
           <progress class="progress is-success is-large" v-bind:value="getProgress" max="1"></progress>
           <p class="content is-large centerText">{{ getProgressText }}</p>
+        </div>
+      </div>
+    </div>
+    <div id="shop" class="page" v-show="isSeen">
+      <div class="columns is-multiline is-centered is-mobile maxHeight">
+        <div class="column is-full">
+          <section class="hero">
+            <div class="hero-body">
+              <div class="container">
+                <h1 class="title">
+                  {{ getText(option) }}
+                </h1>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="column is-10">
+          <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+            <a class="pagination-previous">Previous</a>
+            <a class="pagination-next">Next page</a>
+            <ul class="pagination-list">
+              <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
+              <li><span class="pagination-ellipsis">&hellip;</span></li>
+              <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
+              <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
+              <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
+              <li><span class="pagination-ellipsis">&hellip;</span></li>
+              <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="column is-10">
+          <div class="columns is-mobile is-centered">
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-large is-danger is-rounded is-outlined is-fullwidth" v-show="isShop" v-on:click="navigateTo('mainMenu')">
+                  <span class="icon">
+                    <i class="fas fa-arrow-left"></i>
+                  </span>
+                  <span>{{ getText('shopButton1') }}</span>
+                </a>
+                <a class="button is-large is-danger is-rounded is-outlined is-fullwidth" v-show="!isShop" v-on:click="navigateTo('shop', 'shop')">
+                  <span class="icon">
+                    <i class="fas fa-arrow-left"></i>
+                  </span>
+                  <span>{{ getText('shopButton4') }}</span>
+                </a>
+              </div>
+            </div>
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-large is-warning is-rounded is-outlined is-fullwidth" v-on:click="">
+                  <span class="icon">
+                    <i class="fas fa-search"></i>
+                  </span>
+                  <span>{{ getText('shopButton2') }}</span>
+                </a>
+              </div>
+            </div>
+            <div class="column" v-show="isShop">
+              <div class="buttons is-centered">
+                <a class="button is-large is-primary is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('shop','inventory')">
+                  <span class="icon">
+                    <i class="fas fa-check"></i>
+                  </span>
+                  <span>{{ getText('shopButton3') }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

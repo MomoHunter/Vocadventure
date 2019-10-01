@@ -20,6 +20,7 @@ function GlobalDict() {
   this.page = 'mainMenu';
   this.option = '';
   this.difficulty = '';
+  this.customSelected = false;
   this.wordCount = 0;
   this.vocabWords = [];
   this.currentWord = 0;
@@ -110,16 +111,35 @@ var selection = new Vue({
   computed: {
     isSeen: function () {
       return this.page === 'selection';
+    },
+    isCustomSelected: function () {
+      return this.customSelected;
     }
   },
   methods: {
     getText: function (id) {
+      if (id === 'custom' && !isNaN(parseInt(document.getElementById('countCustom').value)) ) {
+        return parseInt(document.getElementById('countCustom').value);
+      }
       return this.languages[this.lang][id];
+    },
+    showCustom: function (show) {
+      console.log('ja, es passiert etwas');
+      this.customSelected = show;
+      if (show) {
+        document.getElementById('countCustom').focus();
+      } else {
+        if ((!isNaN(parseInt(document.getElementById('countCustom').value)) && this.wordCount !== 'Custom') ||
+            (isNaN(parseInt(document.getElementById('countCustom').value)) && this.wordCount === 'Custom')) {
+          this.selectCount('Custom');
+        }
+      }
     },
     navigateTo: function (id) {
       if (id === 'mainMenu') {
         this.selectDifficulty(this.difficulty);
         this.selectCount(this.wordCount);
+        document.getElementById('countCustom').value = '';
         this.option = '';
         this.currentWord = 0;
       }
@@ -143,9 +163,15 @@ var selection = new Vue({
     selectCount: function (number) {
       if (number !== 'Custom' && number !== 0) {
         document.getElementById('count' + number).classList.remove('is-outlined');
+      } else if (number === 'Custom') {
+        document.getElementById('countCustomButton').classList.remove('is-outlined');
       }
-      if (this.wordCount !== 0 && this.wordCount !== 'Custom') {
-        document.getElementById('count' + this.wordCount).classList.add('is-outlined');
+      if (this.wordCount !== 0) {
+        if (this.wordCount === 'Custom') {
+          document.getElementById('countCustomButton').classList.add('is-outlined');
+        } else {
+          document.getElementById('count' + this.wordCount).classList.add('is-outlined');
+        }
         if (this.wordCount === number) {
           this.wordCount = 0;
         } else {
@@ -229,8 +255,8 @@ var training = new Vue({
         selection.selectDifficulty(this.difficulty);
         selection.selectCount(this.wordCount);
         this.option = '';
-        this.currentWord = 0;
       }
+      this.currentWord = 0;
       this.page = id;
     },
     move: function (forward) {
@@ -244,7 +270,7 @@ var training = new Vue({
       if (this.vocabWords.length === 0) {
         return "";
       } else if (this.currentWord === this.vocabWords.length) {
-        if (property === 'german') {
+        if (property === this.lang) {
           return this.languages[this.lang]['trainingFinished'];
         } else {
           return "";
@@ -252,6 +278,28 @@ var training = new Vue({
       } else {
         return this.vocabWords[this.currentWord][property];
       }
+    }
+  }
+});
+
+var shop = new Vue({
+  el: '#shop',
+  data: gD,
+  computed: {
+    isSeen: function () {
+      return this.page === 'shop';
+    },
+    isShop: function () {
+      return this.option === 'shop';
+    }
+  },
+  methods: {
+    getText: function (id) {
+      return this.languages[this.lang][id];
+    },
+    navigateTo: function (id, option = '') {
+      this.page = id;
+      this.option = option;
     }
   }
 });
