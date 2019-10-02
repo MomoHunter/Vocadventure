@@ -21,9 +21,26 @@ function GlobalDict() {
   this.option = '';
   this.difficulty = '';
   this.customSelected = false;
+  this.items = [
+    { id: 'shovel', spriteKey: '', costs: [
+        { id: 'wood', quantity: 4 }
+      ]},
+    { id: 'shovel2', spriteKey: '', costs: [
+        { id: 'wood', quantity: 4 }
+      ]},
+    { id: 'shovel3', spriteKey: '', costs: [
+        { id: 'wood', quantity: 4 }
+      ]},
+    { id: 'shovel4', spriteKey: '', costs: [
+        { id: 'wood', quantity: 4 }
+      ]},
+  ];
+  this.inventory = [];
+  this.searchSelected = false;
   this.wordCount = 0;
   this.vocabWords = [];
   this.currentWord = 0;
+  this.currentItem = 0;
   this.scores = {
     scores: [
       {id: 'statusLeft', number: 0},
@@ -254,6 +271,7 @@ var training = new Vue({
       if (id === 'mainMenu') {
         selection.selectDifficulty(this.difficulty);
         selection.selectCount(this.wordCount);
+        document.getElementById('countCustom').value = '';
         this.option = '';
       }
       this.currentWord = 0;
@@ -291,6 +309,9 @@ var shop = new Vue({
     },
     isShop: function () {
       return this.option === 'shop';
+    },
+    searchActivated: function () {
+      return this.searchSelected;
     }
   },
   methods: {
@@ -298,8 +319,27 @@ var shop = new Vue({
       return this.languages[this.lang][id];
     },
     navigateTo: function (id, option = '') {
+      document.getElementById('searchField').value = '';
       this.page = id;
       this.option = option;
+    },
+    getItemname: function (position) {
+      if (this.option === 'shop') {
+        if (this.currentItem + position < this.items.length) {
+          return this.languages[this.lang][this.items[this.currentItem + position].id];
+        } else {
+          return "";
+        }
+      } else {
+        if (this.currentItem + position < this.inventory.length) {
+          return this.languages[this.lang][this.inventory[this.currentItem + position].id];
+        } else {
+          return "";
+        }
+      }
+    },
+    showSearch: function (show) {
+      this.searchSelected = show;
     }
   }
 });

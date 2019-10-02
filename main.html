@@ -7,21 +7,21 @@
     <title>
         Vocadventure
     </title>
-    <link id="bulmaCSS" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+    <!--link id="bulmaCSS" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.4.95/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="Vocadventure.webmanifest">
     <script src="https://kit.fontawesome.com/1b4a3ddbae.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
     <!--for offline use-->
-    <!--link id="bulmaCSS" rel="stylesheet" href="css/bulma.min.css">
+    <link id="bulmaCSS" rel="stylesheet" href="css/bulma.min.css">
     <link rel="stylesheet" href="MaterialDesign-Webfont-master/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="Vocadventure.webmanifest">
     <link rel="stylesheet" href="css/animate.min.css">
     <script src="fontawesome-free-5.11.2-web/js/all.min.js"></script>
-    <script src="scripts/vue.js"></script-->
+    <script src="scripts/vue.js"></script>
   </head>
   <body onload="">
     <nav id="status" class="level is-mobile">
@@ -32,16 +32,20 @@
         </div>
       </div>
     </nav>
-    <div id="mainMenu" class="page centerContent"  v-show="isSeen">
-      <div class="columns is-multiline is-centered is-mobile">
+    <div id="mainMenu" class="page"  v-show="isSeen">
+      <div class="customColumns justifyEvenly columns is-mobile maxHeight">
         <div class="column is-full">
-          <div class="container">
-            <h1 class="title">{{ getText('title') }}</h1>
-            <h2 class="subtitle">{{ getText('description') }}</h2>
-          </div>
+          <section class="hero">
+            <div class="hero-body">
+              <div class="container">
+                <h1 class="title">{{ getText('title') }}</h1>
+                <h2 class="subtitle">{{ getText('description') }}</h2>
+              </div>
+            </div>
+          </section>
         </div>
         <div class="column is-10">
-          <p class="buttons">
+          <div class="buttons">
             <a class="button is-large is-info is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('selection','training')">
               <span class="icon">
                 <i class="fas fa-book"></i>
@@ -66,12 +70,12 @@
               </span>
               <span>{{ getText('menuButton4') }}</span>
             </a>
-          </p>
+          </div>
         </div>
       </div>
     </div>
     <div id="selection" class="page" v-show="isSeen">
-      <div class="columns is-multiline is-centered is-mobile maxHeight">
+      <div class="customColumns justifySpaceBetween columns is-mobile maxHeight">
         <div class="column is-full">
           <section class="hero">
             <div class="hero-body">
@@ -165,7 +169,7 @@
               </div>
               <div class="field has-addons" v-show="isCustomSelected">
                 <div class="control smallBottomMargin maxWidth">
-                  <input id="countCustom" class="input is-large is-rounded is-primary" type="text">
+                  <input id="countCustom" class="input is-large is-rounded is-primary" type="number">
                 </div>
                 <div class="control smallBottomMargin">
                   <a class="button is-large is-success is-outlined is-rounded" v-on:click="showCustom(false)">
@@ -204,7 +208,7 @@
       </div>
     </div>
     <div id="training" class="page" v-show="isSeen">
-      <div class="columns is-multiline is-centered is-mobile maxHeight">
+      <div class="customColumns justifySpaceBetween columns is-mobile maxHeight">
         <div class="column is-full">
           <section class="hero">
             <div class="hero-body">
@@ -304,7 +308,7 @@
       </div>
     </div>
     <div id="shop" class="page" v-show="isSeen">
-      <div class="columns is-multiline is-centered is-mobile maxHeight">
+      <div class="customColumns justifySpaceBetween columns is-mobile maxHeight">
         <div class="column is-full">
           <section class="hero">
             <div class="hero-body">
@@ -316,24 +320,36 @@
             </div>
           </section>
         </div>
+        <div class="customColumn is-9 flex-grow">
+          <div class="columns is-multiline is-centered is-mobile maxHeight alignStretch">
+            <div class="column is-half">
+              <div class="box maxHeight">
+                <p class="content is-large centerText">{{ getItemname(0) }}</p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="box maxHeight">
+                <p class="content is-large centerText">{{ getItemname(1) }}</p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="box maxHeight">
+                <p class="content is-large centerText">{{ getItemname(2) }}</p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="box maxHeight">
+                <p class="content is-large centerText">{{ getItemname(3) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="column is-10">
-          <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
-            <a class="pagination-previous">Previous</a>
-            <a class="pagination-next">Next page</a>
-            <ul class="pagination-list">
-              <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-              <li><span class="pagination-ellipsis">&hellip;</span></li>
-              <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-              <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-              <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-              <li><span class="pagination-ellipsis">&hellip;</span></li>
-              <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
-            </ul>
-          </nav>
+          Some pagination in the near future, THE FUTURE!!!!
         </div>
         <div class="column is-10">
           <div class="columns is-mobile is-centered">
-            <div class="column">
+            <div class="column" v-show="!searchActivated">
               <div class="buttons is-centered">
                 <a class="button is-large is-danger is-rounded is-outlined is-fullwidth" v-show="isShop" v-on:click="navigateTo('mainMenu')">
                   <span class="icon">
@@ -350,16 +366,28 @@
               </div>
             </div>
             <div class="column">
-              <div class="buttons is-centered">
-                <a class="button is-large is-warning is-rounded is-outlined is-fullwidth" v-on:click="">
+              <div class="buttons is-centered noBottomMargin">
+                <a class="button is-large is-warning is-rounded is-outlined is-fullwidth" v-show="!searchActivated" v-on:click="showSearch(true)">
                   <span class="icon">
                     <i class="fas fa-search"></i>
                   </span>
                   <span>{{ getText('shopButton2') }}</span>
                 </a>
               </div>
+              <div class="field has-addons" v-show="searchActivated">
+                <div class="control smallBottomMargin maxWidth">
+                  <input id="searchField" class="input is-large is-rounded is-warning" type="text">
+                </div>
+                <div class="control smallBottomMargin">
+                  <a class="button is-large is-danger is-outlined is-rounded" v-on:click="showSearch(false)">
+                    <span class="icon is-right">
+                      <i class="fas fa-times"></i>
+                    </span>
+                  </a>
+                </div>
+              </div>
             </div>
-            <div class="column" v-show="isShop">
+            <div class="column" v-show="isShop && !searchActivated">
               <div class="buttons is-centered">
                 <a class="button is-large is-primary is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('shop','inventory')">
                   <span class="icon">
@@ -374,7 +402,7 @@
       </div>
     </div>
     <div id="settings" class="page" v-show="isSeen">
-      <div class="columns is-multiline is-centered is-mobile maxHeight">
+      <div class="customColumns justifySpaceBetween columns is-mobile maxHeight">
         <div class="column is-full">
           <section class="hero">
             <div class="hero-body">
@@ -386,7 +414,7 @@
             </div>
           </section>
         </div>
-        <div class="column is-10">
+        <div class="customColumn is-10 flex-grow">
           <div class="field">
             <p class="control has-icons-left topBottomMargin">
               <span class="select is-fullwidth is-large">
@@ -414,11 +442,8 @@
             </p>
           </div>
         </div>
-        <div class="column is-10"></div>
-        <div class="column is-10"></div>
-        <div class="column is-10"></div>
         <div class="column is-10">
-          <p class="buttons">
+          <div class="buttons">
             <a class="button is-large is-success is-rounded is-outlined is-fullwidth" v-on:click="applySettings">
               <span class="icon">
                 <i class="fas fa-check"></i>
@@ -431,7 +456,7 @@
               </span>
               <span>{{ getText('settingsButton2') }}</span>
             </a>
-          </p>
+          </div>
         </div>
       </div>
     </div>

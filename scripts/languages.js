@@ -39,7 +39,11 @@ const languages = {
     design3: "Slate",
     design4: "Solar",
     settingsButton1: "Anwenden",
-    settingsButton2: "Zurück"
+    settingsButton2: "Zurück",
+    shovel: "Schaufel",
+    shovel2: "Schaufel2",
+    shovel3: "Schaufel3",
+    shovel4: "Schaufel4"
   },
   "English": {
     statusLeft: "Points",
@@ -81,6 +85,10 @@ const languages = {
     design3: "Slate",
     design4: "Solar",
     settingsButton1: "Apply",
-    settingsButton2: "Back"
+    settingsButton2: "Back",
+    shovel: "shovel",
+    shovel2: "shovel2",
+    shovel3: "shovel3",
+    shovel4: "shovel4"
   }
 };
