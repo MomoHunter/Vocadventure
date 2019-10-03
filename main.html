@@ -313,7 +313,7 @@
           <section class="hero">
             <div class="hero-body">
               <div class="container">
-                <h1 class="title">
+                <h1 class="title" v-bind:class="getClass('title')">
                   {{ getText(option) }}
                 </h1>
               </div>
@@ -324,22 +324,22 @@
           <div class="columns is-multiline is-centered is-mobile maxHeight alignStretch">
             <div class="column is-half">
               <div class="box maxHeight">
-                <p class="content is-large centerText">{{ getItemname(0) }}</p>
+                <p class="content centerText" v-bind:class="getClass('content')">{{ getItemname(0) }}</p>
               </div>
             </div>
             <div class="column is-half">
               <div class="box maxHeight">
-                <p class="content is-large centerText">{{ getItemname(1) }}</p>
+                <p class="content centerText" v-bind:class="getClass('content')">{{ getItemname(1) }}</p>
               </div>
             </div>
             <div class="column is-half">
               <div class="box maxHeight">
-                <p class="content is-large centerText">{{ getItemname(2) }}</p>
+                <p class="content centerText" v-bind:class="getClass('content')">{{ getItemname(2) }}</p>
               </div>
             </div>
             <div class="column is-half">
               <div class="box maxHeight">
-                <p class="content is-large centerText">{{ getItemname(3) }}</p>
+                <p class="content centerText" v-bind:class="getClass('content')">{{ getItemname(3) }}</p>
               </div>
             </div>
           </div>
@@ -351,13 +351,13 @@
           <div class="columns is-mobile is-centered">
             <div class="column" v-show="!searchActivated">
               <div class="buttons is-centered">
-                <a class="button is-large is-danger is-rounded is-outlined is-fullwidth" v-show="isShop" v-on:click="navigateTo('mainMenu')">
+                <a class="button is-danger is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')" v-show="isShop" v-on:click="navigateTo('mainMenu')">
                   <span class="icon">
                     <i class="fas fa-arrow-left"></i>
                   </span>
                   <span>{{ getText('shopButton1') }}</span>
                 </a>
-                <a class="button is-large is-danger is-rounded is-outlined is-fullwidth" v-show="!isShop" v-on:click="navigateTo('shop', 'shop')">
+                <a class="button is-danger is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')" v-show="!isShop" v-on:click="navigateTo('shop', 'shop')">
                   <span class="icon">
                     <i class="fas fa-arrow-left"></i>
                   </span>
@@ -367,7 +367,7 @@
             </div>
             <div class="column">
               <div class="buttons is-centered noBottomMargin">
-                <a class="button is-large is-warning is-rounded is-outlined is-fullwidth" v-show="!searchActivated" v-on:click="showSearch(true)">
+                <a class="button is-warning is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')" v-show="!searchActivated" v-on:click="showSearch(true)">
                   <span class="icon">
                     <i class="fas fa-search"></i>
                   </span>
@@ -376,10 +376,10 @@
               </div>
               <div class="field has-addons" v-show="searchActivated">
                 <div class="control smallBottomMargin maxWidth">
-                  <input id="searchField" class="input is-large is-rounded is-warning" type="text">
+                  <input id="searchField" class="input is-rounded is-warning" type="text" v-bind:class="getClass('input')">
                 </div>
                 <div class="control smallBottomMargin">
-                  <a class="button is-large is-danger is-outlined is-rounded" v-on:click="showSearch(false)">
+                  <a class="button is-danger is-outlined is-rounded" v-bind:class="getClass('button')" v-on:click="showSearch(false)">
                     <span class="icon is-right">
                       <i class="fas fa-times"></i>
                     </span>
@@ -389,7 +389,7 @@
             </div>
             <div class="column" v-show="isShop && !searchActivated">
               <div class="buttons is-centered">
-                <a class="button is-large is-primary is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('shop','inventory')">
+                <a class="button is-primary is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')" v-on:click="navigateTo('shop','inventory')">
                   <span class="icon">
                     <i class="fas fa-check"></i>
                   </span>

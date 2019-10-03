@@ -392,6 +392,9 @@ var shop = new Vue({
       this.page = id;
       this.option = option;
     },
+    getClass: function(type) {
+      return this.classes[type][this.size];
+    },
     getItemname: function (position) {
       if (this.option === 'shop') {
         if (this.currentItem + position < this.items.length) {
