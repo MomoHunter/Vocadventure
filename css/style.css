@@ -42,6 +42,10 @@ h2 {
     height: 100%;
 }
 
+.halfHeight {
+    height: 50%;
+}
+
 .centerContent {
     display: flex;
     flex-direction: column;

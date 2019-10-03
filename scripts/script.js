@@ -52,7 +52,7 @@ function GlobalDict() {
       small: 'is-normal',
       normal: 'is-normal',
       medium: 'is-medium',
-      large: 'is-large'
+      large: 'is-medium'
     },
     content: {
       small: 'is-small',
@@ -79,18 +79,18 @@ function GlobalDict() {
   this.difficulty = '';
   this.customSelected = false;
   this.items = [
-    { id: 'shovel', spriteKey: '', costs: [
+    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', costs: [
         { id: 'wood', quantity: 4 }
       ]},
-    { id: 'shovel2', spriteKey: '', costs: [
+    { id: 'shovel2', spriteKey: 'img/sprites/Axt.png', costs: [
         { id: 'wood', quantity: 4 }
-      ]},
+      ]},/*
     { id: 'shovel3', spriteKey: '', costs: [
         { id: 'wood', quantity: 4 }
       ]},
     { id: 'shovel4', spriteKey: '', costs: [
         { id: 'wood', quantity: 4 }
-      ]},
+      ]},*/
   ];
   this.inventory = [];
   this.searchSelected = false;
@@ -323,9 +323,6 @@ var training = new Vue({
     getText: function (id) {
       switch (id) {
         case 'difficultyTag':
-          let classes = ['is-success', 'is-warning', 'is-danger'];
-          document.getElementById(id).classList.remove(...classes);
-          document.getElementById(id).classList.add(classes[this.difficulty - 1]);
           return this.languages[this.lang]['difficulty' + this.difficulty];
         case 'wordTag':
           return this.vocabWords.length;
@@ -343,8 +340,13 @@ var training = new Vue({
       this.currentWord = 0;
       this.page = id;
     },
-    getClass: function(type) {
-      return this.classes[type][this.size];
+    getClass: function(type, difficultyTag = false) {
+      if (difficultyTag) {
+        let classes = ['is-success', 'is-warning', 'is-danger'];
+        return this.classes[type][this.size] + " " + classes[this.difficulty - 1];
+      } else {
+        return this.classes[type][this.size];
+      }
     },
     move: function (forward) {
       if (forward) {
@@ -410,8 +412,56 @@ var shop = new Vue({
         }
       }
     },
+    getImage: function (position) {
+      if (this.option === 'shop') {
+        if (this.currentItem + position < this.items.length) {
+          return this.items[this.currentItem + position].spriteKey;
+        } else {
+          return "";
+        }
+      } else {
+        if (this.currentItem + position < this.inventory.length) {
+          return this.inventory[this.currentItem + position].spriteKey;
+        } else {
+          return "";
+        }
+      }
+    },
+    showBox: function (position) {
+      if (this.option === 'shop') {
+        return this.currentItem + position < this.items.length;
+      } else {
+        return this.currentItem + position < this.inventory.length;
+      }
+    },
     showSearch: function (show) {
       this.searchSelected = show;
+    }
+  }
+});
+
+var details = new Vue({
+  el: '#details',
+  data: gD,
+  computed: {
+    isSeen: function () {
+      return this.page === 'details';
+    }
+  },
+  methods: {
+    getText: function (id) {
+      if (id === 'titleDetails' && !isNaN(this.currentItem + this.option)) {
+        return this.languages[this.lang][this.items[this.currentItem + this.option].id];
+      } else {
+        return this.languages[this.lang][id];
+      }
+    },
+    navigateTo: function (id, option = '') {
+      this.page = id;
+      this.option = option;
+    },
+    getClass: function(type) {
+      return this.classes[type][this.size];
     }
   }
 });
