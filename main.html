@@ -38,33 +38,33 @@
           <section class="hero">
             <div class="hero-body">
               <div class="container">
-                <h1 class="title">{{ getText('title') }}</h1>
-                <h2 class="subtitle">{{ getText('description') }}</h2>
+                <h1 class="title" v-bind:class="getClass('title')">{{ getText('title') }}</h1>
+                <h2 class="subtitle" v-bind:class="getClass('subtitle')">{{ getText('description') }}</h2>
               </div>
             </div>
           </section>
         </div>
         <div class="column is-10">
           <div class="buttons">
-            <a class="button is-large is-info is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('selection','training')">
+            <a class="button is-info is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')" v-on:click="navigateTo('selection','training')">
               <span class="icon">
                 <i class="fas fa-book"></i>
               </span>
               <span>{{ getText('menuButton1') }}</span>
             </a>
-            <a class="button is-large is-link is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('selection','adventure')">
+            <a class="button is-link is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')" v-on:click="navigateTo('selection','adventure')">
               <span class="icon">
                 <i class="fas fa-gem"></i>
               </span>
               <span>{{ getText('menuButton2') }}</span>
             </a>
-            <a class="button is-large is-warning is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('shop','shop')">
+            <a class="button is-warning is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')" v-on:click="navigateTo('shop','shop')">
               <span class="icon">
                 <i class="fas fa-shopping-cart"></i>
               </span>
               <span>{{ getText('menuButton3') }}</span>
             </a>
-            <a class="button is-large is-grey is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('settings')">
+            <a class="button is-grey is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')" v-on:click="navigateTo('settings')">
               <span class="icon">
                 <i class="fas fa-cog"></i>
               </span>
@@ -407,7 +407,7 @@
           <section class="hero">
             <div class="hero-body">
               <div class="container">
-                <h1 class="title">
+                <h1 class="title" v-bind:class="getClass('title')">
                   {{ getText('titleSettings') }}
                 </h1>
               </div>
@@ -417,7 +417,7 @@
         <div class="customColumn is-10 flex-grow">
           <div class="field">
             <p class="control has-icons-left topBottomMargin">
-              <span class="select is-fullwidth" v-bind:class="getClass1">
+              <span class="select is-fullwidth" v-bind:class="getClass('select')">
                 <select id="languageSelection">
                   <option v-for="language in Object.keys(languages)" v-bind:selected="language === lang">
                     {{ language }}
@@ -429,7 +429,7 @@
               </span>
             </p>
             <p class="control has-icons-left topBottomMargin">
-              <span class="select is-fullwidth" v-bind:class="getClass1">
+              <span class="select is-fullwidth" v-bind:class="getClass('select')">
                 <select id="themeSelection">
                   <option v-for="designId in Object.keys(designs)" v-bind:selected="designId === design" v-bind:value="designId">
                     {{ languages[lang][designId] }}
@@ -441,12 +441,12 @@
               </span>
             </p>
             <p class="control has-icons-left topBottomMargin">
-              <span class="select is-fullwidth" v-bind:class="getClass1">
+              <span class="select is-fullwidth" v-bind:class="getClass('select')">
                 <select id="sizeSelection">
-                  <option value="small">{{ getText('small') }}</option>
-                  <option value="normal" selected>{{ getText('normal') }}</option>
-                  <option value="medium">{{ getText('medium') }}</option>
-                  <option value="large">{{ getText('large') }}</option>
+                  <option value="small" v-bind:selected="size === 'small'">{{ getText('small') }}</option>
+                  <option value="normal" v-bind:selected="size === 'normal'">{{ getText('normal') }}</option>
+                  <option value="medium" v-bind:selected="size === 'medium'">{{ getText('medium') }}</option>
+                  <option value="large" v-bind:selected="size === 'large'">{{ getText('large') }}</option>
                 </select>
               </span>
               <span class="icon is-left">
@@ -457,13 +457,13 @@
         </div>
         <div class="column is-10">
           <div class="buttons">
-            <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass1" v-on:click="applySettings">
+            <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')" v-on:click="applySettings">
               <span class="icon">
                 <i class="fas fa-check"></i>
               </span>
               <span>{{ getText('settingsButton1') }}</span>
             </a>
-            <a class="button is-danger is-rounded is-outlined is-fullwidth" v-bind:class="getClass1" v-on:click="navigateTo('mainMenu')">
+            <a class="button is-danger is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')" v-on:click="navigateTo('mainMenu')">
               <span class="icon">
                 <i class="fas fa-arrow-left"></i>
               </span>

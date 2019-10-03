@@ -17,6 +17,32 @@ function GlobalDict() {
     }
   };
   this.size = 'normal';
+  this.classes = {
+    button: {
+      small: 'is-small',
+      normal: '',
+      medium: 'is-medium',
+      large: 'is-large'
+    },
+    select: {
+      small: 'is-small',
+      normal: '',
+      medium: 'is-medium',
+      large: 'is-large'
+    },
+    title: {
+      small: 'is-5',
+      normal: 'is-4',
+      medium: 'is-3',
+      large: 'is-2'
+    },
+    subtitle: {
+      small: 'is-6',
+      normal: 'is-6',
+      medium: 'is-5',
+      large: 'is-4'
+    }
+  };
   this.vocabs = vocabs;
   this.page = 'mainMenu';
   this.option = '';
@@ -97,6 +123,9 @@ var mainMenu = new Vue({
     navigateTo: function (id, option = '') {
       this.page = id;
       this.option = option;
+    },
+    getClass: function(type) {
+      return this.classes[type][this.size];
     }
   }
 });
@@ -107,23 +136,14 @@ var settings = new Vue({
   computed: {
     isSeen: function () {
       return this.page === 'settings';
-    },
-    getClass1: function () {
-      switch (this.size) {
-        case 'small':
-          return 'is-small';
-        case 'medium':
-          return 'is-medium';
-        case 'large':
-          return 'is-large';
-        default:
-          return '';
-      }
     }
   },
   methods: {
     getText: function (id) {
       return this.languages[this.lang][id];
+    },
+    getClass: function(type) {
+      return this.classes[type][this.size];
     },
     navigateTo: function (id) {
       this.page = id;
