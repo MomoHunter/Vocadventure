@@ -80,7 +80,7 @@
           <section class="hero">
             <div class="hero-body">
               <div class="container">
-                <h1 class="title">
+                <h1 class="title" v-bind:class="getClass('title')">
                   {{ getText(option) }}
                 </h1>
               </div>
@@ -89,19 +89,19 @@
         </div>
         <div class="column is-10">
           <div id="selectionDifficulty" class="buttons has-addons is-centered">
-            <a id="difficulty1" class="button is-large is-success is-rounded is-outlined one-third" v-on:click="selectDifficulty('1')">
+            <a id="difficulty1" class="button is-success is-rounded is-outlined one-third" v-bind:class="getClass('button')" v-on:click="selectDifficulty('1')">
               <span class="icon">
                 <span class="mdi mdi-speedometer-slow"></span>
               </span>
               <span>{{ getText('difficulty1') }}</span>
             </a>
-            <a id="difficulty2" class="button is-large is-warning is-rounded is-outlined one-third" v-on:click="selectDifficulty('2')">
+            <a id="difficulty2" class="button is-warning is-rounded is-outlined one-third" v-bind:class="getClass('button')" v-on:click="selectDifficulty('2')">
               <span class="icon">
                 <span class="mdi mdi-speedometer-medium"></span>
               </span>
               <span>{{ getText('difficulty2') }}</span>
             </a>
-            <a id="difficulty3" class="button is-large is-danger is-outlined is-rounded one-third" v-on:click="selectDifficulty('3')">
+            <a id="difficulty3" class="button is-danger is-outlined is-rounded one-third" v-bind:class="getClass('button')" v-on:click="selectDifficulty('3')">
               <span class="icon">
                 <span class="mdi mdi-speedometer"></span>
               </span>
@@ -113,21 +113,21 @@
           <div class="columns is-mobile is-centered">
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count10" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount(10)">
+                <a id="count10" class="button is-rounded is-outlined is-primary is-fullwidth" v-bind:class="getClass('button')" v-on:click="selectCount(10)">
                   <span>10</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count20" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount(20)">
+                <a id="count20" class="button is-rounded is-outlined is-primary is-fullwidth" v-bind:class="getClass('button')" v-on:click="selectCount(20)">
                   <span>20</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count50" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount(50)">
+                <a id="count50" class="button is-rounded is-outlined is-primary is-fullwidth" v-bind:class="getClass('button')" v-on:click="selectCount(50)">
                   <span>50</span>
                 </a>
               </div>
@@ -138,21 +138,21 @@
           <div class="columns is-mobile is-centered">
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count100" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount(100)">
+                <a id="count100" class="button is-rounded is-outlined is-primary is-fullwidth" v-bind:class="getClass('button')" v-on:click="selectCount(100)">
                   <span>100</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count200" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount(200)">
+                <a id="count200" class="button is-rounded is-outlined is-primary is-fullwidth" v-bind:class="getClass('button')" v-on:click="selectCount(200)">
                   <span>200</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count500" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount(500)">
+                <a id="count500" class="button is-rounded is-outlined is-primary is-fullwidth" v-bind:class="getClass('button')" v-on:click="selectCount(500)">
                   <span>500</span>
                 </a>
               </div>
@@ -163,16 +163,16 @@
           <div class="columns is-mobile is-centered">
             <div class="column is-two-thirds">
               <div class="buttons is-centered noBottomMargin" v-show="!isCustomSelected">
-                <a id="countCustomButton" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="showCustom(true)">
+                <a id="countCustomButton" class="button is-rounded is-outlined is-primary is-fullwidth" v-bind:class="getClass('button')" v-on:click="showCustom(true)">
                   <span>{{ getText('custom') }}</span>
                 </a>
               </div>
               <div class="field has-addons" v-show="isCustomSelected">
                 <div class="control smallBottomMargin maxWidth">
-                  <input id="countCustom" class="input is-large is-rounded is-primary" type="number">
+                  <input id="countCustom" class="input is-rounded is-primary" v-bind:class="getClass('input')" type="number">
                 </div>
                 <div class="control smallBottomMargin">
-                  <a class="button is-large is-success is-outlined is-rounded" v-on:click="showCustom(false)">
+                  <a class="button is-success is-outlined is-rounded" v-bind:class="getClass('button')" v-on:click="showCustom(false)">
                     <span class="icon is-right">
                       <i class="fas fa-check"></i>
                     </span>
@@ -182,7 +182,7 @@
             </div>
             <div class="column is-one-third">
               <div class="buttons is-centered">
-                <a id="countAll" class="button is-large is-rounded is-outlined is-primary is-fullwidth" v-on:click="selectCount('All')">
+                <a id="countAll" class="button is-rounded is-outlined is-primary is-fullwidth" v-bind:class="getClass('button')" v-on:click="selectCount('All')">
                   <span>{{ getText('all') }}</span>
                 </a>
               </div>
@@ -191,13 +191,13 @@
         </div>
         <div class="column is-10">
           <p class="buttons">
-            <a class="button is-large is-success is-rounded is-outlined is-fullwidth" v-on:click="start()">
+            <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')" v-on:click="start()">
               <span class="icon">
                 <i class="fas fa-check"></i>
               </span>
               <span>{{ getText('selectionButton1') }}</span>
             </a>
-            <a class="button is-large is-danger is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('mainMenu')">
+            <a class="button is-danger is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')" v-on:click="navigateTo('mainMenu')">
               <span class="icon">
                 <i class="fas fa-arrow-left"></i>
               </span>

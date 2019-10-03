@@ -30,6 +30,12 @@ function GlobalDict() {
       medium: 'is-medium',
       large: 'is-large'
     },
+    input: {
+      small: 'is-small',
+      normal: '',
+      medium: 'is-medium',
+      large: 'is-large'
+    },
     title: {
       small: 'is-5',
       normal: 'is-4',
@@ -176,12 +182,12 @@ var selection = new Vue({
       }
       return this.languages[this.lang][id];
     },
+    getClass: function(type) {
+      return this.classes[type][this.size];
+    },
     showCustom: function (show) {
-      console.log('ja, es passiert etwas');
       this.customSelected = show;
-      if (show) {
-        document.getElementById('countCustom').focus();
-      } else {
+      if (!show) {
         if ((!isNaN(parseInt(document.getElementById('countCustom').value)) && this.wordCount !== 'Custom') ||
             (isNaN(parseInt(document.getElementById('countCustom').value)) && this.wordCount === 'Custom')) {
           this.selectCount('Custom');
