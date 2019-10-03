@@ -47,6 +47,30 @@ function GlobalDict() {
       normal: 'is-6',
       medium: 'is-5',
       large: 'is-4'
+    },
+    tag: {
+      small: 'is-normal',
+      normal: 'is-normal',
+      medium: 'is-medium',
+      large: 'is-large'
+    },
+    content: {
+      small: 'is-small',
+      normal: '',
+      medium: 'is-medium',
+      large: 'is-large'
+    },
+    label: {
+      small: 'is-small',
+      normal: '',
+      medium: 'is-medium',
+      large: 'is-large'
+    },
+    progress: {
+      small: 'is-small',
+      normal: '',
+      medium: 'is-medium',
+      large: 'is-large'
     }
   };
   this.vocabs = vocabs;
@@ -318,6 +342,9 @@ var training = new Vue({
       }
       this.currentWord = 0;
       this.page = id;
+    },
+    getClass: function(type) {
+      return this.classes[type][this.size];
     },
     move: function (forward) {
       if (forward) {
