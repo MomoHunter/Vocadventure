@@ -16,6 +16,7 @@ function GlobalDict() {
       link: "css/bulmaswatch.solar.min.css"
     }
   };
+  this.size = 'normal';
   this.vocabs = vocabs;
   this.page = 'mainMenu';
   this.option = '';
@@ -52,6 +53,7 @@ function GlobalDict() {
     window.localStorage.setItem('globalDict', JSON.stringify({
       "lang": this.lang,
       "design": this.design,
+      "size": this.size,
       "scores": this.scores
     }));
   };
@@ -60,6 +62,7 @@ function GlobalDict() {
     if (data) {
       this.lang = data.lang;
       this.design = data.design;
+      this.size = data.size;
       this.scores = data.scores;
       document.getElementById('bulmaCSS').href = this.designs[this.design].link;
     }
@@ -104,6 +107,18 @@ var settings = new Vue({
   computed: {
     isSeen: function () {
       return this.page === 'settings';
+    },
+    getClass1: function () {
+      switch (this.size) {
+        case 'small':
+          return 'is-small';
+        case 'medium':
+          return 'is-medium';
+        case 'large':
+          return 'is-large';
+        default:
+          return '';
+      }
     }
   },
   methods: {
@@ -117,6 +132,7 @@ var settings = new Vue({
       this.lang = document.getElementById('languageSelection').value;
       this.design = document.getElementById('themeSelection').value;
       document.getElementById('bulmaCSS').href = this.designs[this.design].link;
+      this.size = document.getElementById('sizeSelection').value;
       this.saveData();
     }
   }

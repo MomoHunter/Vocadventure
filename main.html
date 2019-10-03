@@ -7,21 +7,21 @@
     <title>
         Vocadventure
     </title>
-    <!--link id="bulmaCSS" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+    <link id="bulmaCSS" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.4.95/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="Vocadventure.webmanifest">
     <script src="https://kit.fontawesome.com/1b4a3ddbae.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!--for offline use-->
-    <link id="bulmaCSS" rel="stylesheet" href="css/bulma.min.css">
+    <!--link id="bulmaCSS" rel="stylesheet" href="css/bulma.min.css">
     <link rel="stylesheet" href="MaterialDesign-Webfont-master/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="Vocadventure.webmanifest">
     <link rel="stylesheet" href="css/animate.min.css">
     <script src="fontawesome-free-5.11.2-web/js/all.min.js"></script>
-    <script src="scripts/vue.js"></script>
+    <script src="scripts/vue.js"></script-->
   </head>
   <body onload="">
     <nav id="status" class="level is-mobile">
@@ -417,40 +417,53 @@
         <div class="customColumn is-10 flex-grow">
           <div class="field">
             <p class="control has-icons-left topBottomMargin">
-              <span class="select is-fullwidth is-large">
+              <span class="select is-fullwidth" v-bind:class="getClass1">
                 <select id="languageSelection">
                   <option v-for="language in Object.keys(languages)" v-bind:selected="language === lang">
                     {{ language }}
                   </option>
                 </select>
               </span>
-              <span class="icon is-small is-left">
+              <span class="icon is-left">
                 <i class="fas fa-globe"></i>
               </span>
             </p>
             <p class="control has-icons-left topBottomMargin">
-              <span class="select is-fullwidth is-large">
+              <span class="select is-fullwidth" v-bind:class="getClass1">
                 <select id="themeSelection">
                   <option v-for="designId in Object.keys(designs)" v-bind:selected="designId === design" v-bind:value="designId">
                     {{ languages[lang][designId] }}
                   </option>
                 </select>
               </span>
-              <span class="icon is-small is-left">
+              <span class="icon is-left">
                 <i class="fas fa-palette"></i>
+              </span>
+            </p>
+            <p class="control has-icons-left topBottomMargin">
+              <span class="select is-fullwidth" v-bind:class="getClass1">
+                <select id="sizeSelection">
+                  <option value="small">{{ getText('small') }}</option>
+                  <option value="normal" selected>{{ getText('normal') }}</option>
+                  <option value="medium">{{ getText('medium') }}</option>
+                  <option value="large">{{ getText('large') }}</option>
+                </select>
+              </span>
+              <span class="icon is-left">
+                <i class="fas fa-expand-arrows-alt"></i>
               </span>
             </p>
           </div>
         </div>
         <div class="column is-10">
           <div class="buttons">
-            <a class="button is-large is-success is-rounded is-outlined is-fullwidth" v-on:click="applySettings">
+            <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass1" v-on:click="applySettings">
               <span class="icon">
                 <i class="fas fa-check"></i>
               </span>
               <span>{{ getText('settingsButton1') }}</span>
             </a>
-            <a class="button is-large is-danger is-rounded is-outlined is-fullwidth" v-on:click="navigateTo('mainMenu')">
+            <a class="button is-danger is-rounded is-outlined is-fullwidth" v-bind:class="getClass1" v-on:click="navigateTo('mainMenu')">
               <span class="icon">
                 <i class="fas fa-arrow-left"></i>
               </span>
