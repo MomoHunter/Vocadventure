@@ -15,6 +15,10 @@ h2 {
     height: calc(100% - 71px);
 }
 
+#pageButton:hover {
+
+}
+
 .page {
     width: 100%;
     height: calc(100% - 142px);
@@ -102,6 +106,11 @@ h2 {
     padding: .75rem;
 }
 
+.customColumn2 {
+    display: flex;
+    flex-direction: column;
+ }
+
 .customColumn.is-10 {
     width: calc(100% / 1.2);
 }
@@ -116,4 +125,10 @@ h2 {
 
 .alignStretch {
     align-content: stretch;
+}
+
+.backgroundPicture {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }

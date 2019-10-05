@@ -354,35 +354,61 @@
         <div class="customColumn is-9 flex-grow">
           <div class="columns is-multiline is-centered is-mobile maxHeight">
             <div class="column is-half halfHeight">
-              <div class="box maxHeight" v-show="showBox(0)" v-on:click="navigateTo('details',0)">
+              <div class="box maxHeight customColumn2" v-show="showBox(0)" v-on:click="navigateTo('details',0)">
                 <p class="content centerText" v-bind:class="getClass('content')">{{ getItemname(0) }}</p>
-                <figure class="image orange">
-                  <img v-bind:src="getImage(0)" v-bind:alt="getItemname(0)">
-                </figure>
+                <div class="flex-grow maxHeight backgroundPicture" v-bind:style="getItemimage(0)">
+                </div>
               </div>
             </div>
             <div class="column is-half halfHeight">
-              <div class="box maxHeight" v-show="showBox(1)" v-on:click="navigateTo('details',1)">
+              <div class="box maxHeight customColumn2" v-show="showBox(1)" v-on:click="navigateTo('details',1)">
                 <p class="content centerText" v-bind:class="getClass('content')">{{ getItemname(1) }}</p>
-                <img v-bind:src="getImage(1)" v-bind:alt="getItemname(1)">
+                <div class="flex-grow maxHeight backgroundPicture" v-bind:style="getItemimage(1)">
+                </div>
               </div>
             </div>
             <div class="column is-half halfHeight">
-              <div class="box maxHeight" v-show="showBox(2)" v-on:click="navigateTo('details',2)">
+              <div class="box maxHeight customColumn2" v-show="showBox(2)" v-on:click="navigateTo('details',2)">
                 <p class="content centerText" v-bind:class="getClass('content')">{{ getItemname(2) }}</p>
-                <img v-bind:src="getImage(2)" v-bind:alt="getItemname(2)">
+                <div class="flex-grow maxHeight backgroundPicture" v-bind:style="getItemimage(2)">
+                </div>
               </div>
             </div>
             <div class="column is-half halfHeight">
-              <div class="box maxHeight" v-show="showBox(3)" v-on:click="navigateTo('details',3)">
+              <div class="box maxHeight customColumn2" v-show="showBox(3)" v-on:click="navigateTo('details',3)">
                 <p class="content centerText" v-bind:class="getClass('content')">{{ getItemname(3) }}</p>
-                <img v-bind:src="getImage(3)" v-bind:alt="getItemname(3)">
+                <div class="flex-grow maxHeight backgroundPicture" v-bind:style="getItemimage(3)">
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div class="column is-10">
-          Some pagination in the near future, THE FUTURE!!!!
+          <div class="columns is-mobile is-centered is-vcentered">
+            <div class="customColumn flex-grow">
+              <div class="buttons is-centered">
+                <a class="button is-primary is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+                   v-on:click="nextPage(-1)">
+                  <span class="icon">
+                    <i class="fas fa-angle-left"></i>
+                  </span>
+                </a>
+              </div>
+            </div>
+            <div class="column">
+              <p class="content centerText is-primary" v-bind:class="getClass('content')">{{ getPage }}</p>
+            </div>
+            <div class="customColumn flex-grow">
+              <div class="buttons is-centered">
+                <a class="button is-primary is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+                   v-on:click="nextPage(1)">
+                  <span class="icon">
+                    <i class="fas fa-angle-right"></i>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="column is-10">
           <div class="columns is-mobile is-centered">
