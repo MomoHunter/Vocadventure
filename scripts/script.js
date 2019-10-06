@@ -4,10 +4,10 @@ function GlobalDict() {
   this.design = "design1";
   this.designs = {
     "design1": {
-      link: "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css"
+      link: "css/bulmaswatch.darkly.min.css"
     },
     "design2": {
-      link: "css/bulmaswatch.darkly.min.css"
+      link: "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css"
     },
     "design3": {
       link: "css/bulmaswatch.slate.min.css"
@@ -109,13 +109,14 @@ function GlobalDict() {
         { id: 'wood', quantity: 4 }
       ]}
   ];
-  this.hiddenItems = [];
+  this.searchResult = [];
+  this.displayedItems = [];
   this.searchTerm = '';
   this.searchSelected = false;
   this.wordCount = 0;
   this.vocabWords = [];
   this.currentWord = 0;
-  this.currentItem = 0;
+  this.currentShopPage = 0;
   this.scores = {
     scores: [
       {id: 'statusLeft', number: 0},
@@ -408,29 +409,48 @@ var shop = new Vue({
       return this.searchSelected;
     },
     showPagination: function () {
-      if (this.option === 'shop') {
-        return Math.ceil(this.items.length / 4) > 0;
-      } else {
-        return Math.ceil(this.inventory.length / 4) > 0;
-      }
+      return this.displayedItems.length !== 0;
     },
     getPage: function () {
-      if (this.option === 'shop') {
-        return ((this.currentItem + 4) / 4) + " / " + Math.ceil(this.items.length / 4);
+      if (this.searchActivated) {
+        return this.currentShopPage + " / " + Math.ceil(this.searchResult.length / 4);
+      } else if (this.isShop) {
+        return this.currentShopPage + " / " + Math.ceil(this.items.length / 4);
       } else {
-        return ((this.currentItem + 4) / 4) + " / " + Math.ceil(this.inventory.length / 4);
+        return this.currentShopPage + " / " + Math.ceil(this.inventory.length / 4);
       }
     },
-    searchItems: function () {
-      if (this.searchTerm !== '') {
-        if (this.option === 'shop') {
-          console.log("hallo");
-          this.items.map((item, index) => {
-            if (this.languages[this.lang][item.id].indexOf(this.searchTerm) === -1) {
-              console.log(this.languages[this.lang][item.id].indexOf(this.searchTerm));
+    displayItems: function () {
+      this.searchResult = [];
+      this.displayedItems = [];
+      if (this.isShop) {
+        if (this.searchTerm !== '') {
+          this.items.map(item => {
+            if (this.languages[this.lang][item.id].indexOf(this.searchTerm) !== -1) {
+              this.searchResult.push(item);
             }
           }, this);
+        } else {
+          this.items.map(item => {
+            this.searchResult.push(item);
+          }, this);
         }
+      } else {
+        if (this.searchTerm !== '') {
+          this.inventory.map(item => {
+            if (this.languages[this.lang][item.id].indexOf(this.searchTerm) !== -1) {
+              this.searchResult.push(item);
+            }
+          }, this);
+        } else {
+          this.inventory.map(item => {
+            this.searchResult.push(item);
+          }, this);
+        }
+      }
+
+      for (let i = (this.currentShopPage - 1) * 4; i < Math.min(this.searchResult.length, this.currentShopPage * 4); i++) {
+        this.displayedItems.push(this.searchResult[i]);
       }
     }
   },
@@ -439,12 +459,12 @@ var shop = new Vue({
       return this.languages[this.lang][id];
     },
     navigateTo: function (id, option = '') {
-      if (!(id === 'details' && this.option === 'inventory')) {
-        document.getElementById('searchField').value = '';
-        if ((this.option === 'shop' && option === 'inventory') ||
-          (this.option === 'inventory' && option === 'shop') ||
+      if (!(id === 'details' && !this.isShop)) {
+        this.searchTerm = '';
+        if ((this.isShop && option === 'inventory') ||
+          (!this.isShop && option === 'shop') ||
           option === '') {
-          this.currentItem = 0;
+          this.currentShopPage = 0;
         }
         this.page = id;
         this.option = option;
@@ -453,83 +473,21 @@ var shop = new Vue({
     getClass: function(type) {
       return this.classes[type][this.size];
     },
-    getItemname: function (position) {
-      if (this.option === 'shop') {
-        if (this.currentItem + position < this.items.length) {
-          return this.languages[this.lang][this.items[this.currentItem + position].id];
-        } else {
-          return "";
-        }
-      } else {
-        if (this.currentItem + position < this.inventory.length) {
-          return this.languages[this.lang][this.inventory[this.currentItem + position].id];
-        } else {
-          return "";
-        }
-      }
-    },
-    getItemimage: function (position) {
-      if (this.option === 'shop') {
-        if (this.currentItem + position < this.items.length) {
-          return { "background-image": "url(" + this.items[this.currentItem + position].spriteKey + ")" };
-        } else {
-          return "";
-        }
-      } else {
-        if (this.currentItem + position < this.inventory.length) {
-          return { "background-image": "url(" + this.inventory[this.currentItem + position].spriteKey + ")" };
-        } else {
-          return "";
-        }
-      }
-    },
-    getItemquantity: function (position) {
-      if (this.option === 'shop') {
-        if (this.currentItem + position < this.items.length) {
-          return this.items[this.currentItem + position].quantity;
-        } else {
-          return "";
-        }
-      } else {
-        if (this.currentItem + position < this.inventory.length) {
-          return this.inventory[this.currentItem + position].quantity;
-        } else {
-          return "";
-        }
-      }
-    },
     nextPage: function (pages) {
-      if (this.option === 'shop') {
-        if (this.items.length === 0) {
-          this.currentItem = 0;
-        } else if (this.currentItem === 0 && pages === -1) {
-          this.currentItem = (Math.ceil(this.items.length / 4) - 1) * 4;
-        } else if (this.currentItem === (Math.ceil(this.items.length / 4) - 1) * 4 && pages === 1) {
-          this.currentItem = 0;
-        } else {
-          this.currentItem += pages * 4;
-        }
+      if (this.displayedItems.length === 0 ||
+         (this.currentShopPage === Math.ceil(this.displayedItems.length / 4) && pages === 1)) {
+        this.currentShopPage = 1;
+      } else if (this.currentShopPage === 0 && pages === -1) {
+        this.currentShopPage = Math.ceil(this.displayedItems.length / 4);
       } else {
-        if (this.inventory.length === 0) {
-          this.currentItem = 0;
-        } else if (this.currentItem === 0 && pages === -1) {
-          this.currentItem = (Math.ceil(this.inventory.length / 4) - 1) * 4;
-        } else if (this.currentItem === (Math.ceil(this.inventory.length / 4) - 1) * 4 && pages === 1) {
-          this.currentItem = 0;
-        } else {
-          this.currentItem += pages * 4;
-        }
+        this.currentShopPage += pages;
       }
     },
-    showBox: function (position) {
-      if (this.option === 'shop') {
-        return this.currentItem + position < this.items.length;
-      } else {
-        return this.currentItem + position < this.inventory.length;
-      }
-    },
-    showSearch: function (show) {
+    useSearch: function (show) {
       this.searchSelected = show;
+      if (!show) {
+        this.searchTerm = '';
+      }
     }
   }
 });
