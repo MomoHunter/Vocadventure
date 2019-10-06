@@ -50,7 +50,8 @@ const languages = {
     shovel: "Schaufel",
     shovel2: "Axt",
     shovel3: "Schaufel3",
-    shovel4: "Schaufel4"
+    shovel4: "Schaufel4",
+    empty: "Leer"
   },
   "English": {
     statusLeft: "Points",
@@ -103,6 +104,7 @@ const languages = {
     shovel: "Shovel",
     shovel2: "Axe",
     shovel3: "shovel3",
-    shovel4: "shovel4"
+    shovel4: "shovel4",
+    empty: "Empty"
   }
 };

@@ -132,3 +132,13 @@ h2 {
     background-repeat: no-repeat;
     background-size: contain;
 }
+
+.position-relative {
+    position: relative;
+}
+
+.position-bottom-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

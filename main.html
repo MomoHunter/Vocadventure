@@ -352,38 +352,54 @@
           </section>
         </div>
         <div class="customColumn is-9 flex-grow">
+          <div class="content maxHeight maxWidth centerContent centerText" v-bind:class="getClass('content')"
+               v-show="!showPagination">
+            {{ getText('empty') }}
+          </div>
           <div class="columns is-multiline is-centered is-mobile maxHeight">
             <div class="column is-half halfHeight">
               <div class="box maxHeight customColumn2" v-show="showBox(0)" v-on:click="navigateTo('details',0)">
                 <p class="content centerText" v-bind:class="getClass('content')">{{ getItemname(0) }}</p>
-                <div class="flex-grow maxHeight backgroundPicture" v-bind:style="getItemimage(0)">
+                <div class="flex-grow maxHeight backgroundPicture position-relative" v-bind:style="getItemimage(0)">
+                  <div class="content position-bottom-right" v-bind:class="getClass('content')" v-show="!isShop">
+                    {{ getItemquantity(0) }}
+                  </div>
                 </div>
               </div>
             </div>
             <div class="column is-half halfHeight">
               <div class="box maxHeight customColumn2" v-show="showBox(1)" v-on:click="navigateTo('details',1)">
                 <p class="content centerText" v-bind:class="getClass('content')">{{ getItemname(1) }}</p>
-                <div class="flex-grow maxHeight backgroundPicture" v-bind:style="getItemimage(1)">
+                <div class="flex-grow maxHeight backgroundPicture position-relative" v-bind:style="getItemimage(1)">
+                  <div class="content position-bottom-right" v-bind:class="getClass('content')" v-show="!isShop">
+                    {{ getItemquantity(1) }}
+                  </div>
                 </div>
               </div>
             </div>
             <div class="column is-half halfHeight">
               <div class="box maxHeight customColumn2" v-show="showBox(2)" v-on:click="navigateTo('details',2)">
                 <p class="content centerText" v-bind:class="getClass('content')">{{ getItemname(2) }}</p>
-                <div class="flex-grow maxHeight backgroundPicture" v-bind:style="getItemimage(2)">
+                <div class="flex-grow maxHeight backgroundPicture position-relative" v-bind:style="getItemimage(2)">
+                  <div class="content position-bottom-right" v-bind:class="getClass('content')" v-show="!isShop">
+                    {{ getItemquantity(2) }}
+                  </div>
                 </div>
               </div>
             </div>
             <div class="column is-half halfHeight">
               <div class="box maxHeight customColumn2" v-show="showBox(3)" v-on:click="navigateTo('details',3)">
                 <p class="content centerText" v-bind:class="getClass('content')">{{ getItemname(3) }}</p>
-                <div class="flex-grow maxHeight backgroundPicture" v-bind:style="getItemimage(3)">
+                <div class="flex-grow maxHeight backgroundPicture position-relative" v-bind:style="getItemimage(3)">
+                  <div class="content position-bottom-right" v-bind:class="getClass('content')" v-show="!isShop">
+                    {{ getItemquantity(3) }}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="column is-10">
+        <div class="column is-10" v-show="showPagination">
           <div class="columns is-mobile is-centered is-vcentered">
             <div class="customColumn flex-grow">
               <div class="buttons is-centered">
@@ -443,7 +459,7 @@
               <div class="field has-addons" v-show="searchActivated">
                 <div class="control smallBottomMargin maxWidth">
                   <input id="searchField" class="input is-rounded is-warning" type="text"
-                         v-bind:class="getClass('input')">
+                         v-bind:class="getClass('input')" v-model.lazy="searchTerm">
                 </div>
                 <div class="control smallBottomMargin">
                   <a class="button is-danger is-outlined is-rounded" v-bind:class="getClass('button')"

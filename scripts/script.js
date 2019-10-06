@@ -79,32 +79,38 @@ function GlobalDict() {
   this.difficulty = '';
   this.customSelected = false;
   this.items = [
-    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', costs: [
+    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 0, costs: [
         { id: 'wood', quantity: 4 }
       ]},
-    { id: 'shovel2', spriteKey: 'img/sprites/Axt.png', costs: [
+    { id: 'shovel2', spriteKey: 'img/sprites/Axt.png', quantity: 0, costs: [
         { id: 'wood', quantity: 4 }
       ]},
-    { id: 'shovel3', spriteKey: '', costs: [
+    { id: 'shovel3', spriteKey: '', quantity: 0, costs: [
         { id: 'wood', quantity: 4 }
       ]},
-    { id: 'shovel4', spriteKey: '', costs: [
+    { id: 'shovel4', spriteKey: '', quantity: 0, costs: [
         { id: 'wood', quantity: 4 }
       ]},
-    { id: 'shovel3', spriteKey: '', costs: [
+    { id: 'shovel3', spriteKey: '', quantity: 0, costs: [
         { id: 'wood', quantity: 4 }
       ]},
-    { id: 'shovel4', spriteKey: '', costs: [
+    { id: 'shovel4', spriteKey: '', quantity: 0, costs: [
         { id: 'wood', quantity: 4 }
       ]},
-    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', costs: [
+    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 0, costs: [
         { id: 'wood', quantity: 4 }
       ]},
-    { id: 'shovel2', spriteKey: 'img/sprites/Axt.png', costs: [
+    { id: 'shovel2', spriteKey: 'img/sprites/Axt.png', quantity: 0, costs: [
         { id: 'wood', quantity: 4 }
       ]}
   ];
-  this.inventory = [];
+  this.inventory = [
+    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 55, costs: [
+        { id: 'wood', quantity: 4 }
+      ]}
+  ];
+  this.hiddenItems = [];
+  this.searchTerm = '';
   this.searchSelected = false;
   this.wordCount = 0;
   this.vocabWords = [];
@@ -401,11 +407,30 @@ var shop = new Vue({
     searchActivated: function () {
       return this.searchSelected;
     },
+    showPagination: function () {
+      if (this.option === 'shop') {
+        return Math.ceil(this.items.length / 4) > 0;
+      } else {
+        return Math.ceil(this.inventory.length / 4) > 0;
+      }
+    },
     getPage: function () {
       if (this.option === 'shop') {
         return ((this.currentItem + 4) / 4) + " / " + Math.ceil(this.items.length / 4);
       } else {
         return ((this.currentItem + 4) / 4) + " / " + Math.ceil(this.inventory.length / 4);
+      }
+    },
+    searchItems: function () {
+      if (this.searchTerm !== '') {
+        if (this.option === 'shop') {
+          console.log("hallo");
+          this.items.map((item, index) => {
+            if (this.languages[this.lang][item.id].indexOf(this.searchTerm) === -1) {
+              console.log(this.languages[this.lang][item.id].indexOf(this.searchTerm));
+            }
+          }, this);
+        }
       }
     }
   },
@@ -414,14 +439,16 @@ var shop = new Vue({
       return this.languages[this.lang][id];
     },
     navigateTo: function (id, option = '') {
-      document.getElementById('searchField').value = '';
-      if ((this.option === 'shop' && option === 'inventory') ||
+      if (!(id === 'details' && this.option === 'inventory')) {
+        document.getElementById('searchField').value = '';
+        if ((this.option === 'shop' && option === 'inventory') ||
           (this.option === 'inventory' && option === 'shop') ||
           option === '') {
-        this.currentItem = 0;
+          this.currentItem = 0;
+        }
+        this.page = id;
+        this.option = option;
       }
-      this.page = id;
-      this.option = option;
     },
     getClass: function(type) {
       return this.classes[type][this.size];
@@ -450,7 +477,22 @@ var shop = new Vue({
         }
       } else {
         if (this.currentItem + position < this.inventory.length) {
-          return this.inventory[this.currentItem + position].spriteKey;
+          return { "background-image": "url(" + this.inventory[this.currentItem + position].spriteKey + ")" };
+        } else {
+          return "";
+        }
+      }
+    },
+    getItemquantity: function (position) {
+      if (this.option === 'shop') {
+        if (this.currentItem + position < this.items.length) {
+          return this.items[this.currentItem + position].quantity;
+        } else {
+          return "";
+        }
+      } else {
+        if (this.currentItem + position < this.inventory.length) {
+          return this.inventory[this.currentItem + position].quantity;
         } else {
           return "";
         }
@@ -458,11 +500,23 @@ var shop = new Vue({
     },
     nextPage: function (pages) {
       if (this.option === 'shop') {
-        if (this.currentItem + pages * 4 < this.items.length && this.currentItem + pages >= 0) {
+        if (this.items.length === 0) {
+          this.currentItem = 0;
+        } else if (this.currentItem === 0 && pages === -1) {
+          this.currentItem = (Math.ceil(this.items.length / 4) - 1) * 4;
+        } else if (this.currentItem === (Math.ceil(this.items.length / 4) - 1) * 4 && pages === 1) {
+          this.currentItem = 0;
+        } else {
           this.currentItem += pages * 4;
         }
       } else {
-        if (this.currentItem + pages * 4 < this.inventory.length && this.currentItem + pages >= 0) {
+        if (this.inventory.length === 0) {
+          this.currentItem = 0;
+        } else if (this.currentItem === 0 && pages === -1) {
+          this.currentItem = (Math.ceil(this.inventory.length / 4) - 1) * 4;
+        } else if (this.currentItem === (Math.ceil(this.inventory.length / 4) - 1) * 4 && pages === 1) {
+          this.currentItem = 0;
+        } else {
           this.currentItem += pages * 4;
         }
       }
