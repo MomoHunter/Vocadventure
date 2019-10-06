@@ -140,6 +140,8 @@ function GlobalDict() {
 const gD = new GlobalDict();
 gD.loadData();
 
+document.getElementById("test").innerText = window.screen.width;
+
 var status = new Vue({
   el: '#status',
   data: gD,
