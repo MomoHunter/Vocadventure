@@ -137,10 +137,13 @@ function GlobalDict() {
   }
 }
 
+let viewport = document.querySelector("[name~=viewport][content]");
+if (window.screen.width * window.devicePixelRatio < 1150) {
+  viewport.content = "width=device-width, initial-scale=0.75";
+}
+
 const gD = new GlobalDict();
 gD.loadData();
-
-document.getElementById("test").innerText = window.screen.width * window.devicePixelRatio;
 
 var status = new Vue({
   el: '#status',
