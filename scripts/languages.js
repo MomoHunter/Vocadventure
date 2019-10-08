@@ -34,6 +34,9 @@ const languages = {
     shopButton4: "Zurück",
     inventory: "Inventar",
     titleDetails: "Details",
+    materials: "Materialien",
+    own: "Eigene",
+    needed: "Benötigt",
     detailsButton1: "Zurück",
     detailsButton2: "Kaufen",
     titleSettings: "Einstellungen",
@@ -51,6 +54,7 @@ const languages = {
     shovel2: "Axt",
     shovel3: "Schaufel3",
     shovel4: "Schaufel4",
+    wood: "Holz",
     empty: "Leer"
   },
   "English": {
@@ -88,6 +92,9 @@ const languages = {
     shopButton4: "Back",
     inventory: "Inventory",
     titleDetails: "Details",
+    materials: "Materials",
+    own: "Own",
+    needed: "Needed",
     detailsButton1: "Back",
     detailsButton2: "Buy",
     titleSettings: "Settings",
@@ -105,6 +112,7 @@ const languages = {
     shovel2: "Axe",
     shovel3: "shovel3",
     shovel4: "shovel4",
+    wood: "Wood",
     empty: "Empty"
   }
 };

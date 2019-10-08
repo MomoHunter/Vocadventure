@@ -57,7 +57,11 @@ h2 {
 }
 
 .centerText {
-    text-align: center;
+    text-align: center !important;
+}
+
+.rightText {
+    text-align: right;
 }
 
 .justifyContent {

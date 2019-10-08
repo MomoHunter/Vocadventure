@@ -470,7 +470,37 @@
             </div>
           </section>
         </div>
+        <div class="customColumn is-10 flex-grow backgroundPicture" v-bind:style="{ backgroundImage: 'url(' + getUrl + ')' }">
+        </div>
         <div class="column is-10">
+          <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th>
+                  {{ getText('materials') }}
+                </th>
+                <th class="centerText">
+                  {{ getText('own') }}
+                </th>
+                <th class="centerText">
+                  {{ getText('needed') }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="material in getCosts">
+                <td>
+                  {{ getText(material.id) }}
+                </td>
+                <td class="centerText">
+                  {{ getOwn(material.id) }}
+                </td>
+                <td class="centerText">
+                  {{ material.quantity }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="column is-10">
           <div class="columns is-mobile is-centered">

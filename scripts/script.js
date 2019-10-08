@@ -507,11 +507,25 @@ var details = new Vue({
   computed: {
     isSeen: function () {
       return this.page === 'details';
+    },
+    getUrl: function () {
+      if (this.isSeen) {
+        return this.items[(this.currentShopPage - 1) * 4 + this.option].spriteKey;
+      } else {
+        return "";
+      }
+    },
+    getCosts: function () {
+      if (this.isSeen) {
+        return this.items[(this.currentShopPage - 1) * 4 + this.option].costs;
+      } else {
+        return [];
+      }
     }
   },
   methods: {
     getText: function (id) {
-      if (id === 'titleDetails' && !isNaN((this.currentShopPage - 1) * 4 + this.option)) {
+      if (id === 'titleDetails' && this.isSeen) {
         return this.languages[this.lang][this.items[(this.currentShopPage - 1) * 4 + this.option].id];
       } else {
         return this.languages[this.lang][id];
@@ -523,6 +537,15 @@ var details = new Vue({
     },
     getClass: function(type) {
       return this.classes[type][this.size];
+    },
+    getOwn: function (id) {
+      let quantity = 0;
+      this.inventory.map(item => {
+        if (item.id === id) {
+          quantity = item.quantity;
+        }
+      }, this);
+      return quantity;
     }
   }
 });
