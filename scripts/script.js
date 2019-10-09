@@ -79,35 +79,47 @@ function GlobalDict() {
   this.difficulty = '';
   this.customSelected = false;
   this.items = [
-    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 0, costs: [
-        { id: 'wood', quantity: 4 }
+    { id: 'wood', spriteKey: 'img/sprites/Holz.png', quantity: 1, costs: [
+        { id: 'statusRight', quantity: 5 }
       ]},
-    { id: 'shovel2', spriteKey: 'img/sprites/Axt.png', quantity: 0, costs: [
-        { id: 'wood', quantity: 4 }
+    { id: 'stone', spriteKey: 'img/sprites/Stein.png', quantity: 1, costs: [
+        { id: 'statusRight', quantity: 6 }
       ]},
-    { id: 'shovel3', spriteKey: '', quantity: 0, costs: [
-        { id: 'wood', quantity: 4 }
+    { id: 'ironOre', spriteKey: 'img/sprites/Eisenerz.png', quantity: 1, costs: [
+        { id: 'statusRight', quantity: 29 }
       ]},
-    { id: 'shovel4', spriteKey: '', quantity: 0, costs: [
-        { id: 'wood', quantity: 4 }
+    { id: 'fish', spriteKey: 'img/sprites/Fisch.png', quantity: 1, costs: [
+        { id: 'statusRight', quantity: 15 }
       ]},
-    { id: 'shovel3', spriteKey: '', quantity: 0, costs: [
-        { id: 'wood', quantity: 4 }
+    { id: 'worm', spriteKey: 'img/sprites/Wurm.png', quantity: 1, costs: [
+        { id: 'statusRight', quantity: 2 }
       ]},
-    { id: 'shovel4', spriteKey: '', quantity: 0, costs: [
-        { id: 'wood', quantity: 4 }
+    { id: 'apple', spriteKey: 'img/sprites/Apfel.png', quantity: 1, costs: [
+        { id: 'statusRight', quantity: 5 }
       ]},
-    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 0, costs: [
-        { id: 'wood', quantity: 4 }
+    { id: 'string', spriteKey: 'img/sprites/Faden.png', quantity: 1, costs: [
+        { id: 'cobwebs', quantity: 12 },
+        { id: 'statusRight', quantity: 8 }
       ]},
-    { id: 'shovel2', spriteKey: 'img/sprites/Axt.png', quantity: 0, costs: [
-        { id: 'wood', quantity: 4 }
+    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 1, costs: [
+        { id: 'wood', quantity: 4 },
+        { id: 'stone', quantity: 2 },
+        { id: 'statusRight', quantity: 50 }
+      ]},
+    { id: 'axe', spriteKey: 'img/sprites/Axt.png', quantity: 1, costs: [
+        { id: 'wood', quantity: 4 },
+        { id: 'stone', quantity: 2 },
+        { id: 'statusRight', quantity: 35 }
+      ]},
+    { id: 'fishingRod', spriteKey: 'img/sprites/Angel.png', quantity: 1, costs: [
+        { id: 'wood', quantity: 3 },
+        { id: 'string', quantity: 2 },
+        { id: 'statusRight', quantity: 85 }
       ]}
   ];
   this.inventory = [
-    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 55, costs: [
-        { id: 'wood', quantity: 4 }
-      ]}
+    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 55 },
+    { id: 'wood', spriteKey: 'img/sprites/Holz.png', quantity: 50 }
   ];
   this.searchResult = [];
   this.searchTerm = '';
@@ -118,9 +130,9 @@ function GlobalDict() {
   this.currentShopPage = 1;
   this.scores = {
     scores: [
-      {id: 'statusLeft', number: 0},
-      {id: 'statusMiddle', number: 0},
-      {id: 'statusRight', number: 0}
+      { id: 'statusLeft', number: 0 },
+      { id: 'statusMiddle', number: 0 },
+      { id: 'statusRight', number: 700 }
     ]
   };
   this.saveData = function() {
@@ -128,7 +140,8 @@ function GlobalDict() {
       "lang": this.lang,
       "design": this.design,
       "size": this.size,
-      "scores": this.scores
+      "scores": this.scores,
+      "inventory": this.inventory
     }));
   };
   this.loadData = function() {
@@ -138,6 +151,7 @@ function GlobalDict() {
       this.design = data.design;
       this.size = data.size;
       this.scores = data.scores;
+      this.inventory = data.inventory;
       document.getElementById('bulmaCSS').href = this.designs[this.design].link;
     }
   }
@@ -545,30 +559,52 @@ var details = new Vue({
           quantity = item.quantity;
         }
       }, this);
+      this.scores.scores.map(status =>{
+        if (status.id === id) {
+          quantity = status.number;
+        }
+      }, this);
       return quantity;
     },
     buyItem: function () {
-      let currentItem = this.items[(this.currentShopPage - 1) * 4 + this.option]
+      let currentItem = this.items[(this.currentShopPage - 1) * 4 + this.option];
       let costs = currentItem.costs;
       let canBuy = true;
+      console.log("test2");
       costs.map(material => {
-        if (material.quantity > this.inventory.find(item => item.id === material.id).quantity) {
+        let foundItem = this.inventory.find(item => item.id === material.id);
+        let foundStatus = this.scores.scores.find(status => status.id === material.id);
+        if (foundItem !== undefined) {
+          if (material.quantity > foundItem.quantity) {
+            canBuy = false;
+          }
+        } else if (foundStatus !== undefined) {
+          if (material.quantity > foundStatus.number) {
+            canBuy = false;
+          }
+        } else {
           canBuy = false;
-          break;
         }
       }, this);
       
       if (canBuy) {
         let inventoryItem = this.inventory.find(item => item.id === currentItem.id);
         costs.map(material => {
-          this.inventory.find(item => item.id === material.id).quantity -= material.quantity;
+          let foundItem = this.inventory.find(item => item.id === material.id);
+          let foundStatus = this.scores.scores.find(status => status.id === material.id);
+          if (foundItem !== undefined) {
+            foundItem.quantity -= material.quantity;
+          } else if (foundStatus !== undefined) {
+            foundStatus.number -= material.quantity;
+          }
         }, this);
         
         if (inventoryItem !== undefined) {
-          inventoryItem.quantity++;
+          inventoryItem.quantity += currentItem.quantity;
         } else {
-          this.inventory.push(currentItem);
+          this.inventory.push({ id: currentItem.id, quantity: 1, spriteKey: currentItem.spriteKey });
         }
+        this.saveData();
       }
     }
   }
