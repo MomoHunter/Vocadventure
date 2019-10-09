@@ -61,7 +61,8 @@ const languages = {
     large: "Groß",
     settingsButton1: "Anwenden",
     settingsButton2: "Zurück",
-    empty: "Leer"
+    empty: "Leer",
+    clearCache: "Cache leeren"
   },
   "English": {
     statusLeft: "Points",
@@ -125,6 +126,7 @@ const languages = {
     large: "Large",
     settingsButton1: "Apply",
     settingsButton2: "Back",
-    empty: "Empty"
+    empty: "Empty",
+    clearCache: "Clear Cache"
   }
 };

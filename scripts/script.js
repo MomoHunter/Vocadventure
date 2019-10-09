@@ -221,6 +221,9 @@ var settings = new Vue({
       document.getElementById('bulmaCSS').href = this.designs[this.design].link;
       this.size = document.getElementById('sizeSelection').value;
       this.saveData();
+    },
+    clearCache: function () {
+      window.localStorage.removeItem("globalDict");
     }
   }
 });
