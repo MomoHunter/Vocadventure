@@ -224,6 +224,7 @@ var settings = new Vue({
     },
     clearCache: function () {
       window.localStorage.removeItem("globalDict");
+      this.page = 'mainMenu';
     }
   }
 });
