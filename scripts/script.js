@@ -552,6 +552,13 @@ var details = new Vue({
     getClass: function(type) {
       return this.classes[type][this.size];
     },
+    getSpecialClass: function (own, needed) {
+      if (own >= needed) {
+        return 'is-success';
+      } else {
+        return 'is-danger';
+      }
+    },
     getOwn: function (id) {
       let quantity = 0;
       this.inventory.map(item => {
@@ -570,7 +577,6 @@ var details = new Vue({
       let currentItem = this.items[(this.currentShopPage - 1) * 4 + this.option];
       let costs = currentItem.costs;
       let canBuy = true;
-      console.log("test2");
       costs.map(material => {
         let foundItem = this.inventory.find(item => item.id === material.id);
         let foundStatus = this.scores.scores.find(status => status.id === material.id);
