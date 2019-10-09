@@ -546,6 +546,30 @@ var details = new Vue({
         }
       }, this);
       return quantity;
+    },
+    buyItem: function () {
+      let currentItem = this.items[(this.currentShopPage - 1) * 4 + this.option]
+      let costs = currentItem.costs;
+      let canBuy = true;
+      costs.map(material => {
+        if (material.quantity > this.inventory.find(item => item.id === material.id).quantity) {
+          canBuy = false;
+          break;
+        }
+      }, this);
+      
+      if (canBuy) {
+        let inventoryItem = this.inventory.find(item => item.id === currentItem.id);
+        costs.map(material => {
+          this.inventory.find(item => item.id === material.id).quantity -= material.quantity;
+        }, this);
+        
+        if (inventoryItem !== undefined) {
+          inventoryItem.quantity++;
+        } else {
+          this.inventory.push(currentItem);
+        }
+      }
     }
   }
 });
