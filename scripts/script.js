@@ -132,7 +132,7 @@ function GlobalDict() {
     scores: [
       { id: 'statusLeft', number: 0 },
       { id: 'statusMiddle', number: 0 },
-      { id: 'statusRight', number: 700 }
+      { id: 'statusRight', number: 0 }
     ]
   };
   this.saveData = function() {
@@ -147,11 +147,21 @@ function GlobalDict() {
   this.loadData = function() {
     let data = JSON.parse(window.localStorage.getItem('globalDict'));
     if (data) {
-      this.lang = data.lang;
-      this.design = data.design;
-      this.size = data.size;
-      this.scores = data.scores;
-      this.inventory = data.inventory;
+      if (data.lang) {
+        this.lang = data.lang;
+      }
+      if (data.design) {
+        this.design = data.design;
+      }
+      if (data.size) {
+        this.size = data.size;
+      }
+      if (data.scores) {
+        this.scores = data.scores;
+      }
+      if (data.inventory) {
+        this.inventory = data.inventory;
+      }
       document.getElementById('bulmaCSS').href = this.designs[this.design].link;
     }
   }
@@ -222,8 +232,9 @@ var settings = new Vue({
       this.size = document.getElementById('sizeSelection').value;
       this.saveData();
     },
-    clearCache: function () {
+    clearData: function () {
       window.localStorage.removeItem("globalDict");
+      this = new GlobalDict();
       this.page = 'mainMenu';
     }
   }
