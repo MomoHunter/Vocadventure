@@ -131,6 +131,6 @@ const languages = {
     empty: "Empty",
     confirmButton1: "Back",
     confirmButton2: "Confirm",
-    clearCache: "Clear Data"
+    clearData: "Clear Data"
   }
 };
