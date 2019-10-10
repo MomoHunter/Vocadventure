@@ -62,7 +62,7 @@ const languages = {
     settingsButton1: "Anwenden",
     settingsButton2: "Zurück",
     empty: "Leer",
-    clearCache: "Cache leeren"
+    clearData: "Daten löschen"
   },
   "English": {
     statusLeft: "Points",
@@ -127,6 +127,6 @@ const languages = {
     settingsButton1: "Apply",
     settingsButton2: "Back",
     empty: "Empty",
-    clearCache: "Clear Cache"
+    clearCache: "Clear Data"
   }
 };
