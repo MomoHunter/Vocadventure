@@ -77,6 +77,7 @@ function GlobalDict() {
   this.page = 'mainMenu';
   this.option = '';
   this.difficulty = '';
+  this.showConfirmModal = false;
   this.customSelected = false;
   this.items = [
     { id: 'wood', spriteKey: 'img/sprites/Holz.png', quantity: 1, costs: [
@@ -245,10 +246,8 @@ var settings = new Vue({
       this.size = document.getElementById('sizeSelection').value;
       this.saveData();
     },
-    clearData: function () {
-      window.localStorage.removeItem("globalDict");
-      this.resetData();
-      this.page = 'mainMenu';
+    showModal: function () {
+      this.showConfirmModal = true;
     }
   }
 });
@@ -640,6 +639,37 @@ var details = new Vue({
         }
         this.saveData();
       }
+    }
+  }
+});
+
+var modal = new Vue({
+  el: '#modal',
+  data: gD,
+  computed: {
+    showRUSURE: function () {
+      if (this.showConfirmModal) {
+        return 'is-active';
+      } else {
+        return '';
+      }
+    }
+  },
+  methods: {
+    getClass: function(type) {
+      return this.classes[type][this.size];
+    },
+    clearData: function () {
+      window.localStorage.removeItem("globalDict");
+      this.resetData();
+      this.showConfirmModal = false;
+      this.page = 'mainMenu';
+    },
+    getText: function (id) {
+      return this.languages[this.lang][id];
+    },
+    showModal: function () {
+      this.showConfirmModal = false;
     }
   }
 });

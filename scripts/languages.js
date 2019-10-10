@@ -62,6 +62,8 @@ const languages = {
     settingsButton1: "Anwenden",
     settingsButton2: "Zurück",
     empty: "Leer",
+    confirmButton1: "Zurück",
+    confirmButton2: "Bestätigen",
     clearData: "Daten löschen"
   },
   "English": {
@@ -127,6 +129,8 @@ const languages = {
     settingsButton1: "Apply",
     settingsButton2: "Back",
     empty: "Empty",
+    confirmButton1: "Back",
+    confirmButton2: "Confirm",
     clearCache: "Clear Data"
   }
 };
