@@ -221,37 +221,6 @@ var mainMenu = new Vue({
   }
 });
 
-var settings = new Vue({
-  el: '#settings',
-  data: gD,
-  computed: {
-    isSeen: function () {
-      return this.page === 'settings';
-    }
-  },
-  methods: {
-    getText: function (id) {
-      return this.languages[this.lang][id];
-    },
-    getClass: function(type) {
-      return this.classes[type][this.size];
-    },
-    navigateTo: function (id) {
-      this.page = id;
-    },
-    applySettings: function () {
-      this.lang = document.getElementById('languageSelection').value;
-      this.design = document.getElementById('themeSelection').value;
-      document.getElementById('bulmaCSS').href = this.designs[this.design].link;
-      this.size = document.getElementById('sizeSelection').value;
-      this.saveData();
-    },
-    showModal: function () {
-      this.showConfirmModal = true;
-    }
-  }
-});
-
 var selection = new Vue({
   el: '#selection',
   data: gD,
@@ -639,6 +608,37 @@ var details = new Vue({
         }
         this.saveData();
       }
+    }
+  }
+});
+
+var settings = new Vue({
+  el: '#settings',
+  data: gD,
+  computed: {
+    isSeen: function () {
+      return this.page === 'settings';
+    }
+  },
+  methods: {
+    getText: function (id) {
+      return this.languages[this.lang][id];
+    },
+    getClass: function(type) {
+      return this.classes[type][this.size];
+    },
+    navigateTo: function (id) {
+      this.page = id;
+    },
+    applySettings: function () {
+      this.lang = document.getElementById('languageSelection').value;
+      this.design = document.getElementById('themeSelection').value;
+      document.getElementById('bulmaCSS').href = this.designs[this.design].link;
+      this.size = document.getElementById('sizeSelection').value;
+      this.saveData();
+    },
+    showModal: function () {
+      this.showConfirmModal = true;
     }
   }
 });
