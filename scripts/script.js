@@ -1,7 +1,7 @@
 function GlobalDict() {
-  this.lang = "Deutsch";
+  this.lang = 'Deutsch';
   this.languages = languages;
-  this.design = "design1";
+  this.design = 'design1';
   this.designs = {
     "design1": {
       link: "css/bulmaswatch.darkly.min.css"
@@ -164,7 +164,20 @@ function GlobalDict() {
       }
       document.getElementById('bulmaCSS').href = this.designs[this.design].link;
     }
-  }
+  };
+  this.resetData = function() {
+    this.lang = 'Deutsch';
+    this.design = 'design1';
+    this.size = 'normal';
+    this.scores = { 
+      scores: [
+        { id: 'statusLeft', number: 0 },
+        { id: 'statusMiddle', number: 0 },
+        { id: 'statusRight', number: 0 }
+      ]
+    };
+    this.inventory = [];
+  };
 }
 
 let viewport = document.querySelector("[name~=viewport][content]");
@@ -234,7 +247,7 @@ var settings = new Vue({
     },
     clearData: function () {
       window.localStorage.removeItem("globalDict");
-      this = new GlobalDict();
+      this.resetData();
       this.page = 'mainMenu';
     }
   }
