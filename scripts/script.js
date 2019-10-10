@@ -178,6 +178,7 @@ function GlobalDict() {
       ]
     };
     this.inventory = [];
+    document.getElementById('bulmaCSS').href = this.designs[this.design].link;
   };
 }
 
