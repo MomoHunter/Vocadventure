@@ -15,12 +15,22 @@ h2 {
     height: calc(100% - 76px);
 }
 
+#adventure {
+    height: calc(100% - 76px);
+}
+
 #pageButton:hover {
 
 }
 
 #status {
     margin-top: 5px;
+}
+
+#adventureCanvas {
+    width: 100%;
+    height: 300px;
+    border:1px solid orange;
 }
 
 .page {

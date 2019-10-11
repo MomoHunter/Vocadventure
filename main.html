@@ -338,6 +338,103 @@
         </div>
       </div>
     </div>
+    <div id="adventure" class="page" v-show="isSeen">
+      <div class="customColumns justifySpaceBetween columns is-mobile maxHeight">
+        <div class="column is-full">
+          <section class="hero">
+            <div class="hero-body">
+              <div class="container">
+                <h1 class="title" v-bind:class="getClass('title')">
+                  {{ getText(option) }}
+                </h1>
+              </div>
+            </div>
+            <div class="hero-foot">
+              <div class="field is-flex justifyContent">
+                <div class="control leftRightMargin">
+                  <div class="tags has-addons">
+                    <span class="tag" v-bind:class="getClass('tag')">{{ getText('difficulty') }}</span>
+                    <span class="tag" v-bind:class="getClass('tag',true)">
+                      {{ getText('difficultyTag') }}
+                    </span>
+                  </div>
+                </div>
+                <div class="control leftRightMargin">
+                  <div class="tags has-addons">
+                    <span class="tag" v-bind:class="getClass('tag')">{{ getText('words') }}</span>
+                    <span class="tag is-primary" v-bind:class="getClass('tag')">
+                      {{ getText('wordTag') }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <canvas id="adventureCanvas" width="600" height="300"></canvas>
+        </div>
+        <div class="column is-10">
+          <div class="control">
+            <input class="input is-rounded" type="text" v-bind:class="getClass('input')"
+                   v-bind:placeholder="getText('romajiLabel')">
+          </div>
+        </div>
+        <div class="column is-10">
+          <div class="control">
+            <input class="input is-rounded" type="text" v-bind:class="getClass('input')"
+                   v-bind:placeholder="getText('kanaLabel')" v-on:click="showSpecialKeyboard()" readonly>
+          </div>
+        </div>
+        <div class="column is-10">
+          <div class="columns is-mobile is-centered">
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-danger is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+                   v-on:click="navigateTo('selection')">
+                  <span class="icon">
+                    <i class="fas fa-times"></i>
+                  </span>
+                  <span>{{ getText('adventureButton1') }}</span>
+                </a>
+              </div>
+            </div>
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-primary is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+                   v-on:click="showItems()">
+                  <span class="icon">
+                    <i class="fas fa-briefcase"></i>
+                  </span>
+                  <span>{{ getText('adventureButton2') }}</span>
+                </a>
+              </div>
+            </div>
+            <div class="column">
+              <div class="buttons is-centered">
+                <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+                   v-show="!showResults" v-on:click="">
+                  <span class="icon">
+                    <i class="fas fa-check"></i>
+                  </span>
+                  <span>{{ getText('adventureButton3') }}</span>
+                </a>
+                <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+                   v-show="showResults" v-on:click="">
+                  <span class="icon">
+                    <i class="fas fa-check"></i>
+                  </span>
+                  <span>{{ getText('adventureButton4') }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-10">
+          <progress class="progress is-success" v-bind:class="getClass('progress')" v-bind:value="getProgress" max="1">
+          </progress>
+          <p class="content centerText" v-bind:class="getClass('content')">{{ getProgressText }}</p>
+        </div>
+      </div>
+    </div>
     <div id="shop" class="page" v-show="isSeen">
       <div class="customColumns justifySpaceBetween columns is-mobile maxHeight">
         <div class="column is-full">
@@ -447,7 +544,7 @@
                 <a class="button is-primary is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
                    v-on:click="navigateTo('shop','inventory')">
                   <span class="icon">
-                    <i class="fas fa-check"></i>
+                    <i class="fas fa-briefcase"></i>
                   </span>
                   <span>{{ getText('shopButton3') }}</span>
                 </a>
@@ -614,7 +711,7 @@
         </div>
       </div>
     </div>
-    <div id="modal" class="modal" v-bind:class="showRUSURE">
+    <div id="modal" class="modal is-active" v-if="showRUSURE">
       <div class="modal-background"></div>
       <div class="modal-content" style="overflow: hidden;">
         <p class="image is-4by3">
@@ -645,7 +742,7 @@
           </div>
         </div>
       </div>
-      <button class="modal-close" v-bind:class="getClass('button')"></button>
+      <button class="modal-close" v-bind:class="getClass('button')" v-on:click="showModal()"></button>
     </div>
     <script src="scripts/languages.js"></script>
     <script src="scripts/vocabs.js"></script>

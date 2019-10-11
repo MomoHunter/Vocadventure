@@ -1,4 +1,6 @@
 function GlobalDict() {
+  this.canvas = document.getElementById('adventureCanvas');
+  this.context = this.canvas.getContext('2d');
   this.lang = 'Deutsch';
   this.languages = languages;
   this.design = 'design1';
@@ -77,7 +79,8 @@ function GlobalDict() {
   this.page = 'mainMenu';
   this.option = '';
   this.difficulty = '';
-  this.showConfirmModal = false;
+  this.showResults = false;
+  this.showRUSURE = false;
   this.customSelected = false;
   this.items = [
     { id: 'wood', spriteKey: 'img/sprites/Holz.png', quantity: 1, costs: [
@@ -405,6 +408,61 @@ var training = new Vue({
   }
 });
 
+var adventure = new Vue({
+  el: '#adventure',
+  data: gD,
+  computed: {
+    isSeen: function () {
+      return this.page === 'adventure';
+    },
+    finishedAdventure: function () {
+      return this.currentWord < this.vocabWords.length;
+    },
+    getProgress: function () {
+      return this.currentWord / this.vocabWords.length;
+    },
+    getProgressText: function () {
+      return this.currentWord + " / " + this.vocabWords.length;
+    }
+  },
+  methods: {
+    getText: function (id) {
+      switch (id) {
+        case 'difficultyTag':
+          return this.languages[this.lang]['difficulty' + this.difficulty];
+        case 'wordTag':
+          return this.vocabWords.length;
+        default:
+          return this.languages[this.lang][id];
+      }
+    },
+    navigateTo: function (id) {
+      if (id === 'mainMenu') {
+        selection.selectDifficulty(this.difficulty);
+        selection.selectCount(this.wordCount);
+        document.getElementById('countCustom').value = '';
+        this.option = '';
+      }
+      this.currentWord = 0;
+      this.page = id;
+    },
+    getClass: function(type, difficultyTag = false) {
+      if (difficultyTag) {
+        let classes = ['is-success', 'is-warning', 'is-danger'];
+        return this.classes[type][this.size] + " " + classes[this.difficulty - 1];
+      } else {
+        return this.classes[type][this.size];
+      }
+    },
+    showItems: function () {
+
+    },
+    showSpecialKeyboard: function () {
+
+    }
+  }
+});
+
 var shop = new Vue({
   el: '#shop',
   data: gD,
@@ -639,7 +697,7 @@ var settings = new Vue({
       this.saveData();
     },
     showModal: function () {
-      this.showConfirmModal = true;
+      this.showRUSURE = true;
     }
   }
 });
@@ -647,15 +705,6 @@ var settings = new Vue({
 var modal = new Vue({
   el: '#modal',
   data: gD,
-  computed: {
-    showRUSURE: function () {
-      if (this.showConfirmModal) {
-        return 'is-active';
-      } else {
-        return '';
-      }
-    }
-  },
   methods: {
     getClass: function(type) {
       return this.classes[type][this.size];
@@ -663,14 +712,14 @@ var modal = new Vue({
     clearData: function () {
       window.localStorage.removeItem("globalDict");
       this.resetData();
-      this.showConfirmModal = false;
+      this.showRUSURE = false;
       this.page = 'mainMenu';
     },
     getText: function (id) {
       return this.languages[this.lang][id];
     },
     showModal: function () {
-      this.showConfirmModal = false;
+      this.showRUSURE = false;
     }
   }
 });
