@@ -12,16 +12,20 @@ h2 {
 }
 
 #training {
-    height: calc(100% - 71px);
+    height: calc(100% - 76px);
 }
 
 #pageButton:hover {
 
 }
 
+#status {
+    margin-top: 5px;
+}
+
 .page {
     width: 100%;
-    height: calc(100% - 142px);
+    height: calc(100% - 147px);
 }
 
 .topBottomMargin {
