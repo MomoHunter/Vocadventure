@@ -94,6 +94,7 @@ function GlobalDict() {
   this.showResults = false;
   this.romajiInput = '';
   this.kanaInput = '';
+  this.showStatistics = false;
   this.showRUSURE = false;
   this.customSelected = false;
   this.items = [
@@ -437,8 +438,32 @@ var adventure = new Vue({
       }
       return false;
     },
+    kanaIsCorrect: function () {
+      if (this.vocabWords.length !== 0) {
+        if (this.kanaInput === this.vocabWords[this.currentWord].kana) {
+          return true;
+        }
+      }
+      return false;
+    },
+    getRomaji: function () {
+      if (this.vocabWords.length !== 0) {
+        if (this.currentWord < this.vocabWords.length) {
+          return this.vocabWords[this.currentWord].romaji;
+        }
+      }
+      return '';
+    },
+    getKana: function () {
+      if (this.vocabWords.length !== 0) {
+        if (this.currentWord < this.vocabWords.length) {
+          return this.vocabWords[this.currentWord].kana;
+        }
+      }
+      return '';
+    },
     finishedAdventure: function () {
-      return this.currentWord < this.vocabWords.length;
+      return this.currentWord === this.vocabWords.length - 1;
     },
     getProgress: function () {
       return this.currentWord / this.vocabWords.length;
@@ -466,6 +491,7 @@ var adventure = new Vue({
         this.option = '';
       }
       this.currentWord = 0;
+      this.showResults = false;
       this.page = id;
     },
     getClass: function (type, difficultyTag = false) {
@@ -484,12 +510,34 @@ var adventure = new Vue({
     },
     confirmInput: function () {
       this.showResults = true;
+      let status = this.scores.scores.find(item => item.id === 'statusRight');
+      if (this.romajiIsCorrect) {
+        status.number += 1;
+      }
+      if (this.kanaIsCorrect) {
+        switch (this.vocabWords[this.currentWord].difficulty) {
+          case '1':
+            status.number += 1;
+            break;
+          case '2':
+            status.number += 2;
+            break;
+          case '3':
+            status.number += 3;
+            break;
+          default:
+            status.number += 1;
+        }
+      }
     },
     nextWord: function () {
       this.currentWord++;
       this.showResults = false;
       this.romajiInput = '';
       this.kanaInput = '';
+    },
+    showStats: function () {
+      this.showStatistics = true;
     }
   }
 });

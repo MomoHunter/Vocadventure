@@ -372,7 +372,7 @@
           </section>
           <canvas id="adventureCanvas" width="600" height="300"></canvas>
         </div>
-        <div class="column is-full">
+        <div class="customColumn is-full flex-grow">
           <div class="columns is-mobile is-centered is-vcentered is-gapless">
             <div class="column is-1 centerText" v-show="showResults">
               <span class="icon has-text-success" v-bind:class="getClass('icon')" v-show="romajiIsCorrect">
@@ -384,8 +384,8 @@
             </div>
             <div class="column is-10">
               <div class="control">
-                <input class="input is-rounded is-success" type="text" v-bind:class="getClass('input')"
-                       v-bind:placeholder="getText('romajiLabel')" v-model="romajiInput">
+                <input class="input is-rounded" type="text" v-bind:class="getClass('input')"
+                       v-bind:placeholder="getText('romajiLabel')" v-model="romajiInput" v-bind:readonly="showResults">
               </div>
             </div>
             <div class="column is-1 centerText" v-show="showResults">
@@ -394,12 +394,43 @@
               </span>
             </div>
           </div>
+          <div class="columns is-mobile is-centered" v-show="showResults">
+            <div class="column is-9">
+              <div class="content" v-bind:class="getClass('content')">
+                {{ getText('solution') }} {{ getRomaji }}
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="column is-10">
-          <div class="control">
-            <input class="input is-rounded" type="text" v-bind:class="getClass('input')"
-                   v-bind:placeholder="getText('kanaLabel')" v-on:click="showSpecialKeyboard()"
-                   v-bind:value="kanaInput" readonly>
+        <div class="customColumn is-full flex-grow">
+          <div class="columns is-mobile is-centered is-vcentered is-gapless">
+            <div class="column is-1 centerText" v-show="showResults">
+              <span class="icon has-text-success" v-bind:class="getClass('icon')" v-show="kanaIsCorrect">
+                <i class="fas fa-check" v-bind:class="getClass('fas')"></i>
+              </span>
+              <span class="icon has-text-danger" v-bind:class="getClass('icon')" v-show="!kanaIsCorrect">
+                <i class="fas fa-times" v-bind:class="getClass('fas')"></i>
+              </span>
+            </div>
+            <div class="column is-10">
+              <div class="control">
+                <input class="input is-rounded" type="text" v-bind:class="getClass('input')"
+                       v-bind:placeholder="getText('kanaLabel')" v-on:click="showSpecialKeyboard()"
+                       v-model="kanaInput" readonly>
+              </div>
+            </div>
+            <div class="column is-1 centerText" v-show="showResults">
+              <span class="icon has-text-warning" v-bind:class="getClass('icon')" v-show="kanaIsCorrect">
+                <i class="fas fa-coins" v-bind:class="getClass('fas')"></i>
+              </span>
+            </div>
+          </div>
+          <div class="columns is-mobile is-centered" v-show="showResults">
+            <div class="column is-9">
+              <div class="content" v-bind:class="getClass('content')">
+                {{ getText('solution') }} {{ getKana }}
+              </div>
+            </div>
           </div>
         </div>
         <div class="column is-10">
@@ -436,11 +467,18 @@
                   <span>{{ getText('adventureButton3') }}</span>
                 </a>
                 <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
-                   v-show="showResults" v-on:click="nextWord()">
+                   v-show="showResults && !finishedAdventure" v-on:click="nextWord()">
                   <span class="icon">
                     <i class="fas fa-arrow-right"></i>
                   </span>
                   <span>{{ getText('adventureButton4') }}</span>
+                </a>
+                <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+                   v-show="showResults && finishedAdventure" v-on:click="showStats()">
+                  <span class="icon">
+                    <i class="fas fa-arrow-right"></i>
+                  </span>
+                  <span>{{ getText('adventureButton5') }}</span>
                 </a>
               </div>
             </div>

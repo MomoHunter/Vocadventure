@@ -27,10 +27,12 @@ const languages = {
     trainingButton3: "Nächste",
     trainingButton4: "Menü",
     trainingFinished: "Jetzt solltest du ein Abenteuer starten!",
+    solution: "Lösung:",
     adventureButton1: "Stop",
     adventureButton2: "Gegenstände",
     adventureButton3: "Bestätigen",
     adventureButton4: "Nächste",
+    adventureButton5: "Ende",
     shop: "Item Laden",
     wood: "Holz",
     stone: "Stein",
@@ -98,6 +100,12 @@ const languages = {
     trainingButton3: "Next",
     trainingButton4: "Menu",
     trainingFinished: "Now you should start an adventure!",
+    solution: "Solution:",
+    adventureButton1: "Stop",
+    adventureButton2: "Items",
+    adventureButton3: "Confirm",
+    adventureButton4: "Next",
+    adventureButton5: "End",
     shop: "Item Shop",
     wood: "Wood",
     stone: "Stone",
@@ -135,6 +143,6 @@ const languages = {
     empty: "Empty",
     confirmButton1: "Back",
     confirmButton2: "Confirm",
-    clearData: "Clear Data"
+    clearData: "Delete Data"
   }
 };

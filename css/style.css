@@ -129,6 +129,10 @@ h2 {
     flex-direction: column;
  }
 
+.customColumn.is-full {
+    width: 100%;
+}
+
 .customColumn.is-10 {
     width: calc(100% / 1.2);
 }
