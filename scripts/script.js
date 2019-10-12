@@ -50,6 +50,18 @@ function GlobalDict() {
       medium: 'is-5',
       large: 'is-4'
     },
+    icon: {
+      small: 'is-small',
+      normal: '',
+      medium: 'is-medium',
+      large: 'is-large'
+    },
+    fas: {
+      small: '',
+      normal: '',
+      medium: 'fa-lg',
+      large: 'fa-2x'
+    },
     tag: {
       small: 'is-normal',
       normal: 'is-normal',
@@ -80,6 +92,8 @@ function GlobalDict() {
   this.option = '';
   this.difficulty = '';
   this.showResults = false;
+  this.romajiInput = '';
+  this.kanaInput = '';
   this.showRUSURE = false;
   this.customSelected = false;
   this.items = [
@@ -415,6 +429,14 @@ var adventure = new Vue({
     isSeen: function () {
       return this.page === 'adventure';
     },
+    romajiIsCorrect: function () {
+      if (this.vocabWords.length !== 0) {
+        if (this.romajiInput === this.vocabWords[this.currentWord].romaji) {
+          return true;
+        }
+      }
+      return false;
+    },
     finishedAdventure: function () {
       return this.currentWord < this.vocabWords.length;
     },
@@ -446,7 +468,7 @@ var adventure = new Vue({
       this.currentWord = 0;
       this.page = id;
     },
-    getClass: function(type, difficultyTag = false) {
+    getClass: function (type, difficultyTag = false) {
       if (difficultyTag) {
         let classes = ['is-success', 'is-warning', 'is-danger'];
         return this.classes[type][this.size] + " " + classes[this.difficulty - 1];
@@ -459,6 +481,15 @@ var adventure = new Vue({
     },
     showSpecialKeyboard: function () {
 
+    },
+    confirmInput: function () {
+      this.showResults = true;
+    },
+    nextWord: function () {
+      this.currentWord++;
+      this.showResults = false;
+      this.romajiInput = '';
+      this.kanaInput = '';
     }
   }
 });
