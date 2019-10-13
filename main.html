@@ -433,7 +433,7 @@
             </div>
           </div>
         </div>
-        <div class="column is-10">
+        <div class="column is-10" v-show="keyboardHidden">
           <div class="columns is-mobile is-centered">
             <div class="column">
               <div class="buttons is-centered">
@@ -484,10 +484,53 @@
             </div>
           </div>
         </div>
-        <div class="column is-10">
+        <div class="column is-10" v-show="keyboardHidden">
           <progress class="progress is-success" v-bind:class="getClass('progress')" v-bind:value="getProgress" max="1">
           </progress>
           <p class="content centerText" v-bind:class="getClass('content')">{{ getProgressText }}</p>
+        </div>
+        <div class="column is-full" v-show="!keyboardHidden">
+          <div class="content">
+            <div class="tabs is-boxed is-centered" v-bind:class="getClass('tabs')">
+              <ul class="tabsMargin">
+                <li v-bind:class="getActiveTab('hiragana')">
+                  <a v-on:click="setActiveTab('hiragana')">
+                    {{ getText('hiragana') }}
+                  </a>
+                </li>
+                <li v-bind:class="getActiveTab('katakana')">
+                  <a v-on:click="setActiveTab('katakana')">
+                    {{ getText('katakana') }}
+                  </a>
+                </li>
+                <li v-bind:class="getActiveTab('kanji')">
+                  <a v-on:click="setActiveTab('kanji')">
+                    {{ getText('kanji') }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div id="hiragana">
+              <div class="buttons has-addons-fullwidth" v-for="">
+                <div class="button">1</div>
+                <div class="button">2</div>
+                <div class="button">3</div>
+                <div class="button">4</div>
+                <div class="button">5</div>
+                <div class="button">6</div>
+                <div class="button">7</div>
+                <div class="button">8</div>
+                <div class="button">9</div>
+                <div class="button">10</div>
+              </div>
+            </div>
+            <div id="katakana">
+
+            </div>
+            <div id="kanji">
+
+            </div>
+          </div>
         </div>
       </div>
     </div>

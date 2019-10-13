@@ -85,6 +85,12 @@ function GlobalDict() {
       normal: '',
       medium: 'is-medium',
       large: 'is-large'
+    },
+    tabs: {
+      small: 'is-small',
+      normal: '',
+      medium: 'is-medium',
+      large: 'is-large'
     }
   };
   this.vocabs = vocabs;
@@ -95,6 +101,8 @@ function GlobalDict() {
   this.romajiInput = '';
   this.kanaInput = '';
   this.showStatistics = false;
+  this.keyboardHidden = true;
+  this.activeTab = 'hiragana';
   this.showRUSURE = false;
   this.customSelected = false;
   this.items = [
@@ -506,7 +514,17 @@ var adventure = new Vue({
 
     },
     showSpecialKeyboard: function () {
-
+      this.keyboardHidden = false;
+    },
+    setActiveTab: function (id) {
+      this.activeTab = id;
+    },
+    getActiveTab: function (id) {
+      if (id === this.activeTab) {
+        return 'is-active';
+      } else {
+        return '';
+      }
     },
     confirmInput: function () {
       this.showResults = true;
