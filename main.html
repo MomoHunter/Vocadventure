@@ -372,7 +372,7 @@
           </section>
           <canvas id="adventureCanvas" width="600" height="300"></canvas>
         </div>
-        <div class="customColumn is-full flex-grow">
+        <div class="customColumn is-full">
           <div class="columns is-mobile is-centered is-vcentered is-gapless">
             <div class="column is-1 centerText" v-show="showResults">
               <span class="icon has-text-success" v-bind:class="getClass('icon')" v-show="romajiIsCorrect">
@@ -383,9 +383,14 @@
               </span>
             </div>
             <div class="column is-10">
-              <div class="control">
-                <input class="input is-rounded" type="text" v-bind:class="getClass('input')"
-                       v-bind:placeholder="getText('romajiLabel')" v-model="romajiInput" v-bind:readonly="showResults">
+              <div class="field">
+                <div class="control">
+                  <input class="input is-rounded" type="text" v-bind:class="getInputClass('romaji')"
+                         v-bind:placeholder="getText('romajiLabel')" v-model="romajiInput" v-bind:readonly="showResults">
+                </div>
+                <p class="help" v-bind:class="getHelpClass('romaji')" v-show="showResults">
+                  {{ getHelpText('romaji') }}
+                </p>
               </div>
             </div>
             <div class="column is-1 centerText" v-show="showResults">
@@ -394,15 +399,8 @@
               </span>
             </div>
           </div>
-          <div class="columns is-mobile is-centered" v-show="showResults">
-            <div class="column is-9">
-              <div class="content" v-bind:class="getClass('content')">
-                {{ getText('solution') }} {{ getRomaji }}
-              </div>
-            </div>
-          </div>
         </div>
-        <div class="customColumn is-full flex-grow">
+        <div class="customColumn is-full">
           <div class="columns is-mobile is-centered is-vcentered is-gapless">
             <div class="column is-1 centerText" v-show="showResults">
               <span class="icon has-text-success" v-bind:class="getClass('icon')" v-show="kanaIsCorrect">
@@ -413,23 +411,21 @@
               </span>
             </div>
             <div class="column is-10">
-              <div class="control">
-                <input class="input is-rounded" type="text" v-bind:class="getClass('input')"
-                       v-bind:placeholder="getText('kanaLabel')" v-on:click="showSpecialKeyboard()"
-                       v-model="kanaInput" readonly>
+              <div class="field">
+                <div class="control">
+                  <input class="input is-rounded" type="text" v-bind:class="getInputClass('kana')"
+                         v-bind:placeholder="getText('kanaLabel')" v-on:click="showSpecialKeyboard()"
+                         v-model="kanaInput" readonly>
+                </div>
+                <p class="help" v-bind:class="getHelpClass('kana')" v-show="showResults">
+                  {{ getHelpText('kana') }}
+                </p>
               </div>
             </div>
             <div class="column is-1 centerText" v-show="showResults">
               <span class="icon has-text-warning" v-bind:class="getClass('icon')" v-show="kanaIsCorrect">
                 <i class="fas fa-coins" v-bind:class="getClass('fas')"></i>
               </span>
-            </div>
-          </div>
-          <div class="columns is-mobile is-centered" v-show="showResults">
-            <div class="column is-9">
-              <div class="content" v-bind:class="getClass('content')">
-                {{ getText('solution') }} {{ getKana }}
-              </div>
             </div>
           </div>
         </div>

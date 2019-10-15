@@ -91,6 +91,12 @@ function GlobalDict() {
       normal: '',
       medium: 'is-medium',
       large: 'is-large'
+    },
+    help: {
+      small: 'is-small',
+      normal: '',
+      medium: 'is-medium',
+      large: 'is-large'
     }
   };
   this.vocabs = vocabs;
@@ -508,6 +514,41 @@ var adventure = new Vue({
         return this.classes[type][this.size] + " " + classes[this.difficulty - 1];
       } else {
         return this.classes[type][this.size];
+      }
+    },
+    getInputClass: function (inputName) {
+      if (inputName === 'romaji') {
+        if (!this.showResults) {
+          return this.classes['input'][this.size];
+        } else if (this.romajiIsCorrect) {
+          return 'is-success ' + this.classes['input'][this.size];
+        } else {
+          return 'is-danger ' + this.classes['input'][this.size];
+        }
+      } else {
+        if (!this.showResults) {
+          return this.classes['input'][this.size];
+        } else if (this.kanaIsCorrect) {
+          return 'is-success ' + this.classes['input'][this.size];
+        } else {
+          return 'is-danger ' + this.classes['input'][this.size];
+        }
+      }
+    },
+    getHelpClass: function (helpName) {
+      if ((helpName === 'romaji' && this.romajiIsCorrect) ||
+          (helpName === 'kana' && this.kanaIsCorrect)) {
+        return 'is-success ' + this.classes['help'][this.size];
+      } else {
+        return 'is-danger ' + this.classes['help'][this.size];
+      }
+    },
+    getHelpText: function (helpName) {
+      if ((helpName === 'romaji' && this.romajiIsCorrect) ||
+        (helpName === 'kana' && this.kanaIsCorrect)) {
+        return this.languages[this.lang]['correct'];
+      } else {
+        return this.languages[this.lang]['wrong'];
       }
     },
     showItems: function () {

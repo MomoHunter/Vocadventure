@@ -168,3 +168,15 @@ h2 {
     bottom: 0;
     right: 0;
 }
+
+.help.is-small {
+    font-size: 11px;
+}
+
+.help.is-medium {
+    font-size: 14.5px;
+}
+
+.help.is-large {
+    font-size: 16.25px;
+}
