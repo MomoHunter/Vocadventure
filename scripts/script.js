@@ -99,6 +99,7 @@ function GlobalDict() {
       large: 'is-large'
     }
   };
+  this.signs = signs;
   this.vocabs = vocabs;
   this.page = 'mainMenu';
   this.option = '';
@@ -544,7 +545,9 @@ var adventure = new Vue({
       }
     },
     getHelpText: function (helpName) {
-      if ((helpName === 'romaji' && this.romajiIsCorrect) ||
+      if (!this.showResults) {
+        return ' ';
+      } else if ((helpName === 'romaji' && this.romajiIsCorrect) ||
         (helpName === 'kana' && this.kanaIsCorrect)) {
         return this.languages[this.lang]['correct'];
       } else {
@@ -555,7 +558,7 @@ var adventure = new Vue({
 
     },
     showSpecialKeyboard: function () {
-      this.keyboardHidden = false;
+      this.keyboardHidden = !this.keyboardHidden;
     },
     setActiveTab: function (id) {
       this.activeTab = id;
@@ -566,6 +569,9 @@ var adventure = new Vue({
       } else {
         return '';
       }
+    },
+    showTab: function (id) {
+      return this.activeTab === id;
     },
     confirmInput: function () {
       this.showResults = true;

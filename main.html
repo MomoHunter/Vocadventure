@@ -388,7 +388,7 @@
                   <input class="input is-rounded" type="text" v-bind:class="getInputClass('romaji')"
                          v-bind:placeholder="getText('romajiLabel')" v-model="romajiInput" v-bind:readonly="showResults">
                 </div>
-                <p class="help" v-bind:class="getHelpClass('romaji')" v-show="showResults">
+                <p class="help" v-bind:class="getHelpClass('romaji')">
                   {{ getHelpText('romaji') }}
                 </p>
               </div>
@@ -417,7 +417,7 @@
                          v-bind:placeholder="getText('kanaLabel')" v-on:click="showSpecialKeyboard()"
                          v-model="kanaInput" readonly>
                 </div>
-                <p class="help" v-bind:class="getHelpClass('kana')" v-show="showResults">
+                <p class="help" v-bind:class="getHelpClass('kana')">
                   {{ getHelpText('kana') }}
                 </p>
               </div>
@@ -504,26 +504,24 @@
                     {{ getText('kanji') }}
                   </a>
                 </li>
+                <li v-bind:class="getActiveTab('kanji')">
+                  <a v-on:click="setActiveTab('kanji')">
+                    {{ getText('kanji') }}
+                  </a>
+                </li>
               </ul>
             </div>
-            <div id="hiragana">
-              <div class="buttons has-addons-fullwidth" v-for="">
-                <div class="button">1</div>
-                <div class="button">2</div>
-                <div class="button">3</div>
-                <div class="button">4</div>
-                <div class="button">5</div>
-                <div class="button">6</div>
-                <div class="button">7</div>
-                <div class="button">8</div>
-                <div class="button">9</div>
-                <div class="button">10</div>
+            <div id="hiragana" v-show="showTab('hiragana')" style="max-height: 150px;overflow: scroll">
+              <div class="buttons has-addons is-centered" v-for="array in signs.hiragana">
+                <div class="button" v-for="element in array" v-bind:class="getClass('button')">{{ element[1] }}</div>
               </div>
             </div>
-            <div id="katakana">
-
+            <div id="katakana" v-show="showTab('katakana')">
+              <div class="buttons has-addons" v-for="array in signs.katakana">
+                <div class="button" v-for="element in array" v-bind:class="getClass('button')">{{ element[1] }}</div>
+              </div>
             </div>
-            <div id="kanji">
+            <div id="kanji" v-show="showTab('kanji')">
 
             </div>
           </div>
@@ -841,6 +839,7 @@
     </div>
     <script src="scripts/languages.js"></script>
     <script src="scripts/vocabs.js"></script>
+    <script src="scripts/signs.js"></script>
     <script src="scripts/script.js"></script>
   </body>
 </html>
