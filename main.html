@@ -8,7 +8,7 @@
     <title>
         Vocadventure
     </title>
-    <link id="bulmaCSS" rel="stylesheet" href="css/bulmaswatch.darkly.min.css">
+    <link id="bulmaCSS" rel="stylesheet" v-bind:href="getDesign">
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.4.95/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -93,23 +93,23 @@
           </section>
         </div>
         <div class="column is-10">
-          <div id="selectionDifficulty" class="buttons has-addons is-centered">
-            <a id="difficulty1" class="button is-success is-rounded is-outlined one-third"
-               v-bind:class="getClass('button')" v-on:click="selectDifficulty('1')">
+          <div class="buttons has-addons is-centered">
+            <a class="button is-success is-rounded one-third"
+               v-bind:class="getDifficultyClass('1')" v-on:click="selectDifficulty('1')">
               <span class="icon">
                 <span class="mdi mdi-speedometer-slow"></span>
               </span>
               <span>{{ getText('difficulty1') }}</span>
             </a>
-            <a id="difficulty2" class="button is-warning is-rounded is-outlined one-third"
-               v-bind:class="getClass('button')" v-on:click="selectDifficulty('2')">
+            <a class="button is-warning is-rounded one-third"
+               v-bind:class="getDifficultyClass('2')" v-on:click="selectDifficulty('2')">
               <span class="icon">
                 <span class="mdi mdi-speedometer-medium"></span>
               </span>
               <span>{{ getText('difficulty2') }}</span>
             </a>
-            <a id="difficulty3" class="button is-danger is-outlined is-rounded one-third"
-               v-bind:class="getClass('button')" v-on:click="selectDifficulty('3')">
+            <a class="button is-danger is-rounded one-third"
+               v-bind:class="getDifficultyClass('3')" v-on:click="selectDifficulty('3')">
               <span class="icon">
                 <span class="mdi mdi-speedometer"></span>
               </span>
@@ -121,24 +121,24 @@
           <div class="columns is-mobile is-centered">
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count10" class="button is-rounded is-outlined is-primary is-fullwidth"
-                   v-bind:class="getClass('button')" v-on:click="selectCount(10)">
+                <a class="button is-rounded is-primary is-fullwidth"
+                   v-bind:class="getCountClass(10)" v-on:click="selectCount(10)">
                   <span>10</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count20" class="button is-rounded is-outlined is-primary is-fullwidth"
-                   v-bind:class="getClass('button')" v-on:click="selectCount(20)">
+                <a class="button is-rounded is-primary is-fullwidth"
+                   v-bind:class="getCountClass(20)" v-on:click="selectCount(20)">
                   <span>20</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count50" class="button is-rounded is-outlined is-primary is-fullwidth"
-                   v-bind:class="getClass('button')" v-on:click="selectCount(50)">
+                <a class="button is-rounded is-primary is-fullwidth"
+                   v-bind:class="getCountClass(50)" v-on:click="selectCount(50)">
                   <span>50</span>
                 </a>
               </div>
@@ -149,24 +149,24 @@
           <div class="columns is-mobile is-centered">
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count100" class="button is-rounded is-outlined is-primary is-fullwidth"
-                   v-bind:class="getClass('button')" v-on:click="selectCount(100)">
+                <a class="button is-rounded is-primary is-fullwidth"
+                   v-bind:class="getCountClass(100)" v-on:click="selectCount(100)">
                   <span>100</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count200" class="button is-rounded is-outlined is-primary is-fullwidth"
-                   v-bind:class="getClass('button')" v-on:click="selectCount(200)">
+                <a class="button is-rounded is-primary is-fullwidth"
+                   v-bind:class="getCountClass(200)" v-on:click="selectCount(200)">
                   <span>200</span>
                 </a>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a id="count500" class="button is-rounded is-outlined is-primary is-fullwidth"
-                   v-bind:class="getClass('button')" v-on:click="selectCount(500)">
+                <a class="button is-rounded is-primary is-fullwidth"
+                   v-bind:class="getCountClass(500)" v-on:click="selectCount(500)">
                   <span>500</span>
                 </a>
               </div>
@@ -177,18 +177,18 @@
           <div class="columns is-mobile is-centered">
             <div class="column is-two-thirds">
               <div class="buttons is-centered noBottomMargin" v-show="!isCustomSelected">
-                <a id="countCustomButton" class="button is-rounded is-outlined is-primary is-fullwidth"
-                   v-bind:class="getClass('button')" v-on:click="showCustom(true)">
+                <a class="button is-rounded is-primary is-fullwidth"
+                   v-bind:class="getCountClass('Custom')" v-on:click="showCustom(true)">
                   <span>{{ getText('custom') }}</span>
                 </a>
               </div>
               <div class="field has-addons" v-show="isCustomSelected">
                 <div class="control smallBottomMargin maxWidth">
-                  <input id="countCustom" class="input is-rounded is-primary" v-bind:class="getClass('input')"
-                         type="number">
+                  <input class="input is-rounded is-primary" v-bind:class="getClass('input')"
+                         type="number" v-model="countCustom">
                 </div>
                 <div class="control smallBottomMargin">
-                  <a class="button is-success is-outlined is-rounded" v-bind:class="getClass('button')"
+                  <a class="button is-success is-rounded" v-bind:class="getClass('button')"
                      v-on:click="showCustom(false)">
                     <span class="icon is-right">
                       <i class="fas fa-check"></i>
@@ -199,8 +199,8 @@
             </div>
             <div class="column is-one-third">
               <div class="buttons is-centered">
-                <a id="countAll" class="button is-rounded is-outlined is-primary is-fullwidth"
-                   v-bind:class="getClass('button')" v-on:click="selectCount('All')">
+                <a class="button is-rounded is-primary is-fullwidth"
+                   v-bind:class="getCountClass('All')" v-on:click="selectCount('All')">
                   <span>{{ getText('all') }}</span>
                 </a>
               </div>
@@ -264,7 +264,7 @@
           <div class="box">
             <article class="media">
               <div class="media-content">
-                <h1 class="content centerText" v-bind:class="getClass('content')">{{ getCurrentWord(lang) }}</h1>
+                <h1 class="content has-text-centered" v-bind:class="getClass('content')">{{ getCurrentWord(lang) }}</h1>
               </div>
             </article>
           </div>
@@ -334,7 +334,7 @@
         <div class="column is-10">
           <progress class="progress is-success" v-bind:class="getClass('progress')" v-bind:value="getProgress" max="1">
           </progress>
-          <p class="content centerText" v-bind:class="getClass('content')">{{ getProgressText }}</p>
+          <p class="content has-text-centered" v-bind:class="getClass('content')">{{ getProgressText }}</p>
         </div>
       </div>
     </div>
@@ -374,7 +374,7 @@
         </div>
         <div class="customColumn is-full">
           <div class="columns is-mobile is-centered is-vcentered is-gapless">
-            <div class="column is-1 centerText" v-show="showResults">
+            <div class="column is-1 has-text-centered" v-show="showResults">
               <span class="icon has-text-success" v-bind:class="getClass('icon')" v-show="romajiIsCorrect">
                 <i class="fas fa-check" v-bind:class="getClass('fas')"></i>
               </span>
@@ -393,7 +393,7 @@
                 </p>
               </div>
             </div>
-            <div class="column is-1 centerText" v-show="showResults">
+            <div class="column is-1 has-text-centered" v-show="showResults">
               <span class="icon has-text-warning" v-bind:class="getClass('icon')" v-show="romajiIsCorrect">
                 <i class="fas fa-coins" v-bind:class="getClass('fas')"></i>
               </span>
@@ -402,7 +402,7 @@
         </div>
         <div class="customColumn is-full">
           <div class="columns is-mobile is-centered is-vcentered is-gapless">
-            <div class="column is-1 centerText" v-show="showResults">
+            <div class="column is-1 has-text-centered" v-show="showResults">
               <span class="icon has-text-success" v-bind:class="getClass('icon')" v-show="kanaIsCorrect">
                 <i class="fas fa-check" v-bind:class="getClass('fas')"></i>
               </span>
@@ -422,7 +422,7 @@
                 </p>
               </div>
             </div>
-            <div class="column is-1 centerText" v-show="showResults">
+            <div class="column is-1 has-text-centered" v-show="showResults">
               <span class="icon has-text-warning" v-bind:class="getClass('icon')" v-show="kanaIsCorrect">
                 <i class="fas fa-coins" v-bind:class="getClass('fas')"></i>
               </span>
@@ -483,7 +483,7 @@
         <div class="column is-10" v-show="keyboardHidden">
           <progress class="progress is-success" v-bind:class="getClass('progress')" v-bind:value="getProgress" max="1">
           </progress>
-          <p class="content centerText" v-bind:class="getClass('content')">{{ getProgressText }}</p>
+          <p class="content has-text-centered" v-bind:class="getClass('content')">{{ getProgressText }}</p>
         </div>
         <div class="column is-full" v-show="!keyboardHidden">
           <div class="content">
@@ -511,17 +511,17 @@
                 </li>
               </ul>
             </div>
-            <div id="hiragana" v-show="showTab('hiragana')" style="max-height: 150px;overflow: scroll">
+            <div v-show="showTab('hiragana')" style="max-height: 150px;overflow: scroll">
               <div class="buttons has-addons is-centered" v-for="array in signs.hiragana">
                 <div class="button" v-for="element in array" v-bind:class="getClass('button')">{{ element[1] }}</div>
               </div>
             </div>
-            <div id="katakana" v-show="showTab('katakana')">
+            <div v-show="showTab('katakana')">
               <div class="buttons has-addons" v-for="array in signs.katakana">
                 <div class="button" v-for="element in array" v-bind:class="getClass('button')">{{ element[1] }}</div>
               </div>
             </div>
-            <div id="kanji" v-show="showTab('kanji')">
+            <div v-show="showTab('kanji')">
 
             </div>
           </div>
@@ -542,15 +542,15 @@
           </section>
         </div>
         <div class="customColumn is-9 flex-grow">
-          <div class="content maxHeight maxWidth centerContent centerText" v-bind:class="getClass('content')"
+          <div class="content maxHeight maxWidth centerContent has-text-centered" v-bind:class="getClass('content')"
                v-show="showEmpty">
             {{ getText('empty') }}
           </div>
           <div class="columns is-multiline is-mobile maxHeight">
             <div class="column is-half halfHeight" v-for="(item, index) in displayItems">
               <div class="box maxHeight customColumn2" v-on:click="navigateTo('details',index)">
-                <p class="content centerText" v-bind:class="getClass('content')">{{ languages[lang][item.id] }}</p>
-                <div class="flex-grow maxHeight backgroundPicture position-relative"
+                <p class="content has-text-centered" v-bind:class="getClass('content')">{{ languages[lang][item.id] }}</p>
+                <div class="flex-grow maxHeight backgroundPicture is-relative"
                      v-bind:style="{ backgroundImage: 'url(' + item.spriteKey + ')' }">
                   <div class="content position-bottom-right" v-bind:class="getClass('content')" v-show="!isShop">
                     {{ item.quantity }}
@@ -573,7 +573,7 @@
               </div>
             </div>
             <div class="column">
-              <p class="content centerText is-primary" v-bind:class="getClass('content')">{{ getPage }}</p>
+              <p class="content has-text-centered is-primary" v-bind:class="getClass('content')">{{ getPage }}</p>
             </div>
             <div class="customColumn flex-grow">
               <div class="buttons is-centered">
@@ -619,7 +619,7 @@
               </div>
               <div class="field has-addons" v-show="searchActivated">
                 <div class="control smallBottomMargin maxWidth">
-                  <input id="searchField" class="input is-rounded is-warning" type="text"
+                  <input class="input is-rounded is-warning" type="text"
                          v-bind:class="getClass('input')" v-model="searchTerm">
                 </div>
                 <div class="control smallBottomMargin">
@@ -669,10 +669,10 @@
                 <th>
                   {{ getText('materials') }}
                 </th>
-                <th class="centerText">
+                <th class="has-text-centered">
                   {{ getText('own') }}
                 </th>
-                <th class="centerText">
+                <th class="has-text-centered">
                   {{ getText('needed') }}
                 </th>
               </tr>
@@ -682,10 +682,10 @@
                 <td>
                   {{ getText(material.id) }}
                 </td>
-                <td class="centerText" v-bind:class="getSpecialClass(getOwn(material.id),material.quantity)">
+                <td class="has-text-centered" v-bind:class="getSpecialClass(getOwn(material.id),material.quantity)">
                   {{ getOwn(material.id) }}
                 </td>
-                <td class="centerText">
+                <td class="has-text-centered">
                   {{ material.quantity }}
                 </td>
               </tr>
@@ -737,7 +737,7 @@
           <div class="field">
             <p class="control has-icons-left topBottomMargin">
               <span class="select is-fullwidth" v-bind:class="getClass('select')">
-                <select id="languageSelection">
+                <select v-model="languageSelection">
                   <option v-for="language in Object.keys(languages)" v-bind:selected="language === lang">
                     {{ language }}
                   </option>
@@ -749,7 +749,7 @@
             </p>
             <p class="control has-icons-left topBottomMargin">
               <span class="select is-fullwidth" v-bind:class="getClass('select')">
-                <select id="themeSelection">
+                <select v-model="themeSelection">
                   <option v-for="designId in Object.keys(designs)" v-bind:selected="designId === design"
                           v-bind:value="designId">
                     {{ languages[lang][designId] }}
@@ -762,7 +762,7 @@
             </p>
             <p class="control has-icons-left topBottomMargin">
               <span class="select is-fullwidth" v-bind:class="getClass('select')">
-                <select id="sizeSelection">
+                <select v-model="sizeSelection">
                   <option value="small" v-bind:selected="size === 'small'">{{ getText('small') }}</option>
                   <option value="normal" v-bind:selected="size === 'normal'">{{ getText('normal') }}</option>
                   <option value="medium" v-bind:selected="size === 'medium'">{{ getText('medium') }}</option>
@@ -806,7 +806,7 @@
     </div>
     <div id="modal" class="modal is-active" v-if="showRUSURE">
       <div class="modal-background"></div>
-      <div class="modal-content" style="overflow: hidden;">
+      <div class="modal-content is-clipped">
         <p class="image is-4by3">
           <img src="img/sprites/rusure.gif" alt="R U Sure?">
         </p>
@@ -840,6 +840,8 @@
     <script src="scripts/languages.js"></script>
     <script src="scripts/vocabs.js"></script>
     <script src="scripts/signs.js"></script>
+    <script src="scripts/canvasHelper.js"></script>
+    <script src="scripts/canvasStyles.js"></script>
     <script src="scripts/script.js"></script>
   </body>
 </html>

@@ -19,10 +19,6 @@ h2 {
     height: calc(100% - 76px);
 }
 
-#pageButton:hover {
-
-}
-
 #status {
     margin-top: 5px;
 }
@@ -74,27 +70,19 @@ h2 {
     justify-content: center;
 }
 
-.centerText {
-    text-align: center !important;
-}
-
-.rightText {
-    text-align: right;
-}
-
 .justifyContent {
     justify-content: center;
 }
 
 .is-grey {
-    border-color: hsl(0, 0%, 50%);
+    border-color: hsl(0, 0%, 48%);
     background-color: transparent;
-    color: hsl(0, 0%, 50%);
+    color: hsl(0, 0%, 48%);
 }
 
 .is-grey:hover {
-    border-color: hsl(0, 0%, 50%);
-    background-color: hsl(0, 0%, 50%);
+    border-color: hsl(0, 0%, 48%);
+    background-color: hsl(0, 0%, 48%);
     color: hsl(0, 0%, 100%);
 }
 
@@ -157,10 +145,6 @@ h2 {
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-}
-
-.position-relative {
-    position: relative;
 }
 
 .position-bottom-right {

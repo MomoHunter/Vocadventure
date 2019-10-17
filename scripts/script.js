@@ -1,8 +1,11 @@
 function GlobalDict() {
   this.canvas = document.getElementById('adventureCanvas');
   this.context = this.canvas.getContext('2d');
+  this.languageSelection = 'Deutsch';
   this.lang = 'Deutsch';
   this.languages = languages;
+  this.styles = styles;
+  this.themeSelection = 'design1';
   this.design = 'design1';
   this.designs = {
     "design1": {
@@ -18,6 +21,7 @@ function GlobalDict() {
       link: "css/bulmaswatch.solar.min.css"
     }
   };
+  this.sizeSelection = 'normal';
   this.size = 'normal';
   this.classes = {
     button: {
@@ -112,6 +116,7 @@ function GlobalDict() {
   this.activeTab = 'hiragana';
   this.showRUSURE = false;
   this.customSelected = false;
+  this.countCustom = '';
   this.items = [
     { id: 'wood', spriteKey: 'img/sprites/Holz.png', quantity: 1, costs: [
         { id: 'statusRight', quantity: 5 }
@@ -196,7 +201,6 @@ function GlobalDict() {
       if (data.inventory) {
         this.inventory = data.inventory;
       }
-      document.getElementById('bulmaCSS').href = this.designs[this.design].link;
     }
   };
   this.resetData = function() {
@@ -211,7 +215,6 @@ function GlobalDict() {
       ]
     };
     this.inventory = [];
-    document.getElementById('bulmaCSS').href = this.designs[this.design].link;
   };
 }
 
@@ -222,6 +225,16 @@ if (window.screen.width * window.devicePixelRatio < 1150) {
 
 const gD = new GlobalDict();
 gD.loadData();
+
+var css = new Vue({
+  el: '#bulmaCSS',
+  data: gD,
+  computed: {
+    getDesign: function () {
+      return this.designs[this.design].link;
+    }
+  }
+});
 
 var status = new Vue({
   el: '#status',
@@ -268,19 +281,33 @@ var selection = new Vue({
   },
   methods: {
     getText: function (id) {
-      if (id === 'custom' && !isNaN(parseInt(document.getElementById('countCustom').value)) ) {
-        return parseInt(document.getElementById('countCustom').value);
+      if (id === 'custom' && !isNaN(+this.countCustom) && +this.countCustom !== 0 ) {
+        return +this.countCustom;
       }
       return this.languages[this.lang][id];
     },
     getClass: function(type) {
       return this.classes[type][this.size];
     },
+    getDifficultyClass: function (difficulty) {
+      if (this.difficulty === difficulty) {
+        return '' + this.classes['button'][this.size];
+      } else {
+        return 'is-outlined ' + this.classes['button'][this.size];
+      }
+    },
+    getCountClass: function (count) {
+      if (this.wordCount === count) {
+        return '' + this.classes['button'][this.size];
+      } else {
+        return 'is-outlined ' + this.classes['button'][this.size];
+      }
+    },
     showCustom: function (show) {
       this.customSelected = show;
       if (!show) {
-        if ((!isNaN(parseInt(document.getElementById('countCustom').value)) && this.wordCount !== 'Custom') ||
-            (isNaN(parseInt(document.getElementById('countCustom').value)) && this.wordCount === 'Custom')) {
+        if ((!isNaN(+this.countCustom) && this.wordCount !== 'Custom') ||
+            (isNaN(+this.countCustom) && this.wordCount === 'Custom')) {
           this.selectCount('Custom');
         }
       }
@@ -289,44 +316,22 @@ var selection = new Vue({
       if (id === 'mainMenu') {
         this.selectDifficulty(this.difficulty);
         this.selectCount(this.wordCount);
-        document.getElementById('countCustom').value = '';
+        this.countCustom = '';
         this.option = '';
         this.currentWord = 0;
       }
       this.page = id;
     },
     selectDifficulty: function (number) {
-      if (number !== '') {
-        document.getElementById('difficulty' + number).classList.remove('is-outlined');
-      }
-      if (this.difficulty !== '') {
-        document.getElementById('difficulty' + this.difficulty).classList.add('is-outlined');
-        if (this.difficulty === number) {
-          this.difficulty = '';
-        } else {
-          this.difficulty = number;
-        }
+      if (this.difficulty === number) {
+        this.difficulty = '';
       } else {
         this.difficulty = number;
       }
     },
     selectCount: function (number) {
-      if (number !== 'Custom' && number !== 0) {
-        document.getElementById('count' + number).classList.remove('is-outlined');
-      } else if (number === 'Custom') {
-        document.getElementById('countCustomButton').classList.remove('is-outlined');
-      }
-      if (this.wordCount !== 0) {
-        if (this.wordCount === 'Custom') {
-          document.getElementById('countCustomButton').classList.add('is-outlined');
-        } else {
-          document.getElementById('count' + this.wordCount).classList.add('is-outlined');
-        }
-        if (this.wordCount === number) {
-          this.wordCount = 0;
-        } else {
-          this.wordCount = number;
-        }
+      if (this.wordCount === number) {
+        this.wordCount = 0;
       } else {
         this.wordCount = number;
       }
@@ -349,7 +354,7 @@ var selection = new Vue({
           }
         }, this);
       } else {
-        let maxWords = this.wordCount === 'Custom' ? +document.getElementById('countCustom').value : this.wordCount;
+        let maxWords = this.wordCount === 'Custom' ? +this.countCustom : this.wordCount;
         for (let i = 0; this.vocabWords.length < maxWords; i++) {
           let word = this.vocabs[Math.floor(Math.random() * this.vocabs.length)];
           if (+word.difficulty <= +this.difficulty) {
@@ -401,7 +406,7 @@ var training = new Vue({
       if (id === 'mainMenu') {
         selection.selectDifficulty(this.difficulty);
         selection.selectCount(this.wordCount);
-        document.getElementById('countCustom').value = '';
+        this.countCustom = '';
         this.option = '';
       }
       this.currentWord = 0;
@@ -447,7 +452,7 @@ var adventure = new Vue({
     },
     romajiIsCorrect: function () {
       if (this.vocabWords.length !== 0) {
-        if (this.romajiInput === this.vocabWords[this.currentWord].romaji) {
+        if (this.romajiInput.toLowerCase() === this.vocabWords[this.currentWord].romaji.toLowerCase()) {
           return true;
         }
       }
@@ -502,7 +507,7 @@ var adventure = new Vue({
       if (id === 'mainMenu') {
         selection.selectDifficulty(this.difficulty);
         selection.selectCount(this.wordCount);
-        document.getElementById('countCustom').value = '';
+        this.countCustom = '';
         this.option = '';
       }
       this.currentWord = 0;
@@ -834,10 +839,9 @@ var settings = new Vue({
       this.page = id;
     },
     applySettings: function () {
-      this.lang = document.getElementById('languageSelection').value;
-      this.design = document.getElementById('themeSelection').value;
-      document.getElementById('bulmaCSS').href = this.designs[this.design].link;
-      this.size = document.getElementById('sizeSelection').value;
+      this.lang = this.languageSelection;
+      this.design = this.themeSelection;
+      this.size = this.sizeSelection;
       this.saveData();
     },
     showModal: function () {
