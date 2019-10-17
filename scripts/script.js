@@ -216,6 +216,12 @@ function GlobalDict() {
     };
     this.inventory = [];
   };
+  this.startCanvas = function () {
+
+  };
+  this.clearCanvas = function() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  };
 }
 
 let viewport = document.querySelector("[name~=viewport][content]");
@@ -225,6 +231,7 @@ if (window.screen.width * window.devicePixelRatio < 1150) {
 
 const gD = new GlobalDict();
 gD.loadData();
+gD.startCanvas();
 
 var css = new Vue({
   el: '#bulmaCSS',
@@ -490,6 +497,13 @@ var adventure = new Vue({
     },
     getProgressText: function () {
       return this.currentWord + " / " + this.vocabWords.length;
+    },
+    keyboardClass: function () {
+      if (this.keyboardHidden) {
+        return '';
+      } else {
+        return 'has-addons';
+      }
     }
   },
   methods: {
@@ -541,29 +555,19 @@ var adventure = new Vue({
         }
       }
     },
-    getHelpClass: function (helpName) {
-      if ((helpName === 'romaji' && this.romajiIsCorrect) ||
-          (helpName === 'kana' && this.kanaIsCorrect)) {
-        return 'is-success ' + this.classes['help'][this.size];
-      } else {
-        return 'is-danger ' + this.classes['help'][this.size];
-      }
-    },
-    getHelpText: function (helpName) {
-      if (!this.showResults) {
-        return ' ';
-      } else if ((helpName === 'romaji' && this.romajiIsCorrect) ||
-        (helpName === 'kana' && this.kanaIsCorrect)) {
-        return this.languages[this.lang]['correct'];
-      } else {
-        return this.languages[this.lang]['wrong'];
-      }
-    },
     showItems: function () {
 
     },
     showSpecialKeyboard: function () {
       this.keyboardHidden = !this.keyboardHidden;
+    },
+    addKana: function (sign) {
+      this.kanaInput += sign;
+    },
+    removeKana: function () {
+      if (this.kanaInput.length !== 0) {
+        this.kanaInput = this.kanaInput.substring(0, this.kanaInput.length - 1);
+      }
     },
     setActiveTab: function (id) {
       this.activeTab = id;

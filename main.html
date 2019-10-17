@@ -388,9 +388,6 @@
                   <input class="input is-rounded" type="text" v-bind:class="getInputClass('romaji')"
                          v-bind:placeholder="getText('romajiLabel')" v-model="romajiInput" v-bind:readonly="showResults">
                 </div>
-                <p class="help" v-bind:class="getHelpClass('romaji')">
-                  {{ getHelpText('romaji') }}
-                </p>
               </div>
             </div>
             <div class="column is-1 has-text-centered" v-show="showResults">
@@ -411,15 +408,20 @@
               </span>
             </div>
             <div class="column is-10">
-              <div class="field">
-                <div class="control">
+              <div class="field" v-bind:class="keyboardClass">
+                <div class="control smallBottomMargin maxWidth">
                   <input class="input is-rounded" type="text" v-bind:class="getInputClass('kana')"
                          v-bind:placeholder="getText('kanaLabel')" v-on:click="showSpecialKeyboard()"
                          v-model="kanaInput" readonly>
                 </div>
-                <p class="help" v-bind:class="getHelpClass('kana')">
-                  {{ getHelpText('kana') }}
-                </p>
+                <div class="control smallBottomMargin" v-show="!keyboardHidden">
+                  <a class="button is-danger is-rounded is-outlined" v-bind:class="getClass('button')"
+                     v-on:click="removeKana()">
+                    <span class="icon is-right">
+                      <i class="fas fa-backspace"></i>
+                    </span>
+                  </a>
+                </div>
               </div>
             </div>
             <div class="column is-1 has-text-centered" v-show="showResults">
@@ -487,7 +489,7 @@
         </div>
         <div class="column is-full" v-show="!keyboardHidden">
           <div class="content">
-            <div class="tabs is-boxed is-centered" v-bind:class="getClass('tabs')">
+            <div class="tabs is-boxed is-centered smallBottomMargin" v-bind:class="getClass('tabs')">
               <ul class="tabsMargin">
                 <li v-bind:class="getActiveTab('hiragana')">
                   <a v-on:click="setActiveTab('hiragana')">
@@ -504,25 +506,15 @@
                     {{ getText('kanji') }}
                   </a>
                 </li>
-                <li v-bind:class="getActiveTab('kanji')">
-                  <a v-on:click="setActiveTab('kanji')">
-                    {{ getText('kanji') }}
-                  </a>
-                </li>
               </ul>
             </div>
-            <div v-show="showTab('hiragana')" style="max-height: 150px;overflow: scroll">
-              <div class="buttons has-addons is-centered" v-for="array in signs.hiragana">
-                <div class="button" v-for="element in array" v-bind:class="getClass('button')">{{ element[1] }}</div>
+            <div class="" v-show="showTab(key)" v-for="[key, value] of signs" style="height: 150px;overflow-x:scroll;">
+              <div class="buttons has-addons is-centered is-marginless" v-for="array in value">
+                <div class="button is-marginless is-radiusless" v-for="[key2, value2] of array"
+                     v-bind:class="getClass('button')" v-on:click="addKana(value2)">
+                  {{ value2 }}
+                </div>
               </div>
-            </div>
-            <div v-show="showTab('katakana')">
-              <div class="buttons has-addons" v-for="array in signs.katakana">
-                <div class="button" v-for="element in array" v-bind:class="getClass('button')">{{ element[1] }}</div>
-              </div>
-            </div>
-            <div v-show="showTab('kanji')">
-
             </div>
           </div>
         </div>

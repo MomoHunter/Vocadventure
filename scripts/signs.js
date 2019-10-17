@@ -1,5 +1,5 @@
-const signs = {
-  "hiragana": [
+const signs =new Map([[
+  "hiragana", [
     [["A"                   , "\u3042"],
     ["I"                   , "\u3044"],
     ["U"                   , "\u3046"],
@@ -74,8 +74,8 @@ const signs = {
     ["Wo"                  , "\u3092"],
     ["N"                   , "\u3093"],
     ["Wiederholungszeichen", "\u309D"]]
-  ],
-  "katakana": [
+  ]],
+  ["katakana", [
     [["A"               , "\u30A2"],
     ["I"               , "\u30A4"],
     ["U"               , "\u30A6"],
@@ -150,8 +150,8 @@ const signs = {
     ["Wo (veraltet)"   , "\u30F2"],
     ["N"               , "\u30F3"],
     ["Laengungszeichen", "\u30FC"]]
-  ]
-};
+  ]]
+]);
   /*"hiragana": {
     //"blank_1"                               : ["\u3040"],
     //"a"                                     : ["\u3041"],

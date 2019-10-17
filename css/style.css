@@ -48,6 +48,10 @@ h2 {
     margin-right: 2em;
 }
 
+.tabs.smallBottomMargin:not(:last-child) {
+    margin-bottom: 0.5rem;
+}
+
 .smallBottomMargin {
     margin-bottom: 0.5rem;
 }
