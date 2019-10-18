@@ -374,7 +374,7 @@
         </div>
         <div class="customColumn is-full">
           <div class="columns is-mobile is-centered is-vcentered is-gapless">
-            <div class="column is-1 has-text-centered" v-show="showResults">
+            <div class="column is-1 has-text-centered" v-show="showResults && !resultIsVisible">
               <span class="icon has-text-success" v-bind:class="getClass('icon')" v-show="romajiIsCorrect">
                 <i class="fas fa-check" v-bind:class="getClass('fas')"></i>
               </span>
@@ -390,7 +390,7 @@
                 </div>
               </div>
             </div>
-            <div class="column is-1 has-text-centered" v-show="showResults">
+            <div class="column is-1 has-text-centered" v-show="showResults && !resultIsVisible">
               <span class="icon has-text-warning" v-bind:class="getClass('icon')" v-show="romajiIsCorrect">
                 <i class="fas fa-coins" v-bind:class="getClass('fas')"></i>
               </span>
@@ -399,7 +399,7 @@
         </div>
         <div class="customColumn is-full">
           <div class="columns is-mobile is-centered is-vcentered is-gapless">
-            <div class="column is-1 has-text-centered" v-show="showResults">
+            <div class="column is-1 has-text-centered" v-show="showResults && !resultIsVisible">
               <span class="icon has-text-success" v-bind:class="getClass('icon')" v-show="kanaIsCorrect">
                 <i class="fas fa-check" v-bind:class="getClass('fas')"></i>
               </span>
@@ -409,9 +409,17 @@
             </div>
             <div class="column is-10">
               <div class="field" v-bind:class="keyboardClass">
+                <div class="control smallBottomMargin" v-show="!keyboardHidden">
+                  <a class="button is-success is-rounded is-outlined" v-bind:class="getClass('button')"
+                     v-on:click="hideSpecialKeyboard(true)">
+                    <span class="icon is-left">
+                      <i class="fas fa-check"></i>
+                    </span>
+                  </a>
+                </div>
                 <div class="control smallBottomMargin maxWidth">
-                  <input class="input is-rounded" type="text" v-bind:class="getInputClass('kana')"
-                         v-bind:placeholder="getText('kanaLabel')" v-on:click="showSpecialKeyboard()"
+                  <input id="kanaInput" class="input is-rounded" type="text" v-bind:class="getInputClass('kana')"
+                         v-bind:placeholder="getText('kanaLabel')" v-on:click="hideSpecialKeyboard(false)"
                          v-model="kanaInput" readonly>
                 </div>
                 <div class="control smallBottomMargin" v-show="!keyboardHidden">
@@ -424,7 +432,7 @@
                 </div>
               </div>
             </div>
-            <div class="column is-1 has-text-centered" v-show="showResults">
+            <div class="column is-1 has-text-centered" v-show="showResults && !resultIsVisible">
               <span class="icon has-text-warning" v-bind:class="getClass('icon')" v-show="kanaIsCorrect">
                 <i class="fas fa-coins" v-bind:class="getClass('fas')"></i>
               </span>
@@ -447,11 +455,25 @@
             <div class="column">
               <div class="buttons is-centered">
                 <a class="button is-primary is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
-                   v-on:click="showItems()">
+                   v-on:click="showItems()" v-show="!showResults">
                   <span class="icon">
                     <i class="fas fa-briefcase"></i>
                   </span>
                   <span>{{ getText('adventureButton2') }}</span>
+                </a>
+                <a class="button is-link is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+                   v-on:click="showResult()" v-show="showResults && !resultIsVisible">
+                  <span class="icon">
+                    <i class="far fa-eye-slash"></i>
+                  </span>
+                  <span>{{ getText('adventureButton3') }}</span>
+                </a>
+                <a class="button is-link is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+                   v-on:click="showResult()" v-show="showResults && resultIsVisible">
+                  <span class="icon">
+                    <i class="far fa-eye"></i>
+                  </span>
+                  <span>{{ getText('adventureButton3') }}</span>
                 </a>
               </div>
             </div>
@@ -462,21 +484,21 @@
                   <span class="icon">
                     <i class="fas fa-check"></i>
                   </span>
-                  <span>{{ getText('adventureButton3') }}</span>
+                  <span>{{ getText('adventureButton4') }}</span>
                 </a>
                 <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
                    v-show="showResults && !finishedAdventure" v-on:click="nextWord()">
                   <span class="icon">
                     <i class="fas fa-arrow-right"></i>
                   </span>
-                  <span>{{ getText('adventureButton4') }}</span>
+                  <span>{{ getText('adventureButton5') }}</span>
                 </a>
                 <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
                    v-show="showResults && finishedAdventure" v-on:click="showStats()">
                   <span class="icon">
                     <i class="fas fa-arrow-right"></i>
                   </span>
-                  <span>{{ getText('adventureButton5') }}</span>
+                  <span>{{ getText('adventureButton6') }}</span>
                 </a>
               </div>
             </div>
@@ -487,8 +509,8 @@
           </progress>
           <p class="content has-text-centered" v-bind:class="getClass('content')">{{ getProgressText }}</p>
         </div>
-        <div class="customColumn is-full flex-grow" v-show="!keyboardHidden" style="display:flex;flex-direction:column;">
-          <div class="tabs is-boxed is-centered smallBottomMargin" v-bind:class="getClass('tabs')" style="flex-shrink:0;">
+        <div class="customColumn2 customColumn is-full flex-grow" v-show="!keyboardHidden">
+          <div class="tabs is-boxed is-centered smallBottomMargin flex-shrink" v-bind:class="getClass('tabs')">
             <ul>
               <li v-bind:class="getActiveTab('hiragana')">
                 <a v-on:click="setActiveTab('hiragana')">
@@ -507,7 +529,7 @@
               </li>
             </ul>
           </div>
-          <div class="" v-show="showTab(key)" v-for="[key, array] of signs" style="height: 100%;overflow:hidden auto;">
+          <div class="keyboardContainer" v-show="showTab(key)" v-for="[key, array] of signs">
             <div class="buttons has-addons is-centered is-marginless">
               <div class="button is-marginless is-radiusless" v-for="[key2, value] of array"
                    v-bind:class="getClass('button')" v-on:click="addKana(value)">

@@ -128,10 +128,6 @@ h2 {
     width: 100%;
 }
 
-.customColumn2.is-full {
-    width: 100%;
-}
-
 .customColumn.is-10 {
     width: calc(100% / 1.2);
 }
@@ -144,8 +140,14 @@ h2 {
     flex-grow: 1;
 }
 
-.customColumn2.flex-grow {
-    flex-grow: 1;
+.flex-shrink {
+    flex-shrink: 0;
+}
+
+.keyboardContainer {
+    height: 0;
+    min-height: calc(100% - 55px);
+    overflow: hidden auto;
 }
 
 .alignStretch {
