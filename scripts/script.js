@@ -6,8 +6,8 @@ function GlobalDict() {
   this.languages = languages;
   this.styles = styles;
   this.themeSelection = 'design1';
-  this.design = 'design1';
-  this.designs = {
+  this.theme = 'design1';
+  this.themes = {
     "design1": {
       link: "css/bulmaswatch.darkly.min.css"
     },
@@ -177,7 +177,7 @@ function GlobalDict() {
   this.saveData = function() {
     window.localStorage.setItem('globalDict', JSON.stringify({
       "lang": this.lang,
-      "design": this.design,
+      "design": this.theme,
       "size": this.size,
       "scores": this.scores,
       "inventory": this.inventory
@@ -188,12 +188,15 @@ function GlobalDict() {
     if (data) {
       if (data.lang) {
         this.lang = data.lang;
+        this.languageSelection = data.lang;
       }
-      if (data.design) {
-        this.design = data.design;
+      if (data.theme) {
+        this.theme = data.theme;
+        this.themeSelection = data.theme
       }
       if (data.size) {
         this.size = data.size;
+        this.sizeSelection = data.size;
       }
       if (data.scores) {
         this.scores = data.scores;
@@ -205,7 +208,7 @@ function GlobalDict() {
   };
   this.resetData = function() {
     this.lang = 'Deutsch';
-    this.design = 'design1';
+    this.theme = 'design1';
     this.size = 'normal';
     this.scores = { 
       scores: [
@@ -238,7 +241,7 @@ var css = new Vue({
   data: gD,
   computed: {
     getDesign: function () {
-      return this.designs[this.design].link;
+      return this.themes[this.theme].link;
     }
   }
 });
@@ -526,6 +529,8 @@ var adventure = new Vue({
       }
       this.currentWord = 0;
       this.showResults = false;
+      this.romajiInput = '';
+      this.kanaInput = '';
       this.page = id;
     },
     getClass: function (type, difficultyTag = false) {
@@ -844,7 +849,7 @@ var settings = new Vue({
     },
     applySettings: function () {
       this.lang = this.languageSelection;
-      this.design = this.themeSelection;
+      this.theme = this.themeSelection;
       this.size = this.sizeSelection;
       this.saveData();
     },
