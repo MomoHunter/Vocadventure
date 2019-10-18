@@ -128,6 +128,10 @@ h2 {
     width: 100%;
 }
 
+.customColumn2.is-full {
+    width: 100%;
+}
+
 .customColumn.is-10 {
     width: calc(100% / 1.2);
 }
@@ -137,6 +141,10 @@ h2 {
 }
 
 .customColumn.flex-grow {
+    flex-grow: 1;
+}
+
+.customColumn2.flex-grow {
     flex-grow: 1;
 }
 

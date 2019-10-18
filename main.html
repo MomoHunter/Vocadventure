@@ -487,33 +487,31 @@
           </progress>
           <p class="content has-text-centered" v-bind:class="getClass('content')">{{ getProgressText }}</p>
         </div>
-        <div class="customColumn is-full flex-grow" v-show="!keyboardHidden">
-          <div class="content">
-            <div class="tabs is-boxed is-centered smallBottomMargin" v-bind:class="getClass('tabs')">
-              <ul class="tabsMargin">
-                <li v-bind:class="getActiveTab('hiragana')">
-                  <a v-on:click="setActiveTab('hiragana')">
-                    {{ getText('hiragana') }}
-                  </a>
-                </li>
-                <li v-bind:class="getActiveTab('katakana')">
-                  <a v-on:click="setActiveTab('katakana')">
-                    {{ getText('katakana') }}
-                  </a>
-                </li>
-                <li v-bind:class="getActiveTab('kanji')">
-                  <a v-on:click="setActiveTab('kanji')">
-                    {{ getText('kanji') }}
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div class="" v-show="showTab(key)" v-for="[key, array] of signs" style="height: 150px;overflow:hidden auto;">
-              <div class="buttons has-addons is-centered is-marginless">
-                <div class="button is-marginless is-radiusless" v-for="[key2, value] of array"
-                     v-bind:class="getClass('button')" v-on:click="addKana(value)">
-                  {{ value }}
-                </div>
+        <div class="customColumn is-full flex-grow" v-show="!keyboardHidden" style="display:flex;flex-direction:column;">
+          <div class="tabs is-boxed is-centered smallBottomMargin" v-bind:class="getClass('tabs')" style="flex-shrink:0;">
+            <ul>
+              <li v-bind:class="getActiveTab('hiragana')">
+                <a v-on:click="setActiveTab('hiragana')">
+                  {{ getText('hiragana') }}
+                </a>
+              </li>
+              <li v-bind:class="getActiveTab('katakana')">
+                <a v-on:click="setActiveTab('katakana')">
+                  {{ getText('katakana') }}
+                </a>
+              </li>
+              <li v-bind:class="getActiveTab('kanji')">
+                <a v-on:click="setActiveTab('kanji')">
+                  {{ getText('kanji') }}
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="" v-show="showTab(key)" v-for="[key, array] of signs" style="height: 100%;overflow:hidden auto;">
+            <div class="buttons has-addons is-centered is-marginless">
+              <div class="button is-marginless is-radiusless" v-for="[key2, value] of array"
+                   v-bind:class="getClass('button')" v-on:click="addKana(value)">
+                {{ value }}
               </div>
             </div>
           </div>
