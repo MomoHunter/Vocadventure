@@ -10,8 +10,8 @@ function main() {
 }
 
 function GlobalDict() {
-  this.canvas = document.getElementById('adventureCanvas');
-  this.context = this.canvas.getContext('2d');
+  this.canvas = null;
+  this.context = null;
   this.raf = null;
   this.startTS = 0;
   this.lag = 0;
@@ -276,7 +276,7 @@ function GlobalDict() {
     }
   };
   this.clearCanvas = function () {
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   };
   this.css = new Vue({
     el: '#bulmaCSS',
@@ -417,6 +417,10 @@ function GlobalDict() {
         }
         this.page = this.option;
         if (this.page === 'adventure') {
+          if (this.canvas === null) {
+            this.canvas = document.getElementById('adventureCanvas');
+            this.context = this.canvas.getContext('2d');
+          }
           this.raf = requestAnimationFrame(timestamp => this.canvasLoop(timestamp));
         }
       }
