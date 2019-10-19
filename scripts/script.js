@@ -1,5 +1,3 @@
-
-
 function main() {
   let globalDict = new GlobalDict();
   let viewport = document.querySelector("[name~=viewport][content]");
@@ -8,13 +6,17 @@ function main() {
   }
   globalDict.loadData();
   globalDict.createKanji();
-  globalDict.startCanvas();
 
 }
 
 function GlobalDict() {
   this.canvas = document.getElementById('adventureCanvas');
   this.context = this.canvas.getContext('2d');
+  this.raf = null;
+  this.startTS = 0;
+  this.lag = 0;
+  this.refreshrate = 1000 / 60;
+  this.frameNo = 0;
   this.languageSelection = 'Deutsch';
   this.lang = 'Deutsch';
   this.languages = languages;
@@ -249,6 +251,33 @@ function GlobalDict() {
     }
     this.signs.set('kanji', kanji);
   };
+  this.canvasLoop = function (timestamp) {
+    if (this.page === 'adventure') {
+      this.raf = requestAnimationFrame(timestamp => this.canvasLoop(timestamp));
+
+      this.lag += timestamp - this.startTS;
+
+      while (this.lag > this.refreshrate) {
+        this.frameNo++;
+
+        if (this.lag > this.refreshrate * 5) {
+          this.lag %= this.refreshrate;
+        } else {
+          this.lag -= this.refreshrate;
+        }
+      }
+
+      this.clearCanvas();
+      if (this.vocabWords.length !== 0) {
+        drawCanvasText(this.canvas.width / 2, this.canvas.height / 2, this.vocabWords[this.currentWord][this.lang], 'standard', this);
+      }
+
+      this.startTS = timestamp;
+    }
+  };
+  this.clearCanvas = function () {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+  };
   this.css = new Vue({
     el: '#bulmaCSS',
     data: this,
@@ -387,6 +416,9 @@ function GlobalDict() {
           }
         }
         this.page = this.option;
+        if (this.page === 'adventure') {
+          this.raf = requestAnimationFrame(timestamp => this.canvasLoop(timestamp));
+        }
       }
     }
   });
@@ -906,10 +938,4 @@ function GlobalDict() {
       }
     }
   });
-  this.startCanvas = function () {
-
-  };
-  this.clearCanvas = function () {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  };
 }
