@@ -1,7 +1,7 @@
 const styles= {
   text: {
     standard: {
-      font: "12pt Consolas",
+      font: "12pt 'ArchitectsDaughterRegular'",
       color: "0, 0, 0, 1",
       align: "center",
       baseline: "middle",
@@ -11,6 +11,9 @@ const styles= {
   rect: {
     standard: {
       backgroundColor: "255, 255, 255, 1"
+    },
+    standardBlur: {
+      backgroundColor: "255, 255, 255, 0.6"
     }
   },
   border: {

@@ -50,3 +50,14 @@ function drawCanvasRect(x, y, width, height, styleKey, gD) {
   gD.context.fillStyle = `rgba(${style.backgroundColor})`;
   gD.context.fillRect(x, y, width, height);
 }
+/**
+ * Draw a Sprite-Image onto the used canvas.
+ * Its size is determined by the defined data of the given Sprite.
+ * @param {object} image
+ * @param {GlobalDict} gD
+ */
+function drawCanvasImage(image, gD) {
+  let img = new Image();
+  img.src = image.link;
+  gD.context.drawImage(img, image.x, image.y, image.width, image.height);
+}

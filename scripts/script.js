@@ -175,9 +175,36 @@ function GlobalDict() {
         { id: 'statusRight', quantity: 85 }
       ]}
   ];
+  this.sprites = {
+    "Background_Basic": {
+      width: 288, height: 300, link: "img/sprites/Backgrounds/Basic.png"
+    },
+    "Background_Appletree": {
+      width: 480, height: 300, link: "img/sprites/Backgrounds/Appletree.png"
+    },
+    "Background_Bridge": {
+      width: 480, height: 300, link: "img/sprites/Backgrounds/Bridge.png"
+    },
+    "Background_Dirtmine": {
+      width: 480, height: 300, link: "img/sprites/Backgrounds/Dirtmine.png"
+    },
+    "Background_Stone": {
+      width: 480, height: 300, link: "img/sprites/Backgrounds/Stone.png"
+    },
+    "Player": {
+      width: 84, height: 108, link: "img/sprites/Gamer.png"
+    }
+  };
   this.inventory = [
     { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 55 },
     { id: 'wood', spriteKey: 'img/sprites/Holz.png', quantity: 50 }
+  ];
+  this.player = {
+    x: 102, y: 120, width: 84, height: 108, link: "img/sprites/Gamer.png"
+  };
+  this.backgrounds = [
+    { x: 0, y: 0, width: 288, height: 300, link: "img/sprites/Backgrounds/Basic.png" },
+    { x: 288, y: 0, width: 480, height: 300, link: "img/sprites/Backgrounds/Appletree.png" }
   ];
   this.searchResult = [];
   this.searchTerm = '';
@@ -268,11 +295,21 @@ function GlobalDict() {
       }
 
       this.clearCanvas();
-      if (this.vocabWords.length !== 0) {
-        drawCanvasText(this.canvas.width / 2, this.canvas.height / 2, this.vocabWords[this.currentWord][this.lang], 'standard', this);
-      }
+      this.canvasDraw();
 
       this.startTS = timestamp;
+    }
+  };
+  this.canvasDraw = function () {
+    this.backgrounds.map(background => {
+      drawCanvasImage(background, this);
+    }, this);
+
+    drawCanvasImage(this.player, this);
+
+    if (this.vocabWords.length !== 0) {
+      drawCanvasRect(this.canvas.width / 2 - 150, 0, 300, 30, 'standardBlur', this);
+      drawCanvasText(this.canvas.width / 2, 15, this.vocabWords[this.currentWord][this.lang], 'standard', this);
     }
   };
   this.clearCanvas = function () {
