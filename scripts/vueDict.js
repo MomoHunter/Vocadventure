@@ -1,323 +1,8 @@
-function main() {
-  let globalDict = new GlobalDict();
-  let viewport = document.querySelector("[name~=viewport][content]");
-  if (window.screen.width * window.devicePixelRatio < 1150) {
-    viewport.content = "width=device-width, initial-scale=0.75";
-  }
-  globalDict.loadData();
-  globalDict.createKanji();
-
-}
-
-function GlobalDict() {
-  this.canvas = null;
-  this.context = null;
-  this.raf = null;
-  this.startTS = 0;
-  this.lag = 0;
-  this.refreshrate = 1000 / 60;
-  this.frameNo = 0;
-  this.languageSelection = 'Deutsch';
-  this.lang = 'Deutsch';
-  this.languages = languages;
-  this.styles = styles;
-  this.themeSelection = 'design1';
-  this.theme = 'design1';
-  this.themes = {
-    "design1": {
-      link: "css/bulmaswatch.darkly.min.css"
-    },
-    "design2": {
-      link: "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css"
-    },
-    "design3": {
-      link: "css/bulmaswatch.slate.min.css"
-    },
-    "design4": {
-      link: "css/bulmaswatch.solar.min.css"
-    }
-  };
-  this.sizeSelection = 'normal';
-  this.size = 'normal';
-  this.classes = {
-    button: {
-      small: 'is-small',
-      normal: '',
-      medium: 'is-medium',
-      large: 'is-large'
-    },
-    select: {
-      small: 'is-small',
-      normal: '',
-      medium: 'is-medium',
-      large: 'is-large'
-    },
-    input: {
-      small: 'is-small',
-      normal: '',
-      medium: 'is-medium',
-      large: 'is-large'
-    },
-    title: {
-      small: 'is-5',
-      normal: 'is-4',
-      medium: 'is-3',
-      large: 'is-2'
-    },
-    subtitle: {
-      small: 'is-6',
-      normal: 'is-6',
-      medium: 'is-5',
-      large: 'is-4'
-    },
-    icon: {
-      small: 'is-small',
-      normal: '',
-      medium: 'is-medium',
-      large: 'is-large'
-    },
-    fas: {
-      small: '',
-      normal: '',
-      medium: 'fa-lg',
-      large: 'fa-2x'
-    },
-    tag: {
-      small: 'is-normal',
-      normal: 'is-normal',
-      medium: 'is-medium',
-      large: 'is-medium'
-    },
-    content: {
-      small: 'is-small',
-      normal: '',
-      medium: 'is-medium',
-      large: 'is-large'
-    },
-    label: {
-      small: 'is-small',
-      normal: '',
-      medium: 'is-medium',
-      large: 'is-large'
-    },
-    progress: {
-      small: 'is-small',
-      normal: '',
-      medium: 'is-medium',
-      large: 'is-large'
-    },
-    tabs: {
-      small: 'is-small',
-      normal: '',
-      medium: 'is-medium',
-      large: 'is-large'
-    },
-    help: {
-      small: 'is-small',
-      normal: '',
-      medium: 'is-medium',
-      large: 'is-large'
-    }
-  };
-  this.signs = signs;
-  this.vocabs = vocabs;
-  this.page = 'mainMenu';
-  this.option = '';
-  this.difficulty = '';
-  this.showResults = false;
-  this.resultIsVisible = false;
-  this.romajiInput = '';
-  this.romajiInputOriginal = '';
-  this.kanaInput = '';
-  this.kanaInputOriginal = '';
-  this.showStatistics = false;
-  this.keyboardHidden = true;
-  this.activeTab = 'hiragana';
-  this.showRUSURE = false;
-  this.customSelected = false;
-  this.countCustom = '';
-  this.items = [
-    { id: 'wood', spriteKey: 'img/sprites/Holz.png', quantity: 1, costs: [
-        { id: 'statusRight', quantity: 5 }
-      ]},
-    { id: 'stone', spriteKey: 'img/sprites/Stein.png', quantity: 1, costs: [
-        { id: 'statusRight', quantity: 6 }
-      ]},
-    { id: 'ironOre', spriteKey: 'img/sprites/Eisenerz.png', quantity: 1, costs: [
-        { id: 'statusRight', quantity: 29 }
-      ]},
-    { id: 'fish', spriteKey: 'img/sprites/Fisch.png', quantity: 1, costs: [
-        { id: 'statusRight', quantity: 15 }
-      ]},
-    { id: 'worm', spriteKey: 'img/sprites/Wurm.png', quantity: 1, costs: [
-        { id: 'statusRight', quantity: 2 }
-      ]},
-    { id: 'apple', spriteKey: 'img/sprites/Apfel.png', quantity: 1, costs: [
-        { id: 'statusRight', quantity: 5 }
-      ]},
-    { id: 'string', spriteKey: 'img/sprites/Faden.png', quantity: 1, costs: [
-        { id: 'cobwebs', quantity: 12 },
-        { id: 'statusRight', quantity: 8 }
-      ]},
-    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 1, costs: [
-        { id: 'wood', quantity: 4 },
-        { id: 'stone', quantity: 2 },
-        { id: 'statusRight', quantity: 50 }
-      ]},
-    { id: 'axe', spriteKey: 'img/sprites/Axt.png', quantity: 1, costs: [
-        { id: 'wood', quantity: 4 },
-        { id: 'stone', quantity: 2 },
-        { id: 'statusRight', quantity: 35 }
-      ]},
-    { id: 'fishingRod', spriteKey: 'img/sprites/Angel.png', quantity: 1, costs: [
-        { id: 'wood', quantity: 3 },
-        { id: 'string', quantity: 2 },
-        { id: 'statusRight', quantity: 85 }
-      ]}
-  ];
-  this.sprites = {
-    "Background_Basic": {
-      width: 288, height: 300, link: "img/sprites/Backgrounds/Basic.png"
-    },
-    "Background_Appletree": {
-      width: 480, height: 300, link: "img/sprites/Backgrounds/Appletree.png"
-    },
-    "Background_Bridge": {
-      width: 480, height: 300, link: "img/sprites/Backgrounds/Bridge.png"
-    },
-    "Background_Dirtmine": {
-      width: 480, height: 300, link: "img/sprites/Backgrounds/Dirtmine.png"
-    },
-    "Background_Stone": {
-      width: 480, height: 300, link: "img/sprites/Backgrounds/Stone.png"
-    },
-    "Player": {
-      width: 84, height: 108, link: "img/sprites/Gamer.png"
-    }
-  };
-  this.inventory = [
-    { id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 55 },
-    { id: 'wood', spriteKey: 'img/sprites/Holz.png', quantity: 50 }
-  ];
-  this.player = {
-    x: 102, y: 120, width: 84, height: 108, link: "img/sprites/Gamer.png"
-  };
-  this.backgrounds = [
-    { x: 0, y: 0, width: 288, height: 300, link: "img/sprites/Backgrounds/Basic.png" },
-    { x: 288, y: 0, width: 480, height: 300, link: "img/sprites/Backgrounds/Appletree.png" }
-  ];
-  this.searchResult = [];
-  this.searchTerm = '';
-  this.searchSelected = false;
-  this.wordCount = 0;
-  this.vocabWords = [];
-  this.currentWord = 0;
-  this.currentShopPage = 1;
-  this.scores = {
-    scores: [
-      { id: 'statusLeft', number: 0 },
-      { id: 'statusMiddle', number: 0 },
-      { id: 'statusRight', number: 0 }
-    ]
-  };
-  this.saveData = function () {
-    window.localStorage.setItem('globalDict', JSON.stringify({
-      "lang": this.lang,
-      "design": this.theme,
-      "size": this.size,
-      "scores": this.scores,
-      "inventory": this.inventory
-    }));
-  };
-  this.loadData = function () {
-    let data = JSON.parse(window.localStorage.getItem('globalDict'));
-    if (data) {
-      if (data.lang) {
-        this.lang = data.lang;
-        this.languageSelection = data.lang;
-      }
-      if (data.theme) {
-        this.theme = data.theme;
-        this.themeSelection = data.theme
-      }
-      if (data.size) {
-        this.size = data.size;
-        this.sizeSelection = data.size;
-      }
-      if (data.scores) {
-        this.scores = data.scores;
-      }
-      if (data.inventory) {
-        this.inventory = data.inventory;
-      }
-    }
-  };
-  this.resetData = function () {
-    this.lang = 'Deutsch';
-    this.theme = 'design1';
-    this.size = 'normal';
-    this.scores = { 
-      scores: [
-        { id: 'statusLeft', number: 0 },
-        { id: 'statusMiddle', number: 0 },
-        { id: 'statusRight', number: 0 }
-      ]
-    };
-    this.inventory = [];
-  };
-  this.createKanji = function () {
-    let set = new Set(this.vocabs.flatMap(entry => entry.kana.split('')));
-    for (let [, value] of this.signs.entries()) {
-      value.map(sign => {
-        set.delete(sign[1]);
-      }, this);
-    }
-    let kanji = [];
-    for (let value of set.values()) {
-      kanji.push(['', value]);
-    }
-    this.signs.set('kanji', kanji);
-  };
-  this.canvasLoop = function (timestamp) {
-    if (this.page === 'adventure') {
-      this.raf = requestAnimationFrame(timestamp => this.canvasLoop(timestamp));
-
-      this.lag += timestamp - this.startTS;
-
-      while (this.lag > this.refreshrate) {
-        this.frameNo++;
-
-        if (this.lag > this.refreshrate * 5) {
-          this.lag %= this.refreshrate;
-        } else {
-          this.lag -= this.refreshrate;
-        }
-      }
-
-      this.clearCanvas();
-      this.canvasDraw();
-
-      this.startTS = timestamp;
-    }
-  };
-  this.canvasDraw = function () {
-    this.backgrounds.map(background => {
-      drawCanvasImage(background, this);
-    }, this);
-
-    drawCanvasImage(this.player, this);
-
-    if (this.vocabWords.length !== 0) {
-      drawCanvasRect(this.canvas.width / 2 - 150, 0, 300, 30, 'standardBlur', this);
-      drawCanvasText(this.canvas.width / 2, 15, this.vocabWords[this.currentWord][this.lang], 'standard', this);
-    }
-  };
-  this.clearCanvas = function () {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  };
+function VueDict(globalDict) {
+  this.gD = globalDict;
   this.css = new Vue({
     el: '#bulmaCSS',
-    data: this,
+    data: globalDict,
     computed: {
       getDesign: function () {
         return this.themes[this.theme].link;
@@ -326,7 +11,7 @@ function GlobalDict() {
   });
   this.status = new Vue({
     el: '#status',
-    data: this,
+    data: globalDict,
     methods: {
       getText: function (id) {
         return this.languages[this.lang][id];
@@ -335,7 +20,7 @@ function GlobalDict() {
   });
   this.mainMenu = new Vue({
     el: '#mainMenu',
-    data: this,
+    data: globalDict,
     computed: {
       isSeen: function () {
         return this.page === 'mainMenu';
@@ -356,7 +41,7 @@ function GlobalDict() {
   });
   this.selection = new Vue({
     el: '#selection',
-    data: this,
+    data: globalDict,
     computed: {
       isSeen: function () {
         return this.page === 'selection';
@@ -454,18 +139,15 @@ function GlobalDict() {
         }
         this.page = this.option;
         if (this.page === 'adventure') {
-          if (this.canvas === null) {
-            this.canvas = document.getElementById('adventureCanvas');
-            this.context = this.canvas.getContext('2d');
-          }
-          this.raf = requestAnimationFrame(timestamp => this.canvasLoop(timestamp));
+          console.log(this);
+          this.canvasDict.raf = requestAnimationFrame(timestamp => this.canvasDict.canvasLoop(timestamp));
         }
       }
     }
   });
   this.training = new Vue({
     el: '#training',
-    data: this,
+    data: globalDict,
     computed: {
       isSeen: function () {
         return this.page === 'training';
@@ -536,7 +218,7 @@ function GlobalDict() {
   });
   this.adventure = new Vue({
     el: '#adventure',
-    data: this,
+    data: globalDict,
     computed: {
       isSeen: function () {
         return this.page === 'adventure';
@@ -725,7 +407,7 @@ function GlobalDict() {
   });
   this.shop = new Vue({
     el: '#shop',
-    data: this,
+    data: globalDict,
     computed: {
       isSeen: function () {
         return this.page === 'shop';
@@ -831,7 +513,7 @@ function GlobalDict() {
   });
   this.details = new Vue({
     el: '#details',
-    data: this,
+    data: globalDict,
     computed: {
       isSeen: function () {
         return this.page === 'details';
@@ -931,7 +613,7 @@ function GlobalDict() {
   });
   this.settings = new Vue({
     el: '#settings',
-    data: this,
+    data: globalDict,
     computed: {
       isSeen: function () {
         return this.page === 'settings';
@@ -960,7 +642,7 @@ function GlobalDict() {
   });
   this.modal = new Vue({
     el: '#modal',
-    data: this,
+    data: globalDict,
     methods: {
       getClass: function(type) {
         return this.classes[type][this.size];

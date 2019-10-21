@@ -4,7 +4,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="img/vocadv.png" type="image/x-icon">
+    <link rel="shortcut icon" href="img/vocadv32x32.png" type="image/x-icon">
     <title>
         Vocadventure
     </title>
@@ -763,8 +763,7 @@
             <p class="control has-icons-left topBottomMargin">
               <span class="select is-fullwidth" v-bind:class="getClass('select')">
                 <select v-model="themeSelection">
-                  <option v-for="themeId in Object.keys(themes)" v-bind:selected="themeId === theme"
-                          v-bind:value="themeId">
+                  <option v-for="themeId in Object.keys(themes)" v-bind:value="themeId">
                     {{ languages[lang][themeId] }}
                   </option>
                 </select>
@@ -855,6 +854,8 @@
     <script src="scripts/signs.js"></script>
     <script src="scripts/canvasHelper.js"></script>
     <script src="scripts/canvasStyles.js"></script>
-    <script src="scripts/script.js"></script>
+    <script src="scripts/canvasDict.js"></script>
+    <script src="scripts/vueDict.js"></script>
+    <script src="scripts/main.js"></script>
   </body>
 </html>
