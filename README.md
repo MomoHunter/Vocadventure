@@ -1,5 +1,7 @@
 <meta http-equiv="refresh" content="0; url=https://momohunter.github.io/Vocadventure/main.html" />
 
+![Banner](Banner.png)
+
 # Vocadventure
 This is a vocabulary trainer for learning japanese, available in german and english. To make it more fun, it has an adventure built in.
 
