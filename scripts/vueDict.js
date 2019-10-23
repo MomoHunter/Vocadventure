@@ -449,7 +449,9 @@ function VueDict(globalDict) {
             }, this);
           } else {
             this.items.map(item => {
-              this.searchResult.push(item);
+              if (item.costs) {
+                this.searchResult.push(item);
+              }
             }, this);
           }
         } else {
@@ -461,6 +463,7 @@ function VueDict(globalDict) {
             }, this);
           } else {
             this.inventory.map(item => {
+              console.log(item);
               this.searchResult.push(item);
             }, this);
           }

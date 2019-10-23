@@ -111,11 +111,11 @@ file_text_dict = textwrap.indent(
     text_indent
 )
 
-with open('../scripts/SBJ_main.js') as f:  # read surrounding text
+with open('../scripts/canvasDict.js') as f:  # read surrounding text
     file_text = f.read()
     file_text_pre, file_text = file_text.split(text_indent + start_marker_text)
     _, file_text_post = file_text.split(end_marker_text)
 
-with open('../scripts/SBJ_main.js', 'w') as f:  # clear file and write new text
+with open('../scripts/canvasDict.js', 'w') as f:  # clear file and write new text
     f.writelines([file_text_pre, file_text_dict, file_text_post])
 # endregion

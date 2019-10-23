@@ -12,7 +12,6 @@ function GlobalDict() {
   this.languageSelection = 'Deutsch';
   this.lang = 'Deutsch';
   this.languages = languages;
-  this.styles = styles;
   this.themeSelection = 'design1';
   this.theme = 'design1';
   this.themes = {
@@ -130,93 +129,76 @@ function GlobalDict() {
   this.countCustom = '';
   this.items = [
     {
-      id: 'wood', spriteKey: 'img/sprites/Holz.png', quantity: 1, costs: [
+      id: 'wood', spriteKey: 'img/sprites/Item/Wood.png', quantity: 1, costs: [
         {id: 'statusRight', quantity: 5}
       ]
     },
     {
-      id: 'stone', spriteKey: 'img/sprites/Stein.png', quantity: 1, costs: [
+      id: 'stone', spriteKey: 'img/sprites/Item/Stone.png', quantity: 1, costs: [
         {id: 'statusRight', quantity: 6}
       ]
     },
     {
-      id: 'ironOre', spriteKey: 'img/sprites/Eisenerz.png', quantity: 1, costs: [
+      id: 'ironOre', spriteKey: 'img/sprites/Item/Ironore.png', quantity: 1, costs: [
         {id: 'statusRight', quantity: 29}
       ]
     },
     {
-      id: 'fish', spriteKey: 'img/sprites/Fisch.png', quantity: 1, costs: [
+      id: 'fish', spriteKey: 'img/sprites/Item/Fish.png', quantity: 1, costs: [
         {id: 'statusRight', quantity: 15}
       ]
     },
     {
-      id: 'worm', spriteKey: 'img/sprites/Wurm.png', quantity: 1, costs: [
+      id: 'worm', spriteKey: 'img/sprites/Item/Worm.png', quantity: 1, costs: [
         {id: 'statusRight', quantity: 2}
       ]
     },
     {
-      id: 'apple', spriteKey: 'img/sprites/Apfel.png', quantity: 1, costs: [
+      id: 'apple', spriteKey: 'img/sprites/Item/Apple.png', quantity: 1, costs: [
         {id: 'statusRight', quantity: 5}
       ]
     },
     {
-      id: 'string', spriteKey: 'img/sprites/Faden.png', quantity: 1, costs: [
+      id: 'string', spriteKey: 'img/sprites/Item/String.png', quantity: 1, costs: [
         {id: 'cobwebs', quantity: 12},
         {id: 'statusRight', quantity: 8}
       ]
     },
     {
-      id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 1, costs: [
+      id: 'shovel', spriteKey: 'img/sprites/Item/Shovel.png', quantity: 1, costs: [
         {id: 'wood', quantity: 4},
         {id: 'stone', quantity: 2},
         {id: 'statusRight', quantity: 50}
       ]
     },
     {
-      id: 'axe', spriteKey: 'img/sprites/Axt.png', quantity: 1, costs: [
+      id: 'axe', spriteKey: 'img/sprites/Item/Axe.png', quantity: 1, costs: [
         {id: 'wood', quantity: 4},
         {id: 'stone', quantity: 2},
         {id: 'statusRight', quantity: 35}
       ]
     },
     {
-      id: 'fishingRod', spriteKey: 'img/sprites/Angel.png', quantity: 1, costs: [
+      id: 'fishingRod', spriteKey: 'img/sprites/Item/Fishing_Rod.png', quantity: 1, costs: [
         {id: 'wood', quantity: 3},
         {id: 'string', quantity: 2},
         {id: 'statusRight', quantity: 85}
       ]
+    },
+    {
+      id: 'pickaxe', spriteKey: 'img/sprites/Item/Pickaxe.png', quantity: 1, costs: [
+        {id: 'wood', quantity: 3},
+        {id: 'stone', quantity: 5},
+        {id: 'statusRight', quantity: 120}
+      ]
+    },
+    {
+      id: 'cobwebs', spriteKey: 'img/sprites/Item/Cobwebs.png', quantity: 1
     }
   ];
-  this.sprites = {
-    "Background_Basic": {
-      width: 288, height: 300, link: "img/sprites/Backgrounds/Basic.png"
-    },
-    "Background_Appletree": {
-      width: 480, height: 300, link: "img/sprites/Backgrounds/Appletree.png"
-    },
-    "Background_Bridge": {
-      width: 480, height: 300, link: "img/sprites/Backgrounds/Bridge.png"
-    },
-    "Background_Dirtmine": {
-      width: 480, height: 300, link: "img/sprites/Backgrounds/Dirtmine.png"
-    },
-    "Background_Stone": {
-      width: 480, height: 300, link: "img/sprites/Backgrounds/Stone.png"
-    },
-    "Player": {
-      width: 84, height: 108, link: "img/sprites/Gamer.png"
-    }
-  };
   this.inventory = [
-    {id: 'shovel', spriteKey: 'img/sprites/Schaufel.png', quantity: 55},
-    {id: 'wood', spriteKey: 'img/sprites/Holz.png', quantity: 50}
-  ];
-  this.player = {
-    x: 102, y: 120, width: 84, height: 108, link: "img/sprites/Gamer.png"
-  };
-  this.backgrounds = [
-    {x: 0, y: 0, width: 288, height: 300, link: "img/sprites/Backgrounds/Basic.png"},
-    {x: 288, y: 0, width: 480, height: 300, link: "img/sprites/Backgrounds/Appletree.png"}
+    {id: 'shovel', spriteKey: 'img/sprites/Item/Shovel.png', quantity: 55},
+    {id: 'wood', spriteKey: 'img/sprites/Item/Wood.png', quantity: 50}
   ];
   this.searchResult = [];
   this.searchTerm = '';
