@@ -9,6 +9,9 @@ function CanvasDict(globalDict) {
   this.lag = 0;
   this.refreshrate = 1000 / 60;
   this.frameNo = 0;
+  this.animationInProgress = false;
+  this.animationQueue = [];
+  this.currentAnimation = null;
   this.styles = styles;
   // start spriteDict
   // The following code is auto-generated, don't change it!
@@ -61,6 +64,13 @@ function CanvasDict(globalDict) {
     "Player_Player_Walk": [true, 1216, [170, 255], 72, 84]
   };
   // end spriteDict
+  this.availableBackgrounds = [
+    { spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, chance: 0.3 },
+    { spriteKey: 'Background_Tiles_Basic', chance: 1 },
+    { spriteKey: 'Background_Tiles_Bridge', animationSpeed: 12, chance: 0.3 },
+    { spriteKey: 'Background_Tiles_Dirtmine', chance: 0.7 },
+    { spriteKey: 'Background_Tiles_Stone', chance: 0.7 }
+  ];
   this.player = {
     x: 102, y: 156, spriteKey: 'Player_Player'
   };
@@ -84,17 +94,85 @@ function CanvasDict(globalDict) {
         }
       }
 
+      this.canvasUpdate();
+
       this.clearCanvas();
       this.canvasDraw();
 
       this.startTS = timestamp;
     }
   };
+  this.canvasUpdate = function () {
+    if (!this.animationInProgress && this.animationQueue.length > 0) {
+      this.currentAnimation = this.animationQueue.pop();
+      this.animationInProgress = true;
+    }
+    if (this.currentAnimation) {
+      this.animate();
+    }
+  };
+  this.animate = function () {
+    let animationFinished = false;
+    switch (this.currentAnimation.type) {
+      case 'moveBackground':
+        animationFinished = this.moveBackground();
+        break;
+      default:
+    }
+    if (animationFinished) {
+      this.currentAnimation = null;
+      this.animationInProgress = false;
+    }
+  };
+  this.moveBackground = function () {
+    this.backgrounds.map((background, index) => {
+      background.x -= 1;
+
+      let {spriteWidth} = getSpriteData(background.spriteKey, this);
+      if (index === 0) {
+        if (background.x + spriteWidth < -100) {
+          this.backgrounds.splice(index, 1);
+        }
+      }
+      if (index === this.backgrounds.length - 1) {
+        if (background.x + spriteWidth < this.canvas.width + 100) {
+          let total = 0;
+          let random = 0;
+          this.availableBackgrounds.map(background1 => {
+            total += background1.chance;
+          }, this);
+
+          random = Math.random() * total;
+
+          this.availableBackgrounds.map(background1 => {
+            random -= background1.chance;
+            if (random <= 0) {
+              let newBackground = {
+                x: background.x + spriteWidth,
+                y: 0,
+                spriteKey: background1.spriteKey
+              };
+              if (background1.animationSpeed) {
+                newBackground.animationSpeed = background1.animationSpeed;
+              }
+              this.backgrounds.push(newBackground);
+            }
+          }, this);
+        }
+      }
+    }, this);
+
+    this.currentAnimation.counter += 1;
+
+    console.log(this.currentAnimation.counter, this.currentAnimation.goal);
+    return this.currentAnimation.counter >= this.currentAnimation.goal;
+
+  };
   this.canvasDraw = function () {
     this.backgrounds.map(background => {
       drawCanvasImage(
         background.x, background.y, background.spriteKey, this,
-        background.animationSpeed ? background.animationSpeed : 8
+        background.animationSpeed ? background.animationSpeed : undefined
       );
     }, this);
 

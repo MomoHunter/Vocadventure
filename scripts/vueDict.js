@@ -392,6 +392,13 @@ function VueDict(globalDict) {
         }
       },
       nextWord: function () {
+        if (this.kanaIsCorrect || this.romajiIsCorrect) {
+          this.canvasDict.animationQueue.push({
+            type: 'moveBackground',
+            counter: 0,
+            goal: 96
+          });
+        }
         this.currentWord++;
         this.showResults = false;
         this.resultIsVisible = false;
@@ -463,7 +470,6 @@ function VueDict(globalDict) {
             }, this);
           } else {
             this.inventory.map(item => {
-              console.log(item);
               this.searchResult.push(item);
             }, this);
           }
