@@ -79,7 +79,7 @@ function drawCanvasRect(x, y, width, height, styleKey, cD) {
  * @param {number} animationSpeed the speed of the animation, default: 8
  * @param {number} rotation  gives the rotation in degree
  */
-function drawCanvasImage(x, y, spriteKey, cD, animationSpeed = 8, rotation = 0) {
+function drawCanvasImage(x, y, spriteKey, cD, animationSpeed = 12, rotation = 0) {
   if (!spriteKey) {
     return;
   }
@@ -88,7 +88,7 @@ function drawCanvasImage(x, y, spriteKey, cD, animationSpeed = 8, rotation = 0) 
   let [isAnim, spriteX, spriteY, spriteWidth, spriteHeight] = spriteData;
 
   if (isAnim) {
-    let frameNo = Math.floor(cD.frameNo / animationSpeed) % spriteY.length;
+    let frameNo = Math.floor((cD.frameNo - cD.animationStart) / animationSpeed) % spriteY.length;
     spriteY = spriteY[frameNo];
   }
   if (rotation !== 0) {
