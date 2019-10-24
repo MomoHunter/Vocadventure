@@ -26,43 +26,46 @@ function CanvasDict(globalDict) {
     "Background_Fuji": [false, 0, 0, 504, 120],
     "Background_Tiles_Appletree": [true, 505, [0, 301, 602, 903], 480, 300],
     "Background_Tiles_Basic": [false, 505, 1204, 288, 300],
-    "Background_Tiles_Bridge": [true, 505, [1505, 1806, 2107, 2408], 480, 300],
-    "Background_Tiles_Dirtmine": [false, 505, 2709, 96, 300],
-    "Background_Tiles_Stone": [false, 505, 3010, 288, 300],
-    "Decoration_Bush1": [false, 986, 0, 96, 36],
-    "Decoration_Bush2": [false, 986, 37, 108, 48],
-    "Decoration_Bush3": [false, 986, 86, 120, 48],
-    "Decoration_Bush4": [false, 986, 135, 120, 48],
-    "Decoration_Farn1": [false, 986, 184, 24, 36],
-    "Decoration_Farn10": [false, 986, 221, 24, 36],
-    "Decoration_Farn2": [false, 986, 258, 24, 48],
-    "Decoration_Farn3": [false, 986, 307, 24, 60],
-    "Decoration_Farn4": [false, 986, 368, 36, 72],
-    "Decoration_Farn5": [false, 986, 441, 12, 36],
-    "Decoration_Farn6": [false, 986, 478, 12, 48],
-    "Decoration_Farn7": [false, 986, 527, 36, 72],
-    "Decoration_Farn8": [false, 986, 600, 24, 60],
-    "Decoration_Farn9": [false, 986, 661, 24, 48],
-    "Decoration_Flower1": [false, 986, 710, 36, 48],
-    "Decoration_Flower2": [false, 986, 759, 36, 48],
-    "Decoration_Flower3": [false, 986, 808, 36, 48],
-    "Decoration_Flower4": [false, 986, 857, 36, 48],
-    "Decoration_Flower5": [false, 986, 906, 36, 48],
-    "Decoration_Flower6": [false, 986, 955, 36, 48],
-    "Item_Apple": [false, 1107, 0, 84, 96],
-    "Item_Axe": [false, 1107, 97, 108, 84],
-    "Item_Fish": [false, 1107, 182, 96, 72],
-    "Item_Fishing_Rod": [false, 1107, 255, 96, 96],
-    "Item_Ironore": [false, 1107, 352, 96, 96],
-    "Item_Pickaxe": [false, 1107, 449, 96, 96],
-    "Item_Shovel": [false, 1107, 546, 96, 96],
-    "Item_Stone": [false, 1107, 643, 96, 96],
-    "Item_Web": [false, 1107, 740, 96, 96],
-    "Item_Wood": [false, 1107, 837, 96, 84],
-    "Item_Worm": [false, 1107, 922, 72, 96],
-    "Player_Player": [false, 1216, 0, 72, 84],
-    "Player_Player_Back": [false, 1216, 85, 72, 84],
-    "Player_Player_Walk": [true, 1216, [170, 255], 72, 84]
+    "Background_Tiles_Bridge_B": [true, 505, [1505, 1806, 2107, 2408], 480, 300],
+    "Background_Tiles_Bridge_F": [false, 505, 2709, 480, 300],
+    "Background_Tiles_Dirtmine": [false, 505, 3010, 96, 300],
+    "Background_Tiles_Sky": [false, 505, 3311, 600, 180],
+    "Background_Tiles_Stone": [false, 505, 3492, 288, 300],
+    "Decoration_Bush1": [false, 1106, 0, 96, 36],
+    "Decoration_Bush2": [false, 1106, 37, 108, 48],
+    "Decoration_Bush3": [false, 1106, 86, 120, 48],
+    "Decoration_Bush4": [false, 1106, 135, 120, 48],
+    "Decoration_Farn1": [false, 1106, 184, 24, 36],
+    "Decoration_Farn10": [false, 1106, 221, 24, 36],
+    "Decoration_Farn2": [false, 1106, 258, 24, 48],
+    "Decoration_Farn3": [false, 1106, 307, 24, 60],
+    "Decoration_Farn4": [false, 1106, 368, 36, 72],
+    "Decoration_Farn5": [false, 1106, 441, 12, 36],
+    "Decoration_Farn6": [false, 1106, 478, 12, 48],
+    "Decoration_Farn7": [false, 1106, 527, 36, 72],
+    "Decoration_Farn8": [false, 1106, 600, 24, 60],
+    "Decoration_Farn9": [false, 1106, 661, 24, 48],
+    "Decoration_Flower1": [false, 1106, 710, 36, 48],
+    "Decoration_Flower2": [false, 1106, 759, 36, 48],
+    "Decoration_Flower3": [false, 1106, 808, 36, 48],
+    "Decoration_Flower4": [false, 1106, 857, 36, 48],
+    "Decoration_Flower5": [false, 1106, 906, 36, 48],
+    "Decoration_Flower6": [false, 1106, 955, 36, 48],
+    "Item_Apple": [false, 1227, 0, 84, 96],
+    "Item_Axe": [false, 1227, 97, 108, 84],
+    "Item_Cobwebs": [false, 1227, 182, 96, 96],
+    "Item_Fish": [false, 1227, 279, 96, 72],
+    "Item_Fishing_Rod": [false, 1227, 352, 96, 96],
+    "Item_Ironore": [false, 1227, 449, 96, 96],
+    "Item_Pickaxe": [false, 1227, 546, 96, 96],
+    "Item_Shovel": [false, 1227, 643, 96, 96],
+    "Item_Stone": [false, 1227, 740, 96, 96],
+    "Item_String": [false, 1227, 837, 96, 96],
+    "Item_Wood": [false, 1227, 934, 96, 84],
+    "Item_Worm": [false, 1227, 1019, 72, 96],
+    "Player_Player": [false, 1336, 0, 72, 84],
+    "Player_Player_Back": [false, 1336, 85, 72, 84],
+    "Player_Player_Walk": [true, 1336, [170, 255], 72, 84]
   };
   // end spriteDict
   this.availableBackgrounds = [
@@ -73,7 +76,7 @@ function CanvasDict(globalDict) {
     { spriteKey: 'Background_Tiles_Stone', chance: 0.25 }
   ];
   this.player = {
-    x: 198, y: 156, spriteKeys: ['Player_Player', 'Player_Player_Walk']
+    x: 198, y: 156, spriteKeys: ['Player_Player', 'Player_Player_Walk'], animationSpeed : 16
   };
   this.backgrounds = [
     {x: 0, y: 0, spriteKey: 'Background_Tiles_Basic'},
@@ -140,7 +143,7 @@ function CanvasDict(globalDict) {
       if (index === this.backgrounds.length - 1) {
         if (background.x + spriteWidth < this.canvas.width + 100) {
           let total = 0;
-          let random = 0;
+          let random;
           this.availableBackgrounds.map(availableBackground => {
             total += availableBackground.chance;
           }, this);
@@ -168,11 +171,11 @@ function CanvasDict(globalDict) {
 
     this.currentAnimation.counter += 1;
 
-    console.log(this.currentAnimation.counter, this.currentAnimation.goal);
     return this.currentAnimation.counter >= this.currentAnimation.goal;
-
   };
   this.canvasDraw = function () {
+    drawCanvasImage(0, 0, 'Background_Tiles_Sky', this);
+
     this.backgrounds.map(background => {
       drawCanvasImage(
         background.x, background.y, background.spriteKey, this,
@@ -187,7 +190,9 @@ function CanvasDict(globalDict) {
       }
     }
 
-    drawCanvasImage(this.player.x, this.player.y, this.player.spriteKeys[playerKey], this);
+    drawCanvasImage(
+      this.player.x, this.player.y, this.player.spriteKeys[playerKey], this, this.player.animationSpeed, true
+    );
 
     if (this.gD.vocabWords.length !== 0) {
       drawCanvasRect(this.canvas.width / 2 - 150, 0, 300, 30, 'standardBlur', this);

@@ -77,9 +77,10 @@ function drawCanvasRect(x, y, width, height, styleKey, cD) {
  * @param {string} spriteKey defines which sprite should be drawn
  * @param {CanvasDict} cD
  * @param {number} animationSpeed the speed of the animation, default: 8
+ * @param {boolean} useCustomStart if animation should count from cD.animationStart
  * @param {number} rotation  gives the rotation in degree
  */
-function drawCanvasImage(x, y, spriteKey, cD, animationSpeed = 12, rotation = 0) {
+function drawCanvasImage(x, y, spriteKey, cD, animationSpeed = 12, useCustomStart = false, rotation = 0) {
   if (!spriteKey) {
     return;
   }
@@ -87,8 +88,11 @@ function drawCanvasImage(x, y, spriteKey, cD, animationSpeed = 12, rotation = 0)
   let {full: spriteData} = getSpriteData(spriteKey, cD);
   let [isAnim, spriteX, spriteY, spriteWidth, spriteHeight] = spriteData;
 
-  if (isAnim) {
+  if (isAnim && useCustomStart) {
     let frameNo = Math.floor((cD.frameNo - cD.animationStart) / animationSpeed) % spriteY.length;
+    spriteY = spriteY[frameNo];
+  } else if (isAnim) {
+    let frameNo = Math.floor(cD.frameNo / animationSpeed) % spriteY.length;
     spriteY = spriteY[frameNo];
   }
   if (rotation !== 0) {

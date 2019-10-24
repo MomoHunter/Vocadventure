@@ -129,66 +129,69 @@ function GlobalDict() {
   this.countCustom = '';
   this.items = [
     {
-      id: 'wood', spriteKey: 'img/sprites/Item/Wood.png', quantity: 1, costs: [
+      id: 'wood', spriteKey: 'img/sprites/Item/Wood.png', quantity: 1, points: 3, costs: [
         {id: 'statusRight', quantity: 5}
       ]
     },
     {
-      id: 'stone', spriteKey: 'img/sprites/Item/Stone.png', quantity: 1, costs: [
+      id: 'stone', spriteKey: 'img/sprites/Item/Stone.png', quantity: 1, points: 3, costs: [
         {id: 'statusRight', quantity: 6}
       ]
     },
     {
-      id: 'ironOre', spriteKey: 'img/sprites/Item/Ironore.png', quantity: 1, costs: [
+      id: 'ironOre', spriteKey: 'img/sprites/Item/Ironore.png', quantity: 1, points: 9, costs: [
         {id: 'statusRight', quantity: 29}
       ]
     },
     {
-      id: 'fish', spriteKey: 'img/sprites/Item/Fish.png', quantity: 1, costs: [
+      id: 'fish', spriteKey: 'img/sprites/Item/Fish.png', quantity: 1, points: 6, costs: [
         {id: 'statusRight', quantity: 15}
       ]
     },
     {
-      id: 'worm', spriteKey: 'img/sprites/Item/Worm.png', quantity: 1, costs: [
+      id: 'worm', spriteKey: 'img/sprites/Item/Worm.png', quantity: 1, points: 1, costs: [
         {id: 'statusRight', quantity: 2}
       ]
     },
     {
-      id: 'apple', spriteKey: 'img/sprites/Item/Apple.png', quantity: 1, costs: [
+      id: 'apple', spriteKey: 'img/sprites/Item/Apple.png', quantity: 1, points: 5, costs: [
         {id: 'statusRight', quantity: 5}
       ]
     },
     {
-      id: 'string', spriteKey: 'img/sprites/Item/String.png', quantity: 1, costs: [
+      id: 'string', spriteKey: 'img/sprites/Item/String.png', quantity: 1, points: 7, costs: [
         {id: 'cobwebs', quantity: 12},
         {id: 'statusRight', quantity: 8}
       ]
     },
     {
-      id: 'shovel', spriteKey: 'img/sprites/Item/Shovel.png', quantity: 1, costs: [
+      id: 'shovel', spriteKey: 'img/sprites/Item/Shovel.png', quantity: 1, points: 11, costs: [
         {id: 'wood', quantity: 4},
         {id: 'stone', quantity: 2},
+        {id: 'string', quantity: 2},
         {id: 'statusRight', quantity: 50}
       ]
     },
     {
-      id: 'axe', spriteKey: 'img/sprites/Item/Axe.png', quantity: 1, costs: [
+      id: 'axe', spriteKey: 'img/sprites/Item/Axe.png', quantity: 1, points: 13, costs: [
         {id: 'wood', quantity: 4},
         {id: 'stone', quantity: 2},
+        {id: 'string', quantity: 2},
         {id: 'statusRight', quantity: 35}
       ]
     },
     {
-      id: 'fishingRod', spriteKey: 'img/sprites/Item/Fishing_Rod.png', quantity: 1, costs: [
+      id: 'fishingRod', spriteKey: 'img/sprites/Item/Fishing_Rod.png', quantity: 16, points: 3, costs: [
         {id: 'wood', quantity: 3},
-        {id: 'string', quantity: 2},
+        {id: 'string', quantity: 5},
         {id: 'statusRight', quantity: 85}
       ]
     },
     {
-      id: 'pickaxe', spriteKey: 'img/sprites/Item/Pickaxe.png', quantity: 1, costs: [
+      id: 'pickaxe', spriteKey: 'img/sprites/Item/Pickaxe.png', quantity: 1, points: 18, costs: [
         {id: 'wood', quantity: 3},
         {id: 'stone', quantity: 5},
+        {id: 'string', quantity: 2},
         {id: 'statusRight', quantity: 120}
       ]
     },

@@ -371,23 +371,29 @@ function VueDict(globalDict) {
         this.showResults = true;
         this.romajiInputOriginal = this.romajiInput;
         this.kanaInputOriginal = this.kanaInput;
-        let status = this.scores.scores.find(item => item.id === 'statusRight');
+        let coins = this.scores.scores.find(item => item.id === 'statusRight');
+        let points = this.scores.scores.find(item => item.id === 'statusLeft');
         if (this.romajiIsCorrect) {
-          status.number += 1;
+          coins.number += 1;
+          points.number += 1;
         }
         if (this.kanaIsCorrect) {
           switch (this.vocabWords[this.currentWord].difficulty) {
             case '1':
-              status.number += 1;
+              coins.number += 1;
+              points.number += 1;
               break;
             case '2':
-              status.number += 2;
+              coins.number += 2;
+              points.number += 2;
               break;
             case '3':
-              status.number += 3;
+              coins.number += 3;
+              points.number += 3;
               break;
             default:
-              status.number += 1;
+              coins.number += 1;
+              points.number += 1;
           }
         }
       },
@@ -615,6 +621,7 @@ function VueDict(globalDict) {
           } else {
             this.inventory.push({ id: currentItem.id, quantity: 1, spriteKey: currentItem.spriteKey });
           }
+          this.scores.scores.find(item => item.id === 'statusLeft').number += currentItem.points;
           this.saveData();
         }
       }
