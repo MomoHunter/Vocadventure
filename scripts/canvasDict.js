@@ -152,7 +152,7 @@ function CanvasDict(globalDict) {
                 y: 0,
                 spriteKey: this.availableBackgrounds[i].spriteKey
               };
-              if (this.availabeBackgrounds[i].animationSpeed) {
+              if (this.availableBackgrounds[i].animationSpeed) {
                 newBackground.animationSpeed = this.availableBackgrounds[i].animationSpeed
               }
               this.backgrounds.push(newBackground);
