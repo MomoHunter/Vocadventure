@@ -88,7 +88,7 @@ function CanvasDict(globalDict) {
       while (this.lag > this.refreshrate) {
         this.frameNo++;
 
-        this.canvasUpdate(timestamp);
+        this.canvasUpdate();
 
         if (this.lag > this.refreshrate * 5) {
           this.lag %= this.refreshrate;
@@ -103,11 +103,11 @@ function CanvasDict(globalDict) {
       this.startTS = timestamp;
     }
   };
-  this.canvasUpdate = function (timestamp) {
+  this.canvasUpdate = function () {
     if (!this.animationInProgress && this.animationQueue.length > 0) {
       this.currentAnimation = this.animationQueue.pop();
       this.animationInProgress = true;
-      this.animationStart = timestamp;
+      this.animationStart = this.frameNo;
     }
     if (this.currentAnimation) {
       this.animate();
