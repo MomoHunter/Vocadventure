@@ -12,6 +12,7 @@ function CanvasDict(globalDict) {
   this.animationInProgress = false;
   this.animationQueue = [];
   this.currentAnimation = null;
+  this.animationStart = 0;
   this.styles = styles;
   // start spriteDict
   // The following code is auto-generated, don't change it!
@@ -72,7 +73,7 @@ function CanvasDict(globalDict) {
     { spriteKey: 'Background_Tiles_Stone', chance: 0.25 }
   ];
   this.player = {
-    x: 102, y: 156, spriteKey: 'Player_Player'
+    x: 198, y: 156, spriteKeys: ['Player_Player', 'Player_Player_Walk']
   };
   this.backgrounds = [
     {x: 0, y: 0, spriteKey: 'Background_Tiles_Basic'},
@@ -87,6 +88,8 @@ function CanvasDict(globalDict) {
       while (this.lag > this.refreshrate) {
         this.frameNo++;
 
+        this.canvasUpdate(timestamp);
+
         if (this.lag > this.refreshrate * 5) {
           this.lag %= this.refreshrate;
         } else {
@@ -94,18 +97,17 @@ function CanvasDict(globalDict) {
         }
       }
 
-      this.canvasUpdate();
-
       this.clearCanvas();
       this.canvasDraw();
 
       this.startTS = timestamp;
     }
   };
-  this.canvasUpdate = function () {
+  this.canvasUpdate = function (timestamp) {
     if (!this.animationInProgress && this.animationQueue.length > 0) {
       this.currentAnimation = this.animationQueue.pop();
       this.animationInProgress = true;
+      this.animationStart = timestamp;
     }
     if (this.currentAnimation) {
       this.animate();
@@ -122,6 +124,7 @@ function CanvasDict(globalDict) {
     if (animationFinished) {
       this.currentAnimation = null;
       this.animationInProgress = false;
+      this.animationStart = 0;
     }
   };
   this.moveBackground = function () {
@@ -177,7 +180,14 @@ function CanvasDict(globalDict) {
       );
     }, this);
 
-    drawCanvasImage( this.player.x, this.player.y, this.player.spriteKey, this);
+    let playerKey = 0;
+    if (this.currentAnimation) {
+      if (this.currentAnimation.type === 'moveBackground') {
+        playerKey = 1;
+      }
+    }
+
+    drawCanvasImage(this.player.x, this.player.y, this.player.spriteKeys[playerKey], this);
 
     if (this.gD.vocabWords.length !== 0) {
       drawCanvasRect(this.canvas.width / 2 - 150, 0, 300, 30, 'standardBlur', this);
