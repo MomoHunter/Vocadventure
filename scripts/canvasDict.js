@@ -65,11 +65,11 @@ function CanvasDict(globalDict) {
   };
   // end spriteDict
   this.availableBackgrounds = [
-    { spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, chance: 0.3 },
+    { spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, chance: 0.1 },
     { spriteKey: 'Background_Tiles_Basic', chance: 1 },
-    { spriteKey: 'Background_Tiles_Bridge', animationSpeed: 12, chance: 0.3 },
-    { spriteKey: 'Background_Tiles_Dirtmine', chance: 0.7 },
-    { spriteKey: 'Background_Tiles_Stone', chance: 0.7 }
+    { spriteKey: 'Background_Tiles_Bridge', animationSpeed: 12, chance: 0.1 },
+    { spriteKey: 'Background_Tiles_Dirtmine', chance: 0.25 },
+    { spriteKey: 'Background_Tiles_Stone', chance: 0.25 }
   ];
   this.player = {
     x: 102, y: 156, spriteKey: 'Player_Player'
