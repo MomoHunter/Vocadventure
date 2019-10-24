@@ -138,26 +138,27 @@ function CanvasDict(globalDict) {
         if (background.x + spriteWidth < this.canvas.width + 100) {
           let total = 0;
           let random = 0;
-          this.availableBackgrounds.map(background1 => {
-            total += background1.chance;
+          this.availableBackgrounds.map(availableBackground => {
+            total += availableBackground.chance;
           }, this);
 
           random = Math.random() * total;
 
-          this.availableBackgrounds.map(background1 => {
-            random -= background1.chance;
+          for (let i = 0; i < this.availableBackgrounds.length; i++) {
+            random -= this.availableBackgrounds[i].chance;
             if (random <= 0) {
               let newBackground = {
                 x: background.x + spriteWidth,
                 y: 0,
-                spriteKey: background1.spriteKey
+                spriteKey: this.availableBackgrounds[i].spriteKey
               };
-              if (background1.animationSpeed) {
-                newBackground.animationSpeed = background1.animationSpeed;
+              if (this.availabeBackgrounds[i].animationSpeed) {
+                newBackground.animationSpeed = this.availableBackgrounds[i].animationSpeed
               }
               this.backgrounds.push(newBackground);
+              break;
             }
-          }, this);
+          }
         }
       }
     }, this);
