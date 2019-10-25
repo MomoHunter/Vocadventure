@@ -75,7 +75,7 @@ function CanvasDict(globalDict) {
   this.availableBackgrounds = [
     { spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, chance: 0.1 },
     { spriteKey: 'Background_Tiles_Basic', chance: 1 },
-    { spriteKey: 'Background_Tiles_Bridge_B', animationSpeed: 12, chance: 10.1 },
+    { spriteKey: 'Background_Tiles_Bridge_B', animationSpeed: 12, chance: 0.1 },
     { spriteKey: 'Background_Tiles_Dirtmine', chance: 0.25 },
     { spriteKey: 'Background_Tiles_Stone', chance: 0.25 }
   ];
