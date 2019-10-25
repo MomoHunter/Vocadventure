@@ -373,10 +373,20 @@ function VueDict(globalDict) {
         this.kanaInputOriginal = this.kanaInput;
         let coins = this.scores.scores.find(item => item.id === 'statusRight');
         let points = this.scores.scores.find(item => item.id === 'statusLeft');
+
+        if (this.kanaIsCorrect || this.romajiIsCorrect) {
+          this.canvasDict.animationQueue.push({
+            type: 'moveBackground',
+            counter: 0,
+            goal: 96
+          });
+        }
+
         if (this.romajiIsCorrect) {
           coins.number += 1;
           points.number += 1;
         }
+
         if (this.kanaIsCorrect) {
           switch (this.vocabWords[this.currentWord].difficulty) {
             case '1':
@@ -398,13 +408,6 @@ function VueDict(globalDict) {
         }
       },
       nextWord: function () {
-        if (this.kanaIsCorrect || this.romajiIsCorrect) {
-          this.canvasDict.animationQueue.push({
-            type: 'moveBackground',
-            counter: 0,
-            goal: 96
-          });
-        }
         this.currentWord++;
         this.showResults = false;
         this.resultIsVisible = false;

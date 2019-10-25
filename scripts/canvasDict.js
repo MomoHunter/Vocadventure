@@ -13,6 +13,7 @@ function CanvasDict(globalDict) {
   this.animationQueue = [];
   this.currentAnimation = null;
   this.animationStart = 0;
+  this.backgroundAnimationSpeed = 1;
   this.styles = styles;
   // start spriteDict
   // The following code is auto-generated, don't change it!
@@ -65,13 +66,16 @@ function CanvasDict(globalDict) {
     "Item_Worm": [false, 1227, 1019, 72, 96],
     "Player_Player": [false, 1336, 0, 72, 84],
     "Player_Player_Back": [false, 1336, 85, 72, 84],
-    "Player_Player_Walk": [true, 1336, [170, 255], 72, 84]
+    "Player_Player_Shadow": [false, 1336, 170, 36, 12],
+    "Player_Player_Walk": [true, 1336, [183, 268], 72, 84],
+    "Special_Placeholder": [false, 1409, 0, 40, 40],
+    "Special_Placeholder_B": [false, 1409, 41, 80, 80]
   };
   // end spriteDict
   this.availableBackgrounds = [
     { spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, chance: 0.1 },
     { spriteKey: 'Background_Tiles_Basic', chance: 1 },
-    { spriteKey: 'Background_Tiles_Bridge', animationSpeed: 12, chance: 0.1 },
+    { spriteKey: 'Background_Tiles_Bridge_B', animationSpeed: 12, chance: 10.1 },
     { spriteKey: 'Background_Tiles_Dirtmine', chance: 0.25 },
     { spriteKey: 'Background_Tiles_Stone', chance: 0.25 }
   ];
@@ -80,7 +84,7 @@ function CanvasDict(globalDict) {
   };
   this.backgrounds = [
     {x: 0, y: 0, spriteKey: 'Background_Tiles_Basic'},
-    {x: 288, y: 0, spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24}
+    {x: 288, y: 0, spriteKey: 'Background_Tiles_Bridge_B', animationSpeed: 12}
   ];
   this.canvasLoop = function (timestamp) {
     if (this.gD.page === 'adventure') {
@@ -125,23 +129,40 @@ function CanvasDict(globalDict) {
       default:
     }
     if (animationFinished) {
+      this.backgrounds.map(background => {
+        background.x = Math.round(background.x / 96) * 96;
+      }, this);
+      this.player.y = Math.round(this.player.y / 12) * 12;
       this.currentAnimation = null;
       this.animationInProgress = false;
       this.animationStart = 0;
     }
   };
   this.moveBackground = function () {
-    this.backgrounds.map((background, index) => {
-      background.x -= 1;
+    for (let i = 0; i < this.backgrounds.length; i++) {
+      this.backgrounds[i].x -= this.backgroundAnimationSpeed;
 
-      let {spriteWidth} = getSpriteData(background.spriteKey, this);
-      if (index === 0) {
-        if (background.x + spriteWidth < -100) {
-          this.backgrounds.splice(index, 1);
+      if (this.backgrounds[i].spriteKey === 'Background_Tiles_Bridge_B') {
+        if (this.backgrounds[i].x < 156 && this.backgrounds[i].x >= 96) {
+          this.player.y -= 24 / 60 * this.backgroundAnimationSpeed;
+        } else if (this.backgrounds[i].x < 96 && this.backgrounds[i].x >= 0) {
+          this.player.y -= 12 / 96 * this.backgroundAnimationSpeed;
+        } else if (this.backgrounds[i].x < 0 && this.backgrounds[i].x >= -96) {
+          this.player.y += 12 / 96 * this.backgroundAnimationSpeed;
+        } else if (this.backgrounds[i].x < -96 && this.backgrounds[i].x >= -132) {
+          this.player.y += 24 / 36 * this.backgroundAnimationSpeed;
         }
       }
-      if (index === this.backgrounds.length - 1) {
-        if (background.x + spriteWidth < this.canvas.width + 100) {
+
+      let {spriteWidth} = getSpriteData(this.backgrounds[i].spriteKey, this);
+      if (i === 0) {
+        if (this.backgrounds[i].x + spriteWidth < -100) {
+          this.backgrounds.splice(i, 1);
+          i--;
+        }
+      }
+      if (i === this.backgrounds.length - 1) {
+        if (this.backgrounds[i].x + spriteWidth < this.canvas.width + 100) {
           let total = 0;
           let random;
           this.availableBackgrounds.map(availableBackground => {
@@ -150,16 +171,16 @@ function CanvasDict(globalDict) {
 
           random = Math.random() * total;
 
-          for (let i = 0; i < this.availableBackgrounds.length; i++) {
-            random -= this.availableBackgrounds[i].chance;
+          for (let j = 0; j < this.availableBackgrounds.length; j++) {
+            random -= this.availableBackgrounds[j].chance;
             if (random <= 0) {
               let newBackground = {
-                x: background.x + spriteWidth,
+                x: this.backgrounds[i].x + spriteWidth,
                 y: 0,
-                spriteKey: this.availableBackgrounds[i].spriteKey
+                spriteKey: this.availableBackgrounds[j].spriteKey
               };
-              if (this.availableBackgrounds[i].animationSpeed) {
-                newBackground.animationSpeed = this.availableBackgrounds[i].animationSpeed
+              if (this.availableBackgrounds[j].animationSpeed) {
+                newBackground.animationSpeed = this.availableBackgrounds[j].animationSpeed
               }
               this.backgrounds.push(newBackground);
               break;
@@ -167,20 +188,24 @@ function CanvasDict(globalDict) {
           }
         }
       }
-    }, this);
+    }
 
     this.currentAnimation.counter += 1;
 
     return this.currentAnimation.counter >= this.currentAnimation.goal;
   };
   this.canvasDraw = function () {
+    let bridgeDraws = [];
     drawCanvasImage(0, 0, 'Background_Tiles_Sky', this);
 
-    this.backgrounds.map(background => {
+    this.backgrounds.map((background, index) => {
       drawCanvasImage(
         background.x, background.y, background.spriteKey, this,
         background.animationSpeed ? background.animationSpeed : undefined
       );
+      if (background.spriteKey === 'Background_Tiles_Bridge_B') {
+        bridgeDraws.push(index);
+      }
     }, this);
 
     let playerKey = 0;
@@ -193,6 +218,17 @@ function CanvasDict(globalDict) {
     drawCanvasImage(
       this.player.x, this.player.y, this.player.spriteKeys[playerKey], this, this.player.animationSpeed, true
     );
+    if (playerKey === 1) {
+      drawCanvasImage(this.player.x, this.player.y + 72, 'Player_Player_Shadow', this);
+    }
+
+    bridgeDraws.map(index => {
+      let background = this.backgrounds[index];
+      drawCanvasImage(
+        background.x, background.y, 'Background_Tiles_Bridge_F', this,
+        background.animationSpeed ? background.animationSpeed : undefined
+      );
+    }, this);
 
     if (this.gD.vocabWords.length !== 0) {
       drawCanvasRect(this.canvas.width / 2 - 150, 0, 300, 30, 'standardBlur', this);
