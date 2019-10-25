@@ -406,6 +406,7 @@ function VueDict(globalDict) {
               points.number += 1;
           }
         }
+        this.saveData();
       },
       nextWord: function () {
         this.currentWord++;
