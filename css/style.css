@@ -32,6 +32,10 @@ h2 {
     height: calc(100% - 147px);
 }
 
+.autoMargin {
+    margin: 0 auto;
+}
+
 .topBottomMargin {
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -60,6 +64,10 @@ h2 {
 
 .maxHeight {
     height: 100%;
+}
+
+.halfWidth {
+    width: 50%;
 }
 
 .halfHeight {
@@ -136,6 +144,10 @@ h2 {
 }
 
 .customColumn.flex-grow {
+    flex-grow: 1;
+}
+
+.customColumn2.flex-grow {
     flex-grow: 1;
 }
 

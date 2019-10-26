@@ -79,6 +79,9 @@ function VueDict(globalDict) {
         if (!show) {
           if ((!isNaN(+this.countCustom) && this.wordCount !== 'Custom') ||
             (isNaN(+this.countCustom) && this.wordCount === 'Custom')) {
+            if (+this.countCustom > 100000) {
+              this.countCustom = 100000;
+            }
             this.selectCount('Custom');
           }
         }
@@ -139,7 +142,6 @@ function VueDict(globalDict) {
         }
         this.page = this.option;
         if (this.page === 'adventure') {
-          console.log(this);
           this.canvasDict.raf = requestAnimationFrame(timestamp => this.canvasDict.canvasLoop(timestamp));
         }
       }
@@ -251,6 +253,48 @@ function VueDict(globalDict) {
         if (this.vocabWords.length !== 0) {
           if (this.currentWord < this.vocabWords.length) {
             return this.vocabWords[this.currentWord].kana;
+          }
+        }
+        return '';
+      },
+      getAnimationInProgress: function () {
+        if (this.canvasDict !== null) {
+          return this.canvasDict.animationInProgress;
+        }
+        return false;
+      },
+      getActionText: function () {
+        if (this.canvasDict !== null) {
+          if (this.canvasDict.currentAction !== null) {
+            return this.getText(this.canvasDict.currentAction.textId);
+          }
+        }
+        return '';
+      },
+      getActionItemName: function () {
+        if (this.canvasDict !== null) {
+          if (this.canvasDict.currentAction !== null) {
+            return this.getText(this.canvasDict.currentAction.toolId);
+          }
+        }
+        return '';
+      },
+      getActionSprite: function () {
+        if (this.canvasDict !== null) {
+          if (this.canvasDict.currentAction !== null) {
+            return this.items.find(item => item.id === this.canvasDict.currentAction.toolId, this).spriteKey;
+          }
+        }
+        return '';
+      },
+      getActionItemQuantity: function () {
+        if (this.canvasDict !== null) {
+          if (this.canvasDict.currentAction !== null) {
+            let item = this.inventory.find(item => item.id === this.canvasDict.currentAction.toolId, this);
+            if (item) {
+              return item.quantity;
+            }
+            return 0;
           }
         }
         return '';
@@ -409,6 +453,9 @@ function VueDict(globalDict) {
         this.saveData();
       },
       nextWord: function () {
+        if (this.canvasDict.currentAction !== null) {
+          this.actionIsVisible = true;
+        }
         this.currentWord++;
         this.showResults = false;
         this.resultIsVisible = false;
@@ -416,6 +463,10 @@ function VueDict(globalDict) {
         this.romajiInputOriginal = '';
         this.kanaInput = '';
         this.kanaInputOriginal = '';
+      },
+      continueWalk: function () {
+        this.canvasDict.currentAction = null;
+        this.actionIsVisible = false;
       },
       showStats: function () {
         this.showStatistics = true;

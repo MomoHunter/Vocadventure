@@ -373,7 +373,7 @@
           </section>
           <canvas id="adventureCanvas" width="600" height="300"></canvas>
         </div>
-        <div class="customColumn is-full">
+        <div class="customColumn is-full" v-show="!actionIsVisible">
           <div class="columns is-mobile is-centered is-vcentered is-gapless">
             <div class="column is-1 has-text-centered" v-show="showResults && !resultIsVisible">
               <span class="icon has-text-success" v-bind:class="getClass('icon')" v-show="romajiIsCorrect">
@@ -398,7 +398,7 @@
             </div>
           </div>
         </div>
-        <div class="customColumn is-full">
+        <div class="customColumn is-full" v-show="!actionIsVisible">
           <div class="columns is-mobile is-centered is-vcentered is-gapless">
             <div class="column is-1 has-text-centered" v-show="showResults && !resultIsVisible">
               <span class="icon has-text-success" v-bind:class="getClass('icon')" v-show="kanaIsCorrect">
@@ -440,7 +440,7 @@
             </div>
           </div>
         </div>
-        <div class="column is-10" v-show="keyboardHidden">
+        <div class="column is-10" v-show="keyboardHidden && !actionIsVisible">
           <div class="columns is-mobile is-centered">
             <div class="column">
               <div class="buttons is-centered">
@@ -480,13 +480,13 @@
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
-                   v-show="!showResults" v-on:click="confirmInput()">
+                <button class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+                   v-show="!showResults" v-on:click="confirmInput()" v-bind:disabled="getAnimationInProgress">
                   <span class="icon">
                     <i class="fas fa-check"></i>
                   </span>
                   <span>{{ getText('adventureButton4') }}</span>
-                </a>
+                </button>
                 <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
                    v-show="showResults && !finishedAdventure" v-on:click="nextWord()">
                   <span class="icon">
@@ -503,6 +503,38 @@
                 </a>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="customColumn is-10 flex-grow customColumn2" v-show="actionIsVisible">
+          <div class="content has-text-centered" v-bind:class="getClass('content')">
+            {{ getActionText }}
+          </div>
+          <div class="box customColumn2 flex-grow halfWidth autoMargin">
+            <p class="content has-text-centered" v-bind:class="getClass('content')">{{ getActionItemName }}</p>
+            <div class="flex-grow maxHeight backgroundPicture is-relative"
+                 v-bind:style="{ backgroundImage: 'url(' + getActionSprite + ')' }">
+              <div class="content position-bottom-right" v-bind:class="getClass('content')">
+                {{ getActionItemQuantity }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-10" v-show="actionIsVisible">
+          <div class="buttons">
+            <button class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+               v-on:click="" v-bind:disabled="getActionItemQuantity === 0">
+              <span class="icon">
+                <i class="fas fa-check"></i>
+              </span>
+              <span>{{ getText('actionButton1') }}</span>
+            </button>
+            <a class="button is-danger is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+               v-on:click="continueWalk()">
+              <span class="icon">
+                <i class="fas fa-times"></i>
+              </span>
+              <span>{{ getText('actionButton2') }}</span>
+            </a>
           </div>
         </div>
         <div class="column is-10" v-show="keyboardHidden">

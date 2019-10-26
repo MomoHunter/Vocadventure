@@ -117,6 +117,7 @@ function GlobalDict() {
   this.difficulty = '';
   this.showResults = false;
   this.resultIsVisible = false;
+  this.actionIsVisible = false;
   this.romajiInput = '';
   this.romajiInputOriginal = '';
   this.kanaInput = '';

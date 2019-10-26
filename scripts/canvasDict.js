@@ -14,6 +14,7 @@ function CanvasDict(globalDict) {
   this.currentAnimation = null;
   this.animationStart = 0;
   this.backgroundAnimationSpeed = 1;
+  this.currentAction = null;
   this.styles = styles;
   // start spriteDict
   // The following code is auto-generated, don't change it!
@@ -73,18 +74,23 @@ function CanvasDict(globalDict) {
   };
   // end spriteDict
   this.availableBackgrounds = [
-    { spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, chance: 0.1 },
+    { spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, chance: 0.1, action: 3,
+      textId: 'appletree', toolId: 'axe', uses: 8 },
     { spriteKey: 'Background_Tiles_Basic', chance: 1 },
-    { spriteKey: 'Background_Tiles_Bridge_B', animationSpeed: 12, chance: 0.1 },
-    { spriteKey: 'Background_Tiles_Dirtmine', chance: 0.25 },
-    { spriteKey: 'Background_Tiles_Stone', chance: 0.25 }
+    { spriteKey: 'Background_Tiles_Bridge_B', animationSpeed: 12, chance: 0.1, action: 3,
+      textId: 'bridge', toolId: 'fishingRod', uses: 10 },
+    { spriteKey: 'Background_Tiles_Dirtmine', chance: 0.25, action: 1,
+      textId: 'dirtmine', toolId: 'shovel', uses: 12 },
+    { spriteKey: 'Background_Tiles_Stone', chance: 0.25, action: 2,
+      textId: 'stone', toolId: 'pickaxe', uses: 6 }
   ];
   this.player = {
     x: 198, y: 156, spriteKeys: ['Player_Player', 'Player_Player_Walk'], animationSpeed : 16
   };
   this.backgrounds = [
-    {x: 0, y: 0, spriteKey: 'Background_Tiles_Basic'},
-    {x: 288, y: 0, spriteKey: 'Background_Tiles_Bridge_B', animationSpeed: 12}
+    { x: 0, lastX: 0 , y: 0, spriteKey: 'Background_Tiles_Basic' },
+    { x: 288, lastX: 288, y: 0, spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, action: 0,
+      textId: 'appletree', toolId: 'axe', uses: 8 }
   ];
   this.canvasLoop = function (timestamp) {
     if (this.gD.page === 'adventure') {
@@ -131,6 +137,7 @@ function CanvasDict(globalDict) {
     if (animationFinished) {
       this.backgrounds.map(background => {
         background.x = Math.round(background.x / 96) * 96;
+        background.lastX = background.x;
       }, this);
       this.player.y = Math.round(this.player.y / 12) * 12;
       this.currentAnimation = null;
@@ -142,7 +149,7 @@ function CanvasDict(globalDict) {
     for (let i = 0; i < this.backgrounds.length; i++) {
       this.backgrounds[i].x -= this.backgroundAnimationSpeed;
 
-      if (this.backgrounds[i].spriteKey === 'Background_Tiles_Bridge_B') {
+      if (this.backgrounds[i].spriteKey.includes('Bridge')) {
         if (this.backgrounds[i].x < 156 && this.backgrounds[i].x >= 96) {
           this.player.y -= 24 / 60 * this.backgroundAnimationSpeed;
         } else if (this.backgrounds[i].x < 96 && this.backgrounds[i].x >= 0) {
@@ -152,6 +159,16 @@ function CanvasDict(globalDict) {
         } else if (this.backgrounds[i].x < -96 && this.backgrounds[i].x >= -132) {
           this.player.y += 24 / 36 * this.backgroundAnimationSpeed;
         }
+      }
+
+      if (this.backgrounds[i].lastX - this.currentAnimation.goal === this.backgrounds[i].action &&
+          this.currentAction === null) {
+        this.currentAction = {
+          textId: this.backgrounds[i].textId,
+          toolId: this.backgrounds[i].toolId,
+          uses: this.backgrounds[i].uses,
+          used: 0
+        };
       }
 
       let {spriteWidth} = getSpriteData(this.backgrounds[i].spriteKey, this);
@@ -176,9 +193,16 @@ function CanvasDict(globalDict) {
             if (random <= 0) {
               let newBackground = {
                 x: this.backgrounds[i].x + spriteWidth,
+                lastX: this.backgrounds[i].x + spriteWidth,
                 y: 0,
                 spriteKey: this.availableBackgrounds[j].spriteKey
               };
+              if (this.availableBackgrounds[j].action) {
+                newBackground.action = 192 - (this.availableBackgrounds[j].action - 1) * 96;
+                newBackground.textId = this.availableBackgrounds[j].textId;
+                newBackground.toolId = this.availableBackgrounds[j].toolId;
+                newBackground.uses = this.availableBackgrounds[j].uses;
+              }
               if (this.availableBackgrounds[j].animationSpeed) {
                 newBackground.animationSpeed = this.availableBackgrounds[j].animationSpeed
               }
@@ -203,7 +227,7 @@ function CanvasDict(globalDict) {
         background.x, background.y, background.spriteKey, this,
         background.animationSpeed ? background.animationSpeed : undefined
       );
-      if (background.spriteKey === 'Background_Tiles_Bridge_B') {
+      if (background.spriteKey.includes('Bridge')) {
         bridgeDraws.push(index);
       }
     }, this);
