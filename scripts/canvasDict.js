@@ -14,6 +14,7 @@ function CanvasDict(globalDict) {
   this.currentAnimation = null;
   this.animationStart = 0;
   this.backgroundAnimationSpeed = 1;
+  this.infoText = null;
   this.currentAction = null;
   this.styles = styles;
   // start spriteDict
@@ -54,23 +55,25 @@ function CanvasDict(globalDict) {
     "Decoration_Flower5": [false, 1106, 906, 36, 48],
     "Decoration_Flower6": [false, 1106, 955, 36, 48],
     "Item_Apple": [false, 1227, 0, 84, 96],
-    "Item_Axe": [false, 1227, 97, 108, 84],
-    "Item_Cobwebs": [false, 1227, 182, 96, 96],
-    "Item_Fish": [false, 1227, 279, 96, 72],
-    "Item_Fishing_Rod": [false, 1227, 352, 96, 96],
-    "Item_Ironore": [false, 1227, 449, 96, 96],
-    "Item_Pickaxe": [false, 1227, 546, 96, 96],
-    "Item_Shovel": [false, 1227, 643, 96, 96],
-    "Item_Stone": [false, 1227, 740, 96, 96],
-    "Item_String": [false, 1227, 837, 96, 96],
-    "Item_Wood": [false, 1227, 934, 96, 84],
-    "Item_Worm": [false, 1227, 1019, 72, 96],
-    "Player_Player": [false, 1336, 0, 72, 84],
-    "Player_Player_Back": [false, 1336, 85, 72, 84],
-    "Player_Player_Shadow": [false, 1336, 170, 36, 12],
-    "Player_Player_Walk": [true, 1336, [183, 268], 72, 84],
-    "Special_Placeholder": [false, 1409, 0, 40, 40],
-    "Special_Placeholder_B": [false, 1409, 41, 80, 80]
+    "Item_Axe": [false, 1227, 97, 120, 96],
+    "Item_Cobwebs": [false, 1227, 194, 96, 96],
+    "Item_Fish": [false, 1227, 291, 96, 72],
+    "Item_Fishing_Rod": [false, 1227, 364, 96, 96],
+    "Item_Ironore": [false, 1227, 461, 96, 96],
+    "Item_Pickaxe": [false, 1227, 558, 96, 96],
+    "Item_Shovel": [false, 1227, 655, 96, 96],
+    "Item_Stone": [false, 1227, 752, 96, 96],
+    "Item_String": [false, 1227, 849, 96, 96],
+    "Item_Wood": [false, 1227, 946, 108, 96],
+    "Item_Wood_S": [false, 1227, 1043, 18, 16],
+    "Item_Worm": [false, 1227, 1060, 72, 96],
+    "Player_Player": [false, 1348, 0, 72, 84],
+    "Player_Player_Back": [false, 1348, 85, 72, 84],
+    "Player_Player_Back_Walk": [true, 1348, [170, 255], 72, 84],
+    "Player_Player_Shadow": [false, 1348, 340, 36, 12],
+    "Player_Player_Walk": [true, 1348, [353, 438], 72, 84],
+    "Special_Placeholder": [false, 1421, 0, 40, 40],
+    "Special_Placeholder_B": [false, 1421, 41, 80, 80]
   };
   // end spriteDict
   this.availableBackgrounds = [
@@ -85,7 +88,8 @@ function CanvasDict(globalDict) {
       textId: 'stone', toolId: 'pickaxe', uses: 6 }
   ];
   this.player = {
-    x: 198, y: 156, spriteKeys: ['Player_Player', 'Player_Player_Walk'], animationSpeed : 16
+    x: 198, y: 156, spriteKeys: ['Player_Player', 'Player_Player_Walk', 'Player_Player_Back', 'Player_Player_Back_Walk'],
+    animationSpeed : 16
   };
   this.backgrounds = [
     { x: 0, lastX: 0 , y: 0, spriteKey: 'Background_Tiles_Basic' },
@@ -131,6 +135,15 @@ function CanvasDict(globalDict) {
     switch (this.currentAnimation.type) {
       case 'moveBackground':
         animationFinished = this.moveBackground();
+        break;
+      case 'approachObject':
+        animationFinished = this.approachObject();
+        break;
+      case 'backOnTrack':
+        animationFinished = this.backOnTrack();
+        break;
+      case 'axeAnimation':
+        animationFinished = this.axeAnimation();
         break;
       default:
     }
@@ -213,9 +226,65 @@ function CanvasDict(globalDict) {
         }
       }
     }
-
     this.currentAnimation.counter += 1;
 
+    return this.currentAnimation.counter >= this.currentAnimation.goal;
+  };
+  this.approachObject = function () {
+    this.player.y -= 1;
+    this.currentAnimation.counter += 1;
+    return this.currentAnimation.counter >= this.currentAnimation.goal;
+  };
+  this.backOnTrack = function () {
+    this.player.y += 1;
+    this.currentAnimation.counter += 1;
+    return this.currentAnimation.counter >= this.currentAnimation.goal;
+  };
+  this.axeAnimation = function () {
+    if (this.currentAnimation.counter >= 60) {
+      if (this.infoText === null) {
+        let {spriteWidth} = getSpriteData('Player_Player', this);
+        let number;
+        if (Math.random() < 0.08) {
+          number = 2;
+        } else {
+          number = 1;
+        }
+        this.infoText = {
+          x: this.player.x + spriteWidth + 12,
+          y: this.player.y + 12,
+          spriteKey: 'Item_Wood_S',
+          number: number
+        };
+      } else {
+        if (this.currentAnimation.counter === this.currentAnimation.goal - 1) {
+          if (this.gD.inventory.find(item => item.id === 'wood')) {
+            this.gD.inventory.find(item => item.id === 'wood').quantity += this.infoText.number;
+          } else {
+            let item = this.gD.items.find(item => item.id === 'wood');
+            this.gD.inventory.push({
+              id: item.id,
+              quantity: this.infoText.number,
+              spriteKey: item.spriteKey
+            });
+          }
+          this.infoText = null;
+          this.currentAction.used++;
+          if (this.currentAction.used === this.currentAction.uses) {
+            this.gD.actionIsActive = false;
+            this.currentAction = null;
+            this.animationQueue.push({
+              type: 'backOnTrack',
+              goal: 36,
+              counter: 0
+            });
+          }
+        } else {
+          this.infoText.y -= 0.5;
+        }
+      }
+    }
+    this.currentAnimation.counter += 1;
     return this.currentAnimation.counter >= this.currentAnimation.goal;
   };
   this.canvasDraw = function () {
@@ -233,8 +302,18 @@ function CanvasDict(globalDict) {
     }, this);
 
     let playerKey = 0;
-    if (this.currentAnimation) {
-      if (this.currentAnimation.type === 'moveBackground') {
+    if (this.gD.actionIsActive) {
+      if (this.currentAnimation) {
+        if (this.currentAnimation.type === 'approachObject') {
+          playerKey = 3;
+        } else if (this.currentAnimation.type === 'axeAnimation') {
+          playerKey = 2;
+        }
+      } else {
+        playerKey = 2;
+      }
+    } else if (this.currentAnimation) {
+      if (this.currentAnimation.type === 'moveBackground' || this.currentAnimation.type === 'backOnTrack') {
         playerKey = 1;
       }
     }
@@ -242,7 +321,7 @@ function CanvasDict(globalDict) {
     drawCanvasImage(
       this.player.x, this.player.y, this.player.spriteKeys[playerKey], this, this.player.animationSpeed, true
     );
-    if (playerKey === 1) {
+    if (playerKey === 1 || playerKey === 3) {
       drawCanvasImage(this.player.x, this.player.y + 72, 'Player_Player_Shadow', this);
     }
 
@@ -253,6 +332,12 @@ function CanvasDict(globalDict) {
         background.animationSpeed ? background.animationSpeed : undefined
       );
     }, this);
+
+    if (this.infoText !== null) {
+      let {spriteHeight} = getSpriteData(this.infoText.spriteKey, this);
+      drawCanvasText(this.infoText.x, this.infoText.y, '+ ' + this.infoText.number, 'infoText', this);
+      drawCanvasImage(this.infoText.x + 16, this.infoText.y - spriteHeight / 2, this.infoText.spriteKey, this);
+    }
 
     if (this.gD.vocabWords.length !== 0) {
       drawCanvasRect(this.canvas.width / 2 - 150, 0, 300, 30, 'standardBlur', this);

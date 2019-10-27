@@ -118,6 +118,7 @@ function GlobalDict() {
   this.showResults = false;
   this.resultIsVisible = false;
   this.actionIsVisible = false;
+  this.actionIsActive = false;
   this.romajiInput = '';
   this.romajiInputOriginal = '';
   this.kanaInput = '';
@@ -202,7 +203,7 @@ function GlobalDict() {
   ];
   this.inventory = [
     {id: 'shovel', spriteKey: 'img/sprites/Item/Shovel.png', quantity: 55},
-    {id: 'wood', spriteKey: 'img/sprites/Item/Wood.png', quantity: 50}
+    {id: 'axe', spriteKey: 'img/sprites/Item/Axe.png', quantity: 50}
   ];
   this.searchResult = [];
   this.searchTerm = '';

@@ -6,6 +6,13 @@ const styles= {
       align: "center",
       baseline: "middle",
       borderKey: ""
+    },
+    infoText: {
+      font: "bold 12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+      color: "0, 0, 0, 1",
+      align: "center",
+      baseline: "middle",
+      borderKey: ""
     }
   },
   rect: {

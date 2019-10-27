@@ -418,9 +418,15 @@ function VueDict(globalDict) {
         let coins = this.scores.scores.find(item => item.id === 'statusRight');
         let points = this.scores.scores.find(item => item.id === 'statusLeft');
 
-        if (this.kanaIsCorrect || this.romajiIsCorrect) {
+        if ((this.kanaIsCorrect || this.romajiIsCorrect) && !this.actionIsActive) {
           this.canvasDict.animationQueue.push({
             type: 'moveBackground',
+            counter: 0,
+            goal: 96
+          });
+        } else if (this.kanaIsCorrect || this.romajiIsCorrect) {
+          this.canvasDict.animationQueue.push({
+            type: this.canvasDict.currentAction.toolId + 'Animation',
             counter: 0,
             goal: 96
           });
@@ -453,7 +459,7 @@ function VueDict(globalDict) {
         this.saveData();
       },
       nextWord: function () {
-        if (this.canvasDict.currentAction !== null) {
+        if (this.canvasDict.currentAction !== null && !this.actionIsActive) {
           this.actionIsVisible = true;
         }
         this.currentWord++;
@@ -463,6 +469,15 @@ function VueDict(globalDict) {
         this.romajiInputOriginal = '';
         this.kanaInput = '';
         this.kanaInputOriginal = '';
+      },
+      startAction: function () {
+        this.actionIsActive = true;
+        this.actionIsVisible = false;
+        this.canvasDict.animationQueue.push({
+          type: 'approachObject',
+          counter: 0,
+          goal: 36
+        });
       },
       continueWalk: function () {
         this.canvasDict.currentAction = null;
