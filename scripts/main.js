@@ -225,7 +225,11 @@ function GlobalDict() {
       "theme": this.theme,
       "size": this.size,
       "scores": this.scores,
-      "inventory": this.inventory
+      "inventory": this.inventory,
+      "backgrounds": this.canvasDict.backgrounds,
+      "actionIsActive": this.actionIsActive,
+      "currentAction": this.canvasDict.currentAction,
+      "player": this.canvasDict.player
     }));
   };
   this.loadData = function () {
@@ -249,6 +253,18 @@ function GlobalDict() {
       if (data.inventory) {
         this.inventory = data.inventory;
       }
+      if (data.backgrounds) {
+        this.canvasDict.backgrounds = data.backgrounds;
+      }
+      if (data.actionIsActive) {
+        this.actionIsActive = data.actionIsActive;
+      }
+      if (data.currentAction) {
+        this.canvasDict.currentAction = data.currentAction;
+      }
+      if (data.player) {
+        this.canvasDict.player = data.player;
+      }
     }
   };
   this.resetData = function () {
@@ -263,6 +279,18 @@ function GlobalDict() {
       ]
     };
     this.inventory = [];
+    this.canvasDict.backgrounds = [
+      { x: 0, lastX: 0 , y: 0, spriteKey: 'Background_Tiles_Basic' },
+      { x: 288, lastX: 288, y: 0, spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, action: 0,
+        textId: 'appletree', toolId: 'axe', uses: 8 }
+    ];
+    this.actionIsActive = false;
+    this.canvasDict.currentAction = null;
+    this.canvasDict.player = {
+      x: 198, y: 156, spriteKeys: ['Player_Player', 'Player_Player_Walk', 'Player_Player_Back', 'Player_Player_Back_Walk'],
+      animationSpeed : 16
+    };
+    location.reload();
   };
   this.createKanji = function () {
     let set = new Set(this.vocabs.flatMap(entry => entry.kana.split('')));

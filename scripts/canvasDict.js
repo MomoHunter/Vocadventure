@@ -258,16 +258,18 @@ function CanvasDict(globalDict) {
         };
       } else {
         if (this.currentAnimation.counter === this.currentAnimation.goal - 1) {
-          if (this.gD.inventory.find(item => item.id === 'wood')) {
-            this.gD.inventory.find(item => item.id === 'wood').quantity += this.infoText.number;
+          let inventoryItem = this.gD.inventory.find(item => item.id === 'wood');
+          let item = this.gD.items.find(item => item.id === 'wood');
+          if (inventoryItem) {
+            inventoryItem.quantity += this.infoText.number;
           } else {
-            let item = this.gD.items.find(item => item.id === 'wood');
             this.gD.inventory.push({
               id: item.id,
               quantity: this.infoText.number,
               spriteKey: item.spriteKey
             });
           }
+          this.gD.scores.scores.find(score => score.id === 'statusLeft').number += item.points * this.infoText.number;
           this.infoText = null;
           this.currentAction.used++;
           if (this.currentAction.used === this.currentAction.uses) {

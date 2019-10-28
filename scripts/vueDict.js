@@ -418,18 +418,33 @@ function VueDict(globalDict) {
         let coins = this.scores.scores.find(item => item.id === 'statusRight');
         let points = this.scores.scores.find(item => item.id === 'statusLeft');
 
-        if ((this.kanaIsCorrect || this.romajiIsCorrect) && !this.actionIsActive) {
-          this.canvasDict.animationQueue.push({
-            type: 'moveBackground',
-            counter: 0,
-            goal: 96
-          });
-        } else if (this.kanaIsCorrect || this.romajiIsCorrect) {
-          this.canvasDict.animationQueue.push({
-            type: this.canvasDict.currentAction.toolId + 'Animation',
-            counter: 0,
-            goal: 96
-          });
+        if (this.kanaIsCorrect || this.romajiIsCorrect) {
+          if (!this.actionIsActive) {
+            this.canvasDict.animationQueue.push({
+              type: 'moveBackground',
+              counter: 0,
+              goal: 96
+            });
+          } else {
+            this.canvasDict.animationQueue.push({
+              type: this.canvasDict.currentAction.toolId + 'Animation',
+              counter: 0,
+              goal: 96
+            });
+          }
+        } else {
+          if (this.actionIsActive) {
+            this.canvasDict.currentAction.used++;
+            if (this.canvasDict.currentAction.used === this.canvasDict.currentAction.uses) {
+              this.actionIsActive = false;
+              this.canvasDict.currentAction = null;
+              this.canvasDict.animationQueue.push({
+                type: 'backOnTrack',
+                goal: 36,
+                counter: 0
+              });
+            }
+          }
         }
 
         if (this.romajiIsCorrect) {
