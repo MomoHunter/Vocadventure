@@ -7,6 +7,7 @@
 function getSpriteData(spriteKey, cD) {
   let spriteData = cD.spriteDict[spriteKey];
   if (!spriteData) {
+    console.log("Wrong key: ", spriteKey);
     let fallbackSpriteKey = "Special_Placeholder";
     if (spriteKey.includes("_B_") || spriteKey.endsWith("_B")) {
       fallbackSpriteKey += "_B";

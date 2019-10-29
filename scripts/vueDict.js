@@ -437,12 +437,15 @@ function VueDict(globalDict) {
             this.canvasDict.currentAction.used++;
             if (this.canvasDict.currentAction.used === this.canvasDict.currentAction.uses) {
               this.actionIsActive = false;
+              if (this.canvasDict.currentAction.textId === 'appletree' ||
+                  this.canvasDict.currentAction.textId === 'stone') {
+                this.canvasDict.animationQueue.push({
+                  type: 'backOnTrack',
+                  goal: 36,
+                  counter: 0
+                });
+              }
               this.canvasDict.currentAction = null;
-              this.canvasDict.animationQueue.push({
-                type: 'backOnTrack',
-                goal: 36,
-                counter: 0
-              });
             }
           }
         }
@@ -488,11 +491,19 @@ function VueDict(globalDict) {
       startAction: function () {
         this.actionIsActive = true;
         this.actionIsVisible = false;
-        this.canvasDict.animationQueue.push({
-          type: 'approachObject',
-          counter: 0,
-          goal: 36
-        });
+        if (this.canvasDict.currentAction.textId === 'appletree' || this.canvasDict.currentAction.textId === 'stone') {
+          this.canvasDict.animationQueue.push({
+            type: 'approachObject',
+            counter: 0,
+            goal: 36
+          });
+        } else if (this.canvasDict.currentAction.textId === 'dirtmine') {
+          this.canvasDict.animationQueue.push({
+            type: 'diveDown',
+            counter: 0,
+            goal: 96
+          });
+        }
       },
       continueWalk: function () {
         this.canvasDict.currentAction = null;

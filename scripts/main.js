@@ -252,7 +252,7 @@ function GlobalDict() {
       }
       if (data.inventory) {
         this.inventory = data.inventory;
-      }
+      }/*
       if (data.backgrounds) {
         this.canvasDict.backgrounds = data.backgrounds;
       }
@@ -264,7 +264,7 @@ function GlobalDict() {
       }
       if (data.player) {
         this.canvasDict.player = data.player;
-      }
+      }*/
     }
   };
   this.resetData = function () {
