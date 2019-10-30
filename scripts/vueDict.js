@@ -93,6 +93,7 @@ function VueDict(globalDict) {
           this.countCustom = '';
           this.option = '';
           this.currentWord = 0;
+          this.currentProgress = 0;
         }
         this.page = id;
       },
@@ -180,8 +181,8 @@ function VueDict(globalDict) {
       },
       navigateTo: function (id) {
         if (id === 'mainMenu') {
-          this.selection.selectDifficulty(this.difficulty);
-          this.selection.selectCount(this.wordCount);
+          this.vueDict.selection.selectDifficulty(this.difficulty);
+          this.vueDict.selection.selectCount(this.wordCount);
           this.countCustom = '';
           this.option = '';
         }
@@ -303,10 +304,22 @@ function VueDict(globalDict) {
         return this.currentWord === this.vocabWords.length - 1;
       },
       getProgress: function () {
-        return this.currentWord / this.vocabWords.length;
+        return this.currentProgress / this.vocabWords.length;
       },
       getProgressText: function () {
-        return this.currentWord + " / " + this.vocabWords.length;
+        return this.currentProgress + " / " + this.vocabWords.length;
+      },
+      getRomajiProgress: function () {
+        return this.statistics.romaji / this.vocabWords.length;
+      },
+      getRomajiProgressText: function () {
+        return this.statistics.romaji + " / " + this.vocabWords.length;
+      },
+      getKanaProgress: function () {
+        return this.statistics.kana / this.vocabWords.length;
+      },
+      getKanaProgressText: function () {
+        return this.statistics.kana + " / " + this.vocabWords.length;
       },
       keyboardClass: function () {
         if (this.keyboardHidden) {
@@ -329,17 +342,23 @@ function VueDict(globalDict) {
       },
       navigateTo: function (id) {
         if (id === 'mainMenu') {
-          this.selection.selectDifficulty(this.difficulty);
-          this.selection.selectCount(this.wordCount);
+          this.vueDict.selection.selectDifficulty(this.difficulty);
+          this.vueDict.selection.selectCount(this.wordCount);
           this.countCustom = '';
           this.option = '';
         }
+        this.currentProgress = 0;
         this.currentWord = 0;
         this.showResults = false;
+        this.showStatistics = false;
         this.romajiInput = '';
         this.romajiInputOriginal = '';
         this.kanaInput = '';
         this.kanaInputOriginal = '';
+        this.statistics = {
+          romaji: 0,
+          kana: 0
+        };
         this.page = id;
       },
       getClass: function (type, difficultyTag = false) {
@@ -453,6 +472,7 @@ function VueDict(globalDict) {
         if (this.romajiIsCorrect) {
           coins.number += 1;
           points.number += 1;
+          this.statistics.romaji++;
         }
 
         if (this.kanaIsCorrect) {
@@ -473,7 +493,9 @@ function VueDict(globalDict) {
               coins.number += 1;
               points.number += 1;
           }
+          this.statistics.kana++;
         }
+        this.currentProgress++;
         this.saveData();
       },
       nextWord: function () {

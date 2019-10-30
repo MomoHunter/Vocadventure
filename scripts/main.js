@@ -124,6 +124,10 @@ function GlobalDict() {
   this.kanaInput = '';
   this.kanaInputOriginal = '';
   this.showStatistics = false;
+  this.statistics = {
+    romaji: 0,
+    kana: 0
+  };
   this.keyboardHidden = true;
   this.activeTab = 'hiragana';
   this.showRUSURE = false;
@@ -199,6 +203,9 @@ function GlobalDict() {
     },
     {
       id: 'cobwebs', spriteKey: 'img/sprites/Item/Cobwebs.png', quantity: 1, points: 5
+    },
+    {
+      id: 'sandBucket', spriteKey: 'img/sprites/Item/Sand_Bucket.png', quantity: 1, points: 6
     }
   ];
   this.inventory = [
@@ -211,6 +218,7 @@ function GlobalDict() {
   this.wordCount = 0;
   this.vocabWords = [];
   this.currentWord = 0;
+  this.currentProgress = 0;
   this.currentShopPage = 1;
   this.scores = {
     scores: [
@@ -306,6 +314,7 @@ function GlobalDict() {
     this.signs.set('kanji', kanji);
   };
   this.canvasDict = null;
+  this.vueDict = null;
   this.vueDict = new VueDict(this);
   this.canvasDict = new CanvasDict(this);
 }

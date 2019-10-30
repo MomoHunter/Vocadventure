@@ -373,7 +373,7 @@
           </section>
           <canvas id="adventureCanvas" width="600" height="300"></canvas>
         </div>
-        <div class="customColumn is-full" v-show="!actionIsVisible">
+        <div class="customColumn is-full" v-show="!actionIsVisible && !showStatistics">
           <div class="columns is-mobile is-centered is-vcentered is-gapless">
             <div class="column is-1 has-text-centered" v-show="showResults && !resultIsVisible">
               <span class="icon has-text-success" v-bind:class="getClass('icon')" v-show="romajiIsCorrect">
@@ -398,7 +398,7 @@
             </div>
           </div>
         </div>
-        <div class="customColumn is-full" v-show="!actionIsVisible">
+        <div class="customColumn is-full" v-show="!actionIsVisible && !showStatistics">
           <div class="columns is-mobile is-centered is-vcentered is-gapless">
             <div class="column is-1 has-text-centered" v-show="showResults && !resultIsVisible">
               <span class="icon has-text-success" v-bind:class="getClass('icon')" v-show="kanaIsCorrect">
@@ -440,16 +440,35 @@
             </div>
           </div>
         </div>
+        <div class="column is-10" v-show="showStatistics">
+          <div class="content" v-bind:class="getClass('content')">{{ getText('romajiLabel') }}</div>
+          <progress class="progress is-success" v-bind:class="getClass('progress')" v-bind:value="getRomajiProgress" max="1">
+          </progress>
+          <p class="content has-text-centered" v-bind:class="getClass('content')">{{ getRomajiProgressText }}</p>
+        </div>
+        <div class="column is-10" v-show="showStatistics">
+          <div class="content" v-bind:class="getClass('content')">{{ getText('kanaLabel') }}</div>
+          <progress class="progress is-success" v-bind:class="getClass('progress')" v-bind:value="getKanaProgress" max="1">
+          </progress>
+          <p class="content has-text-centered" v-bind:class="getClass('content')">{{ getKanaProgressText }}</p>
+        </div>
         <div class="column is-10" v-show="keyboardHidden && !actionIsVisible">
           <div class="columns is-mobile is-centered">
             <div class="column">
               <div class="buttons is-centered">
                 <a class="button is-danger is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
-                   v-on:click="navigateTo('selection')">
+                   v-on:click="navigateTo('selection')" v-show="!showStatistics">
                   <span class="icon">
                     <i class="fas fa-times"></i>
                   </span>
                   <span>{{ getText('adventureButton1') }}</span>
+                </a>
+                <a class="button is-danger is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+                   v-on:click="navigateTo('selection')" v-show="showStatistics">
+                  <span class="icon">
+                    <i class="fas fa-times"></i>
+                  </span>
+                  <span>{{ getText('adventureButton8') }}</span>
                 </a>
               </div>
             </div>
@@ -463,14 +482,14 @@
                   <span>{{ getText('adventureButton2') }}</span>
                 </a>
                 <a class="button is-link is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
-                   v-on:click="showResult()" v-show="showResults && !resultIsVisible">
+                   v-on:click="showResult()" v-show="showResults && !resultIsVisible && !showStatistics">
                   <span class="icon">
                     <i class="far fa-eye-slash"></i>
                   </span>
                   <span>{{ getText('adventureButton3') }}</span>
                 </a>
                 <a class="button is-link is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
-                   v-on:click="showResult()" v-show="showResults && resultIsVisible">
+                   v-on:click="showResult()" v-show="showResults && resultIsVisible && !showStatistics">
                   <span class="icon">
                     <i class="far fa-eye"></i>
                   </span>
@@ -495,20 +514,24 @@
                   <span>{{ getText('adventureButton5') }}</span>
                 </a>
                 <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
-                   v-show="showResults && finishedAdventure" v-on:click="showStats()">
+                   v-show="showResults && finishedAdventure && !showStatistics" v-on:click="showStats()">
                   <span class="icon">
                     <i class="fas fa-arrow-right"></i>
                   </span>
                   <span>{{ getText('adventureButton6') }}</span>
+                </a>
+                <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
+                   v-show="showResults && finishedAdventure && showStatistics" v-on:click="navigateTo('mainMenu')">
+                  <span class="icon">
+                    <i class="fas fa-check"></i>
+                  </span>
+                  <span>{{ getText('adventureButton7') }}</span>
                 </a>
               </div>
             </div>
           </div>
         </div>
         <div class="customColumn is-10 flex-grow customColumn2" v-show="actionIsVisible">
-          <div class="content has-text-centered" v-bind:class="getClass('content')">
-            {{ getActionText }}
-          </div>
           <div class="box customColumn2 flex-grow halfWidth autoMargin">
             <p class="content has-text-centered" v-bind:class="getClass('content')">{{ getActionItemName }}</p>
             <div class="flex-grow maxHeight backgroundPicture is-relative"

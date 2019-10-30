@@ -62,16 +62,20 @@ function CanvasDict(globalDict) {
     "Item_Cobwebs_S": [false, 1227, 308, 16, 16],
     "Item_Fish": [false, 1227, 325, 96, 72],
     "Item_Fishing_Rod": [false, 1227, 398, 96, 96],
-    "Item_Ironore": [false, 1227, 495, 96, 96],
-    "Item_Ironore_S": [false, 1227, 592, 16, 16],
-    "Item_Pickaxe": [false, 1227, 609, 96, 96],
-    "Item_Shovel": [false, 1227, 706, 96, 96],
-    "Item_Stone": [false, 1227, 803, 96, 96],
-    "Item_Stone_S": [false, 1227, 900, 16, 16],
-    "Item_String": [false, 1227, 917, 96, 96],
-    "Item_Wood": [false, 1227, 1014, 108, 96],
-    "Item_Wood_S": [false, 1227, 1111, 18, 16],
-    "Item_Worm": [false, 1227, 1128, 72, 96],
+    "Item_Fish_S": [false, 1227, 495, 16, 12],
+    "Item_Ironore": [false, 1227, 508, 96, 96],
+    "Item_Ironore_S": [false, 1227, 605, 16, 16],
+    "Item_Pickaxe": [false, 1227, 622, 96, 96],
+    "Item_Sand_Bucket": [false, 1227, 719, 84, 84],
+    "Item_Sand_Bucket_S": [false, 1227, 804, 14, 14],
+    "Item_Shovel": [false, 1227, 819, 96, 96],
+    "Item_Stone": [false, 1227, 916, 96, 96],
+    "Item_Stone_S": [false, 1227, 1013, 16, 16],
+    "Item_String": [false, 1227, 1030, 96, 96],
+    "Item_Wood": [false, 1227, 1127, 108, 96],
+    "Item_Wood_S": [false, 1227, 1224, 18, 16],
+    "Item_Worm": [false, 1227, 1241, 72, 96],
+    "Item_Worm_S": [false, 1227, 1338, 12, 16],
     "Player_Player": [false, 1348, 0, 72, 84],
     "Player_Player_Back": [false, 1348, 85, 72, 84],
     "Player_Player_Back_Walk": [true, 1348, [170, 255], 72, 84],
@@ -90,16 +94,16 @@ function CanvasDict(globalDict) {
     { spriteKey: 'Background_Tiles_Dirtmine_B', chance: 0.25, action: 1,
       textId: 'dirtmine', toolId: 'shovel', uses: 12 },
     { spriteKey: 'Background_Tiles_Stone', chance: 0.25, action: 2,
-      textId: 'stone', toolId: 'pickaxe', uses: 6 }
+      textId: 'rock', toolId: 'pickaxe', uses: 6 }
   ];
   this.player = {
     x: 198, y: 156, spriteKeys: ['Player_Player', 'Player_Player_Walk', 'Player_Player_Back', 'Player_Player_Back_Walk'],
     animationSpeed : 16
   };
   this.backgrounds = [
-    { x: 0, lastX: 0 , y: 0, spriteKey: 'Background_Tiles_Basic' },
-    { x: 288, lastX: 288, y: 0, spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, action: 0,
-      textId: 'appletree', toolId: 'axe', uses: 8 }
+    { x: 0, lastX: 0, y: 0, spriteKey: 'Background_Tiles_Basic' },
+    { x: 288, lastX: 288, y: 0, spriteKey: 'Background_Tiles_Basic' },
+    { x: 576, lastX: 576, y: 0, spriteKey: 'Background_Tiles_Basic' }
   ];
   this.canvasLoop = function (timestamp) {
     if (this.gD.page === 'adventure') {
@@ -245,7 +249,7 @@ function CanvasDict(globalDict) {
     if (this.currentAnimation.counter >= 60) {
       if (this.infoText === null) {
         this.initInfoText('Item_Wood_S', 'wood');
-        if (Math.random() < 0.01) {
+        if (Math.random() < 0.03) {
           this.addToInfoText('Item_Apple_S', 'apple');
         }
       } else {
@@ -262,7 +266,11 @@ function CanvasDict(globalDict) {
   this.pickaxeAnimation = function () {
     if (this.currentAnimation.counter >= 60) {
       if (this.infoText === null) {
-        this.initInfoText('Item_Stone_S', 'stone');
+        if (Math.random() < 0.005) {
+          this.initInfoText('Item_Ironore_S', 'ironOre');
+        } else {
+          this.initInfoText('Item_Stone_S', 'stone');
+        }
       } else {
         if (this.currentAnimation.counter === this.currentAnimation.goal - 1) {
           this.addPoints('pickaxe');
@@ -278,10 +286,9 @@ function CanvasDict(globalDict) {
   this.shovelAnimation = function () {
     if (this.currentAnimation.counter >= 60) {
       if (this.infoText === null) {
-        if (Math.random() < 0.005) {
-          this.initInfoText('Item_Ironore_S', 'ironOre');
-        } else {
-          this.initInfoText('Item_Stone_S', 'stone');
+        this.initInfoText('Item_Sand_Bucket', 'sandBucket');
+        if (Math.random() < 0.2) {
+          this.addToInfoText('Item_Worm_S', 'worm');
         }
         if (Math.random() < 0.1) {
           this.addToInfoText('Item_Cobwebs_S', 'cobwebs');
