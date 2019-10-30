@@ -279,11 +279,11 @@ function CanvasDict(globalDict) {
     if (this.currentAnimation.counter >= 60) {
       if (this.infoText === null) {
         if (Math.random() < 0.005) {
-          this.initInfoText('Item_Ironore_S', 'ironore');
+          this.initInfoText('Item_Ironore_S', 'ironOre');
         } else {
           this.initInfoText('Item_Stone_S', 'stone');
         }
-        if (Math.random() < 0.014) {
+        if (Math.random() < 0.1) {
           this.addToInfoText('Item_Cobwebs_S', 'cobwebs');
         }
       } else {
