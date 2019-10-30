@@ -198,7 +198,7 @@ function GlobalDict() {
       ]
     },
     {
-      id: 'cobwebs', spriteKey: 'img/sprites/Item/Cobwebs.png', quantity: 1
+      id: 'cobwebs', spriteKey: 'img/sprites/Item/Cobwebs.png', quantity: 1, points: 5
     }
   ];
   this.inventory = [
