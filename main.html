@@ -536,6 +536,10 @@
             <p class="content has-text-centered" v-bind:class="getClass('content')">{{ getActionItemName }}</p>
             <div class="flex-grow maxHeight backgroundPicture is-relative"
                  v-bind:style="{ backgroundImage: 'url(' + getActionSprite + ')' }">
+              <progress class="progress position-bottom-center halfWidth noBottomMargin"
+                        v-bind:value="getActionItemDurability"
+                        v-bind:class="getActionItemProgressClass" max="1">
+              </progress>
               <div class="content position-bottom-right" v-bind:class="getClass('content')">
                 {{ getActionItemQuantity }}
               </div>
@@ -620,6 +624,10 @@
                 <p class="content has-text-centered" v-bind:class="getClass('content')">{{ languages[lang][item.id] }}</p>
                 <div class="flex-grow maxHeight backgroundPicture is-relative"
                      v-bind:style="{ backgroundImage: 'url(' + item.spriteKey + ')' }">
+                  <progress class="progress position-bottom-center halfWidth noBottomMargin"
+                            v-bind:value="getDurability(item.id, item.durability)"
+                            v-bind:class="getProgressClass(item.id, item.durability)" max="1" v-show="!isShop && item.durability">
+                  </progress>
                   <div class="content position-bottom-right" v-bind:class="getClass('content')" v-show="!isShop">
                     {{ item.quantity }}
                   </div>

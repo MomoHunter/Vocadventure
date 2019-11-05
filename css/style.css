@@ -177,6 +177,12 @@ h2 {
     right: 0;
 }
 
+.position-bottom-center {
+    position: absolute;
+    bottom: 0;
+    margin: 0 auto;
+}
+
 .help.is-small {
     font-size: 11px;
 }

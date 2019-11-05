@@ -286,7 +286,7 @@ function CanvasDict(globalDict) {
   this.shovelAnimation = function () {
     if (this.currentAnimation.counter >= 60) {
       if (this.infoText === null) {
-        this.initInfoText('Item_Sand_Bucket', 'sandBucket');
+        this.initInfoText('Item_Sand_Bucket_S', 'sandBucket');
         if (Math.random() < 0.2) {
           this.addToInfoText('Item_Worm_S', 'worm');
         }
@@ -350,7 +350,7 @@ function CanvasDict(globalDict) {
       number: number
     });
   };
-  this.addPoints = function (type) {
+  this.addPoints = function (toolId) {
     this.infoText.items.map(item => {
       let inventoryItem = this.gD.inventory.find(entry => entry.id === item.itemId);
       let itemTemplate = this.gD.items.find(entry => entry.id === item.itemId);
@@ -365,18 +365,30 @@ function CanvasDict(globalDict) {
       }
       this.gD.scores.scores.find(score => score.id === 'statusLeft').number += itemTemplate.points * item.number;
     }, this);
+    let item = this.gD.inventory.find(entry => entry.id === toolId);
     this.infoText = null;
-    this.currentAction.used++;
+    item.durability--;
+    if (item.durability === 0) {
+      if (item.quantity > 1) {
+        item.quantity--;
+        item.durability = this.gD.items.find(entry => entry.id === toolId).durability;
+      } else {
+        this.gD.inventory.splice(this.gD.inventory.indexOf(item), 1);
+        this.currentAction.used = this.currentAction.uses;
+      }
+    } else {
+      this.currentAction.used++;
+    }
     if (this.currentAction.used === this.currentAction.uses) {
       this.gD.actionIsActive = false;
       this.currentAction = null;
-      if (type === 'axe' || type === 'pickaxe') {
+      if (toolId === 'axe' || toolId === 'pickaxe') {
         this.animationQueue.push({
           type: 'backOnTrack',
           goal: 36,
           counter: 0
         });
-      } else if (type === 'shovel') {
+      } else if (toolId === 'shovel') {
         this.animationQueue.push({
           type: 'diveUp',
           goal: 96,

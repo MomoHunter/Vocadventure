@@ -171,7 +171,7 @@ function GlobalDict() {
       ]
     },
     {
-      id: 'shovel', spriteKey: 'img/sprites/Item/Shovel.png', quantity: 1, points: 11, costs: [
+      id: 'shovel', spriteKey: 'img/sprites/Item/Shovel.png', quantity: 1, points: 11, durability: 13, costs: [
         {id: 'wood', quantity: 4},
         {id: 'stone', quantity: 2},
         {id: 'string', quantity: 2},
@@ -179,7 +179,7 @@ function GlobalDict() {
       ]
     },
     {
-      id: 'axe', spriteKey: 'img/sprites/Item/Axe.png', quantity: 1, points: 13, costs: [
+      id: 'axe', spriteKey: 'img/sprites/Item/Axe.png', quantity: 1, points: 13, durability: 10, costs: [
         {id: 'wood', quantity: 4},
         {id: 'stone', quantity: 2},
         {id: 'string', quantity: 2},
@@ -187,14 +187,14 @@ function GlobalDict() {
       ]
     },
     {
-      id: 'fishingRod', spriteKey: 'img/sprites/Item/Fishing_Rod.png', quantity: 16, points: 3, costs: [
+      id: 'fishingRod', spriteKey: 'img/sprites/Item/Fishing_Rod.png', quantity: 16, points: 3, durability: 8, costs: [
         {id: 'wood', quantity: 3},
         {id: 'string', quantity: 5},
         {id: 'statusRight', quantity: 85}
       ]
     },
     {
-      id: 'pickaxe', spriteKey: 'img/sprites/Item/Pickaxe.png', quantity: 1, points: 18, costs: [
+      id: 'pickaxe', spriteKey: 'img/sprites/Item/Pickaxe.png', quantity: 1, points: 18, durability: 16, costs: [
         {id: 'wood', quantity: 3},
         {id: 'stone', quantity: 5},
         {id: 'string', quantity: 2},
@@ -209,8 +209,8 @@ function GlobalDict() {
     }
   ];
   this.inventory = [
-    {id: 'shovel', spriteKey: 'img/sprites/Item/Shovel.png', quantity: 55},
-    {id: 'axe', spriteKey: 'img/sprites/Item/Axe.png', quantity: 50}
+    {id: 'shovel', spriteKey: 'img/sprites/Item/Shovel.png', quantity: 55, durability: 6},
+    {id: 'axe', spriteKey: 'img/sprites/Item/Axe.png', quantity: 50, durability: 9}
   ];
   this.searchResult = [];
   this.searchTerm = '';

@@ -300,6 +300,34 @@ function VueDict(globalDict) {
         }
         return '';
       },
+      getActionItemDurability: function () {
+        if (this.canvasDict !== null) {
+          if (this.canvasDict.currentAction !== null) {
+            let durability = this.inventory.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
+            let maxDurability = this.items.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
+            if (durability && maxDurability) {
+              return durability / maxDurability;
+            }
+          }
+        }
+        return 0;
+      },
+      getActionItemProgressClass: function () {
+        if (this.canvasDict !== null) {
+          if (this.canvasDict.currentAction !== null) {
+            let durability = this.inventory.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
+            let maxDurability = this.items.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
+            if (durability > maxDurability / 1.5) {
+              return 'is-success ' + this.classes['progress'][this.size];
+            } else if (durability > maxDurability / 3) {
+              return 'is-warning ' + this.classes['progress'][this.size];
+            } else {
+              return 'is-danger ' + this.classes['progress'][this.size];
+            }
+          }
+        }
+        return '';
+      },
       finishedAdventure: function () {
         return this.currentWord === this.vocabWords.length - 1;
       },
@@ -560,13 +588,7 @@ function VueDict(globalDict) {
         }
       },
       getPage: function () {
-        if (this.searchActivated) {
-          return this.currentShopPage + " / " + Math.ceil(this.searchResult.length / 4);
-        } else if (this.isShop) {
-          return this.currentShopPage + " / " + Math.ceil(this.items.length / 4);
-        } else {
-          return this.currentShopPage + " / " + Math.ceil(this.inventory.length / 4);
-        }
+        return this.currentShopPage + " / " + Math.ceil(this.searchResult.length / 4);
       },
       displayItems: function () {
         let displayedItems = [];
@@ -624,6 +646,25 @@ function VueDict(globalDict) {
       },
       getClass: function(type) {
         return this.classes[type][this.size];
+      },
+      getProgressClass: function (id, durability) {
+        if (durability) {
+          let maxDurability = this.items.find(item => item.id === id).durability;
+          if (durability > maxDurability / 1.5) {
+            return 'is-success ' + this.classes['progress'][this.size];
+          } else if (durability > maxDurability / 3) {
+            return 'is-warning ' + this.classes['progress'][this.size];
+          } else {
+            return 'is-danger ' + this.classes['progress'][this.size];
+          }
+        }
+        return '';
+      },
+      getDurability: function (id, durability) {
+        if (durability) {
+          return durability / this.items.find(item => item.id === id).durability;
+        }
+        return 0;
       },
       nextPage: function (pages) {
         if (this.searchResult.length === 0 ||
@@ -737,7 +778,12 @@ function VueDict(globalDict) {
           if (inventoryItem !== undefined) {
             inventoryItem.quantity += currentItem.quantity;
           } else {
-            this.inventory.push({ id: currentItem.id, quantity: 1, spriteKey: currentItem.spriteKey });
+            this.inventory.push({
+              id: currentItem.id,
+              quantity: 1,
+              spriteKey: currentItem.spriteKey,
+              durability: currentItem.durability
+            });
           }
           this.scores.scores.find(item => item.id === 'statusLeft').number += currentItem.points;
           this.saveData();
