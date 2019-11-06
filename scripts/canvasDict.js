@@ -85,25 +85,50 @@ function CanvasDict(globalDict) {
     "Special_Placeholder_B": [false, 1421, 41, 80, 80]
   };
   // end spriteDict
+  this.spriteMapping = {
+    'apple': 'Item_Apple',
+    'wood': 'Item_Wood',
+    'stone': 'Item_Stone',
+    'worm': 'Item_Worm',
+    'ironore': 'Item_Ironore'
+  };
+  this.itemPositions = [
+    { x: 25, y: 218 },
+    { x: 41, y: 232 },
+    { x: 59, y: 224 }
+  ];
   this.availableBackgrounds = [
     { spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, chance: 0.1, action: 3,
-      textId: 'appletree', toolId: 'axe', uses: 8 },
-    { spriteKey: 'Background_Tiles_Basic', chance: 1 },
+      textId: 'appletree', toolId: 'axe', uses: 8, foundOn: [1, 2, 4, 5], canBeFound: [
+        { id: 'apple', chance: 0.001 },
+        { id: 'wood', chance: 0.05 },
+        { id: 'stone', chance: 0.02 }
+      ] },
+    { spriteKey: 'Background_Tiles_Basic', chance: 1, foundOn: [1, 2, 3], canBeFound: [
+        { id: 'stone', chance: 0.04 },
+        { id: 'wood', chance: 0.01 }
+      ] },
     { spriteKey: 'Background_Tiles_Bridge_B', animationSpeed: 12, chance: 0.1, action: 3,
-      textId: 'bridge', toolId: 'fishingRod', uses: 10 },
+      textId: 'bridge', toolId: 'fishingRod', uses: 10, foundOn: [1, 5], canBeFound: [
+        { id: 'stone', chance: 0.02 },
+        { id: 'worm', chance: 0.045 }
+      ] },
     { spriteKey: 'Background_Tiles_Dirtmine_B', chance: 0.25, action: 1,
-      textId: 'dirtmine', toolId: 'shovel', uses: 12 },
+      textId: 'dirtmine', toolId: 'shovel', uses: 12, foundOn: [], canBeFound: [] },
     { spriteKey: 'Background_Tiles_Stone', chance: 0.25, action: 2,
-      textId: 'rock', toolId: 'pickaxe', uses: 6 }
+      textId: 'rock', toolId: 'pickaxe', uses: 6, foundOn: [1, 3], canBeFound: [
+        { id: 'stone', chance: 0.06 },
+        { id: 'ironore', chance: 0.001 }
+      ] }
   ];
   this.player = {
     x: 198, y: 156, spriteKeys: ['Player_Player', 'Player_Player_Walk', 'Player_Player_Back', 'Player_Player_Back_Walk'],
     animationSpeed : 16
   };
   this.backgrounds = [
-    { x: 0, lastX: 0, y: 0, spriteKey: 'Background_Tiles_Basic' },
-    { x: 288, lastX: 288, y: 0, spriteKey: 'Background_Tiles_Basic' },
-    { x: 576, lastX: 576, y: 0, spriteKey: 'Background_Tiles_Basic' }
+    { x: 0, lastX: 0, y: 0, spriteKey: 'Background_Tiles_Basic', items: [] },
+    { x: 288, lastX: 288, y: 0, spriteKey: 'Background_Tiles_Basic', items: [] },
+    { x: 576, lastX: 576, y: 0, spriteKey: 'Background_Tiles_Basic', items: [] }
   ];
   this.canvasLoop = function (timestamp) {
     if (this.gD.page === 'adventure') {
@@ -140,7 +165,6 @@ function CanvasDict(globalDict) {
     }
   };
   this.animate = function () {
-    console.log(this.currentAnimation.type);
     let animationFinished = this[this.currentAnimation.type]();
     if (animationFinished) {
       this.backgrounds.map(background => {
@@ -203,8 +227,24 @@ function CanvasDict(globalDict) {
                 x: this.backgrounds[i].x + spriteWidth,
                 lastX: this.backgrounds[i].x + spriteWidth,
                 y: 0,
-                spriteKey: this.availableBackgrounds[j].spriteKey
+                spriteKey: this.availableBackgrounds[j].spriteKey,
+                items: []
               };
+              this.availableBackgrounds[j].foundOn.map((field, indexF) => {
+                this.availableBackgrounds[j].canBeFound.map((item, indexI) => {
+                  if (indexI === 0) {
+                    newBackground.items.push([]);
+                  }
+                  if (Math.random() < item.chance && newBackground.items[indexF].length < 3) {
+                    newBackground.items[indexF].push({
+                      x: this.itemPositions[newBackground.items[indexF].length].x + (field - 1) * 96,
+                      y: this.itemPositions[newBackground.items[indexF].length].y,
+                      id: item.id,
+                      spriteKey: this.spriteMapping[item.id] + '_S'
+                    });
+                  }
+                }, this);
+              }, this);
               if (this.availableBackgrounds[j].action) {
                 newBackground.action = 192 - (this.availableBackgrounds[j].action - 1) * 96;
                 newBackground.textId = this.availableBackgrounds[j].textId;
@@ -267,7 +307,7 @@ function CanvasDict(globalDict) {
     if (this.currentAnimation.counter >= 60) {
       if (this.infoText === null) {
         if (Math.random() < 0.005) {
-          this.initInfoText('Item_Ironore_S', 'ironOre');
+          this.initInfoText('Item_Ironore_S', 'ironore');
         } else {
           this.initInfoText('Item_Stone_S', 'stone');
         }
@@ -405,6 +445,11 @@ function CanvasDict(globalDict) {
         background.x, background.y, background.spriteKey, this,
         background.animationSpeed ? background.animationSpeed : undefined
       );
+      background.items.map(field => {
+        field.map(item => {
+          drawCanvasImage(background.x + item.x, item.y, item.spriteKey, this);
+        }, this);
+      }, this);
     }, this);
 
     let playerKey = 0;

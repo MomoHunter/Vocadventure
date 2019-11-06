@@ -228,7 +228,7 @@ function VueDict(globalDict) {
       },
       romajiIsCorrect: function () {
         if (this.vocabWords.length !== 0) {
-          if (this.romajiInputOriginal.toLowerCase() === this.vocabWords[this.currentWord].romaji.toLowerCase()) {
+          if (this.romajiInputOriginal.toLowerCase().trim() === this.vocabWords[this.currentWord].romaji.toLowerCase()) {
             return true;
           }
         }
@@ -236,7 +236,7 @@ function VueDict(globalDict) {
       },
       kanaIsCorrect: function () {
         if (this.vocabWords.length !== 0) {
-          if (this.kanaInputOriginal === this.vocabWords[this.currentWord].kana) {
+          if (this.kanaInputOriginal.trim() === this.vocabWords[this.currentWord].kana) {
             return true;
           }
         }

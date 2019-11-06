@@ -145,7 +145,7 @@ function GlobalDict() {
       ]
     },
     {
-      id: 'ironOre', spriteKey: 'img/sprites/Item/Ironore.png', quantity: 1, points: 9, costs: [
+      id: 'ironore', spriteKey: 'img/sprites/Item/Ironore.png', quantity: 1, points: 9, costs: [
         {id: 'statusRight', quantity: 29}
       ]
     },
