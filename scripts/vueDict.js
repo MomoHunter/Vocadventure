@@ -260,7 +260,7 @@ function VueDict(globalDict) {
       },
       getAnimationInProgress: function () {
         if (this.canvasDict !== null) {
-          return this.canvasDict.animationInProgress;
+          return this.canvasDict.currentAnimation !== null;
         }
         return false;
       },
@@ -283,7 +283,12 @@ function VueDict(globalDict) {
       getActionSprite: function () {
         if (this.canvasDict !== null) {
           if (this.canvasDict.currentAction !== null) {
-            return this.items.find(item => item.id === this.canvasDict.currentAction.toolId, this).spriteKey;
+            let item = this.items.find(item => item.id === this.canvasDict.currentAction.toolId, this);
+            if (item) {
+              return item.spriteKey;
+            } else {
+              return ''
+            }
           }
         }
         return '';
@@ -302,7 +307,7 @@ function VueDict(globalDict) {
       },
       getActionItemDurability: function () {
         if (this.canvasDict !== null) {
-          if (this.canvasDict.currentAction !== null) {
+          if (this.canvasDict.currentAction !== null && this.canvasDict.currentAction.toolId !== 'pickUp') {
             let durability = this.inventory.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
             let maxDurability = this.items.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
             if (durability && maxDurability) {
@@ -314,7 +319,7 @@ function VueDict(globalDict) {
       },
       getActionItemProgressClass: function () {
         if (this.canvasDict !== null) {
-          if (this.canvasDict.currentAction !== null) {
+          if (this.canvasDict.currentAction !== null && this.canvasDict.currentAction.toolId !== 'pickUp') {
             let durability = this.inventory.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
             let maxDurability = this.items.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
             if (durability > maxDurability / 1.5) {
@@ -550,6 +555,12 @@ function VueDict(globalDict) {
         } else if (this.canvasDict.currentAction.textId === 'dirtmine') {
           this.canvasDict.animationQueue.push({
             type: 'diveDown',
+            counter: 0,
+            goal: 96
+          });
+        } else if (this.canvasDict.currentAction.textId === 'pickUp') {
+          this.canvasDict.animationQueue.push({
+            type: 'pickUp',
             counter: 0,
             goal: 96
           });

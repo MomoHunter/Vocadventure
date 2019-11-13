@@ -19,7 +19,7 @@ function GlobalDict() {
       link: "css/bulmaswatch.darkly.min.css"
     },
     "design2": {
-      link: "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css"
+      link: "css/bulma.min.css"
     },
     "design3": {
       link: "css/bulmaswatch.slate.min.css"

@@ -78,7 +78,7 @@ function drawCanvasRect(x, y, width, height, styleKey, cD) {
  * @param {string} spriteKey defines which sprite should be drawn
  * @param {CanvasDict} cD
  * @param {number} animationSpeed the speed of the animation, default: 8
- * @param {boolean} useCustomStart if animation should count from cD.animationStart
+ * @param {boolean} useCustomStart if animation should count from cD.animationStartFrame
  * @param {number} rotation  gives the rotation in degree
  */
 function drawCanvasImage(x, y, spriteKey, cD, animationSpeed = 12, useCustomStart = false, rotation = 0) {

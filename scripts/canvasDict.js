@@ -9,10 +9,9 @@ function CanvasDict(globalDict) {
   this.lag = 0;
   this.refreshrate = 1000 / 60;
   this.frameNo = 0;
-  this.animationInProgress = false;
   this.animationQueue = [];
   this.currentAnimation = null;
-  this.animationStart = 0;
+  this.animationStartFrame = 0;
   this.backgroundAnimationSpeed = 1;
   this.infoText = null;
   this.currentAction = null;
@@ -126,10 +125,14 @@ function CanvasDict(globalDict) {
     animationSpeed : 16
   };
   this.backgrounds = [
-    { x: 0, lastX: 0, y: 0, spriteKey: 'Background_Tiles_Basic', items: [] },
-    { x: 288, lastX: 288, y: 0, spriteKey: 'Background_Tiles_Basic', items: [] },
-    { x: 576, lastX: 576, y: 0, spriteKey: 'Background_Tiles_Basic', items: [] }
+    { x: 0, lastX: 0, y: 0, spriteKey: 'Background_Tiles_Basic', events: {} },
+    { x: 288, lastX: 288, y: 0, spriteKey: 'Background_Tiles_Basic', events: {} },
+    { x: 576, lastX: 576, y: 0, spriteKey: 'Background_Tiles_Basic', events: {} }
   ];
+  /**
+   * main canvas loop for animations
+   * @param timestamp
+   */
   this.canvasLoop = function (timestamp) {
     if (this.gD.page === 'adventure') {
       this.raf = requestAnimationFrame(timestamp => this.canvasLoop(timestamp));
@@ -154,27 +157,29 @@ function CanvasDict(globalDict) {
       this.startTS = timestamp;
     }
   };
+  /**
+   * starts animations and updates them
+   */
   this.canvasUpdate = function () {
-    if (!this.animationInProgress && this.animationQueue.length > 0) {
+    if (this.currentAnimation !== null && this.animationQueue.length > 0) {
       this.currentAnimation = this.animationQueue.pop();
-      this.animationInProgress = true;
-      this.animationStart = this.frameNo;
+      this.animationStartFrame = this.frameNo;
     }
     if (this.currentAnimation) {
       this.animate();
     }
   };
   this.animate = function () {
-    let animationFinished = this[this.currentAnimation.type]();
-    if (animationFinished) {
+    this[this.currentAnimation.type]();
+
+    if (this.currentAnimation.counter >= this.currentAnimation.goal) {
       this.backgrounds.map(background => {
         background.x = Math.round(background.x / 96) * 96;
         background.lastX = background.x;
       }, this);
       this.player.y = Math.round(this.player.y / 12) * 12;
       this.currentAnimation = null;
-      this.animationInProgress = false;
-      this.animationStart = 0;
+      this.animationStartFrame = 0;
     }
   };
   this.moveBackground = function () {
@@ -191,6 +196,17 @@ function CanvasDict(globalDict) {
         } else if (this.backgrounds[i].x < -96 && this.backgrounds[i].x >= -132) {
           this.player.y += 24 / 36 * this.backgroundAnimationSpeed;
         }
+      }
+
+      if (this.backgrounds[i].items.hasOwnProperty(
+        ((this.backgrounds[i].lastX - this.currentAnimation.goal) * -1  / 96 + 3).toString()
+      )) {
+        this.currentAction = {
+          textId: 'pickUp',
+          toolId: 'pickUp',
+          uses: 1,
+          used: 0
+        };
       }
 
       if (this.backgrounds[i].lastX - this.currentAnimation.goal === this.backgrounds[i].action &&
@@ -228,17 +244,17 @@ function CanvasDict(globalDict) {
                 lastX: this.backgrounds[i].x + spriteWidth,
                 y: 0,
                 spriteKey: this.availableBackgrounds[j].spriteKey,
-                items: []
+                items: {}
               };
-              this.availableBackgrounds[j].foundOn.map((field, indexF) => {
+              this.availableBackgrounds[j].foundOn.map(field => {
                 this.availableBackgrounds[j].canBeFound.map((item, indexI) => {
                   if (indexI === 0) {
-                    newBackground.items.push([]);
+                    newBackground.items[field.toString()] = [];
                   }
-                  if (Math.random() < item.chance && newBackground.items[indexF].length < 3) {
-                    newBackground.items[indexF].push({
-                      x: this.itemPositions[newBackground.items[indexF].length].x + (field - 1) * 96,
-                      y: this.itemPositions[newBackground.items[indexF].length].y,
+                  if (Math.random() < item.chance && newBackground.items[field.toString()].length < 3) {
+                    newBackground.items[field.toString()].push({
+                      x: this.itemPositions[newBackground.items[field.toString()].length].x + (field - 1) * 96,
+                      y: this.itemPositions[newBackground.items[field.toString()].length].y,
                       id: item.id,
                       spriteKey: this.spriteMapping[item.id] + '_S'
                     });
@@ -282,6 +298,47 @@ function CanvasDict(globalDict) {
   };
   this.diveUp = function () {
     this.player.y -= 1;
+    this.currentAnimation.counter += 1;
+    return this.currentAnimation.counter >= this.currentAnimation.goal;
+  };
+  this.pickUp = function () {
+    if (this.currentAnimation.counter >= 60) {
+      if (this.infoText === null) {
+        this.backgrounds.map(background => {
+          let {spriteWidth} = getSpriteData(background.spriteKey, this);
+          if (background.x < this.player.x && background.x + spriteWidth > this.player.x) {
+            let key = ((background.lastX - this.currentAnimation.goal) * -1 / 96 + 3).toString();
+            background.items[key].map((item, index) => {
+              if (index === 0) {
+                this.initInfoText(item.spriteKey, item.id);
+              } else {
+                this.addToInfoText(item.spriteKey, item.id);
+              }
+            });
+            background.items[key] = [];
+          }
+        }, this);
+      } else {
+        if (this.currentAnimation.counter === this.currentAnimation.goal - 1) {
+          this.infoText.items.map(item => {
+            let inventoryItem = this.gD.inventory.find(entry => entry.id === item.itemId);
+            let itemTemplate = this.gD.items.find(entry => entry.id === item.itemId);
+            if (inventoryItem) {
+              inventoryItem.quantity += item.number;
+            } else {
+              this.gD.inventory.push({
+                id: itemTemplate.id,
+                quantity: 1,
+                spriteKey: itemTemplate.spriteKey
+              });
+            }
+            this.gD.scores.scores.find(score => score.id === 'statusLeft').number += itemTemplate.points * item.number;
+          }, this);
+        } else {
+          this.infoText.y -= 0.5;
+        }
+      }
+    }
     this.currentAnimation.counter += 1;
     return this.currentAnimation.counter >= this.currentAnimation.goal;
   };
@@ -359,6 +416,7 @@ function CanvasDict(globalDict) {
     this.currentAnimation.counter += 1;
     return this.currentAnimation.counter >= this.currentAnimation.goal;
   };
+
   this.initInfoText = function (spriteKey, itemId) {
     let {spriteWidth} = getSpriteData('Player_Player', this);
     let number;
@@ -445,11 +503,11 @@ function CanvasDict(globalDict) {
         background.x, background.y, background.spriteKey, this,
         background.animationSpeed ? background.animationSpeed : undefined
       );
-      background.items.map(field => {
-        field.map(item => {
+      for (let key of Object.keys(background.items)) {
+        background.items[key].map(item => {
           drawCanvasImage(background.x + item.x, item.y, item.spriteKey, this);
         }, this);
-      }, this);
+      }
     }, this);
 
     let playerKey = 0;
