@@ -12,7 +12,6 @@ function CanvasDict(globalDict) {
   this.animationQueue = [];
   this.currentAnimation = null;
   this.animationStartFrame = 0;
-  this.backgroundAnimationSpeed = 1;
   this.infoText = null;
   this.currentAction = null;
   this.styles = styles;
@@ -98,7 +97,7 @@ function CanvasDict(globalDict) {
   ];
   this.availableBackgrounds = [
     { spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, chance: 0.1, action: 3,
-      textId: 'appletree', toolId: 'axe', uses: 8, foundOn: [1, 2, 4, 5], canBeFound: [
+      actionId: 'appletree', toolId: 'axe', uses: 8, foundOn: [1, 2, 4, 5], canBeFound: [
         { id: 'apple', chance: 0.001 },
         { id: 'wood', chance: 0.05 },
         { id: 'stone', chance: 0.02 }
@@ -108,14 +107,14 @@ function CanvasDict(globalDict) {
         { id: 'wood', chance: 0.01 }
       ] },
     { spriteKey: 'Background_Tiles_Bridge_B', animationSpeed: 12, chance: 0.1, action: 3,
-      textId: 'bridge', toolId: 'fishingRod', uses: 10, foundOn: [1, 5], canBeFound: [
+      actionId: 'bridge', toolId: 'fishingRod', uses: 10, foundOn: [1, 5], canBeFound: [
         { id: 'stone', chance: 0.02 },
         { id: 'worm', chance: 0.045 }
       ] },
     { spriteKey: 'Background_Tiles_Dirtmine_B', chance: 0.25, action: 1,
-      textId: 'dirtmine', toolId: 'shovel', uses: 12, foundOn: [], canBeFound: [] },
+      actionId: 'dirtmine', toolId: 'shovel', uses: 12, foundOn: [], canBeFound: [] },
     { spriteKey: 'Background_Tiles_Stone', chance: 0.25, action: 2,
-      textId: 'rock', toolId: 'pickaxe', uses: 6, foundOn: [1, 3], canBeFound: [
+      actionId: 'rock', toolId: 'pickaxe', uses: 6, foundOn: [1, 3], canBeFound: [
         { id: 'stone', chance: 0.06 },
         { id: 'ironore', chance: 0.001 }
       ] }
@@ -125,10 +124,11 @@ function CanvasDict(globalDict) {
     animationSpeed : 16
   };
   this.backgrounds = [
-    { x: 0, lastX: 0, y: 0, spriteKey: 'Background_Tiles_Basic', events: {} },
-    { x: 288, lastX: 288, y: 0, spriteKey: 'Background_Tiles_Basic', events: {} },
-    { x: 576, lastX: 576, y: 0, spriteKey: 'Background_Tiles_Basic', events: {} }
+    { x: 0, lastX: 0, y: 0, width: 288, spriteKey: 'Background_Tiles_Basic', events: {} },
+    { x: 288, lastX: 288, y: 0, width: 288, spriteKey: 'Background_Tiles_Basic', events: {} },
+    { x: 576, lastX: 576, y: 0, width: 288, spriteKey: 'Background_Tiles_Basic', events: {} }
   ];
+  this.currentBackground = this.backgrounds[1];
   /**
    * main canvas loop for animations
    * @param timestamp
@@ -184,129 +184,129 @@ function CanvasDict(globalDict) {
   };
   this.moveBackground = function () {
     for (let i = 0; i < this.backgrounds.length; i++) {
-      this.backgrounds[i].x -= this.backgroundAnimationSpeed;
+      this.backgrounds[i].x -= this.currentAnimation.speed;
 
-      if (this.backgrounds[i].spriteKey.includes('Bridge')) {
-        if (this.backgrounds[i].x < 156 && this.backgrounds[i].x >= 96) {
-          this.player.y -= 24 / 60 * this.backgroundAnimationSpeed;
-        } else if (this.backgrounds[i].x < 96 && this.backgrounds[i].x >= 0) {
-          this.player.y -= 12 / 96 * this.backgroundAnimationSpeed;
-        } else if (this.backgrounds[i].x < 0 && this.backgrounds[i].x >= -96) {
-          this.player.y += 12 / 96 * this.backgroundAnimationSpeed;
-        } else if (this.backgrounds[i].x < -96 && this.backgrounds[i].x >= -132) {
-          this.player.y += 24 / 36 * this.backgroundAnimationSpeed;
-        }
+      if (this.backgrounds[i].x < this.player.x) {
+        this.currentBackground = this.backgrounds[i];
       }
 
-      if (this.backgrounds[i].items.hasOwnProperty(
-        ((this.backgrounds[i].lastX - this.currentAnimation.goal) * -1  / 96 + 3).toString()
-      )) {
-        this.currentAction = {
-          textId: 'pickUp',
-          toolId: 'pickUp',
-          uses: 1,
-          used: 0
-        };
-      }
-
-      if (this.backgrounds[i].lastX - this.currentAnimation.goal === this.backgrounds[i].action &&
-          this.currentAction === null) {
-        this.currentAction = {
-          textId: this.backgrounds[i].textId,
-          toolId: this.backgrounds[i].toolId,
-          uses: this.backgrounds[i].uses,
-          used: 0
-        };
-      }
-
-      let {spriteWidth} = getSpriteData(this.backgrounds[i].spriteKey, this);
+      //delete the first background if outside of canvas
       if (i === 0) {
-        if (this.backgrounds[i].x + spriteWidth < -100) {
+        if (this.backgrounds[i].x + this.backgrounds[i].width < -100) {
           this.backgrounds.splice(i, 1);
           i--;
         }
       }
-      if (i === this.backgrounds.length - 1) {
-        if (this.backgrounds[i].x + spriteWidth < this.canvas.width + 100) {
-          let total = 0;
-          let random;
-          this.availableBackgrounds.map(availableBackground => {
-            total += availableBackground.chance;
-          }, this);
 
-          random = Math.random() * total;
+      //add new background, if last is nearly finished
+      if (i === this.backgrounds.length - 1 &&
+          this.backgrounds[i].x + this.backgrounds[i].width < this.canvas.width + 100) {
+        let total = 0;
+        let random;
+        this.availableBackgrounds.map(availableBackground => {
+          total += availableBackground.chance;
+        }, this);
 
-          for (let j = 0; j < this.availableBackgrounds.length; j++) {
-            random -= this.availableBackgrounds[j].chance;
-            if (random <= 0) {
-              let newBackground = {
-                x: this.backgrounds[i].x + spriteWidth,
-                lastX: this.backgrounds[i].x + spriteWidth,
-                y: 0,
-                spriteKey: this.availableBackgrounds[j].spriteKey,
-                items: {}
-              };
-              this.availableBackgrounds[j].foundOn.map(field => {
-                this.availableBackgrounds[j].canBeFound.map((item, indexI) => {
-                  if (indexI === 0) {
-                    newBackground.items[field.toString()] = [];
-                  }
-                  if (Math.random() < item.chance && newBackground.items[field.toString()].length < 3) {
-                    newBackground.items[field.toString()].push({
-                      x: this.itemPositions[newBackground.items[field.toString()].length].x + (field - 1) * 96,
-                      y: this.itemPositions[newBackground.items[field.toString()].length].y,
-                      id: item.id,
-                      spriteKey: this.spriteMapping[item.id] + '_S'
-                    });
-                  }
-                }, this);
+        random = Math.random() * total;
+
+        for (let j = 0; j < this.availableBackgrounds.length; j++) {
+          random -= this.availableBackgrounds[j].chance;
+          if (random <= 0) {
+            let newBackground = {
+              x: this.backgrounds[i].x + this.backgrounds[i].width,
+              lastX: this.backgrounds[i].x + this.backgrounds[i].width,
+              y: 0,
+              width: getSpriteData(this.availableBackgrounds[j].spriteKey, this).spriteWidth,
+              spriteKey: this.availableBackgrounds[j].spriteKey,
+              events: {}
+            };
+
+            this.availableBackgrounds[j].foundOn.map(field => {
+              this.availableBackgrounds[j].canBeFound.map((item, k) => {
+                let xPos = (192 - (field - 1) * 96).toString();
+
+                if (k === 0) {
+                  newBackground.events[xPos] = { id: 'pickUp', uses: 1, items: [] };
+                }
+
+                if (Math.random() < item.chance && newBackground.events[xPos].items.length < 3) {
+                  newBackground.events[xPos].items.push({
+                    x: this.itemPositions[newBackground.events[xPos].length].x + (field - 1) * 96,
+                    y: this.itemPositions[newBackground.events[xPos].length].y,
+                    id: item.id,
+                    spriteKey: this.spriteMapping[item.id] + '_S'
+                  });
+                }
               }, this);
-              if (this.availableBackgrounds[j].action) {
-                newBackground.action = 192 - (this.availableBackgrounds[j].action - 1) * 96;
-                newBackground.textId = this.availableBackgrounds[j].textId;
-                newBackground.toolId = this.availableBackgrounds[j].toolId;
-                newBackground.uses = this.availableBackgrounds[j].uses;
-              }
-              if (this.availableBackgrounds[j].animationSpeed) {
-                newBackground.animationSpeed = this.availableBackgrounds[j].animationSpeed
-              }
-              this.backgrounds.push(newBackground);
-              break;
+            }, this);
+
+            if (this.availableBackgrounds[j].action) {
+              let xPos = (192 - (this.availableBackgrounds[j].action - 1) * 96).toString();
+              newBackground.events[xPos] = {
+                id: this.availableBackgrounds[j].actionId,
+                toolId: this.availableBackgrounds[j].toolId,
+                uses: this.availableBackgrounds[j].uses
+              };
             }
+
+            if (this.availableBackgrounds[j].animationSpeed) {
+              newBackground.animationSpeed = this.availableBackgrounds[j].animationSpeed
+            }
+
+            this.backgrounds.push(newBackground);
+            break;
           }
         }
       }
     }
-    this.currentAnimation.counter += 1;
 
-    return this.currentAnimation.counter >= this.currentAnimation.goal;
+    if (this.currentBackground.spriteKey.includes('Bridge')) {
+      if (this.currentBackground.x < 156 && this.currentBackground.x >= 96) {
+        this.player.y -= 24 / 60 * this.currentAnimation.speed;
+      } else if (this.currentBackground.x < 96 && this.currentBackground.x >= 0) {
+        this.player.y -= 12 / 96 * this.currentAnimation.speed;
+      } else if (this.currentBackground.x < 0 && this.currentBackground.x >= -96) {
+        this.player.y += 12 / 96 * this.currentAnimation.speed;
+      } else if (this.currentBackground.x < -96 && this.currentBackground.x >= -132) {
+        this.player.y += 24 / 36 * this.currentAnimation.speed;
+      }
+    }
+
+    if (this.currentBackground.events.hasOwnProperty(
+       (this.currentBackground.lastX - this.currentAnimation.goal).toString()) && this.currentAction === null) {
+      let event = this.currentBackground.events[(this.currentBackground.lastX - this.currentAnimation.goal).toString()];
+
+      this.currentAction = {
+        id: event.id,
+        toolId: event.toolId,
+        uses: event.uses,
+        used: 0
+      };
+    }
+
+    this.currentAnimation.counter += 1;
   };
   this.approachObject = function () {
     this.player.y -= 1;
     this.currentAnimation.counter += 1;
-    return this.currentAnimation.counter >= this.currentAnimation.goal;
   };
   this.backOnTrack = function () {
     this.player.y += 1;
     this.currentAnimation.counter += 1;
-    return this.currentAnimation.counter >= this.currentAnimation.goal;
   };
   this.diveDown = function () {
     this.player.y += 1;
     this.currentAnimation.counter += 1;
-    return this.currentAnimation.counter >= this.currentAnimation.goal;
   };
   this.diveUp = function () {
     this.player.y -= 1;
     this.currentAnimation.counter += 1;
-    return this.currentAnimation.counter >= this.currentAnimation.goal;
   };
   this.pickUp = function () {
     if (this.currentAnimation.counter >= 60) {
       if (this.infoText === null) {
         this.backgrounds.map(background => {
-          let {spriteWidth} = getSpriteData(background.spriteKey, this);
-          if (background.x < this.player.x && background.x + spriteWidth > this.player.x) {
+          if (background.x < this.player.x && background.x + background.width > this.player.x) {
             let key = ((background.lastX - this.currentAnimation.goal) * -1 / 96 + 3).toString();
             background.items[key].map((item, index) => {
               if (index === 0) {
