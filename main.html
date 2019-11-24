@@ -19,11 +19,13 @@
     <!--for offline use-->
     <link id="bulmaCSS" rel="stylesheet" v-bind:href="getDesign">
     <link rel="stylesheet" href="MaterialDesign-Webfont-master/css/materialdesignicons.min.css">
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/architect-s-daughter" type="text/css"/>
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="Vocadventure.webmanifest">
     <link rel="stylesheet" href="css/animate.min.css">
     <script src="fontawesome-free-5.11.2-web/js/all.min.js"></script>
     <script src="scripts/vue.js"></script>
+    <script src="scripts/vueComponents.js"></script>
   </head>
   <body onload="main();">
     <nav id="status" class="level is-mobile">
@@ -531,20 +533,29 @@
             </div>
           </div>
         </div>
-        <div class="customColumn is-10 flex-grow customColumn2" v-show="actionIsVisible && getActionSprite !== ''">
-          <div class="box customColumn2 flex-grow halfWidth autoMargin">
-            <p class="content has-text-centered" v-bind:class="getClass('content')">{{ getActionItemName }}</p>
-            <div class="flex-grow maxHeight backgroundPicture is-relative"
-                 v-bind:style="{ backgroundImage: 'url(' + getActionSprite + ')' }">
-              <progress class="progress position-bottom-center halfWidth noBottomMargin"
-                        v-bind:value="getActionItemDurability"
-                        v-bind:class="getActionItemProgressClass" max="1">
-              </progress>
-              <div class="content position-bottom-right" v-bind:class="getClass('content')">
-                {{ getActionItemQuantity }}
-              </div>
-            </div>
+        <div class="customColumn is-10 flex-grow customColumn2" v-show="actionIsVisible">
+          <div class="content has-text-centered" v-bind:class="getClass('content')">
+            {{ getActionText }}
           </div>
+        </div>
+        <div class="column is-10" v-show="actionIsVisible && getActionSprite !== ''">
+          <table class="table maxWidth">
+            <tr>
+              <td class="backgroundPicture is-relative"
+                  v-bind:style="{ backgroundImage: 'url(' + getActionSprite + ')' }"></td>
+              <td>
+                {{ getActionItemName }}
+              </td>
+              <td>
+                <progress class="progress maxWidth noBottomMargin"
+                          v-bind:value="getActionItemDurability"
+                          v-bind:class="getActionItemProgressClass"
+                          v-show="getActionItemDurability !== ''" max="1">
+                </progress>
+              </td>
+              <td>{{ getActionItemQuantity }}</td>
+            </tr>
+          </table>
         </div>
         <div class="column is-10" v-show="actionIsVisible">
           <div class="buttons">

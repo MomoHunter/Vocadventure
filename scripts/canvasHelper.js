@@ -90,7 +90,7 @@ function drawCanvasImage(x, y, spriteKey, cD, animationSpeed = 12, useCustomStar
   let [isAnim, spriteX, spriteY, spriteWidth, spriteHeight] = spriteData;
 
   if (isAnim && useCustomStart) {
-    let frameNo = Math.floor((cD.frameNo - cD.animationStart) / animationSpeed) % spriteY.length;
+    let frameNo = Math.floor((cD.frameNo - cD.animationStartFrame) / animationSpeed) % spriteY.length;
     spriteY = spriteY[frameNo];
   } else if (isAnim) {
     let frameNo = Math.floor(cD.frameNo / animationSpeed) % spriteY.length;

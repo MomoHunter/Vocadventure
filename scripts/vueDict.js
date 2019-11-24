@@ -274,7 +274,7 @@ function VueDict(globalDict) {
       },
       getActionItemName: function () {
         if (this.canvasDict !== null) {
-          if (this.canvasDict.currentAction !== null) {
+          if (this.canvasDict.currentAction !== null && this.canvasDict.currentAction.toolId) {
             return this.getText(this.canvasDict.currentAction.toolId);
           }
         }
@@ -282,7 +282,7 @@ function VueDict(globalDict) {
       },
       getActionSprite: function () {
         if (this.canvasDict !== null) {
-          if (this.canvasDict.currentAction !== null) {
+          if (this.canvasDict.currentAction !== null && this.canvasDict.currentAction.toolId) {
             let item = this.items.find(item => item.id === this.canvasDict.currentAction.toolId, this);
             if (item) {
               return item.spriteKey;
@@ -295,7 +295,7 @@ function VueDict(globalDict) {
       },
       getActionItemQuantity: function () {
         if (this.canvasDict !== null) {
-          if (this.canvasDict.currentAction !== null) {
+          if (this.canvasDict.currentAction !== null && this.canvasDict.currentAction.toolId) {
             let item = this.inventory.find(item => item.id === this.canvasDict.currentAction.toolId, this);
             if (item) {
               return item.quantity;
@@ -307,11 +307,14 @@ function VueDict(globalDict) {
       },
       getActionItemDurability: function () {
         if (this.canvasDict !== null) {
-          if (this.canvasDict.currentAction !== null && this.canvasDict.currentAction.toolId !== 'pickUp') {
-            let durability = this.inventory.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
-            let maxDurability = this.items.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
-            if (durability && maxDurability) {
-              return durability / maxDurability;
+          if (this.canvasDict.currentAction !== null && this.canvasDict.currentAction.toolId) {
+            let inventoryItem = this.inventory.find(item => item.id === this.canvasDict.currentAction.toolId, this);
+            if (inventoryItem) {
+              let maxDurability = this.items.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
+              let durability = inventoryItem.durability;
+              if (durability && maxDurability) {
+                return durability / maxDurability;
+              }
             }
           }
         }
@@ -319,15 +322,18 @@ function VueDict(globalDict) {
       },
       getActionItemProgressClass: function () {
         if (this.canvasDict !== null) {
-          if (this.canvasDict.currentAction !== null && this.canvasDict.currentAction.toolId !== 'pickUp') {
-            let durability = this.inventory.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
-            let maxDurability = this.items.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
-            if (durability > maxDurability / 1.5) {
-              return 'is-success ' + this.classes['progress'][this.size];
-            } else if (durability > maxDurability / 3) {
-              return 'is-warning ' + this.classes['progress'][this.size];
-            } else {
-              return 'is-danger ' + this.classes['progress'][this.size];
+          if (this.canvasDict.currentAction !== null && this.canvasDict.currentAction.toolId) {
+            let inventoryItem = this.inventory.find(item => item.id === this.canvasDict.currentAction.toolId, this);
+            if (inventoryItem) {
+              let durability = inventoryItem.durability;
+              let maxDurability = this.items.find(item => item.id === this.canvasDict.currentAction.toolId, this).durability;
+              if (durability > maxDurability / 1.5) {
+                return 'is-success ' + this.classes['progress'][this.size];
+              } else if (durability > maxDurability / 3) {
+                return 'is-warning ' + this.classes['progress'][this.size];
+              } else {
+                return 'is-danger ' + this.classes['progress'][this.size];
+              }
             }
           }
         }
@@ -475,13 +481,14 @@ function VueDict(globalDict) {
             this.canvasDict.animationQueue.push({
               type: 'moveBackground',
               counter: 0,
-              goal: 96
+              goal: 96,
+              speed: 1
             });
           } else {
             this.canvasDict.animationQueue.push({
-              type: this.canvasDict.currentAction.toolId + 'Animation',
+              type: this.canvasDict.currentAction.id + 'Action',
               counter: 0,
-              goal: 96
+              goal: 128
             });
           }
         } else {
@@ -489,12 +496,18 @@ function VueDict(globalDict) {
             this.canvasDict.currentAction.used++;
             if (this.canvasDict.currentAction.used === this.canvasDict.currentAction.uses) {
               this.actionIsActive = false;
-              if (this.canvasDict.currentAction.textId === 'appletree' ||
-                  this.canvasDict.currentAction.textId === 'stone') {
+              if (this.canvasDict.currentAction.id === 'appletree' ||
+                  this.canvasDict.currentAction.id === 'rock') {
                 this.canvasDict.animationQueue.push({
                   type: 'backOnTrack',
                   goal: 36,
                   counter: 0
+                });
+              } else if (this.canvasDict.currentAction.id === 'dirtmine') {
+                this.canvasDict.animationQueue.push({
+                  type: 'diveUp',
+                  counter: 0,
+                  goal: 96
                 });
               }
               this.canvasDict.currentAction = null;
@@ -509,22 +522,13 @@ function VueDict(globalDict) {
         }
 
         if (this.kanaIsCorrect) {
-          switch (this.vocabWords[this.currentWord].difficulty) {
-            case '1':
-              coins.number += 1;
-              points.number += 1;
-              break;
-            case '2':
-              coins.number += 2;
-              points.number += 2;
-              break;
-            case '3':
-              coins.number += 3;
-              points.number += 3;
-              break;
-            default:
-              coins.number += 1;
-              points.number += 1;
+          let number = parseInt(this.vocabWords[this.currentWord].difficulty);
+          if (!isNaN(number)) {
+            coins.number += number;
+            points.number += number;
+          } else {
+            coins.number += 1;
+            points.number += 1;
           }
           this.statistics.kana++;
         }
@@ -546,28 +550,29 @@ function VueDict(globalDict) {
       startAction: function () {
         this.actionIsActive = true;
         this.actionIsVisible = false;
-        if (this.canvasDict.currentAction.textId === 'appletree' || this.canvasDict.currentAction.textId === 'stone') {
+        if (this.canvasDict.currentAction.id === 'appletree' || this.canvasDict.currentAction.id === 'rock') {
           this.canvasDict.animationQueue.push({
             type: 'approachObject',
             counter: 0,
             goal: 36
           });
-        } else if (this.canvasDict.currentAction.textId === 'dirtmine') {
+        } else if (this.canvasDict.currentAction.id === 'dirtmine') {
           this.canvasDict.animationQueue.push({
             type: 'diveDown',
             counter: 0,
             goal: 96
           });
-        } else if (this.canvasDict.currentAction.textId === 'pickUp') {
+        }/* else if (this.canvasDict.currentAction.id === 'pickUp') {
           this.canvasDict.animationQueue.push({
             type: 'pickUp',
             counter: 0,
             goal: 96
           });
-        }
+        }*/
       },
       continueWalk: function () {
         this.canvasDict.currentAction = null;
+        this.canvasDict.declined = true;
         this.actionIsVisible = false;
       },
       showStats: function () {
