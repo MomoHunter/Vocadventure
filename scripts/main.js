@@ -208,10 +208,7 @@ function GlobalDict() {
       id: 'sandBucket', spriteKey: 'img/sprites/Item/Sand_Bucket.png', quantity: 1, points: 6
     }
   ];
-  this.inventory = [
-    {id: 'shovel', spriteKey: 'img/sprites/Item/Shovel.png', quantity: 55, durability: 6},
-    {id: 'axe', spriteKey: 'img/sprites/Item/Axe.png', quantity: 50, durability: 9}
-  ];
+  this.inventory = [];
   this.searchResult = [];
   this.searchTerm = '';
   this.searchSelected = false;
