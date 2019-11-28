@@ -845,7 +845,7 @@ function VueDict(globalDict) {
       },
       clearData: function () {
         window.localStorage.removeItem("globalDict");
-        this.resetData();
+        location.reload();
         this.showRUSURE = false;
         this.page = 'mainMenu';
       },
