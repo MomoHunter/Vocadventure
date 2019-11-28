@@ -272,31 +272,6 @@ function GlobalDict() {
       }*/
     }
   };
-  this.resetData = function () {
-    this.lang = 'Deutsch';
-    this.theme = 'design1';
-    this.size = 'normal';
-    this.scores = {
-      scores: [
-        {id: 'statusLeft', number: 0},
-        {id: 'statusMiddle', number: 0},
-        {id: 'statusRight', number: 0}
-      ]
-    };
-    this.inventory = [];
-    this.canvasDict.backgrounds = [
-      { x: 0, lastX: 0 , y: 0, spriteKey: 'Background_Tiles_Basic' },
-      { x: 288, lastX: 288, y: 0, spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, action: 0,
-        textId: 'appletree', toolId: 'axe', uses: 8 }
-    ];
-    this.actionIsActive = false;
-    this.canvasDict.currentAction = null;
-    this.canvasDict.player = {
-      x: 198, y: 156, spriteKeys: ['Player_Player', 'Player_Player_Walk', 'Player_Player_Back', 'Player_Player_Back_Walk'],
-      animationSpeed : 16
-    };
-    location.reload();
-  };
   this.createKanji = function () {
     let set = new Set(this.vocabs.flatMap(entry => entry.kana.split('')));
     for (let [, value] of this.signs.entries()) {
