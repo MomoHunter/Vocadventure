@@ -202,6 +202,15 @@ function GlobalDict() {
       ]
     },
     {
+      id: 'furnace', spriteKey: 'img/sprites/Item/Furnace.png', quantity: 1, points: 12, costs: [
+        {id: 'stone', quantity: 8},
+        {id: 'statusRight', quantity: 35}
+      ]
+    },
+    {
+      id: 'coal', spriteKey: 'img/sprites/Item/Coal.png', quantity: 1, points: 3
+    },
+    {
       id: 'cobwebs', spriteKey: 'img/sprites/Item/Cobwebs.png', quantity: 1, points: 5
     },
     {

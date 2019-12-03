@@ -114,7 +114,9 @@ function CanvasDict(globalDict) {
       ] },
     { spriteKey: 'Background_Tiles_Dirtmine_B', chance: 0.25, action: 1,
       actionId: 'dirtmine', textId: 'dirtmineText', toolId: 'shovel', uses: 12, foundOn: [], canBeFound: [] },
-    { spriteKey: 'Background_Tiles_Stone', chance: 0.25, action: 2,
+    { spriteKey: 'Background_Tiles_Coal_B', chance: 0.25, action: 1,
+      actionId: 'coalmine', textId: 'coalmineText', toolId: 'pickaxe', uses: 4, foundOn: [], canBeFound: [] },
+    { spriteKey: 'Background_Tiles_Stone', chance: 0.08, action: 2,
       actionId: 'rock', textId: 'rockText', toolId: 'pickaxe', uses: 6, foundOn: [1, 3], canBeFound: [
         { id: 'stone', chance: 0.06 },
         { id: 'ironore', chance: 0.001 }
@@ -408,7 +410,29 @@ function CanvasDict(globalDict) {
           this.addToInfoText('Item_Worm_S', 'worm', Math.ceil(Math.random() * 1.05));
         }
         if (Math.random() < 0.1) {
-          this.addToInfoText('Item_Cobwebs_S', 'cobwebs', Math.ceil(Math.random() * 1.05));
+          let number = Math.ceil(Math.random() * 1.01);
+          this.addToInfoText('Item_Cobwebs_S', 'cobwebs', number === 1 ? 5 : 20);
+        }
+      } else {
+        if (this.currentAnimation.counter === this.currentAnimation.goal - 1) {
+          this.addPoints();
+        } else {
+          this.infoText.y -= 0.5;
+        }
+      }
+    }
+    this.currentAnimation.counter += 1;
+  };
+  this.coalmineAction = function () {
+    if (this.currentAnimation.counter >= 60) {
+      if (this.infoText === null) {
+        this.initInfoText('Item_Coal_S', 'coal', Math.ceil(Math.random() * 1.05));
+        if (Math.random() < 0.05) {
+          this.addToInfoText('Item_Ironore_S', 'ironore', Math.ceil(Math.random() * 1.05));
+        }
+        if (Math.random() < 0.1) {
+          let number = Math.ceil(Math.random() * 1.01);
+          this.addToInfoText('Item_Cobwebs_S', 'cobwebs', number === 1 ? 5 : 20);
         }
       } else {
         if (this.currentAnimation.counter === this.currentAnimation.goal - 1) {
@@ -432,7 +456,7 @@ function CanvasDict(globalDict) {
           if (number === 0) {
             this.currentAnimation.counter = this.currentAnimation.goal - 1;
           } else {
-            this.initInfoText('Item_Fish_S', 'fish', 1);
+            this.initInfoText('Item_Fish_S', 'fish');
           }
         }
       } else {
@@ -445,7 +469,7 @@ function CanvasDict(globalDict) {
     }
     this.currentAnimation.counter += 1;
   };
-  this.initInfoText = function (spriteKey, itemId, number) {
+  this.initInfoText = function (spriteKey, itemId, number = 1) {
     let {spriteWidth} = getSpriteData('Player_Player', this);
     this.infoText = {
       x: this.player.x + spriteWidth + 12,
@@ -457,7 +481,7 @@ function CanvasDict(globalDict) {
       }]
     };
   };
-  this.addToInfoText = function (spriteKey, itemId, number) {
+  this.addToInfoText = function (spriteKey, itemId, number = 1) {
     this.infoText.items.push({
       spriteKey: spriteKey,
       itemId: itemId,
