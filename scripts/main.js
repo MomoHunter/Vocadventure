@@ -1,4 +1,5 @@
 function main() {
+  window.location.hash = '#mainMenu,';
   let globalDict = new GlobalDict();
   let viewport = document.querySelector("[name~=viewport][content]");
   if (window.screen.width * window.devicePixelRatio < 1150) {
@@ -6,6 +7,11 @@ function main() {
   }
   globalDict.loadData();
   globalDict.createKanji();
+  window.addEventListener("hashchange", () => {
+    let parameter = decodeURIComponent(window.location.hash.substring(1)).split(',');
+    globalDict.page = parameter[0];
+    globalDict.option = parameter[1];
+  });
 }
 
 function GlobalDict() {
@@ -112,8 +118,8 @@ function GlobalDict() {
   };
   this.signs = signs;
   this.vocabs = vocabs;
-  this.page = 'mainMenu';
-  this.option = '';
+  this.page = decodeURIComponent(window.location.hash.substring(1).split(',')[0]);
+  this.option = decodeURIComponent(window.location.hash.substring(1).split(',')[1]);
   this.difficulty = '';
   this.showResults = false;
   this.resultIsVisible = false;

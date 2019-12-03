@@ -31,8 +31,7 @@ function VueDict(globalDict) {
         return this.languages[this.lang][id];
       },
       navigateTo: function (id, option = '') {
-        this.page = id;
-        this.option = option;
+        window.location.hash = '#' + id + ',' + option;
       },
       getClass: function(type) {
         return this.classes[type][this.size];
@@ -91,11 +90,11 @@ function VueDict(globalDict) {
           this.selectDifficulty(this.difficulty);
           this.selectCount(this.wordCount);
           this.countCustom = '';
-          this.option = '';
           this.currentWord = 0;
           this.currentProgress = 0;
+          this.option = '';
         }
-        this.page = id;
+        window.location.hash = '#' + id + ',' + this.option;
       },
       selectDifficulty: function (number) {
         if (this.difficulty === number) {
@@ -141,8 +140,8 @@ function VueDict(globalDict) {
             }
           }
         }
-        this.page = this.option;
-        if (this.page === 'adventure') {
+        window.location.hash = '#' + this.option + ',';
+        if (this.option === 'adventure') {
           this.canvasDict.raf = requestAnimationFrame(timestamp => this.canvasDict.canvasLoop(timestamp));
         }
       }
@@ -187,7 +186,7 @@ function VueDict(globalDict) {
           this.option = '';
         }
         this.currentWord = 0;
-        this.page = id;
+        window.location.hash = '#' + id + ',' + this.option;
       },
       getClass: function(type, difficultyTag = false) {
         if (difficultyTag) {
@@ -398,7 +397,7 @@ function VueDict(globalDict) {
           romaji: 0,
           kana: 0
         };
-        this.page = id;
+        window.location.hash = '#' + id + ',' + this.option;
       },
       getClass: function (type, difficultyTag = false) {
         if (difficultyTag) {
@@ -656,8 +655,7 @@ function VueDict(globalDict) {
             option === '') {
             this.currentShopPage = 1;
           }
-          this.page = id;
-          this.option = option;
+          window.location.hash = '#' + id + ',' + option;
         }
       },
       getClass: function(type) {
@@ -732,8 +730,7 @@ function VueDict(globalDict) {
         }
       },
       navigateTo: function (id, option = '') {
-        this.page = id;
-        this.option = option;
+        window.location.hash = '#' + id + ',' + option;
       },
       getClass: function(type) {
         return this.classes[type][this.size];
@@ -823,7 +820,7 @@ function VueDict(globalDict) {
         return this.classes[type][this.size];
       },
       navigateTo: function (id) {
-        this.page = id;
+        window.location.hash = '#' + id + ',' + this.option;
       },
       applySettings: function () {
         this.lang = this.languageSelection;

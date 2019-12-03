@@ -57,24 +57,27 @@ function CanvasDict(globalDict) {
     "Item_Apple": [false, 1227, 0, 84, 96],
     "Item_Apple_S": [false, 1227, 97, 14, 16],
     "Item_Axe": [false, 1227, 114, 120, 96],
-    "Item_Cobwebs": [false, 1227, 211, 96, 96],
-    "Item_Cobwebs_S": [false, 1227, 308, 16, 16],
-    "Item_Fish": [false, 1227, 325, 96, 72],
-    "Item_Fishing_Rod": [false, 1227, 398, 96, 96],
-    "Item_Fish_S": [false, 1227, 495, 16, 12],
-    "Item_Ironore": [false, 1227, 508, 96, 96],
-    "Item_Ironore_S": [false, 1227, 605, 16, 16],
-    "Item_Pickaxe": [false, 1227, 622, 96, 96],
-    "Item_Sand_Bucket": [false, 1227, 719, 84, 84],
-    "Item_Sand_Bucket_S": [false, 1227, 804, 14, 14],
-    "Item_Shovel": [false, 1227, 819, 96, 96],
-    "Item_Stone": [false, 1227, 916, 96, 96],
-    "Item_Stone_S": [false, 1227, 1013, 16, 16],
-    "Item_String": [false, 1227, 1030, 96, 96],
-    "Item_Wood": [false, 1227, 1127, 108, 96],
-    "Item_Wood_S": [false, 1227, 1224, 18, 16],
-    "Item_Worm": [false, 1227, 1241, 72, 96],
-    "Item_Worm_S": [false, 1227, 1338, 12, 16],
+    "Item_Coal": [false, 1227, 211, 84, 96],
+    "Item_Cobwebs": [false, 1227, 308, 96, 96],
+    "Item_Cobwebs_S": [false, 1227, 405, 16, 16],
+    "Item_Fish": [false, 1227, 422, 96, 72],
+    "Item_Fishing_Rod": [false, 1227, 495, 96, 96],
+    "Item_Fish_S": [false, 1227, 592, 16, 12],
+    "Item_Glass": [false, 1227, 605, 96, 96],
+    "Item_Iron": [false, 1227, 702, 96, 96],
+    "Item_Ironore": [false, 1227, 799, 96, 96],
+    "Item_Ironore_S": [false, 1227, 896, 16, 16],
+    "Item_Pickaxe": [false, 1227, 913, 96, 96],
+    "Item_Sand_Bucket": [false, 1227, 1010, 84, 84],
+    "Item_Sand_Bucket_S": [false, 1227, 1095, 14, 14],
+    "Item_Shovel": [false, 1227, 1110, 96, 96],
+    "Item_Stone": [false, 1227, 1207, 96, 96],
+    "Item_Stone_S": [false, 1227, 1304, 16, 16],
+    "Item_String": [false, 1227, 1321, 96, 96],
+    "Item_Wood": [false, 1227, 1418, 108, 96],
+    "Item_Wood_S": [false, 1227, 1515, 18, 16],
+    "Item_Worm": [false, 1227, 1532, 72, 96],
+    "Item_Worm_S": [false, 1227, 1629, 12, 16],
     "Player_Player": [false, 1348, 0, 72, 84],
     "Player_Player_Back": [false, 1348, 85, 72, 84],
     "Player_Player_Back_Walk": [true, 1348, [170, 255], 72, 84],
@@ -333,9 +336,9 @@ function CanvasDict(globalDict) {
         let key = this.currentBackground.lastX.toString();
         this.currentBackground.events[key].items.map((item, index) => {
           if (index === 0) {
-            this.initInfoText(item.spriteKey, item.id);
+            this.initInfoText(item.spriteKey, item.id, 1);
           } else {
-            this.addToInfoText(item.spriteKey, item.id);
+            this.addToInfoText(item.spriteKey, item.id, 1);
           }
         });
         this.currentBackground.events[key].items = [];
@@ -369,9 +372,9 @@ function CanvasDict(globalDict) {
   this.appletreeAction = function () {
     if (this.currentAnimation.counter >= 60) {
       if (this.infoText === null) {
-        this.initInfoText('Item_Wood_S', 'wood', Math.ceil(Math.random() * 1.05));
+        this.initInfoText('Item_Wood_S', 'wood');
         if (Math.random() < 0.03) {
-          this.addToInfoText('Item_Apple_S', 'apple', Math.ceil(Math.random() * 1.05));
+          this.addToInfoText('Item_Apple_S', 'apple');
         }
       } else {
         if (this.currentAnimation.counter === this.currentAnimation.goal - 1) {
@@ -387,9 +390,9 @@ function CanvasDict(globalDict) {
     if (this.currentAnimation.counter >= 60) {
       if (this.infoText === null) {
         if (Math.random() < 0.005) {
-          this.initInfoText('Item_Ironore_S', 'ironore', Math.ceil(Math.random() * 1.05));
+          this.initInfoText('Item_Ironore_S', 'ironore');
         } else {
-          this.initInfoText('Item_Stone_S', 'stone', Math.ceil(Math.random() * 1.05));
+          this.initInfoText('Item_Stone_S', 'stone');
         }
       } else {
         if (this.currentAnimation.counter === this.currentAnimation.goal - 1) {
@@ -405,13 +408,12 @@ function CanvasDict(globalDict) {
   this.dirtmineAction = function () {
     if (this.currentAnimation.counter >= 60) {
       if (this.infoText === null) {
-        this.initInfoText('Item_Sand_Bucket_S', 'sandBucket', Math.ceil(Math.random() * 1.05));
+        this.initInfoText('Item_Sand_Bucket_S', 'sandBucket');
         if (Math.random() < 0.2) {
           this.addToInfoText('Item_Worm_S', 'worm', Math.ceil(Math.random() * 1.05));
         }
         if (Math.random() < 0.1) {
-          let number = Math.ceil(Math.random() * 1.01);
-          this.addToInfoText('Item_Cobwebs_S', 'cobwebs', number === 1 ? 5 : 20);
+          this.addToInfoText('Item_Cobwebs_S', 'cobwebs', Math.ceil(Math.random() * 1.01) === 1 ? 5 : 20);
         }
       } else {
         if (this.currentAnimation.counter === this.currentAnimation.goal - 1) {
@@ -450,7 +452,7 @@ function CanvasDict(globalDict) {
         let worm = this.gD.inventory.find(entry => entry.id === 'worm');
         if (worm && worm.quantity > 0) {
           worm.quantity--;
-          this.initInfoText('Item_Fish_S', 'fish', Math.ceil(Math.random() * 1.05));
+          this.initInfoText('Item_Fish_S', 'fish');
         } else {
           let number =  Math.floor(Math.random() * 1.15);
           if (number === 0) {
@@ -469,7 +471,7 @@ function CanvasDict(globalDict) {
     }
     this.currentAnimation.counter += 1;
   };
-  this.initInfoText = function (spriteKey, itemId, number = 1) {
+  this.initInfoText = function (spriteKey, itemId, number = Math.ceil(Math.random() * 1.05)) {
     let {spriteWidth} = getSpriteData('Player_Player', this);
     this.infoText = {
       x: this.player.x + spriteWidth + 12,
@@ -481,7 +483,11 @@ function CanvasDict(globalDict) {
       }]
     };
   };
+<<<<<<< .mine
   this.addToInfoText = function (spriteKey, itemId, number = 1) {
+=======
+  this.addToInfoText = function (spriteKey, itemId, number = Math.ceil(Math.random() * 1.05)) {
+>>>>>>> .theirs
     this.infoText.items.push({
       spriteKey: spriteKey,
       itemId: itemId,
