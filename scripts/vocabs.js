@@ -11,5 +11,9 @@ const vocabs = [
   { "Deutsch": "Danke", "English": "Thanks", romaji: "doumo", kana: "どうも", difficulty: "1" },
   { "Deutsch": "Heute", "English": "Today", romaji: "kyou", kana: "今日", difficulty: "3" },
   { "Deutsch": "Morgen", "English": "Tomorrow", romaji: "ashita", kana: "明日", difficulty: "3" },
-  { "Deutsch": "Übermorgen", "English": "The day after tomorrow", romaji: "asatte", kana: "あさって", difficulty: "1" }
+  { "Deutsch": "Übermorgen", "English": "The day after tomorrow", romaji: "asatte", kana: "あさって", difficulty: "1" },
+  { "Deutsch": "Ferse", "English": "heel", romaji: "kakato", kana: "かかと", difficulty: "1" },
+  { "Deutsch": "Zucker (neutral)", "English": "sugar (neutral)", romaji: "satou", kana: "砂糖", difficulty: "3" },
+  { "Deutsch": "Zucker (höflich)", "English": "sugar (polite)", romaji: "o-satou", kana: "お砂糖", difficulty: "3" },
+  { "Deutsch": "Honig", "English": "honey", romaji: "hachimitsu", kana: "蜂蜜", difficulty: "3" }
 ];
