@@ -104,18 +104,21 @@ function CanvasDict(globalDict) {
   this.availableBackgrounds = [
     { spriteKey: 'Background_Tiles_Appletree', animationSpeed: 24, chance: 0.1, action: 3,
       actionId: 'appletree', textId: 'appletreeText', toolId: 'axe', uses: 8, foundOn: [1, 2, 4, 5], canBeFound: [
-        { id: 'apple', chance: 0.001 },
+        { id: 'apple', chance: 0.014 },
         { id: 'wood', chance: 0.05 },
-        { id: 'stone', chance: 0.02 }
+        { id: 'stone', chance: 0.02 },
+        { id: 'cobwebs', chance: 0.025 }
       ] },
     { spriteKey: 'Background_Tiles_Basic', chance: 1, foundOn: [1, 2, 3], canBeFound: [
         { id: 'stone', chance: 0.04 },
-        { id: 'wood', chance: 0.01 }
+        { id: 'wood', chance: 0.01 },
+        { id: 'cobwebs', chance: 0.025 }
       ] },
     { spriteKey: 'Background_Tiles_Bridge_B', animationSpeed: 12, chance: 0.1, action: 3,
       actionId: 'bridge', textId: 'bridgeText', toolId: 'fishingRod', uses: 10, foundOn: [1, 5], canBeFound: [
         { id: 'stone', chance: 0.02 },
-        { id: 'worm', chance: 0.045 }
+        { id: 'worm', chance: 0.045 },
+        { id: 'cobwebs', chance: 0.025 }
       ] },
     { spriteKey: 'Background_Tiles_Dirtmine_B', chance: 0.25, action: 1,
       actionId: 'dirtmine', textId: 'dirtmineText', toolId: 'shovel', uses: 12, foundOn: [], canBeFound: [] },
@@ -124,7 +127,8 @@ function CanvasDict(globalDict) {
     { spriteKey: 'Background_Tiles_Stone', chance: 0.08, action: 2,
       actionId: 'rock', textId: 'rockText', toolId: 'pickaxe', uses: 6, foundOn: [1, 3], canBeFound: [
         { id: 'stone', chance: 0.06 },
-        { id: 'ironore', chance: 0.001 }
+        { id: 'ironore', chance: 0.001 },
+        { id: 'cobwebs', chance: 0.025 }
       ] }
   ];
   this.player = {
