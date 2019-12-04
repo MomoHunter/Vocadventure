@@ -589,7 +589,7 @@ function CanvasDict(globalDict) {
         drawCanvasImage(
           background.x, background.y, 'Background_Tiles_Bridge_F', this
         )
-      } else if (background.spriteKey.includes('Dirtmine')) {
+      } else if (background.spriteKey.includes('mine')) {
         drawCanvasImage(
           background.x, background.y, 'Background_Tiles_Dirtmine_F', this
         )
