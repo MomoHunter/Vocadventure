@@ -708,14 +708,14 @@ function VueDict(globalDict) {
       },
       getUrl: function () {
         if (this.isSeen) {
-          return this.items[(this.currentShopPage - 1) * 4 + this.option].spriteKey;
+          return this.items.find(item => item.id === this.option).spriteKey;
         } else {
           return "";
         }
       },
       getCosts: function () {
         if (this.isSeen) {
-          return this.items[(this.currentShopPage - 1) * 4 + this.option].costs;
+          return this.items.find(item => item.id === this.option).costs;
         } else {
           return [];
         }
@@ -724,7 +724,7 @@ function VueDict(globalDict) {
     methods: {
       getText: function (id) {
         if (id === 'titleDetails' && this.isSeen) {
-          return this.languages[this.lang][this.items[(this.currentShopPage - 1) * 4 + this.option].id];
+          return this.languages[this.lang][this.items.find(item => item.id === this.option).id];
         } else {
           return this.languages[this.lang][id];
         }
@@ -757,7 +757,7 @@ function VueDict(globalDict) {
         return quantity;
       },
       buyItem: function () {
-        let currentItem = this.items[(this.currentShopPage - 1) * 4 + this.option];
+        let currentItem = this.items.find(item => item.id === this.option);
         let costs = currentItem.costs;
         let canBuy = true;
         costs.map(material => {
