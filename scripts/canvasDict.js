@@ -119,7 +119,7 @@ function CanvasDict(globalDict) {
       ] },
     { spriteKey: 'Background_Tiles_Dirtmine_B', chance: 0.25, action: 1,
       actionId: 'dirtmine', textId: 'dirtmineText', toolId: 'shovel', uses: 12, foundOn: [], canBeFound: [] },
-    { spriteKey: 'Background_Tiles_Coal_B', chance: 0.25, action: 1,
+    { spriteKey: 'Background_Tiles_Coalmine_B', chance: 0.25, action: 1,
       actionId: 'coalmine', textId: 'coalmineText', toolId: 'pickaxe', uses: 4, foundOn: [], canBeFound: [] },
     { spriteKey: 'Background_Tiles_Stone', chance: 0.08, action: 2,
       actionId: 'rock', textId: 'rockText', toolId: 'pickaxe', uses: 6, foundOn: [1, 3], canBeFound: [
