@@ -226,7 +226,7 @@ function VueDict(globalDict) {
         return this.page === 'adventure';
       },
       romajiIsCorrect: function () {
-        if (this.vocabWords.length !== 0) {
+        if (this.vocabWords.length !== 0 && this.isSeen) {
           if (this.romajiInputOriginal.toLowerCase().trim() === this.vocabWords[this.currentWord].romaji.toLowerCase()) {
             return true;
           }
@@ -234,7 +234,7 @@ function VueDict(globalDict) {
         return false;
       },
       kanaIsCorrect: function () {
-        if (this.vocabWords.length !== 0) {
+        if (this.vocabWords.length !== 0 && this.isSeen) {
           if (this.kanaInputOriginal.trim() === this.vocabWords[this.currentWord].kana) {
             return true;
           }
@@ -242,7 +242,7 @@ function VueDict(globalDict) {
         return false;
       },
       getRomaji: function () {
-        if (this.vocabWords.length !== 0) {
+        if (this.vocabWords.length !== 0 && this.isSeen) {
           if (this.currentWord < this.vocabWords.length) {
             return this.vocabWords[this.currentWord].romaji;
           }
@@ -250,7 +250,7 @@ function VueDict(globalDict) {
         return '';
       },
       getKana: function () {
-        if (this.vocabWords.length !== 0) {
+        if (this.vocabWords.length !== 0 && this.isSeen) {
           if (this.currentWord < this.vocabWords.length) {
             return this.vocabWords[this.currentWord].kana;
           }
