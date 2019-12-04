@@ -485,11 +485,7 @@ function CanvasDict(globalDict) {
       }]
     };
   };
-<<<<<<< .mine
-  this.addToInfoText = function (spriteKey, itemId, number = 1) {
-=======
   this.addToInfoText = function (spriteKey, itemId, number = Math.ceil(Math.random() * 1.05)) {
->>>>>>> .theirs
     this.infoText.items.push({
       spriteKey: spriteKey,
       itemId: itemId,
