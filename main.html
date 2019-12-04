@@ -631,7 +631,7 @@
           </div>
           <div class="columns is-multiline is-mobile maxHeight">
             <div class="column is-half halfHeight" v-for="(item, index) in displayItems">
-              <div class="box maxHeight customColumn2" v-on:click="navigateTo('details',index)">
+              <div class="box maxHeight customColumn2" v-on:click="navigateTo('details',item.id)">
                 <p class="content has-text-centered" v-bind:class="getClass('content')">{{ languages[lang][item.id] }}</p>
                 <div class="flex-grow maxHeight backgroundPicture is-relative"
                      v-bind:style="{ backgroundImage: 'url(' + item.spriteKey + ')' }">
