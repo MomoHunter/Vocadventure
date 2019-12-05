@@ -141,6 +141,7 @@ function VueDict(globalDict) {
           }
         }
         window.location.hash = '#' + this.option + ',';
+        this.page = this.option;
         if (this.option === 'adventure') {
           this.canvasDict.raf = requestAnimationFrame(timestamp => this.canvasDict.canvasLoop(timestamp));
         }
