@@ -94,7 +94,8 @@ function CanvasDict(globalDict) {
     'wood': 'Item_Wood',
     'stone': 'Item_Stone',
     'worm': 'Item_Worm',
-    'ironore': 'Item_Ironore'
+    'ironore': 'Item_Ironore',
+    'cobwebs': 'Item_Cobwebs'
   };
   this.itemPositions = [
     { x: 25, y: 218 },
