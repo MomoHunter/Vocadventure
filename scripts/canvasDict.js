@@ -342,10 +342,11 @@ function CanvasDict(globalDict) {
       if (this.infoText === null) {
         let key = this.currentBackground.lastX.toString();
         this.currentBackground.events[key].items.map((item, index) => {
+          let number = item.id === 'cobwebs' ? 3 : 1;
           if (index === 0) {
-            this.initInfoText(item.spriteKey, item.id, 1);
+            this.initInfoText(item.spriteKey, item.id, number);
           } else {
-            this.addToInfoText(item.spriteKey, item.id, 1);
+            this.addToInfoText(item.spriteKey, item.id, number);
           }
         });
         this.currentBackground.events[key].items = [];
