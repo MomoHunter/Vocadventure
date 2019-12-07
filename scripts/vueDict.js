@@ -612,7 +612,8 @@ function VueDict(globalDict) {
         if (this.isShop) {
           if (this.searchTerm !== '') {
             this.items.map(item => {
-              if (this.languages[this.lang][item.id].toLowerCase().indexOf(this.searchTerm.toLowerCase()) !== -1) {
+              if (this.languages[this.lang][item.id].toLowerCase().indexOf(this.searchTerm.toLowerCase()) !== -1 &&
+                  item.costs) {
                 this.searchResult.push(item);
               }
             }, this);
@@ -652,8 +653,8 @@ function VueDict(globalDict) {
         if (!(id === 'details' && !this.isShop)) {
           this.searchTerm = '';
           if ((this.isShop && option === 'inventory') ||
-            (!this.isShop && option === 'shop') ||
-            option === '') {
+              (!this.isShop && option === 'shop') ||
+              option === '') {
             this.currentShopPage = 1;
           }
           window.location.hash = '#' + id + ',' + option;
@@ -794,7 +795,7 @@ function VueDict(globalDict) {
           } else {
             this.inventory.push({
               id: currentItem.id,
-              quantity: 1,
+              quantity: currentItem.quantity,
               spriteKey: currentItem.spriteKey,
               durability: currentItem.durability
             });

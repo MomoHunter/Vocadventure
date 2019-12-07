@@ -546,8 +546,8 @@
               <td>
                 {{ getActionItemName }}
               </td>
-              <td>
-                <progress class="progress maxWidth noBottomMargin"
+              <td class="customWidth1 customTd1">
+                <progress class="progress maxWidth"
                           v-bind:value="getActionItemDurability"
                           v-bind:class="getActionItemProgressClass"
                           v-show="getActionItemDurability !== ''" max="1">
@@ -639,7 +639,8 @@
                             v-bind:value="getDurability(item.id, item.durability)"
                             v-bind:class="getProgressClass(item.id, item.durability)" max="1" v-show="!isShop && item.durability">
                   </progress>
-                  <div class="content position-bottom-right" v-bind:class="getClass('content')" v-show="!isShop">
+                  <div class="box position-bottom-right smallPadding negativeMargin" v-bind:class="getClass('content')"
+                       v-show="(item.quantity > 1 && isShop) || !isShop">
                     {{ item.quantity }}
                   </div>
                 </div>

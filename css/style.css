@@ -62,6 +62,10 @@ h2 {
     margin-bottom: 0;
 }
 
+.smallPadding {
+    padding: 0.25rem;
+}
+
 .maxHeight {
     height: 100%;
 }
@@ -173,8 +177,8 @@ h2 {
 
 .position-bottom-right {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: -0.25rem;
+    right: -0.25rem;
 }
 
 .position-bottom-center {
@@ -193,4 +197,12 @@ h2 {
 
 .help.is-large {
     font-size: 16.25px;
+}
+
+.customWidth1 {
+    width: 40%;
+}
+
+.customTd1 {
+    padding: 0.7rem !important;
 }
