@@ -184,10 +184,10 @@ function VueDict(globalDict) {
           this.vueDict.selection.selectDifficulty(this.difficulty);
           this.vueDict.selection.selectCount(this.wordCount);
           this.countCustom = '';
-          this.option = '';
+          this.page = '';
         }
         this.currentWord = 0;
-        window.location.hash = '#' + id + ',' + this.option;
+        window.location.hash = '#' + id + ',' + this.page;
       },
       getClass: function(type, difficultyTag = false) {
         if (difficultyTag) {
@@ -384,7 +384,7 @@ function VueDict(globalDict) {
           this.vueDict.selection.selectDifficulty(this.difficulty);
           this.vueDict.selection.selectCount(this.wordCount);
           this.countCustom = '';
-          this.option = '';
+          this.page = '';
         }
         this.currentProgress = 0;
         this.currentWord = 0;
@@ -398,7 +398,7 @@ function VueDict(globalDict) {
           romaji: 0,
           kana: 0
         };
-        window.location.hash = '#' + id + ',' + this.option;
+        window.location.hash = '#' + id + ',' + this.page;
       },
       getClass: function (type, difficultyTag = false) {
         if (difficultyTag) {
