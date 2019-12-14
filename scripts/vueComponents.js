@@ -1,20 +1,14 @@
 Vue.component('basic-button', {
-  props: ['icon', 'color', 'text'],
+  props: {
+    icon: String,
+    text: String
+  },
   template: `
     <a class="button is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')">
-      
-    </a>
+      <span class="icon">
+        <i class="fas" v-bind:class="icon"></i>
+      </span>
+    <span>{{ getText(text) }}</span>
+  </a>
   `
-
-
-
-
-
-    /*'<a class="button is-info is-rounded is-outlined is-fullwidth" v-bind:class="getClass(\'button\')"' +
-    ' v-on:click="navigateTo(\'selection\',\'training\')">\n' +
-    '<span class="icon">' +
-    '<i class="fas fa-book"></i>' +
-    '</span>' +
-    '<span>{{ getText(\'menuButton1\') }}</span>' +
-    '</a>'*/
 });
