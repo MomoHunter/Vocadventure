@@ -11,12 +11,7 @@ function VueDict(globalDict) {
   });
   this.status = new Vue({
     el: '#status',
-    data: globalDict,
-    methods: {
-      getText: function (id) {
-        return this.languages[this.lang][id];
-      }
-    }
+    data: globalDict
   });
   this.mainMenu = new Vue({
     el: '#mainMenu',
@@ -24,17 +19,6 @@ function VueDict(globalDict) {
     computed: {
       isSeen: function () {
         return this.page === 'mainMenu';
-      }
-    },
-    methods: {
-      getText: function (id) {
-        return this.languages[this.lang][id];
-      },
-      navigateTo: function (id, option = '') {
-        window.location.hash = '#' + id + ',' + option;
-      },
-      getClass: function(type) {
-        return this.classes[type][this.size];
       }
     }
   });
@@ -50,12 +34,6 @@ function VueDict(globalDict) {
       }
     },
     methods: {
-      getText: function (id) {
-        if (id === 'custom' && !isNaN(+this.countCustom) && +this.countCustom !== 0 ) {
-          return +this.countCustom;
-        }
-        return this.languages[this.lang][id];
-      },
       getClass: function(type) {
         return this.classes[type][this.size];
       },
@@ -169,16 +147,6 @@ function VueDict(globalDict) {
       }
     },
     methods: {
-      getText: function (id) {
-        switch (id) {
-          case 'difficultyTag':
-            return this.languages[this.lang]['difficulty' + this.difficulty];
-          case 'wordTag':
-            return this.vocabWords.length;
-          default:
-            return this.languages[this.lang][id];
-        }
-      },
       navigateTo: function (id) {
         if (id === 'mainMenu') {
           this.vueDict.selection.selectDifficulty(this.difficulty);
@@ -369,16 +337,6 @@ function VueDict(globalDict) {
       }
     },
     methods: {
-      getText: function (id) {
-        switch (id) {
-          case 'difficultyTag':
-            return this.languages[this.lang]['difficulty' + this.difficulty];
-          case 'wordTag':
-            return this.vocabWords.length;
-          default:
-            return this.languages[this.lang][id];
-        }
-      },
       navigateTo: function (id) {
         if (id === 'mainMenu') {
           this.vueDict.selection.selectDifficulty(this.difficulty);
@@ -473,8 +431,8 @@ function VueDict(globalDict) {
         this.showResults = true;
         this.romajiInputOriginal = this.romajiInput;
         this.kanaInputOriginal = this.kanaInput;
-        let coins = this.scores.scores.find(item => item.id === 'statusRight');
-        let points = this.scores.scores.find(item => item.id === 'statusLeft');
+        let coins = this.scores.find(item => item.id === 'coins');
+        let points = this.scores.find(item => item.id === 'points');
 
         if (this.kanaIsCorrect || this.romajiIsCorrect) {
           if (!this.actionIsActive) {
@@ -484,6 +442,7 @@ function VueDict(globalDict) {
               goal: 96,
               speed: 1
             });
+            this.scores.find(entry => entry.id === 'steps').number++;
           } else {
             this.canvasDict.animationQueue.push({
               type: this.canvasDict.currentAction.id + 'Action',
@@ -646,9 +605,6 @@ function VueDict(globalDict) {
       }
     },
     methods: {
-      getText: function (id) {
-        return this.languages[this.lang][id];
-      },
       navigateTo: function (id, option = '') {
         if (!(id === 'details' && !this.isShop)) {
           this.searchTerm = '';
@@ -724,13 +680,6 @@ function VueDict(globalDict) {
       }
     },
     methods: {
-      getText: function (id) {
-        if (id === 'titleDetails' && this.isSeen) {
-          return this.languages[this.lang][this.items.find(item => item.id === this.option).id];
-        } else {
-          return this.languages[this.lang][id];
-        }
-      },
       navigateTo: function (id, option = '') {
         window.location.hash = '#' + id + ',' + option;
       },
@@ -751,7 +700,7 @@ function VueDict(globalDict) {
             quantity = item.quantity;
           }
         }, this);
-        this.scores.scores.map(status =>{
+        this.scores.map(status =>{
           if (status.id === id) {
             quantity = status.number;
           }
@@ -764,7 +713,7 @@ function VueDict(globalDict) {
         let canBuy = true;
         costs.map(material => {
           let foundItem = this.inventory.find(item => item.id === material.id);
-          let foundStatus = this.scores.scores.find(status => status.id === material.id);
+          let foundStatus = this.scores.find(status => status.id === material.id);
           if (foundItem !== undefined) {
             if (material.quantity > foundItem.quantity) {
               canBuy = false;
@@ -782,7 +731,7 @@ function VueDict(globalDict) {
           let inventoryItem = this.inventory.find(item => item.id === currentItem.id);
           costs.map(material => {
             let foundItem = this.inventory.find(item => item.id === material.id);
-            let foundStatus = this.scores.scores.find(status => status.id === material.id);
+            let foundStatus = this.scores.find(status => status.id === material.id);
             if (foundItem !== undefined) {
               foundItem.quantity -= material.quantity;
             } else if (foundStatus !== undefined) {
@@ -800,7 +749,7 @@ function VueDict(globalDict) {
               durability: currentItem.durability
             });
           }
-          this.scores.scores.find(item => item.id === 'statusLeft').number += currentItem.points;
+          this.scores.find(item => item.id === 'points').number += currentItem.points;
           this.saveData();
         }
       }
@@ -815,9 +764,6 @@ function VueDict(globalDict) {
       }
     },
     methods: {
-      getText: function (id) {
-        return this.languages[this.lang][id];
-      },
       getClass: function(type) {
         return this.classes[type][this.size];
       },
@@ -847,9 +793,6 @@ function VueDict(globalDict) {
         location.reload();
         this.showRUSURE = false;
         this.page = 'mainMenu';
-      },
-      getText: function (id) {
-        return this.languages[this.lang][id];
       },
       showModal: function () {
         this.showRUSURE = false;

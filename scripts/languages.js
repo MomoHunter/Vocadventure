@@ -1,8 +1,8 @@
 const languages = {
   "Deutsch": {
-    statusLeft: "Punkte",
-    statusMiddle: "Test",
-    statusRight: "Münzen",
+    points: "Punkte",
+    steps: "Schritte",
+    coins: "Münzen",
     title: "Vokabenteuer",
     description: "Ein Vokabeltrainer mit Gamification für Japanisch",
     menuButton1: "Training",
@@ -91,9 +91,9 @@ const languages = {
     clearData: "Daten löschen"
   },
   "English": {
-    statusLeft: "Points",
-    statusMiddle: "Test",
-    statusRight: "Coins",
+    points: "Points",
+    steps: "Steps",
+    coins: "Coins",
     title: "Vocadventure",
     description: "A vocabulary trainer with gamification for learning japanese",
     menuButton1: "Training",

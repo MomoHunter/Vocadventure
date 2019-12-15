@@ -4,11 +4,11 @@ Vue.component('basic-button', {
     text: String
   },
   template: `
-    <a class="button is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')">
+    <a class="button is-rounded is-outlined is-fullwidth" v-on:click="$emit('nav')">
       <span class="icon">
         <i class="fas" v-bind:class="icon"></i>
       </span>
-    <span>{{ getText(text) }}</span>
+    <span>{{ text }}</span>
   </a>
   `
 });

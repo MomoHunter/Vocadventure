@@ -365,7 +365,7 @@ function CanvasDict(globalDict) {
                 spriteKey: itemTemplate.spriteKey
               });
             }
-            this.gD.scores.scores.find(score => score.id === 'statusLeft').number += itemTemplate.points * item.number;
+            this.gD.scores.find(score => score.id === 'points').number += itemTemplate.points * item.number;
           }, this);
 
           this.infoText = null;
@@ -516,7 +516,7 @@ function CanvasDict(globalDict) {
           spriteKey: itemTemplate.spriteKey
         });
       }
-      this.gD.scores.scores.find(score => score.id === 'statusLeft').number += itemTemplate.points * item.number;
+      this.gD.scores.find(score => score.id === 'points').number += itemTemplate.points * item.number;
     }, this);
     this.infoText = null;
     item.durability--;

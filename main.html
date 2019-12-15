@@ -29,7 +29,7 @@
   </head>
   <body onload="main();">
     <nav id="status" class="level is-mobile">
-      <div class="level-item has-text-centered" v-for="score in scores.scores">
+      <div class="level-item has-text-centered" v-for="score in scores">
         <div>
           <p class="heading">{{ getText(score.id) }}</p>
           <p class="title">{{ score.number }}</p>
@@ -42,42 +42,26 @@
           <section class="hero">
             <div class="hero-body">
               <div class="container">
-                <h1 class="title" v-bind:class="getClass('title')">{{ getText('title') }}</h1>
-                <h2 class="subtitle" v-bind:class="getClass('subtitle')">{{ getText('description') }}</h2>
+                <h1 class="title" v-bind:class="getSizeClass('title')">{{ getText('title') }}</h1>
+                <h2 class="subtitle" v-bind:class="getSizeClass('subtitle')">{{ getText('description') }}</h2>
               </div>
             </div>
           </section>
         </div>
         <div class="column is-10">
           <div class="buttons">
-            <a class="button is-info is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
-               v-on:click="navigateTo('selection','training')">
-              <span class="icon">
-                <i class="fas fa-book"></i>
-              </span>
-              <span>{{ getText('menuButton1') }}</span>
-            </a>
-            <a class="button is-link is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
-               v-on:click="navigateTo('selection','adventure')">
-              <span class="icon">
-                <i class="fas fa-gem"></i>
-              </span>
-              <span>{{ getText('menuButton2') }}</span>
-            </a>
-            <a class="button is-warning is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
-               v-on:click="navigateTo('shop','shop')">
-              <span class="icon">
-                <i class="fas fa-shopping-cart"></i>
-              </span>
-              <span>{{ getText('menuButton3') }}</span>
-            </a>
-            <a class="button is-grey is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
-               v-on:click="navigateTo('settings')">
-              <span class="icon">
-                <i class="fas fa-cog"></i>
-              </span>
-              <span>{{ getText('menuButton4') }}</span>
-            </a>
+            <basic-button class="is-info" icon="fa-book" v-bind:text="getText('menuButton1')" 
+                          v-bind:class="getSizeClass('button')" v-on:nav="navTo('selection','training')">
+            </basic-button>
+            <basic-button class="is-link" icon="fa-gem" v-bind:text="getText('menuButton2')" 
+                          v-bind:class="getSizeClass('button')" v-on:nav="navTo('selection','adventure')">
+            </basic-button>
+            <basic-button class="is-warning" icon="fa-shopping-cart" v-bind:text="getText('menuButton3')" 
+                          v-bind:class="getSizeClass('button')" v-on:nav="navTo('shop','shop')">
+            </basic-button>
+            <basic-button class="is-grey" icon="fa-cog" v-bind:text="getText('menuButton4')" 
+                          v-bind:class="getSizeClass('button')" v-on:nav="navTo('settings')">
+            </basic-button>
           </div>
         </div>
       </div>

@@ -142,38 +142,38 @@ function GlobalDict() {
   this.items = [
     {
       id: 'wood', spriteKey: 'img/sprites/Item/Wood.png', quantity: 1, points: 3, costs: [
-        {id: 'statusRight', quantity: 35}
+        {id: 'coins', quantity: 35}
       ]
     },
     {
       id: 'stone', spriteKey: 'img/sprites/Item/Stone.png', quantity: 1, points: 3, costs: [
-        {id: 'statusRight', quantity: 25}
+        {id: 'coins', quantity: 25}
       ]
     },
     {
       id: 'ironore', spriteKey: 'img/sprites/Item/Ironore.png', quantity: 1, points: 9, costs: [
-        {id: 'statusRight', quantity: 250}
+        {id: 'coins', quantity: 250}
       ]
     },
     {
       id: 'fish', spriteKey: 'img/sprites/Item/Fish.png', quantity: 1, points: 6, costs: [
-        {id: 'statusRight', quantity: 75}
+        {id: 'coins', quantity: 75}
       ]
     },
     {
       id: 'worm', spriteKey: 'img/sprites/Item/Worm.png', quantity: 1, points: 1, costs: [
-        {id: 'statusRight', quantity: 45}
+        {id: 'coins', quantity: 45}
       ]
     },
     {
       id: 'apple', spriteKey: 'img/sprites/Item/Apple.png', quantity: 1, points: 5, costs: [
-        {id: 'statusRight', quantity: 500}
+        {id: 'coins', quantity: 500}
       ]
     },
     {
       id: 'string', spriteKey: 'img/sprites/Item/String.png', quantity: 1, points: 7, costs: [
         {id: 'cobwebs', quantity: 12},
-        {id: 'statusRight', quantity: 60}
+        {id: 'coins', quantity: 60}
       ]
     },
     {
@@ -181,7 +181,7 @@ function GlobalDict() {
         {id: 'wood', quantity: 4},
         {id: 'stone', quantity: 2},
         {id: 'string', quantity: 2},
-        {id: 'statusRight', quantity: 120}
+        {id: 'coins', quantity: 120}
       ]
     },
     {
@@ -189,14 +189,14 @@ function GlobalDict() {
         {id: 'wood', quantity: 4},
         {id: 'stone', quantity: 2},
         {id: 'string', quantity: 2},
-        {id: 'statusRight', quantity: 160}
+        {id: 'coins', quantity: 160}
       ]
     },
     {
       id: 'fishingRod', spriteKey: 'img/sprites/Item/Fishing_Rod.png', quantity: 1, points: 16, durability: 8, costs: [
         {id: 'wood', quantity: 3},
         {id: 'string', quantity: 5},
-        {id: 'statusRight', quantity: 210}
+        {id: 'coins', quantity: 210}
       ]
     },
     {
@@ -204,13 +204,13 @@ function GlobalDict() {
         {id: 'wood', quantity: 3},
         {id: 'stone', quantity: 5},
         {id: 'string', quantity: 2},
-        {id: 'statusRight', quantity: 300}
+        {id: 'coins', quantity: 300}
       ]
     },
     {
       id: 'furnace', spriteKey: 'img/sprites/Item/Furnace.png', quantity: 1, points: 12, costs: [
         {id: 'stone', quantity: 8},
-        {id: 'statusRight', quantity: 450}
+        {id: 'coins', quantity: 450}
       ]
     },
     {
@@ -218,7 +218,7 @@ function GlobalDict() {
         {id: 'furnace', quantity: 1},
         {id: 'ironore', quantity: 6},
         {id: 'coal', quantity: 12},
-        {id: 'statusRight', quantity: 777}
+        {id: 'coins', quantity: 777}
       ]
     },
     {
@@ -226,7 +226,7 @@ function GlobalDict() {
         {id: 'sandBucket', quantity: 8},
         {id: 'coal', quantity: 6},
         {id: 'furnace', quantity: 1},
-        {id: 'statusRight', quantity: 320}
+        {id: 'coins', quantity: 320}
       ]
     },
     {
@@ -248,13 +248,11 @@ function GlobalDict() {
   this.currentWord = 0;
   this.currentProgress = 0;
   this.currentShopPage = 1;
-  this.scores = {
-    scores: [
-      {id: 'statusLeft', number: 0},
-      {id: 'statusMiddle', number: 0},
-      {id: 'statusRight', number: 0}
-    ]
-  };
+  this.scores = [
+      {id: 'points', number: 0},
+      {id: 'steps', number: 0},
+      {id: 'coins', number: 0}
+  ];
   this.saveData = function () {
     window.localStorage.setItem('globalDict', JSON.stringify({
       "lang": this.lang,
@@ -316,6 +314,37 @@ function GlobalDict() {
     }
     this.signs.set('kanji', kanji);
   };
+  this.getText = function (id) {
+    switch (id) {
+      case 'difficultyTag':
+        return this.languages[this.lang]['difficulty' + this.difficulty];
+      case 'wordTag':
+        return this.vocabWords.length;
+      case 'custom':
+        if (!isNaN(+this.countCustom) && +this.countCustom !== 0) {
+          return +this.countCustom;
+        }
+        break;
+      case 'titleDetails':
+        let item = this.items.find(item => item.id === this.option);
+        if (item) {
+          return this.languages[this.lang][item.id];
+        }
+        break;
+      default:
+    }
+    return this.languages[this.lang][id];
+  };
+  this.getSizeClass = function (type, isDifficultyTag = false) {
+    if (isDifficultyTag) {
+      return this.classes[type][this.size] + ' ' + ['is-success', 'is-warning', 'is-danger'][this.difficulty - 1];
+    } else {
+      return this.classes[type][this.size];
+    }
+  };
+  this.navTo = function (id, option = '') {
+    window.location.hash = '#' + id + ',' + option;
+  },
   this.canvasDict = null;
   this.vueDict = null;
   this.vueDict = new VueDict(this);
