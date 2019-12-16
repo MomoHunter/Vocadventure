@@ -16,7 +16,7 @@ Vue.component('basic-button', {
 
 Vue.component('selection-button', {
   props: {
-    text: String,
+    text: [String, Number],
     show: Boolean
   },
   template: `
