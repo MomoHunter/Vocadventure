@@ -109,24 +109,22 @@
             <div class="column">
               <div class="buttons is-centered">
                 <selection-button class="is-primary" v-bind:text="10" show
-                                v-bind:class="getCountClass(10)" v-on:click="selectCount(10)">
-                </no-icon-button>
+                                  v-bind:class="getCountClass(10)" v-on:click="selectCount(10)">
+                </selection-button>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a class="button is-rounded is-primary is-fullwidth"
-                   v-bind:class="getCountClass(20)" v-on:click="selectCount(20)">
-                  <span>20</span>
-                </a>
+                <selection-button class="is-primary" v-bind:text="20" show
+                                  v-bind:class="getCountClass(20)" v-on:click="selectCount(20)">
+                </selection-button>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a class="button is-rounded is-primary is-fullwidth"
-                   v-bind:class="getCountClass(50)" v-on:click="selectCount(50)">
-                  <span>50</span>
-                </a>
+                <selection-button class="is-primary" v-bind:text="50" show
+                                  v-bind:class="getCountClass(50)" v-on:click="selectCount(50)">
+                </selection-button>
               </div>
             </div>
           </div>
@@ -135,26 +133,23 @@
           <div class="columns is-mobile is-centered">
             <div class="column">
               <div class="buttons is-centered">
-                <a class="button is-rounded is-primary is-fullwidth"
-                   v-bind:class="getCountClass(100)" v-on:click="selectCount(100)">
-                  <span>100</span>
-                </a>
+                <selection-button class="is-primary" v-bind:text="100" show
+                                  v-bind:class="getCountClass(100)" v-on:click="selectCount(100)">
+                </selection-button>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a class="button is-rounded is-primary is-fullwidth"
-                   v-bind:class="getCountClass(200)" v-on:click="selectCount(200)">
-                  <span>200</span>
-                </a>
+                <selection-button class="is-primary" v-bind:text="200" show
+                                  v-bind:class="getCountClass(200)" v-on:click="selectCount(200)">
+                </selection-button>
               </div>
             </div>
             <div class="column">
               <div class="buttons is-centered">
-                <a class="button is-rounded is-primary is-fullwidth"
-                   v-bind:class="getCountClass(500)" v-on:click="selectCount(500)">
-                  <span>500</span>
-                </a>
+                <selection-button class="is-primary" v-bind:text="500" show
+                                  v-bind:class="getCountClass(500)" v-on:click="selectCount(500)">
+                </selection-button>
               </div>
             </div>
           </div>
@@ -185,16 +180,15 @@
             </div>
             <div class="column is-one-third">
               <div class="buttons is-centered">
-                <a class="button is-rounded is-primary is-fullwidth"
-                   v-bind:class="getCountClass('All')" v-on:click="selectCount('All')">
-                  <span>{{ getText('all') }}</span>
-                </a>
+                <selection-button class="is-primary" v-bind:text="getText('all')" show
+                                  v-bind:class="getCountClass('All')" v-on:click="selectCount('All')">
+                </selection-button>
               </div>
             </div>
           </div>
         </div>
         <div class="column is-10">
-          <p class="buttons">
+          <div class="buttons">
             <a class="button is-success is-rounded is-outlined is-fullwidth" v-bind:class="getClass('button')"
                v-on:click="start()">
               <span class="icon">
@@ -209,7 +203,7 @@
               </span>
               <span>{{ getText('selectionButton2') }}</span>
             </a>
-          </p>
+          </div>
         </div>
       </div>
     </div>
