@@ -1,0 +1,14 @@
+{
+  "title": {
+    "small": "is-5",
+    "normal": "is-4",
+    "medium": "is-3",
+    "large": "is-2"
+  },
+  "subtitle": {
+    "small": "is-6",
+    "normal": "is-6",
+    "medium": "is-5",
+    "large": "is-4"
+  }
+}

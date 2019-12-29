@@ -1,0 +1,16 @@
+{
+  "Deutsch": {
+    "points": "Punkte",
+    "steps": "Schritte",
+    "coins": "Münzen",
+    "menuTitle": "Vocadventure",
+    "menuSubtitle": "Ein Vokabeltrainer mit Gamification für Japanisch"
+  },
+  "English": {
+    "points": "Points",
+    "steps": "Steps",
+    "coins": "Coins",
+    "menuTitle": "Vocadventure",
+    "menuSubtitle": "A vocabulary trainer with gamification for learning japanese"
+  }
+}
