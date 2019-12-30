@@ -1,17 +1,28 @@
 <template>
   <nav class="level is-mobile">
-    <div class="level-item has-text-centered" v-for="status in gD.status" :key="status.id">
+    <div class="level-item has-text-centered" v-for="state in status" :key="state.id">
       <div>
-        <p class="heading">{{ gD.getText(status.id) }}</p>
-        <p class="title">{{ status.count }}</p>
+        <p class="heading">{{ getText(state.id) }}</p>
+        <p class="title">{{ state.count }}</p>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'TheStatus',
-  props: ['gD']
+  computed: {
+    ...mapState([
+      'status'
+    ])
+  },
+  methods: {
+    getText (id) {
+      return this.$store.getters.getText(id)
+    }
+  }
 }
 </script>

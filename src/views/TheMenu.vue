@@ -1,6 +1,9 @@
 <template>
   <div class="flexContainer justifyEvenly">
-    <TheHero :gD="gD" title="menuTitle" subtitle="menuSubtitle"/>
+    <TheHero title="menuTitle" subtitle="menuSubtitle"/>
+    <div>
+      Hier steht shit
+    </div>
   </div>
 </template>
 
@@ -9,7 +12,6 @@ import TheHero from '@/components/TheHero.vue'
 
 export default {
   name: 'TheMenu',
-  props: ['gD'],
   components: {
     TheHero
   }
@@ -20,8 +22,10 @@ export default {
 .flexContainer {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
+  height: 100%;
 
-  .justifyEvenly {
+  &.justifyEvenly {
     justify-content: space-evenly;
   }
 }
