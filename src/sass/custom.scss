@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+html, body {
+  overflow: hidden;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
+}
+
+.page {
+  width: 100%;
+  height: calc(100% - 147px);
+}

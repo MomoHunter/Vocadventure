@@ -22,5 +22,5 @@ export default {
 }
 </script>
 
-<style lang="scss" src="@/sass/bulma.scss">
+<style lang="scss" src="@/sass/darkly.bw.scss">
 </style>

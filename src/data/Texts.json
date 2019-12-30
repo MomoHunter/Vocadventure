@@ -4,13 +4,31 @@
     "steps": "Schritte",
     "coins": "Münzen",
     "menuTitle": "Vocadventure",
-    "menuSubtitle": "Ein Vokabeltrainer mit Gamification für Japanisch"
+    "menuSubtitle": "Ein Vokabeltrainer mit Gamification für Japanisch",
+    "menuButton1": "Training",
+    "menuButton2": "Abenteuer",
+    "menuButton3": "Einstellungen",
+    "menuTrainingButton1": "Training",
+    "menuTrainingButton2": "Kanji schreiben",
+    "menuTrainingButton3": "Zurück",
+    "menuAdventureButton1": "Abenteuer",
+    "menuAdventureButton2": "Item Laden",
+    "menuAdventureButton3": "Zurück"
   },
   "English": {
     "points": "Points",
     "steps": "Steps",
     "coins": "Coins",
     "menuTitle": "Vocadventure",
-    "menuSubtitle": "A vocabulary trainer with gamification for learning japanese"
+    "menuSubtitle": "A vocabulary trainer with gamification for learning japanese",
+    "menuButton1": "Training",
+    "menuButton2": "Adventure",
+    "menuButton3": "Settings",
+    "menuTrainingButton1": "Training",
+    "menuTrainingButton2": "Write Kanji",
+    "menuTrainingButton3": "Back",
+    "menuAdventureButton1": "Adventure",
+    "menuAdventureButton2": "Item Shop",
+    "menuAdventureButton3": "Back"
   }
 }

@@ -10,5 +10,17 @@
     "normal": "is-6",
     "medium": "is-5",
     "large": "is-4"
+  },
+  "button": {
+    "small": "is-small",
+    "normal": "",
+    "medium": "is-medium",
+    "large": "is-large"
+  },
+  "fas": {
+    "small": "",
+    "normal": "",
+    "medium": "lg",
+    "large": "2x"
   }
 }

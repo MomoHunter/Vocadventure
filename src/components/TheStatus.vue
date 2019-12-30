@@ -26,3 +26,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+nav {
+  margin-top: 0.5rem;
+}
+</style>
