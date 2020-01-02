@@ -1,9 +1,9 @@
 <template>
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title" v-bind:class="getSizeClass('title')">{{ getText(title) }}</h1>
-        <h2 class="subtitle" v-bind:class="getSizeClass('subtitle')">{{ getText(subtitle) }}</h2>
+  <section :class="theme.hero">
+    <div :class="theme['hero-body']">
+      <div :class="theme.container">
+        <h1 :class="[getSizeClass('title'), theme.title]">{{ getText(title) }}</h1>
+        <h2 :class="[getSizeClass('subtitle'), theme.subtitle]" v-if="showSubtitle">{{ getText(subtitle) }}</h2>
       </div>
     </div>
   </section>
@@ -13,6 +13,14 @@
 export default {
   name: 'TheHero',
   props: ['title', 'subtitle'],
+  computed: {
+    showSubtitle () {
+      return this.getText(this.subtitle)
+    },
+    theme () {
+      return this.$store.getters.theme
+    }
+  },
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)
