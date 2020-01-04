@@ -42,4 +42,4 @@ export default {
 }
 </script>
 
-<style lang="scss" src="@/sass/bulma.module.scss"></style>
+<style lang="scss" src="@/assets/custom.scss"></style>

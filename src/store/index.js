@@ -2,9 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Texts from '@/data/Texts.json'
 import SizeClasses from '@/data/SizeClasses.json'
-import bulmaTheme from '@/sass/bulma.module.scss'
-import darklyTheme from '@/sass/darkly.module.scss'
-import ceruleanTheme from '@/sass/cerulean.module.scss'
+import Themes from '@/data/Themes.json'
 
 Vue.use(Vuex)
 
@@ -18,12 +16,7 @@ export default new Vuex.Store({
       { id: 'steps', count: 0 },
       { id: 'coins', count: 0 }
     ],
-    showModal: false,
-    themes: {
-      bulma: bulmaTheme,
-      darkly: darklyTheme,
-      cerulean: ceruleanTheme
-    }
+    showModal: false
   },
   getters: {
     getText: (state) => (id) => {
@@ -31,9 +24,6 @@ export default new Vuex.Store({
     },
     getSizeClass: (state) => (type) => {
       return SizeClasses[type][state.size]
-    },
-    theme: (state) => {
-      return state.themes[state.theme]
     }
   },
   mutations: {
@@ -42,6 +32,7 @@ export default new Vuex.Store({
     },
     changeTheme (state, theme) {
       state.theme = theme
+      document.getElementById('cssHook').href = Themes[theme]
     },
     changeSize (state, size) {
       state.size = size

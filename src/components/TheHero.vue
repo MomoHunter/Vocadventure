@@ -1,9 +1,9 @@
 <template>
-  <section :class="theme.hero">
-    <div :class="theme['hero-body']">
-      <div :class="theme.container">
-        <h1 :class="[getSizeClass('title'), theme.title]">{{ getText(title) }}</h1>
-        <h2 :class="[getSizeClass('subtitle'), theme.subtitle]" v-if="showSubtitle">{{ getText(subtitle) }}</h2>
+  <section class="hero maxWidth">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title textCenter" :class="getSizeClass('title')">{{ getText(title) }}</h1>
+        <h2 class="subtitle textCenter" :class="getSizeClass('subtitle')" v-if="showSubtitle">{{ getText(subtitle) }}</h2>
       </div>
     </div>
   </section>
@@ -16,9 +16,6 @@ export default {
   computed: {
     showSubtitle () {
       return this.getText(this.subtitle)
-    },
-    theme () {
-      return this.$store.getters.theme
     }
   },
   methods: {
@@ -33,11 +30,11 @@ export default {
 </script>
 
 <style scoped>
-h1, h2 {
+.textCenter {
   text-align: center;
 }
 
-section {
+.maxWidth {
   width: 100%;
 }
 </style>
