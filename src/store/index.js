@@ -8,8 +8,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    targetLanguage: 'japanese',
     lang: 'german',
-    theme: 'darkly',
+    theme: 'bulma',
     size: 'normal',
     status: [
       { id: 'points', count: 0 },
@@ -30,9 +31,12 @@ export default new Vuex.Store({
     changeLanguage (state, language) {
       state.lang = language
     },
+    changeTargetLanguage (state, language) {
+      state.targetLanguage = language
+    },
     changeTheme (state, theme) {
       state.theme = theme
-      document.getElementById('cssHook').href = Themes[theme]
+      document.getElementById('cssHook').href = process.env.BASE_URL + Themes[theme]
     },
     changeSize (state, size) {
       state.size = size

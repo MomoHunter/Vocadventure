@@ -3,6 +3,11 @@
 # abort on errors
 set -e
 
+# build scss files
+sass sass/darkly.bw.scss public/css/darkly.bw.min.css --style=compressed
+sass sass/cerulean.bw.scss public/css/cerulean.bw.min.css --style=compressed
+sass sass/slate.bw.scss public/css/slate.bw.min.css --style=compressed
+
 # build
 npm run build
 
@@ -20,6 +25,13 @@ git commit -m 'deploy'
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:momohunter/Vocadventure.git master:gh-pages
+git push -f https://github.com/MomoHunter/Vocadventure.git master
 
 cd -
+
+rm -rf tmp/*
+cp -r dist tmp/Vocadventure
+
+cd tmp
+
+livereload

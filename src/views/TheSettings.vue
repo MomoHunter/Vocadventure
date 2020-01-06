@@ -4,6 +4,9 @@
     <div class="is-10 flexGrow">
       <DropdownBasic class="marginBottomSmall" icon="globe" :options="languages"
                      :selected="(sel) => sel === $store.state.lang" @change="changeValue('newLanguage', $event)" />
+      <DropdownBasic class="marginBottomSmall" icon="user-graduate" :options="targetLanguages"
+                     :selected="(sel) => sel === $store.state.targetLanguage"
+                     @change="changeValue('newTargetLanguage', $event)" />
       <DropdownBasic class="marginBottomSmall" icon="palette" :options="themes"
                      :selected="(sel) => sel === $store.state.theme" @change="changeValue('newTheme', $event)" />
       <DropdownBasic class="marginBottomSmall" icon="expand-arrows-alt" :options="sizes"
@@ -22,6 +25,7 @@
 
 <script>
 import Texts from '@/data/Texts.json'
+import Themes from '@/data/Themes.json'
 import TheHero from '@/components/TheHero.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import DropdownBasic from '@/components/DropdownBasic.vue'
@@ -36,6 +40,7 @@ export default {
   data () {
     return {
       newLanguage: this.$store.state.lang,
+      newTargetLanguage: this.$store.state.targetLanguage,
       newTheme: this.$store.state.theme,
       newSize: this.$store.state.size
     }
@@ -44,8 +49,11 @@ export default {
     languages () {
       return Object.keys(Texts)
     },
+    targetLanguages () {
+      return ['japanese', 'greek']
+    },
     themes () {
-      return ['bulma', 'darkly', 'cerulean']
+      return Object.keys(Themes)
     },
     sizes () {
       return ['small', 'normal', 'medium', 'large']
@@ -57,6 +65,7 @@ export default {
     },
     submitChanges () {
       this.$store.commit('changeLanguage', this.newLanguage)
+      this.$store.commit('changeTargetLanguage', this.newTargetLanguage)
       this.$store.commit('changeTheme', this.newTheme)
       this.$store.commit('changeSize', this.newSize)
     }

@@ -1,4 +1,6 @@
 {
-  "bulma": "/css/bulma.min.css",
-  "darkly": "/css/darkly.bw.min.css"
+  "bulma": "css/bulma.min.css",
+  "darkly": "css/darkly.bw.min.css",
+  "cerulean": "css/cerulean.bw.min.css",
+  "slate": "css/slate.bw.min.css"
 }
