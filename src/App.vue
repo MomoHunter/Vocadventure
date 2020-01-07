@@ -23,31 +23,42 @@ export default {
     TheModal
   },
   mounted () {
-    let data = JSON.parse(window.localStorage.getItem('globalDict'))
+    let viewport = document.querySelector('[name~=viewport][content]')
 
-    if (data) {
-      if (data.lang) {
-        this.$store.commit('changeLanguage', data.lang)
-      }
-      if (data.targetLanguage) {
-        this.$store.commit('changeTargetLanguage', data.targetLanguage)
-      }
-      if (data.theme) {
-        this.$store.commit('changeTheme', data.theme)
-      }
-      if (data.size) {
-        this.$store.commit('changeSize', data.size)
-      }
-      if (data.status) {
-        this.$store.commit('changeStatus', data.status)
-      }
+    if (window.screen.width * window.devicePixelRatio < 1150) {
+      viewport.content = 'width=device-width, initial-scale=0.75'
     }
+
+    this.loadData()
   },
   data () {
     return {
       enterTransition: '',
       leaveTransition: '',
       tmp: false
+    }
+  },
+  methods: {
+    loadData () {
+      let data = JSON.parse(window.localStorage.getItem('globalDict'))
+
+      if (data) {
+        if (data.lang) {
+          this.$store.commit('changeLanguage', data.lang)
+        }
+        if (data.targetLanguage) {
+          this.$store.commit('changeTargetLanguage', data.targetLanguage)
+        }
+        if (data.theme) {
+          this.$store.commit('changeTheme', data.theme)
+        }
+        if (data.size) {
+          this.$store.commit('changeSize', data.size)
+        }
+        if (data.status) {
+          this.$store.commit('changeStatus', data.status)
+        }
+      }
     }
   },
   watch: {

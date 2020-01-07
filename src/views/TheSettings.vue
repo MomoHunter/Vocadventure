@@ -46,9 +46,6 @@ export default {
     }
   },
   computed: {
-    saveData () {
-      return JSON.stringify(this.$store.getters.getSaveData)
-    },
     languages () {
       return Object.keys(Texts)
     },
@@ -71,7 +68,7 @@ export default {
       this.$store.commit('changeTargetLanguage', this.newTargetLanguage)
       this.$store.commit('changeTheme', this.newTheme)
       this.$store.commit('changeSize', this.newSize)
-      window.localStorage.setItem('globalDict', this.saveData)
+      window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
     }
   }
 }
