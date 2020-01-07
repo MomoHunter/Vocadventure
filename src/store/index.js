@@ -9,6 +9,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    version: '0.1.0',
     lang: 'german',
     targetLanguage: 'japanese',
     theme: 'bulma',
@@ -32,6 +33,7 @@ export default new Vuex.Store({
     },
     getSaveData: (state) => {
       return {
+        version: state.version,
         lang: state.lang,
         targetLanguage: state.targetLanguage,
         theme: state.theme,

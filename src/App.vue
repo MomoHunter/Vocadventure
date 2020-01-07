@@ -42,7 +42,7 @@ export default {
     loadData () {
       let data = JSON.parse(window.localStorage.getItem('globalDict'))
 
-      if (data) {
+      if (data && data.version && data.version === this.$store.state.version) {
         if (data.lang) {
           this.$store.commit('changeLanguage', data.lang)
         }
