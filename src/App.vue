@@ -22,6 +22,27 @@ export default {
     TheStatus,
     TheModal
   },
+  mounted () {
+    let data = JSON.parse(window.localStorage.getItem('globalDict'))
+
+    if (data) {
+      if (data.lang) {
+        this.$store.commit('changeLanguage', data.lang)
+      }
+      if (data.targetLanguage) {
+        this.$store.commit('changeTargetLanguage', data.targetLanguage)
+      }
+      if (data.theme) {
+        this.$store.commit('changeTheme', data.theme)
+      }
+      if (data.size) {
+        this.$store.commit('changeSize', data.size)
+      }
+      if (data.status) {
+        this.$store.commit('changeStatus', data.status)
+      }
+    }
+  },
   data () {
     return {
       enterTransition: '',

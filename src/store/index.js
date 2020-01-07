@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Texts from '@/data/Texts.json'
+import Vocabulary from '@/data/Vocabulary.js'
 import SizeClasses from '@/data/SizeClasses.json'
 import Themes from '@/data/Themes.json'
 
@@ -8,8 +9,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    targetLanguage: 'japanese',
     lang: 'german',
+    targetLanguage: 'japanese',
     theme: 'bulma',
     size: 'normal',
     status: [
@@ -25,6 +26,18 @@ export default new Vuex.Store({
     },
     getSizeClass: (state) => (type) => {
       return SizeClasses[type][state.size]
+    },
+    getVocabs: (state) => {
+      return Vocabulary[state.targetLanguage]
+    },
+    getSaveData: (state) => {
+      return {
+        lang: state.lang,
+        targetLanguage: state.targetLanguage,
+        theme: state.theme,
+        size: state.size,
+        status: state.status
+      }
     }
   },
   mutations: {
@@ -40,6 +53,9 @@ export default new Vuex.Store({
     },
     changeSize (state, size) {
       state.size = size
+    },
+    changeStatus (state, status) {
+      state.status = status
     },
     showModal (state) {
       state.showModal = true

@@ -1,0 +1,6 @@
+{
+  "yesAndNo": [
+    { "german": "Ja", "english": "Yes", "romaji": "hai", "kana": "はい", "difficulty": "1" },
+    { "german": "Ja 2", "english": "Yes 2", "romaji": "ee", "kana": "ええ", "difficulty": "1" }
+  ]
+}

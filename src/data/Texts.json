@@ -14,6 +14,7 @@
     "menuAdventureButton1": "Abenteuer",
     "menuAdventureButton2": "Item Laden",
     "menuAdventureButton3": "Zurück",
+    "yesAndNo": "Ja und Nein",
     "settingsTitle": "Einstellungen",
     "german": "Deutsch",
     "english": "English",
@@ -31,7 +32,10 @@
     "settingsButton1": "Bestätigen",
     "settingsButton2": "Zurück",
     "modalButton1": "Ja",
-    "modalButton2": "Nein"
+    "modalButton2": "Nein",
+    "notFoundTitle": "¯\\_(ツ)_/¯",
+    "notFoundSubtitle": "Seite konnte nicht gefunden werden (404)",
+    "notFoundButton": "Hauptmenü"
   },
   "english": {
     "points": "Points",
@@ -42,6 +46,14 @@
     "menuButton1": "Training",
     "menuButton2": "Adventure",
     "menuButton3": "Settings",
+    "menuTrainingButton1": "Training",
+    "menuTrainingButton2": "Write Kanji",
+    "menuTrainingButton3": "Back",
+    "menuAdventureButton1": "Adventure",
+    "menuAdventureButton2": "Item Shop",
+    "menuAdventureButton3": "Back",
+    "yesAndNo": "Yes and No",
+    "settingsTitle": "Settings",
     "german": "Deutsch",
     "english": "English",
     "japanese": "Japanese",
@@ -54,17 +66,13 @@
     "normal": "Medium",
     "medium": "Large",
     "large": "Very Large",
-    "menuTrainingButton1": "Training",
-    "menuTrainingButton2": "Write Kanji",
-    "menuTrainingButton3": "Back",
-    "menuAdventureButton1": "Adventure",
-    "menuAdventureButton2": "Item Shop",
-    "menuAdventureButton3": "Back",
-    "settingsTitle": "Settings",
     "settingsButtonDelete": "Delete Data",
     "settingsButton1": "Confirm",
     "settingsButton2": "Back",
     "modalButton1": "Yes",
-    "modalButton2": "No"
+    "modalButton2": "No",
+    "notFoundTitle": "¯\\_(ツ)_/¯",
+    "notFoundSubtitle": "Page could not be found (404)",
+    "notFoundButton": "Main menu"
   }
 }

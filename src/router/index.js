@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import TheMenu from '@/views/TheMenu.vue'
 import TheSettings from '@/views/TheSettings.vue'
+import TheNotFound from '@/views/TheNotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,16 @@ const routes = [
     component: TheSettings,
     meta: {
       forward: []
+    }
+  },
+  {
+    path: '*',
+    name: 'notFound',
+    component: TheNotFound,
+    meta: {
+      forward: [
+        'menu'
+      ]
     }
   }
 ]
