@@ -1,0 +1,169 @@
+@-webkit-keyframes slideOutDownC {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, calc(100% + 0.5rem), 0);
+    transform: translate3d(0, calc(100% + 0.5rem), 0);
+  }
+}
+
+@keyframes slideOutDownC {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, calc(100% + 0.5rem), 0);
+    transform: translate3d(0, calc(100% + 0.5rem), 0);
+  }
+}
+
+.slideOutDownC {
+  -webkit-animation-name: slideOutDownC;
+  animation-name: slideOutDownC;
+}
+
+@-webkit-keyframes appear {
+  from {
+    visibility: hidden;
+  }
+
+  to {
+    visibility: visible;
+  }
+}
+
+@keyframes appear {
+  from {
+    visibility: hidden;
+  }
+
+  to {
+    visibility: visible;
+  }
+}
+
+.appear {
+  -webkit-animation-name: appear;
+  animation-name: appear;
+}
+
+@-webkit-keyframes disappear {
+  from {
+    visibility: visible;
+  }
+
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes disappear {
+  from {
+    visibility: visible;
+  }
+
+  to {
+    visibility: hidden;
+  }
+}
+
+.disappear {
+  -webkit-animation-name: disappear;
+  animation-name: disappear;
+}
+
+@-webkit-keyframes slideOutUpC {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, calc(-100% - 0.5rem), 0);
+    transform: translate3d(0, calc(-100% - 0.5rem), 0);
+  }
+}
+
+@keyframes slideOutUpC {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, calc(-100% - 0.5rem), 0);
+    transform: translate3d(0, calc(-100% - 0.5rem), 0);
+  }
+}
+
+.slideOutUpC {
+  -webkit-animation-name: slideOutUpC;
+  animation-name: slideOutUpC;
+}
+
+@-webkit-keyframes invisible {
+  from {
+    visibility: hidden;
+  }
+
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes invisible {
+  from {
+    visibility: hidden;
+  }
+
+  to {
+    visibility: hidden;
+  }
+}
+
+.invisible {
+  -webkit-animation-name: invisible;
+  animation-name: invisible;
+}
+
+@-webkit-keyframes fadeOutC {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOutC {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.fadeOutC {
+  -webkit-animation-name: fadeOutC;
+  animation-name: fadeOutC;
+}
