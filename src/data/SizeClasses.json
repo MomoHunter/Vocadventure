@@ -28,5 +28,11 @@
     "normal": "",
     "medium": "lg",
     "large": "2x"
+  },
+  "input": {
+    "small": "is-small",
+    "normal": "",
+    "medium": "is-medium",
+    "large": "is-large"
   }
 }
