@@ -1,8 +1,8 @@
 <template>
   <p class="control has-icons-left">
-    <span class="select is-fullwidth" :class="getSizeClass('select')">
+    <span class="select is-fullwidth" :class="[getSizeClass('select'), color]">
       <select @change="$emit('change', $event.target.value)">
-        <option v-for="option in options" :selected="selected(option)" :value="option" :key="option">
+        <option v-for="option in options" :selected="isSelected(option)" :value="option" :key="option">
           {{ getText(option) }}
         </option>
       </select>
@@ -16,13 +16,16 @@
 <script>
 export default {
   name: 'DropdownBasic',
-  props: ['options', 'selected', 'icon'],
+  props: ['options', 'selected', 'icon', 'color'],
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)
     },
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
+    },
+    isSelected (option) {
+      return option === this.selected
     }
   }
 }

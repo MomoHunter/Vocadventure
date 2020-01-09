@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import TheMenu from '@/views/TheMenu.vue'
+import SelectionCategory from '@/views/SelectionCategory.vue'
 import TheSettings from '@/views/TheSettings.vue'
 import TheNotFound from '@/views/TheNotFound.vue'
 
@@ -14,14 +15,18 @@ const routes = [
     meta: {
       forward: [
         'settings',
-        'selection',
+        'category',
         'shop'
       ]
     }
   },
   {
-    path: '/selection/:destination',
-    name: 'selection'
+    path: '/category/:destination',
+    name: 'category',
+    component: SelectionCategory,
+    meta: {
+      forward: []
+    }
   },
   {
     path: '/settings',

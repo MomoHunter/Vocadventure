@@ -20,10 +20,10 @@
         </transition>
       </div>
       <div class="is-absolute">
-        <transition enter-active-class="animated appear customDuration customDelay"
-                    leave-active-class="animated disappear customDuration">
+        <transition enter-active-class="animated invisible customDuration2"
+                    leave-active-class="animated disappear customDuration2">
           <ButtonBasic class="is-relative marginBottomSmall" color="is-info" icon="book" text="menuTrainingButton1"
-                      @click="$router.push({ name: 'selection', params: { destination: 'training' } })"
+                      @click="$router.push({ name: 'category', params: { destination: 'training' } })"
                       v-show="query === 'training'" />
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"
@@ -41,7 +41,7 @@
         <transition enter-active-class="animated invisible customDuration2"
                     leave-active-class="animated slideOutDownC customDuration2">
           <ButtonBasic class="is-relative marginBottomSmall" color="is-link" icon="gem" text="menuAdventureButton1"
-                      @click="$router.push({ name: 'selection', params: { destination: 'adventure' } })"
+                      @click="$router.push({ name: 'category', params: { destination: 'adventure' } })"
                       v-show="query === 'adventure'" />
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"
@@ -91,10 +91,10 @@ export default {
       this.trainingAnimation = {
         enter: from.query.sub === 'adventure'
           ? 'animated fadeIn customDuration customDelay'
-          : 'animated appear customDuration customDelay',
+          : 'animated invisible customDuration2',
         leave: to.query.sub === 'adventure'
           ? 'animated fadeOutC customDuration2'
-          : 'animated disappear customDuration'
+          : 'animated disappear customDuration2'
       }
       this.adventureAnimation = {
         enter: from.query.sub === 'training'

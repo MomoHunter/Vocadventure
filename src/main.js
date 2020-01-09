@@ -6,13 +6,13 @@ import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faBook, faGem, faShoppingCart, faCog, faArrowLeft, faPen, faCheck, faTrash, faTimes, faGlobe, faPalette,
-  faExpandArrowsAlt, faUserGraduate, faHome
+  faExpandArrowsAlt, faUserGraduate, faHome, faSort, faFilter
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(
   faBook, faGem, faShoppingCart, faCog, faArrowLeft, faPen, faCheck, faTrash, faTimes, faGlobe, faPalette,
-  faExpandArrowsAlt, faUserGraduate, faHome
+  faExpandArrowsAlt, faUserGraduate, faHome, faSort, faFilter
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

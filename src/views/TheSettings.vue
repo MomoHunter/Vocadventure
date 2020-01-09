@@ -3,14 +3,14 @@
     <TheHero title="settingsTitle" />
     <div class="is-10 flexGrow">
       <DropdownBasic class="marginBottomSmall" icon="globe" :options="languages"
-                     :selected="(sel) => sel === $store.state.lang" @change="changeValue('newLanguage', $event)" />
+                     :selected="$store.state.lang" @change="changeValue('newLanguage', $event)" />
       <DropdownBasic class="marginBottomSmall" icon="user-graduate" :options="targetLanguages"
-                     :selected="(sel) => sel === $store.state.targetLanguage"
+                     :selected="$store.state.targetLanguage"
                      @change="changeValue('newTargetLanguage', $event)" />
       <DropdownBasic class="marginBottomSmall" icon="palette" :options="themes"
-                     :selected="(sel) => sel === $store.state.theme" @change="changeValue('newTheme', $event)" />
+                     :selected="$store.state.theme" @change="changeValue('newTheme', $event)" />
       <DropdownBasic class="marginBottomSmall" icon="expand-arrows-alt" :options="sizes"
-                     :selected="(sel) => sel === $store.state.size" @change="changeValue('newSize', $event)" />
+                     :selected="$store.state.size" @change="changeValue('newSize', $event)" />
       <ButtonBasic class="marginBottomSmall" color="is-danger" icon="trash" text="settingsButtonDelete"
                    @click="$store.commit('showModal')" />
     </div>
