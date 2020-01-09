@@ -12,7 +12,7 @@
     </div>
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="categoryButton2"
-                   @click="submitChanges()" />
+                   @click="$router.push({ name: 'selection' })" />
       <ButtonBasic class="marginBottomSmall" color="is-danger" icon="arrow-left" text="categoryButton3"
                    @click="$router.push({ name: 'menu' })" />
     </div>
