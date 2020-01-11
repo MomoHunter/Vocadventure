@@ -1,6 +1,107 @@
 {
-  "yesAndNo": [
+  "japaneseGroup1": [
     { "german": "Ja", "english": "Yes", "romaji": "hai", "kana": "はい", "difficulty": "1" },
-    { "german": "Ja 2", "english": "Yes 2", "romaji": "ee", "kana": "ええ", "difficulty": "1" }
+    { "german": "Ja 2", "english": "Yes 2", "romaji": "ee", "kana": "ええ", "difficulty": "1" },
+    { "german": "m-hm", "english": "u-huh", "romaji": "un", "kana": "うん", "difficulty": "1" },
+    { "german": "Ja, genau, stimmt", "english": "yes, exactly, correct", "romaji": "sou (sou sou)", "kana": "そう　(そう　そう)", "difficulty": "2" },
+    { "german": "aha", "english": "mhm", "romaji": "naruhodo", "kana": "なるほど", "difficulty": "1" },
+    { "german": "Nein", "english": "no", "romaji": "iie", "kana": "いいえ", "difficulty": "1" },
+    { "german": "Nein (emotionaler)", "english": "no (more emotional)", "romaji": "iya", "kana": "いや", "difficulty": "1" }
+  ],
+  "japaneseGroup2": [
+    { "german": "Dankbarkeit, Dank", "english": "Gratitude", "romaji": "kansha", "kana": "感謝", "difficulty": "3" }
+  ],
+  "japaneseGroup3": [
+    
+  ],
+  "japaneseGroup4": [
+    
+  ],
+  "japaneseGroup5": [
+    
+  ],
+  "japaneseGroup6": [
+    
+  ],
+  "japaneseGroup7": [
+    
+  ],
+  "japaneseGroup8": [
+    
+  ],
+  "japaneseGroup9": [
+    
+  ],
+  "japaneseGroup10": [
+    
+  ],
+  "japaneseGroup11": [
+    
+  ],
+  "japaneseGroup12": [
+    
+  ],
+  "japaneseGroup13": [
+    
+  ],
+  "japaneseGroup14": [
+    
+  ],
+  "japaneseGroup15": [
+    
+  ],
+  "japaneseGroup16": [
+    
+  ],
+  "japaneseGroup17": [
+    
+  ],
+  "japaneseGroup18": [
+    
+  ],
+  "japaneseGroup19": [
+    
+  ],
+  "japaneseGroup20": [
+    
+  ],
+  "japaneseGroup21": [
+    
+  ],
+  "japaneseGroup22": [
+    
+  ],
+  "japaneseGroup23": [
+    
+  ],
+  "japaneseGroup24": [
+    
+  ],
+  "japaneseGroup25": [
+    
+  ],
+  "japaneseGroup26": [
+    
+  ],
+  "japaneseGroup27": [
+    
+  ],
+  "japaneseGroup28": [
+    
+  ],
+  "japaneseGroup29": [
+    
+  ],
+  "japaneseGroup30": [
+    
+  ],
+  "japaneseGroup31": [
+    
+  ],
+  "japaneseGroup32": [
+    
+  ],
+  "japaneseGroup33": [
+    
   ]
 }

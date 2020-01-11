@@ -18,8 +18,16 @@ html, body {
   left:0px;
 }
 
+.fullHeight {
+  height: 100%;
+}
+
 .marginBottomSmall {
-  margin-bottom: 0.5rem;
+  margin-bottom: .5rem;
+}
+
+.marginTopSmall {
+  margin-top: .5rem;
 }
 
 .animated {

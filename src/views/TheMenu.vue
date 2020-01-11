@@ -134,18 +134,18 @@ export default {
 
 .animated {
   &.customDuration {
-    -webkit-animation-duration: .5s;
-    animation-duration: .5s;
+    -webkit-animation-duration: .35s;
+    animation-duration: .35s;
   }
 
   &.customDuration2 {
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
+    -webkit-animation-duration: .7s;
+    animation-duration: .7s;
   }
 
   &.customDelay {
-    -webkit-animation-delay: .5s;
-    animation-delay: .5s;
+    -webkit-animation-delay: .35s;
+    animation-delay: .35s;
   }
 }
 

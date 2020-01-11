@@ -19,6 +19,7 @@ export default new Vuex.Store({
       { id: 'steps', count: 0 },
       { id: 'coins', count: 0 }
     ],
+    categoriesChosen: [],
     showModal: false
   },
   getters: {
@@ -58,6 +59,15 @@ export default new Vuex.Store({
     },
     changeStatus (state, status) {
       state.status = status
+    },
+    addCategory (state, category) {
+      state.categoriesChosen.push(category)
+    },
+    removeCategory (state, category) {
+      state.categoriesChosen = state.categoriesChosen.filter(entry => entry !== category)
+    },
+    setCategories (state, categories) {
+      state.categoriesChosen = categories
     },
     showModal (state) {
       state.showModal = true

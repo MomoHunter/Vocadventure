@@ -34,5 +34,11 @@
     "normal": "",
     "medium": "is-medium",
     "large": "is-large"
+  },
+  "tag": {
+    "small": "is-normal",
+    "normal": "is-normal",
+    "medium": "is-medium",
+    "large": "is-medium"
   }
 }
