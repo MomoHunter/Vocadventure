@@ -24,13 +24,13 @@
     </div>
     <SearchBar v-show="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
                iconInput="search" iconButton="times" @click="toggleSearch()" @input="search($event)" />
-    <div class="field is-grouped is-grouped-multiline maxThirdHeight overflowAuto is-10">
+    <div class="field is-grouped is-grouped-multiline maxThirdHeight overflowAuto is-10 flexShrink">
       <div v-for="category of $store.state.categoriesChosen" :key="category" class="control">
         <TagBasic :textOne="category" colorOne="is-primary" colorDelete="is-danger" hasDelete
                   @click="removeCategory(category)"/>
       </div>
     </div>
-    <div class="is-10 flexGrow overflowAuto">
+    <div class="is-10 flexGrow overflowAuto marginBottomSmall marginTopSmall">
       <div class="buttons">
         <ButtonText v-for="category of categoriesAvailable" :key="category" color="is-primary" :text="category"
                     @click="addCategory(category)" />
@@ -78,11 +78,14 @@ export default {
       return this.$route.params.destination
     },
     sorters () {
-      return ['sortStandard']
+      return [
+        'sortStandard', 'sortAlphAsc', 'sortAlphDesc', 'sortDiffAsc', 'sortDiffDesc', 'sortPlayedAsc', 'sortPlayedDesc'
+      ]
     },
     categoriesAvailable () {
       return Object.keys(this.getCategories()).filter(entry => {
-        return !this.$store.state.categoriesChosen.includes(entry) && this.getText(entry).includes(this.searchString)
+        return !this.$store.state.categoriesChosen.includes(entry) &&
+          this.getText(entry).toLowerCase().includes(this.searchString.toLowerCase())
       }, this).sort(this.sortFunction)
     }
   },
@@ -161,5 +164,9 @@ export default {
 
 .overflowAuto {
   overflow: auto;
+}
+
+.flexShrink {
+  flex-shrink: 0;
 }
 </style>

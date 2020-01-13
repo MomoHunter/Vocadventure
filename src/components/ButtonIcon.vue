@@ -1,10 +1,10 @@
 <template>
-  <a class="button is-rounded is-outlined is-fullwidth" :class="[getSizeClass('button'), color]"
+  <button class="button is-rounded is-outlined is-fullwidth" :class="[getSizeClass('button'), color]"
      @click="$emit('click')">
     <span class="icon">
       <font-awesome-icon :icon="['fas', icon]" />
     </span>
-  </a>
+  </button>
 </template>
 
 <script>
@@ -18,7 +18,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

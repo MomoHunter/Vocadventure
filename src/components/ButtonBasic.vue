@@ -1,11 +1,11 @@
 <template>
-  <a class="button is-rounded is-outlined is-fullwidth" :class="[getSizeClass('button'), color]"
+  <button class="button is-rounded is-outlined is-fullwidth" :class="[getSizeClass('button'), color]"
      @click="$emit('click')">
     <span class="icon">
       <font-awesome-icon :icon="['fas', icon]" />
     </span>
     <span>{{ getText(text) }}</span>
-  </a>
+  </button>
 </template>
 
 <script>
