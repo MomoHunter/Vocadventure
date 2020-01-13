@@ -1,5 +1,5 @@
 <template>
-  <p class="control has-icons-left">
+  <div class="control has-icons-left">
     <span class="select is-fullwidth is-rounded" :class="[getSizeClass('select'), color]">
       <select @change="$emit('change', $event.target.value)">
         <option v-for="option in options" :selected="isSelected(option)" :value="option" :key="option">
@@ -10,7 +10,7 @@
     <span class="icon is-left">
       <font-awesome-icon :icon="['fas', icon]" />
     </span>
-  </p>
+  </div>
 </template>
 
 <script>

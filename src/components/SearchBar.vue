@@ -1,11 +1,14 @@
 <template>
   <div class="field has-addons">
-    <div class="control">
-      <input class="input is-rounded" :class="[colorInput, getSizeClass('input')]" :type="type"
-            @change="$emit('change', $event.target.value)" />
+    <div class="control has-icons-left is-expanded">
+      <input class="input is-rounded is-fullwidth" :class="[colorInput, getSizeClass('input')]" :type="type"
+             @input="$emit('input', $event.target.value)" />
+      <span class="icon is-left">
+        <font-awesome-icon :icon="['fas', iconInput]" />
+      </span>
     </div>
     <div class="control">
-      <ButtonIcon :icon="icon" :color="colorButton" @click="$emit('click')" />
+      <ButtonIcon :icon="iconButton" :color="colorButton" @click="$emit('click')" />
     </div>
   </div>
 </template>
@@ -15,7 +18,7 @@ import ButtonIcon from '@/components/ButtonIcon.vue'
 
 export default {
   name: 'SearchBar',
-  props: ['colorInput', 'colorButton', 'type', 'icon'],
+  props: ['colorInput', 'colorButton', 'type', 'iconInput', 'iconButton'],
   components: {
     ButtonIcon
   },

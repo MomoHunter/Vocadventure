@@ -1,35 +1,45 @@
 <template>
   <div class="flexContainer">
     <TheHero class="marginBottomSmall" :title="destination" />
-    <div class="field has-addons is-10 marginBottomSmall">
-      <div class="control halfWidth" v-if="!showSort">
+    <div v-show="!showSearch && !showSort" class="field has-addons is-10">
+      <div class="control quarterWidth">
         <ButtonBasic color="is-link" icon="sort" text="categoryButton1" @click="toggleSort()" />
       </div>
-      <DropdownRounded class="halfWidth" v-show="showSort" :options="sorters" icon="sort" selected="sortStandard" color="is-link"
-                       @change="sort($event.target.value)" />
-      <div class="control" v-show="showSort">
-        <ButtonIcon color="is-link" icon="times" @click="toggleSort()" />
+      <div class="control quarterWidth">
+        <ButtonBasic color="is-link" icon="check" text="categoryButton2" @click="addAllCategories()" />
       </div>
-      <div class="control halfWidth">
-        <ButtonBasic v-show="!showSearch" color="is-link" icon="search" text="categoryButton2" @click="toggleSearch()" />
-        <SearchBar v-show="showSearch" colorInput="is-link" colorButton="is-link" type="text" icon="times"
-                   @change="search($event.target.value)" @click="toggleSearch()" />
+      <div class="control quarterWidth">
+        <ButtonBasic color="is-link" icon="times" text="categoryButton3" @click="removeAllCategories()" />
+      </div>
+      <div class="control quarterWidth">
+        <ButtonBasic color="is-link" icon="search" text="categoryButton4" @click="toggleSearch()" />
       </div>
     </div>
+    <div v-show="showSort" class="field has-addons is-10">
+      <DropdownRounded class="is-expanded" :options="sorters" icon="sort" selected="sortStandard" color="is-link"
+                       @change="sort($event)" />
+      <div class="control">
+        <ButtonIcon color="is-danger" icon="times" @click="toggleSort()" />
+      </div>
+    </div>
+    <SearchBar v-show="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
+               iconInput="search" iconButton="times" @click="toggleSearch()" @input="search($event)" />
     <div class="field is-grouped is-grouped-multiline maxThirdHeight overflowAuto is-10">
       <div v-for="category of $store.state.categoriesChosen" :key="category" class="control">
         <TagBasic :textOne="category" colorOne="is-primary" colorDelete="is-danger" hasDelete
                   @click="removeCategory(category)"/>
       </div>
     </div>
-    <div class="buttons is-10 flexGrow overflowAuto">
-      <ButtonText v-for="category of categoriesAvailable" :key="category" color="is-primary" :text="category"
-                  @click="addCategory(category)" />
+    <div class="is-10 flexGrow overflowAuto">
+      <div class="buttons">
+        <ButtonText v-for="category of categoriesAvailable" :key="category" color="is-primary" :text="category"
+                    @click="addCategory(category)" />
+      </div>
     </div>
     <div class="is-10">
-      <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="categoryButton3"
+      <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="categoryButton5"
                    @click="$router.push({ name: 'selection' })" />
-      <ButtonBasic class="marginBottomSmall" color="is-danger" icon="arrow-left" text="categoryButton4"
+      <ButtonBasic class="marginBottomSmall" color="is-danger" icon="arrow-left" text="categoryButton6"
                    @click="$router.push({ name: 'menu', query: { sub: destination } })" />
     </div>
   </div>
@@ -58,7 +68,9 @@ export default {
   data () {
     return {
       showSort: false,
-      showSearch: false
+      showSearch: false,
+      searchString: '',
+      sortFunction (a, b) { return 0 }
     }
   },
   computed: {
@@ -70,11 +82,14 @@ export default {
     },
     categoriesAvailable () {
       return Object.keys(this.getCategories()).filter(entry => {
-        return !this.$store.state.categoriesChosen.includes(entry)
-      }, this)
+        return !this.$store.state.categoriesChosen.includes(entry) && this.getText(entry).includes(this.searchString)
+      }, this).sort(this.sortFunction)
     }
   },
   methods: {
+    getText (id) {
+      return this.$store.getters.getText(id)
+    },
     getCategories () {
       return this.$store.getters.getVocabs.words
     },
@@ -106,7 +121,7 @@ export default {
       }
     },
     search (string) {
-      console.log('hallo')
+      this.searchString = string
     }
   }
 }
@@ -134,6 +149,10 @@ export default {
 
 .halfWidth {
   width: 50%;
+}
+
+.quarterWidth {
+  width: 25%;
 }
 
 .maxThirdHeight {
