@@ -24,13 +24,14 @@
     </div>
     <SearchBar v-show="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
                iconInput="search" iconButton="times" @click="toggleSearch()" @input="search($event)" />
-    <div class="field is-grouped is-grouped-multiline maxThirdHeight overflowAuto is-10 flexShrink">
+    <div class="field is-grouped is-grouped-multiline maxThirdHeight overflowAuto is-10 flexShrink marginBottomSmall"
+         v-show="!nothingSelected">
       <div v-for="category of $store.state.categoriesChosen" :key="category" class="control">
         <TagBasic :textOne="category" colorOne="is-primary" colorDelete="is-danger" hasDelete
                   @click="removeCategory(category)"/>
       </div>
     </div>
-    <div class="is-10 flexGrow overflowAuto marginBottomSmall marginTopSmall">
+    <div class="is-10 flexGrow overflowAuto marginBottomSmall">
       <div class="buttons">
         <ButtonText v-for="category of categoriesAvailable" :key="category" color="is-primary" :text="category"
                     @click="addCategory(category)" />
@@ -87,6 +88,9 @@ export default {
         return !this.$store.state.categoriesChosen.includes(entry) &&
           this.getText(entry).toLowerCase().includes(this.searchString.toLowerCase())
       }, this).sort(this.sortFunction)
+    },
+    nothingSelected () {
+      return this.$store.state.categoriesChosen.length === 0
     }
   },
   methods: {
