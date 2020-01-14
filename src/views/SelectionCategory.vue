@@ -2,16 +2,20 @@
   <div class="flexContainer">
     <TheHero class="marginBottomSmall" :title="destination" />
     <div v-show="!showSearch && !showSort" class="field has-addons is-10">
-      <div class="control quarterWidth">
+      <div class="control fullWidth">
         <ButtonBasic color="is-link" icon="sort" text="categoryButton1" @click="toggleSort()" />
       </div>
-      <div class="control quarterWidth">
-        <ButtonBasic color="is-link" icon="check" text="categoryButton2" @click="addAllCategories()" />
+      <div class="control">
+        <ButtonMDIIcon color="is-link" @click="addAllCategories()">
+          <ExpandAll />
+        </ButtonMDIIcon>
       </div>
-      <div class="control quarterWidth">
-        <ButtonBasic color="is-link" icon="times" text="categoryButton3" @click="removeAllCategories()" />
+      <div class="control">
+        <ButtonMDIIcon color="is-link" @click="removeAllCategories()">
+          <AnimationOutline />
+        </ButtonMDIIcon>
       </div>
-      <div class="control quarterWidth">
+      <div class="control fullWidth">
         <ButtonBasic color="is-link" icon="search" text="categoryButton4" @click="toggleSearch()" />
       </div>
     </div>
@@ -52,8 +56,12 @@ import DropdownRounded from '@/components/DropdownRounded.vue'
 import TagBasic from '@/components/TagBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import ButtonIcon from '@/components/ButtonIcon.vue'
+import ButtonMDIIcon from '@/components/ButtonMDIIcon.vue'
 import ButtonText from '@/components/ButtonText.vue'
 import SearchBar from '@/components/SearchBar.vue'
+
+import AnimationOutline from 'vue-material-design-icons/AnimationOutline.vue'
+import ExpandAll from 'vue-material-design-icons/ExpandAll.vue'
 
 export default {
   name: 'SelectionCategory',
@@ -63,15 +71,20 @@ export default {
     TagBasic,
     ButtonBasic,
     ButtonIcon,
+    ButtonMDIIcon,
     ButtonText,
-    SearchBar
+    SearchBar,
+    AnimationOutline,
+    ExpandAll
   },
   data () {
     return {
       showSort: false,
       showSearch: false,
       searchString: '',
-      sortFunction (a, b) { return 0 }
+      sortFunction (that) {
+        return (a, b) => { return 0 }
+      }
     }
   },
   computed: {
@@ -87,7 +100,7 @@ export default {
       return Object.keys(this.getCategories()).filter(entry => {
         return !this.$store.state.categoriesChosen.includes(entry) &&
           this.getText(entry).toLowerCase().includes(this.searchString.toLowerCase())
-      }, this).sort(this.sortFunction)
+      }, this).sort(this.sortFunction(this))
     },
     nothingSelected () {
       return this.$store.state.categoriesChosen.length === 0
@@ -99,6 +112,9 @@ export default {
     },
     getCategories () {
       return this.$store.getters.getVocabs.words
+    },
+    getCategoryPlayed (id) {
+      return this.$store.getters.getCategoryPlayed(id)
     },
     toggleSort () {
       this.showSort = !this.showSort
@@ -121,11 +137,97 @@ export default {
     sort (type) {
       switch (type) {
         case 'sortStandard':
+          this.sortFunction = function (that) {
+            return (a, b) => { return 0 }
+          }
           break
-        case 'alphabeticDesc':
+        case 'sortAlphAsc':
+          this.sortFunction = function (that) {
+            return (a, b) => {
+              if (that.getText(a).toString() > that.getText(b).toString()) {
+                return 1
+              } else if (that.getText(a).toString() < that.getText(b).toString()) {
+                return -1
+              } else {
+                return 0
+              }
+            }
+          }
+          break
+        case 'sortAlphDesc':
+          this.sortFunction = function (that) {
+            return (a, b) => {
+              if (that.getText(a).toString() < that.getText(b).toString()) {
+                return 1
+              } else if (that.getText(a).toString() > that.getText(b).toString()) {
+                return -1
+              } else {
+                return 0
+              }
+            }
+          }
+          break
+        case 'sortDiffAsc':
+          this.sortFunction = function (that) {
+            return (a, b) => {
+              if (that.getDifficulty(a) > that.getDifficulty(b)) {
+                return 1
+              } else if (that.getDifficulty(a) < that.getDifficulty(b)) {
+                return -1
+              } else {
+                return 0
+              }
+            }
+          }
+          break
+        case 'sortDiffDesc':
+          this.sortFunction = function (that) {
+            return (a, b) => {
+              if (that.getDifficulty(a) < that.getDifficulty(b)) {
+                return 1
+              } else if (that.getDifficulty(a) > that.getDifficulty(b)) {
+                return -1
+              } else {
+                return 0
+              }
+            }
+          }
+          break
+        case 'sortPlayedAsc':
+          this.sortFunction = function (that) {
+            return (a, b) => {
+              if (that.getCategoryPlayed(a).count > that.getCategoryPlayed(b).count) {
+                return 1
+              } else if (that.getCategoryPlayed(a).count < that.getCategoryPlayed(b).count) {
+                return -1
+              } else {
+                return 0
+              }
+            }
+          }
+          break
+        case 'sortPlayedDesc':
+          this.sortFunction = function (that) {
+            return (a, b) => {
+              if (that.getCategoryPlayed(a).count < that.getCategoryPlayed(b).count) {
+                return 1
+              } else if (that.getCategoryPlayed(a).count > that.getCategoryPlayed(b).count) {
+                return -1
+              } else {
+                return 0
+              }
+            }
+          }
           break
         default:
       }
+    },
+    getDifficulty (id) {
+      let vocabs = this.getCategories()[id]
+
+      return vocabs.reduce((acc, entry) => {
+        return acc + parseInt(entry.difficulty)
+      }, 0) / vocabs.length
     },
     search (string) {
       this.searchString = string

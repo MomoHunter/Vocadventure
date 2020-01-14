@@ -58,6 +58,9 @@ export default {
         if (data.status) {
           this.$store.commit('changeStatus', data.status)
         }
+        if (data.categoriesPlayed) {
+          this.$store.commit('changeCategoriesPlayed', data.categoriesPlayed)
+        }
       }
     }
   },

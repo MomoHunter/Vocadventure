@@ -1,6 +1,6 @@
 <template>
   <div class="flexContainer">
-    <TheHero title="settingsTitle" />
+    <TheHero class="marginBottomSmall" title="settingsTitle" />
     <div class="is-10 flexGrow">
       <DropdownBasic class="marginBottomSmall" icon="globe" :options="languages"
                      :selected="$store.state.lang" @change="changeValue('newLanguage', $event)" />
@@ -85,10 +85,6 @@ export default {
   flex-wrap: wrap;
   align-items: center;
   height: 100%;
-
-  div {
-    margin-top: 1rem;
-  }
 
   .is-10 {
     width: calc(100% / 1.2);

@@ -1,5 +1,5 @@
 {
-  "japaneseGroup1": [
+  "japaneseCategory1": [
     { "german": "Ja", "english": "Yes", "romaji": "hai", "kana": "はい", "difficulty": "1" },
     { "german": "Ja 2", "english": "Yes 2", "romaji": "ee", "kana": "ええ", "difficulty": "1" },
     { "german": "m-hm", "english": "u-huh", "romaji": "un", "kana": "うん", "difficulty": "1" },
@@ -8,100 +8,100 @@
     { "german": "Nein", "english": "no", "romaji": "iie", "kana": "いいえ", "difficulty": "1" },
     { "german": "Nein (emotionaler)", "english": "no (more emotional)", "romaji": "iya", "kana": "いや", "difficulty": "1" }
   ],
-  "japaneseGroup2": [
+  "japaneseCategory2": [
     { "german": "Dankbarkeit, Dank", "english": "Gratitude", "romaji": "kansha", "kana": "感謝", "difficulty": "3" }
   ],
-  "japaneseGroup3": [
+  "japaneseCategory3": [
     
   ],
-  "japaneseGroup4": [
+  "japaneseCategory4": [
     
   ],
-  "japaneseGroup5": [
+  "japaneseCategory5": [
     
   ],
-  "japaneseGroup6": [
+  "japaneseCategory6": [
     
   ],
-  "japaneseGroup7": [
+  "japaneseCategory7": [
     
   ],
-  "japaneseGroup8": [
+  "japaneseCategory8": [
     
   ],
-  "japaneseGroup9": [
+  "japaneseCategory9": [
     
   ],
-  "japaneseGroup10": [
+  "japaneseCategory10": [
     
   ],
-  "japaneseGroup11": [
+  "japaneseCategory11": [
     
   ],
-  "japaneseGroup12": [
+  "japaneseCategory12": [
     
   ],
-  "japaneseGroup13": [
+  "japaneseCategory13": [
     
   ],
-  "japaneseGroup14": [
+  "japaneseCategory14": [
     
   ],
-  "japaneseGroup15": [
+  "japaneseCategory15": [
     
   ],
-  "japaneseGroup16": [
+  "japaneseCategory16": [
     
   ],
-  "japaneseGroup17": [
+  "japaneseCategory17": [
     
   ],
-  "japaneseGroup18": [
+  "japaneseCategory18": [
     
   ],
-  "japaneseGroup19": [
+  "japaneseCategory19": [
     
   ],
-  "japaneseGroup20": [
+  "japaneseCategory20": [
     
   ],
-  "japaneseGroup21": [
+  "japaneseCategory21": [
     
   ],
-  "japaneseGroup22": [
+  "japaneseCategory22": [
     
   ],
-  "japaneseGroup23": [
+  "japaneseCategory23": [
     
   ],
-  "japaneseGroup24": [
+  "japaneseCategory24": [
     
   ],
-  "japaneseGroup25": [
+  "japaneseCategory25": [
     
   ],
-  "japaneseGroup26": [
+  "japaneseCategory26": [
     
   ],
-  "japaneseGroup27": [
+  "japaneseCategory27": [
     
   ],
-  "japaneseGroup28": [
+  "japaneseCategory28": [
     
   ],
-  "japaneseGroup29": [
+  "japaneseCategory29": [
     
   ],
-  "japaneseGroup30": [
+  "japaneseCategory30": [
     
   ],
-  "japaneseGroup31": [
+  "japaneseCategory31": [
     
   ],
-  "japaneseGroup32": [
+  "japaneseCategory32": [
     
   ],
-  "japaneseGroup33": [
+  "japaneseCategory33": [
     
   ]
 }

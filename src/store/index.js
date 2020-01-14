@@ -20,6 +20,7 @@ export default new Vuex.Store({
       { id: 'coins', count: 0 }
     ],
     categoriesChosen: [],
+    categoriesPlayed: [],
     showModal: false
   },
   getters: {
@@ -32,6 +33,10 @@ export default new Vuex.Store({
     getVocabs: (state) => {
       return Vocabulary[state.targetLanguage]
     },
+    getCategoryPlayed: (state) => (id) => {
+      let data = state.categoriesPlayed.find(entry => entry.id === id)
+      return data || { id: id, count: 0 }
+    },
     getSaveData: (state) => {
       return {
         version: state.version,
@@ -39,7 +44,8 @@ export default new Vuex.Store({
         targetLanguage: state.targetLanguage,
         theme: state.theme,
         size: state.size,
-        status: state.status
+        status: state.status,
+        categoriesPlayed: state.categoriesPlayed
       }
     }
   },
@@ -60,6 +66,9 @@ export default new Vuex.Store({
     changeStatus (state, status) {
       state.status = status
     },
+    changeCategoriesPlayed (state, categoriesPlayed) {
+      state.categoriesPlayed = categoriesPlayed
+    },
     addCategory (state, category) {
       state.categoriesChosen.push(category)
     },
@@ -68,6 +77,15 @@ export default new Vuex.Store({
     },
     setCategories (state, categories) {
       state.categoriesChosen = categories
+    },
+    increaseCategoryPlayed (state, id) {
+      let data = state.categoriesPlayed.find(entry => entry.id === id)
+
+      if (data) {
+        data.count++
+      } else {
+        state.categoriesPlayed.push({ id: id, count: 1 })
+      }
     },
     showModal (state) {
       state.showModal = true
