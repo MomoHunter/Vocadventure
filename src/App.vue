@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <TheStatus></TheStatus>
+    <TheStatus class="statusMargin"></TheStatus>
     <div class="page">
       <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition">
         <router-view></router-view>
@@ -78,3 +78,9 @@ export default {
 </script>
 
 <style lang="scss" src="@/assets/custom.scss"></style>
+
+<style lang="scss" scoped>
+.statusMargin {
+  margin-top: 5px;
+}
+</style>

@@ -3,7 +3,7 @@
     <TheHero class="marginBottomSmall" :title="destination" />
     <div v-show="!showSearch && !showSort" class="field has-addons is-10">
       <div class="control fullWidth">
-        <ButtonBasic color="is-link" icon="sort" text="categoryButton1" @click="toggleSort()" />
+        <ButtonBasic color="is-link" :icon="sortIcon" text="categoryButton1" @click="toggleSort()" />
       </div>
       <div class="control">
         <ButtonMDIIcon color="is-link" @click="addAllCategories()">
@@ -20,14 +20,14 @@
       </div>
     </div>
     <div v-show="showSort" class="field has-addons is-10">
-      <DropdownRounded class="is-expanded" :options="sorters" icon="sort" selected="sortStandard" color="is-link"
+      <DropdownRounded class="is-expanded" :options="sorters" :icon="sortIcon" selected="sortStandard" color="is-link"
                        @change="sort($event)" />
       <div class="control">
         <ButtonIcon color="is-danger" icon="times" @click="toggleSort()" />
       </div>
     </div>
     <SearchBar v-show="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
-               iconInput="search" iconButton="times" @click="toggleSearch()" @input="search($event)" />
+               iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
     <div class="field is-grouped is-grouped-multiline maxThirdHeight overflowAuto is-10 flexShrink marginBottomSmall"
          v-show="!nothingSelected">
       <div v-for="category of $store.state.categoriesChosen" :key="category" class="control">
@@ -43,10 +43,14 @@
     </div>
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="categoryButton5"
-                   @click="$router.push({ name: 'selection' })" />
+                   @click="navTo()" />
       <ButtonBasic class="marginBottomSmall" color="is-danger" icon="arrow-left" text="categoryButton6"
                    @click="$router.push({ name: 'menu', query: { sub: destination } })" />
     </div>
+    <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
+      <TheNotification v-show="showNotification" color="is-danger" text="selectionCategoryNotification"
+                       @click="closeNotification()" />
+    </transition>
   </div>
 </template>
 
@@ -59,6 +63,7 @@ import ButtonIcon from '@/components/ButtonIcon.vue'
 import ButtonMDIIcon from '@/components/ButtonMDIIcon.vue'
 import ButtonText from '@/components/ButtonText.vue'
 import SearchBar from '@/components/SearchBar.vue'
+import TheNotification from '@/components/TheNotification.vue'
 
 import AnimationOutline from 'vue-material-design-icons/AnimationOutline.vue'
 import ExpandAll from 'vue-material-design-icons/ExpandAll.vue'
@@ -74,6 +79,7 @@ export default {
     ButtonMDIIcon,
     ButtonText,
     SearchBar,
+    TheNotification,
     AnimationOutline,
     ExpandAll
   },
@@ -81,7 +87,9 @@ export default {
     return {
       showSort: false,
       showSearch: false,
+      showNotification: false,
       searchString: '',
+      sortIcon: 'sort',
       sortFunction (that) {
         return (a, b) => { return 0 }
       }
@@ -121,12 +129,17 @@ export default {
     },
     toggleSearch () {
       this.showSearch = !this.showSearch
+      if (!this.showSearch) {
+        this.searchString = ''
+      }
     },
     addCategory (category) {
       this.$store.commit('addCategory', category)
+      this.closeNotification()
     },
     addAllCategories () {
       this.$store.commit('setCategories', Object.keys(this.getCategories()))
+      this.closeNotification()
     },
     removeCategory (category) {
       this.$store.commit('removeCategory', category)
@@ -135,6 +148,14 @@ export default {
       this.$store.commit('setCategories', [])
     },
     sort (type) {
+      if (type.endsWith('Asc')) {
+        this.sortIcon = 'sort-down'
+      } else if (type.endsWith('Desc')) {
+        this.sortIcon = 'sort-up'
+      } else {
+        this.sortIcon = 'sort'
+      }
+
       switch (type) {
         case 'sortStandard':
           this.sortFunction = function (that) {
@@ -229,8 +250,19 @@ export default {
         return acc + parseInt(entry.difficulty)
       }, 0) / vocabs.length
     },
-    search (string) {
-      this.searchString = string
+    navTo () {
+      if (this.$store.state.categoriesChosen.length !== 0) {
+        if (this.destination === 'training') {
+          this.$router.push({ name: 'training' })
+        } else {
+          this.$router.push({ name: 'selection' })
+        }
+      } else {
+        this.showNotification = true
+      }
+    },
+    closeNotification () {
+      this.showNotification = false
     }
   }
 }
@@ -245,7 +277,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
+  height: calc(100% - 71px);
 
   .is-10 {
     width: calc(100% / 1.2);

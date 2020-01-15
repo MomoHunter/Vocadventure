@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import TheMenu from '@/views/TheMenu.vue'
 import SelectionCategory from '@/views/SelectionCategory.vue'
+import SelectionCount from '@/views/SelectionCount.vue'
+import TheTraining from '@/views/TheTraining.vue'
 import TheSettings from '@/views/TheSettings.vue'
 import TheNotFound from '@/views/TheNotFound.vue'
 
@@ -24,6 +26,25 @@ const routes = [
     path: '/category/:destination',
     name: 'category',
     component: SelectionCategory,
+    meta: {
+      forward: [
+        'selection',
+        'training'
+      ]
+    }
+  },
+  {
+    path: '/selection',
+    name: 'selection',
+    component: SelectionCount,
+    meta: {
+      forward: []
+    }
+  },
+  {
+    path: '/training',
+    name: 'training',
+    component: TheTraining,
     meta: {
       forward: []
     }

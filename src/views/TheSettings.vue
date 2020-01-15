@@ -84,7 +84,7 @@ export default {
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
-  height: 100%;
+  height: calc(100% - 71px);
 
   .is-10 {
     width: calc(100% / 1.2);

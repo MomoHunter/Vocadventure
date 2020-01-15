@@ -121,7 +121,7 @@ export default {
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
-  height: 100%;
+  height: calc(100% - 71px);
 
   &.justifyEvenly {
     justify-content: space-evenly;
