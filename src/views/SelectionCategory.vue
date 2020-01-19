@@ -26,7 +26,7 @@
         <ButtonIcon color="is-danger" icon="times" @click="toggleSort()" />
       </div>
     </div>
-    <SearchBar v-show="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
+    <InputWithButton v-show="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
                iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
     <div class="field is-grouped is-grouped-multiline maxThirdHeight overflowAuto is-10 flexShrink marginBottomSmall"
          v-show="!nothingSelected">
@@ -62,7 +62,7 @@ import ButtonBasic from '@/components/ButtonBasic.vue'
 import ButtonIcon from '@/components/ButtonIcon.vue'
 import ButtonMDIIcon from '@/components/ButtonMDIIcon.vue'
 import ButtonText from '@/components/ButtonText.vue'
-import SearchBar from '@/components/SearchBar.vue'
+import InputWithButton from '@/components/InputWithButton.vue'
 import TheNotification from '@/components/TheNotification.vue'
 
 import AnimationOutline from 'vue-material-design-icons/AnimationOutline.vue'
@@ -78,7 +78,7 @@ export default {
     ButtonIcon,
     ButtonMDIIcon,
     ButtonText,
-    SearchBar,
+    InputWithButton,
     TheNotification,
     AnimationOutline,
     ExpandAll

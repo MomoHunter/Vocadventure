@@ -1,14 +1,17 @@
 <template>
-  <button class="button is-rounded" @click="$emit('click')"
+  <button class="button is-rounded is-fullwidth" @click="$emit('click')"
           :class="[getSizeClass('button'), color, { 'is-outlined': !selected }]">
-    {{ getText(text) }}
+    <span class="icon">
+      <slot></slot>
+    </span>
+    <span>{{ getText(text) }}</span>
   </button>
 </template>
 
 <script>
 export default {
-  name: 'ButtonText',
-  props: ['text', 'color', 'selected'],
+  name: 'ButtonMDI',
+  props: ['color', 'text', 'selected'],
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)

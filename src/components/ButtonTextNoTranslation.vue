@@ -1,18 +1,15 @@
 <template>
   <button class="button is-rounded" @click="$emit('click')"
           :class="[getSizeClass('button'), color, { 'is-outlined': !selected }]">
-    {{ getText(text) }}
+    {{ text }}
   </button>
 </template>
 
 <script>
 export default {
-  name: 'ButtonText',
+  name: 'ButtonTextNoTranslation',
   props: ['text', 'color', 'selected'],
   methods: {
-    getText (id) {
-      return this.$store.getters.getText(id)
-    },
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
     }

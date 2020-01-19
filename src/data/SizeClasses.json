@@ -31,7 +31,7 @@
   },
   "mdi": {
     "small": "is-small",
-    "normal": "",
+    "normal": "is-normal",
     "medium": "is-medium",
     "large": "is-large"
   },

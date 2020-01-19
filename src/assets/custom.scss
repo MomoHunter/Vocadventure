@@ -56,6 +56,16 @@ html, body {
     }
   }
 
+  &.is-normal {
+    width: 1.5rem;
+    height: 1.5rem;
+
+    > .material-design-icon__svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
   &.is-medium {
     width: 2rem;
     height: 2rem;

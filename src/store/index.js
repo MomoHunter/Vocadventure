@@ -21,6 +21,8 @@ export default new Vuex.Store({
     ],
     categoriesChosen: [],
     categoriesPlayed: [],
+    difficulty: null,
+    wordCount: 0,
     showModal: false
   },
   getters: {
@@ -86,6 +88,12 @@ export default new Vuex.Store({
       } else {
         state.categoriesPlayed.push({ id: id, count: 1 })
       }
+    },
+    setDifficulty (state, difficulty) {
+      state.difficulty = difficulty
+    },
+    setWordCount (state, count) {
+      state.wordCount = count
     },
     showModal (state) {
       state.showModal = true

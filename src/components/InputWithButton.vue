@@ -1,9 +1,9 @@
 <template>
   <div class="field has-addons">
-    <div class="control has-icons-left is-expanded">
+    <div class="control is-expanded" :class="{ 'has-icons-left': hasIconLeft }">
       <input class="input is-rounded is-fullwidth" :class="[colorInput, getSizeClass('input')]" :type="type"
              @input="$emit('input', $event.target.value)" :value="value" />
-      <span class="icon is-left">
+      <span v-if="hasIconLeft" class="icon is-left">
         <font-awesome-icon :icon="['fas', iconInput]" />
       </span>
     </div>
@@ -21,6 +21,11 @@ export default {
   props: ['colorInput', 'colorButton', 'type', 'iconInput', 'iconButton', 'value'],
   components: {
     ButtonIcon
+  },
+  computed: {
+    hasIconLeft () {
+      return this.iconInput !== undefined
+    }
   },
   methods: {
     getSizeClass (type) {
