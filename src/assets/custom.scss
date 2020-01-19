@@ -30,9 +30,49 @@ html, body {
   margin-bottom: .5rem !important;
 }
 
+.marginRightSmall {
+  margin-right: .25rem;
+}
+
+.marginLeftSmall {
+  margin-left: .25rem;
+}
+
 .animated {
   &.delay-100ms {
     -webkit-animation-delay: .1s;
     animation-delay: .1s;
+  }
+}
+
+.material-design-icon {
+  &.is-small {
+    width: 1rem;
+    height: 1rem;
+
+    > .material-design-icon__svg {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  &.is-medium {
+    width: 2rem;
+    height: 2rem;
+
+    > .material-design-icon__svg {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+
+  &.is-large {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    > .material-design-icon__svg {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="flexContainer">
-    <TheHero class="marginBottomSmall" title="settingsTitle" />
+    <HeroBasic class="marginBottomSmall" title="settingsTitle" />
     <div class="is-10 flexGrow">
       <DropdownBasic class="marginBottomSmall" icon="globe" :options="languages"
                      :selected="$store.state.lang" @change="changeValue('newLanguage', $event)" />
@@ -26,14 +26,14 @@
 <script>
 import Texts from '@/data/Texts.json'
 import Themes from '@/data/Themes.json'
-import TheHero from '@/components/TheHero.vue'
+import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import DropdownBasic from '@/components/DropdownBasic.vue'
 
 export default {
   name: 'TheSettings',
   components: {
-    TheHero,
+    HeroBasic,
     ButtonBasic,
     DropdownBasic
   },

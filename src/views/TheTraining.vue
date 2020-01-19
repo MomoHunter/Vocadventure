@@ -1,33 +1,114 @@
 <template>
   <div class="flexContainer spaceBetween">
-    <TheHero title="trainingTitle" />
+    <HeroWithTags title="trainingTitle" :tagObjects="tags" />
     <div class="box is-10">
       <div class="content has-text-centered" :class="getSizeClass('content')">
-        {{ currentWord }}
+        {{ words.words[currentWord][$store.state.lang] }}
       </div>
     </div>
-    <TheProgressBar class="is-10 marginBottomSmall" color="is-success" text="0 / 0" />
+    <div class="field is-10">
+      <label class="label" :class="getSizeClass('label')">
+        {{ getText(words.latinAlphabet) }}
+      </label>
+      <InputReadonly type="text" :value="getLatinWord" />
+    </div>
+    <div class="field is-10">
+      <label class="label" :class="getSizeClass('label')">
+        {{ getText(words.foreignAlphabet) }}
+      </label>
+      <InputReadonly type="text" :value="getForeignWord" />
+    </div>
+    <div class="innerFlexContainer is-10" :class="currentWord === 0 ? 'dirBackward' : 'dirForward'">
+      <ButtonBasic v-show="currentWord !== 0" class="is-half marginBottomSmall marginRightSmall" icon="arrow-left" color="is-warning"
+                   text="trainingButton1" @click="previousWord()" />
+      <ButtonBasic v-show="currentWord + 1 !== words.words.length" class="is-half marginBottomSmall marginLeftSmall"
+                   icon="arrow-right" color="is-success" text="trainingButton2" @click="nextWord()" />
+      <ButtonBasic icon="times" color="is-danger" text="trainingButton3"
+                   @click="$router.push({ name: 'category', params: { destination: 'training' } })" />
+    </div>
+    <TheProgressBar class="is-10 marginBottomSmall" color="is-success" :value="currentWord + 1"
+                    :maxValue="words.words.length" :text="progressText" />
   </div>
 </template>
 
 <script>
-import TheHero from '@/components/TheHero.vue'
+import HeroWithTags from '@/components/HeroWithTags.vue'
+import InputReadonly from '@/components/InputReadonly.vue'
+import ButtonBasic from '@/components/ButtonBasic.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
 
 export default {
   name: 'TheTraining',
   components: {
-    TheHero,
+    HeroWithTags,
+    InputReadonly,
+    ButtonBasic,
     TheProgressBar
   },
   data () {
     return {
-      currentWord: 'Hallo'
+      currentWord: 0
+    }
+  },
+  computed: {
+    words () {
+      let wordObjects = []
+      let wordObjectsShuffled = []
+      let vocabs = this.$store.getters.getVocabs
+
+      for (let category of this.$store.state.categoriesChosen) {
+        vocabs.words[category].forEach(word => {
+          let wordCopy = JSON.parse(JSON.stringify(word))
+          wordCopy.category = category
+          wordObjects.push(wordCopy)
+        }, this)
+      }
+
+      while (wordObjects.length > 0) {
+        let random = Math.floor(Math.random() * wordObjects.length)
+        wordObjectsShuffled.push(wordObjects.splice(random, 1)[0])
+      }
+
+      return {
+        words: wordObjectsShuffled,
+        latinAlphabet: vocabs.latinAlphabet,
+        foreignAlphabet: vocabs.foreignAlphabet
+      }
+    },
+    tags () {
+      return [
+        {
+          nameId: 'trainingCategoryTag',
+          valueId: this.words.words[this.currentWord].category
+        }
+      ]
+    },
+    getLatinWord () {
+      return this.words.words[this.currentWord][this.words.latinAlphabet]
+    },
+    getForeignWord () {
+      return this.words.words[this.currentWord][this.words.foreignAlphabet]
+    },
+    progressText () {
+      return (this.currentWord + 1) + ' / ' + this.words.words.length
     }
   },
   methods: {
+    getText (id) {
+      return this.$store.getters.getText(id)
+    },
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
+    },
+    previousWord () {
+      if (this.currentWord > 0) {
+        this.currentWord--
+      }
+    },
+    nextWord () {
+      if (this.currentWord + 1 < this.words.words.length) {
+        this.currentWord++
+      }
     }
   }
 }
@@ -51,6 +132,23 @@ export default {
 
   .is-10 {
     width: calc(100% / 1.2);
+  }
+}
+
+.innerFlexContainer {
+  display: flex;
+  flex-wrap: wrap;
+
+  &.dirForward {
+    flex-direction: row;
+  }
+
+  &.dirBackward {
+    flex-direction: row-reverse;
+  }
+
+  .is-half {
+    width: calc(50% - .25rem);
   }
 }
 </style>

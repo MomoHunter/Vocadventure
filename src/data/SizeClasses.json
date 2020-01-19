@@ -29,6 +29,12 @@
     "medium": "lg",
     "large": "2x"
   },
+  "mdi": {
+    "small": "is-small",
+    "normal": "",
+    "medium": "is-medium",
+    "large": "is-large"
+  },
   "input": {
     "small": "is-small",
     "normal": "",
@@ -42,6 +48,12 @@
     "large": "is-medium"
   },
   "content": {
+    "small": "is-small",
+    "normal": "",
+    "medium": "is-medium",
+    "large": "is-large"
+  },
+  "label": {
     "small": "is-small",
     "normal": "",
     "medium": "is-medium",

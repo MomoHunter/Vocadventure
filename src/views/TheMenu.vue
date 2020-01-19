@@ -1,6 +1,6 @@
 <template>
   <div class="flexContainer justifyEvenly">
-    <TheHero title="menuTitle" subtitle="menuSubtitle"/>
+    <HeroBasic title="menuTitle" subtitle="menuSubtitle"/>
     <div class="is-10 is-relative">
       <div class="is-absolute">
         <transition :enter-active-class="trainingAnimation.enter"
@@ -60,13 +60,13 @@
 </template>
 
 <script>
-import TheHero from '@/components/TheHero.vue'
+import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 
 export default {
   name: 'TheMenu',
   components: {
-    TheHero,
+    HeroBasic,
     ButtonBasic
   },
   data () {

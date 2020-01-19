@@ -1,6 +1,6 @@
 <template>
   <div class="flexContainer justifyEvenly">
-    <TheHero title="notFoundTitle" subtitle="notFoundSubtitle"></TheHero>
+    <HeroBasic title="notFoundTitle" subtitle="notFoundSubtitle" />
     <div class="is-10">
       <ButtonBasic color="is-success" icon="home" text="notFoundButton" @click="$router.push({ name: 'menu' })" />
     </div>
@@ -8,13 +8,13 @@
 </template>
 
 <script>
-import TheHero from '@/components/TheHero.vue'
+import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 
 export default {
   name: 'TheNotFound',
   components: {
-    TheHero,
+    HeroBasic,
     ButtonBasic
   }
 }

@@ -1,18 +1,18 @@
 <template>
   <div class="flexContainer">
-    <TheHero class="marginBottomSmall" :title="destination" />
+    <HeroBasic class="marginBottomSmall" :title="destination" />
     <div v-show="!showSearch && !showSort" class="field has-addons is-10">
       <div class="control fullWidth">
         <ButtonBasic color="is-link" :icon="sortIcon" text="categoryButton1" @click="toggleSort()" />
       </div>
       <div class="control">
         <ButtonMDIIcon color="is-link" @click="addAllCategories()">
-          <ExpandAll />
+          <ExpandAll :class="getSizeClass('mdi')" />
         </ButtonMDIIcon>
       </div>
       <div class="control">
         <ButtonMDIIcon color="is-link" @click="removeAllCategories()">
-          <AnimationOutline />
+          <AnimationOutline :class="getSizeClass('mdi')" />
         </ButtonMDIIcon>
       </div>
       <div class="control fullWidth">
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import TheHero from '@/components/TheHero.vue'
+import HeroBasic from '@/components/HeroBasic.vue'
 import DropdownRounded from '@/components/DropdownRounded.vue'
 import TagBasic from '@/components/TagBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
@@ -71,7 +71,7 @@ import ExpandAll from 'vue-material-design-icons/ExpandAll.vue'
 export default {
   name: 'SelectionCategory',
   components: {
-    TheHero,
+    HeroBasic,
     DropdownRounded,
     TagBasic,
     ButtonBasic,
@@ -117,6 +117,9 @@ export default {
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)
+    },
+    getSizeClass (type) {
+      return this.$store.getters.getSizeClass(type)
     },
     getCategories () {
       return this.$store.getters.getVocabs.words

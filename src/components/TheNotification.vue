@@ -1,7 +1,9 @@
 <template>
   <div class="notification atBottom" :class="color">
     <button class="delete" @click="$emit('click')"></button>
-    {{ getText(text) }}
+    <div class="content" :class="getSizeClass('content')">
+      {{ getText(text) }}
+    </div>
   </div>
 </template>
 
@@ -12,6 +14,9 @@ export default {
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)
+    },
+    getSizeClass (type) {
+      return this.$store.getters.getSizeClass(type)
     }
   }
 }
