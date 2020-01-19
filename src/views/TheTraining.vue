@@ -19,11 +19,14 @@
       <InputReadonly type="text" :value="getForeignWord" />
     </div>
     <div class="innerFlexContainer is-10" :class="currentWord === 0 ? 'dirBackward' : 'dirForward'">
-      <ButtonBasic v-show="currentWord !== 0" class="is-half marginBottomSmall marginRightSmall" icon="arrow-left" color="is-warning"
-                   text="trainingButton1" @click="previousWord()" />
+      <ButtonBasic v-show="currentWord !== 0" class="is-half marginBottomSmall marginRightSmall" icon="arrow-left"
+                   color="is-warning" text="trainingButton1" @click="previousWord()" />
       <ButtonBasic v-show="currentWord + 1 !== words.words.length" class="is-half marginBottomSmall marginLeftSmall"
                    icon="arrow-right" color="is-success" text="trainingButton2" @click="nextWord()" />
-      <ButtonBasic icon="times" color="is-danger" text="trainingButton3"
+      <ButtonBasic v-show="currentWord + 1 === words.words.length" class="is-half marginBottomSmall marginLeftSmall"
+                   icon="check" color="is-success" text="trainingButton3"
+                   @click="$router.push({ name: 'menu' })" />
+      <ButtonBasic icon="times" color="is-danger" text="trainingButton4"
                    @click="$router.push({ name: 'category', params: { destination: 'training' } })" />
     </div>
     <TheProgressBar class="is-10 marginBottomSmall" color="is-success" :value="currentWord + 1"
