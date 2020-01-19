@@ -77,7 +77,7 @@ export default {
   },
   computed: {
     customCountText () {
-
+      return 'selectionCountCustom'
     },
     countAllWords () {
       let count = 0
