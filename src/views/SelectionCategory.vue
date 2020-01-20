@@ -31,8 +31,8 @@
     <div class="field is-grouped is-grouped-multiline maxThirdHeight overflowAuto is-10 flexShrink marginBottomSmall"
          v-show="!nothingSelected">
       <div v-for="category of $store.state.categoriesChosen" :key="category" class="control">
-        <TagBasic :textOne="category" colorOne="is-primary" colorDelete="is-danger" hasDelete
-                  @click="removeCategory(category)"/>
+        <TagWithDelete :textOne="category" colorOne="is-primary" colorDelete="is-danger"
+                       @click="removeCategory(category)"/>
       </div>
     </div>
     <div class="is-10 flexGrow overflowAuto marginBottomSmall">
@@ -45,7 +45,7 @@
       <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="categoryButton5"
                    @click="navTo()" />
       <ButtonBasic class="marginBottomSmall" color="is-danger" icon="arrow-left" text="categoryButton6"
-                   @click="$router.push({ name: 'menu', query: { sub: destination } })" />
+                   @click="navTo('menu')" />
     </div>
     <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
       <TheNotification v-show="showNotification" color="is-danger" text="selectionCategoryNotification"
@@ -57,7 +57,7 @@
 <script>
 import HeroBasic from '@/components/HeroBasic.vue'
 import DropdownRounded from '@/components/DropdownRounded.vue'
-import TagBasic from '@/components/TagBasic.vue'
+import TagWithDelete from '@/components/TagWithDelete.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import ButtonIcon from '@/components/ButtonIcon.vue'
 import ButtonMDIIcon from '@/components/ButtonMDIIcon.vue'
@@ -73,7 +73,7 @@ export default {
   components: {
     HeroBasic,
     DropdownRounded,
-    TagBasic,
+    TagWithDelete,
     ButtonBasic,
     ButtonIcon,
     ButtonMDIIcon,
@@ -253,15 +253,20 @@ export default {
         return acc + parseInt(entry.difficulty)
       }, 0) / vocabs.length
     },
-    navTo () {
-      if (this.$store.state.categoriesChosen.length !== 0) {
-        if (this.destination === 'training') {
-          this.$router.push({ name: 'training' })
-        } else {
-          this.$router.push({ name: 'selection' })
-        }
+    navTo (destination) {
+      if (destination === 'menu') {
+        this.$store.commit('setCategories', [])
+        this.$router.push({ name: 'menu', query: { sub: this.destination } })
       } else {
-        this.showNotification = true
+        if (this.$store.state.categoriesChosen.length !== 0) {
+          if (this.destination === 'training') {
+            this.$router.push({ name: 'training' })
+          } else {
+            this.$router.push({ name: 'selection' })
+          }
+        } else {
+          this.showNotification = true
+        }
       }
     },
     closeNotification () {

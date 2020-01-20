@@ -1,9 +1,16 @@
 <template>
   <div class="flexContainer spaceBetween">
-    <HeroWithTags title="trainingTitle" :tagObjects="tags" />
-    <div class="box is-10">
-      <div class="content has-text-centered" :class="getSizeClass('content')">
-        {{ words.words[currentWord][$store.state.lang] }}
+    <HeroBasic title="trainingTitle" />
+    <div class="field is-10 is-grouped is-grouped-multiline">
+      <div class="control fullWidth">
+        <TagBasic textOne="trainingCategoryTag" :textTwo="words.words[currentWord].category" colorTwo="is-primary" />
+      </div>
+      <div class="control fullWidth">
+        <div class="box">
+          <div class="content has-text-centered" :class="getSizeClass('content')">
+            {{ words.words[currentWord][$store.state.lang] }}
+          </div>
+        </div>
       </div>
     </div>
     <div class="field is-10">
@@ -24,8 +31,7 @@
       <ButtonBasic v-show="currentWord + 1 !== words.words.length" class="is-half marginBottomSmall marginLeftSmall"
                    icon="arrow-right" color="is-success" text="trainingButton2" @click="nextWord()" />
       <ButtonBasic v-show="currentWord + 1 === words.words.length" class="is-half marginBottomSmall marginLeftSmall"
-                   icon="check" color="is-success" text="trainingButton3"
-                   @click="$router.push({ name: 'menu' })" />
+                   icon="check" color="is-success" text="trainingButton3" @click="navToMenu()" />
       <ButtonBasic icon="times" color="is-danger" text="trainingButton4"
                    @click="$router.push({ name: 'category', params: { destination: 'training' } })" />
     </div>
@@ -35,7 +41,8 @@
 </template>
 
 <script>
-import HeroWithTags from '@/components/HeroWithTags.vue'
+import HeroBasic from '@/components/HeroBasic.vue'
+import TagBasic from '@/components/TagBasic.vue'
 import InputReadonly from '@/components/InputReadonly.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
@@ -43,7 +50,8 @@ import TheProgressBar from '@/components/TheProgressBar.vue'
 export default {
   name: 'TheTraining',
   components: {
-    HeroWithTags,
+    HeroBasic,
+    TagBasic,
     InputReadonly,
     ButtonBasic,
     TheProgressBar
@@ -112,6 +120,10 @@ export default {
       if (this.currentWord + 1 < this.words.words.length) {
         this.currentWord++
       }
+    },
+    navToMenu () {
+      this.$store.commit('setCategories', [])
+      this.$router.push({ name: 'menu' })
     }
   }
 }

@@ -3,20 +3,17 @@
     <span class="tag" :class="[colorOne, getSizeClass('tag')]" @click="$emit('click')">
       {{ getText(textOne) }}
     </span>
-    <span class="tag" :class="[colorTwo, getSizeClass('tag')]" @click="$emit('click')">
-      {{ getText(textTwo) }}
-    </span>
+    <a class="tag is-delete" :class="[colorDelete, getSizeClass('tag')]" @click="$emit('click')"></a>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TagBasic',
+  name: 'TagWithDelete',
   props: {
     colorOne: String,
     textOne: String,
-    colorTwo: String,
-    textTwo: String
+    colorDelete: String
   },
   methods: {
     getText (id) {

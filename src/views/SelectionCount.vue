@@ -23,14 +23,17 @@
     </div>
     <div class="field is-grouped is-grouped-multiline is-10">
       <div class="control is-third" :class="optionClasses(option)" v-for="option of availableOptions" :key="option">
-        <ButtonText class="is-fullwidth" color="is-primary" :text="option" @click="setWordCount(option)"
-                    :selected="wordCountSelected(option)" />
+        <ButtonTextNoTranslation class="is-fullwidth" color="is-primary" :text="option" @click="setWordCount(option)"
+                                 :selected="wordCountSelected(option)" />
       </div>
       <div class="control is-two-third left-row">
-        <ButtonText v-show="!isInputVisible" class="is-fullwidth" color="is-primary" :text="customCountText"
-                    @click="showInput()" />
+        <ButtonText v-show="!isInputVisible && !customCountSet" class="is-fullwidth" color="is-primary"
+                    text="selectionCountCustom" @click="showInput()" />
+        <ButtonTextNoTranslation v-show="!isInputVisible && customCountSet" class="is-fullwidth" color="is-primary"
+                                 :text="customCount" @click="showInput()"
+                                 :selected="wordCountSelected(parseInt(customCount))" />
         <InputWithButton v-show="isInputVisible" colorInput="is-primary" colorButton="is-success" type="number"
-                         iconButton="check" @click="hideInput()" />
+                         iconButton="check" @click="hideInput()" v-model="customCount" />
       </div>
       <div class="control is-third right-row">
         <ButtonText class="is-fullwidth" color="is-primary" text="selectionCountAll"
@@ -39,10 +42,14 @@
     </div>
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="selectionButton1"
-                   @click="$router.push({ name: 'adventure' })" />
+                   @click="navTo()" />
       <ButtonBasic class="marginBottomSmall" color="is-danger" icon="arrow-left" text="selectionButton2"
                    @click="$router.push({ name: 'category', params: { destination: 'adventure' } })" />
     </div>
+    <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
+      <TheNotification v-show="showNotification" color="is-danger" text="selectionCountNotification"
+                       @click="closeNotification()" />
+    </transition>
   </div>
 </template>
 
@@ -51,6 +58,7 @@ import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonMDI from '@/components/ButtonMDI.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import ButtonText from '@/components/ButtonText.vue'
+import ButtonTextNoTranslation from '@/components/ButtonTextNoTranslation.vue'
 import InputWithButton from '@/components/InputWithButton.vue'
 
 import SpeedometerSlow from 'vue-material-design-icons/SpeedometerSlow.vue'
@@ -64,6 +72,7 @@ export default {
     ButtonMDI,
     ButtonBasic,
     ButtonText,
+    ButtonTextNoTranslation,
     InputWithButton,
     SpeedometerSlow,
     SpeedometerMedium,
@@ -72,12 +81,14 @@ export default {
   data () {
     return {
       isInputVisible: false,
-      availableOptions: [10, 20, 50, 100, 200, 500]
+      customCount: '',
+      availableOptions: [10, 20, 50, 100, 200, 500],
+      showNotification: false
     }
   },
   computed: {
-    customCountText () {
-      return 'selectionCountCustom'
+    customCountSet () {
+      return this.customCount !== ''
     },
     countAllWords () {
       let count = 0
@@ -119,12 +130,26 @@ export default {
     },
     setWordCount (count) {
       this.$store.commit('setWordCount', count)
+      this.customCount = ''
     },
     showInput () {
       this.isInputVisible = true
     },
     hideInput () {
       this.isInputVisible = false
+      if (this.customCountSet) {
+        this.$store.commit('setWordCount', parseInt(this.customCount))
+      }
+    },
+    navTo () {
+      if (this.$store.state.difficulty === '' || this.$store.state.wordCount === 0) {
+        this.showNotification = true
+      } else {
+        this.$router.push({ name: 'adventure' })
+      }
+    },
+    closeNotification () {
+      this.showNotification = false
     }
   }
 }

@@ -21,7 +21,7 @@ export default new Vuex.Store({
     ],
     categoriesChosen: [],
     categoriesPlayed: [],
-    difficulty: null,
+    difficulty: '',
     wordCount: 0,
     showModal: false
   },
