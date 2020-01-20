@@ -24,7 +24,11 @@
     { "german": "Bitte (geben Sie mir/ tun Sie ...)", "english": "please (give me/ do ...)", "romaji": "...kudasai", "kana": "...下さい", "difficulty": "3" },
     { "german": "Bitte... (vertraut)", "english": "please... (familiar)", "romaji": "...choudai", "kana": "...ちょうだい", "difficulty": "1" },
     { "german": "Ja, bitte. Ich bitte darum.", "english": "Yes, please. I would ask for it.", "romaji": "O-negai shimasu.", "kana": "お願いします。", "difficulty": "3" },
-    { "german": "Hier, bitte! (beim Anbieten)", "english": "There you go! (offering)", "romaji": "Douzo.", "kana": "どうぞ", "difficulty": "1" }
+    { "german": "Hier, bitte! (beim Anbieten)", "english": "There you go! (offering)", "romaji": "Douzo.", "kana": "どうぞ", "difficulty": "1" },
+    { "german": "Wie wäre es damit?", "english": "How about this?", "romaji": "Ikaga desu ka.", "kana": "いかがですか。", "difficulty": "2" },
+    { "german": "Ja, bitte.", "english": "Yes, please.", "romaji": "Itadakimasu.", "kana": "いただきます。", "difficulty": "2" },
+    { "german": "Nein, danke.", "english": "No, thanks.", "romaji": "Kekkou desu.", "kana": "結構です。", "difficulty": "3" },
+    { "german": "Danke. (kurz und formlos)", "english": "Thanks. (short and informal)", "romaji": "Doumo.", "kana": "どうも。", "difficulty": "1" }
   ],
   "japaneseCategory3": [
     
