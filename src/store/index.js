@@ -27,13 +27,48 @@ export default new Vuex.Store({
   },
   getters: {
     getText: (state) => (id) => {
-      return Texts[state.lang][id]
+      if (isNaN(id)) {
+        return Texts[state.lang][id]
+      } else {
+        return id.toString()
+      }
     },
     getSizeClass: (state) => (type) => {
       return SizeClasses[type][state.size]
     },
+    getCategories: (state) => {
+      return Object.keys(Vocabulary[state.targetLanguage].words)
+    },
     getVocabs: (state) => {
-      return Vocabulary[state.targetLanguage]
+      let wordObjects = []
+      let vocabs = Vocabulary[state.targetLanguage]
+
+      for (let category of state.categoriesChosen) {
+        vocabs.words[category].forEach(word => {
+          let wordCopy = JSON.parse(JSON.stringify(word))
+          wordCopy.category = category
+          wordObjects.push(wordCopy)
+        }, this)
+      }
+
+      return {
+        words: wordObjects,
+        latinAlphabet: vocabs.latinAlphabet,
+        foreignAlphabet: vocabs.foreignAlphabet
+      }
+    },
+    getShuffledVocabs: (state, getters) => {
+      let vocabs = getters.getVocabs
+      let wordsShuffled = []
+
+      while (vocabs.words.length > 0) {
+        let random = Math.floor(Math.random() * vocabs.words.length)
+        wordsShuffled.push(vocabs.words.splice(random, 1)[0])
+      }
+
+      vocabs.words = wordsShuffled
+
+      return vocabs
     },
     getCategoryPlayed: (state) => (id) => {
       let data = state.categoriesPlayed.find(entry => entry.id === id)

@@ -105,7 +105,7 @@ export default {
       ]
     },
     categoriesAvailable () {
-      return Object.keys(this.getCategories()).filter(entry => {
+      return this.$store.getters.getCategories.filter(entry => {
         return !this.$store.state.categoriesChosen.includes(entry) &&
           this.getText(entry).toLowerCase().includes(this.searchString.toLowerCase())
       }, this).sort(this.sortFunction(this))
@@ -120,9 +120,6 @@ export default {
     },
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
-    },
-    getCategories () {
-      return this.$store.getters.getVocabs.words
     },
     getCategoryPlayed (id) {
       return this.$store.getters.getCategoryPlayed(id)

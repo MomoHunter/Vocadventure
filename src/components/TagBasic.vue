@@ -16,7 +16,7 @@ export default {
     colorOne: String,
     textOne: String,
     colorTwo: String,
-    textTwo: String
+    textTwo: [String, Number]
   },
   methods: {
     getText (id) {

@@ -63,28 +63,7 @@ export default {
   },
   computed: {
     words () {
-      let wordObjects = []
-      let wordObjectsShuffled = []
-      let vocabs = this.$store.getters.getVocabs
-
-      for (let category of this.$store.state.categoriesChosen) {
-        vocabs.words[category].forEach(word => {
-          let wordCopy = JSON.parse(JSON.stringify(word))
-          wordCopy.category = category
-          wordObjects.push(wordCopy)
-        }, this)
-      }
-
-      while (wordObjects.length > 0) {
-        let random = Math.floor(Math.random() * wordObjects.length)
-        wordObjectsShuffled.push(wordObjects.splice(random, 1)[0])
-      }
-
-      return {
-        words: wordObjectsShuffled,
-        latinAlphabet: vocabs.latinAlphabet,
-        foreignAlphabet: vocabs.foreignAlphabet
-      }
+      return this.$store.getters.getShuffledVocabs
     },
     tags () {
       return [

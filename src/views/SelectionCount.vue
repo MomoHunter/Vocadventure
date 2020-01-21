@@ -3,19 +3,19 @@
     <HeroBasic title="selectionCountTitle" />
     <div class="field has-addons is-10">
       <div class="control is-third">
-        <ButtonMDI :selected="difficultySelected('1')" color="is-success" text="difficultyEasy"
+        <ButtonMDI :selected="difficultySelected('1')" color="is-success" text="difficulty1"
                    @click="setDifficulty('1')">
           <SpeedometerSlow :class="getSizeClass('mdi')" />
         </ButtonMDI>
       </div>
       <div class="control is-third">
-        <ButtonMDI :selected="difficultySelected('2')" color="is-warning" text="difficultyMedium"
+        <ButtonMDI :selected="difficultySelected('2')" color="is-warning" text="difficulty2"
                    @click="setDifficulty('2')">
           <SpeedometerMedium :class="getSizeClass('mdi')" />
         </ButtonMDI>
       </div>
       <div class="control is-third">
-        <ButtonMDI :selected="difficultySelected('3')" color="is-danger" text="difficultyHard"
+        <ButtonMDI :selected="difficultySelected('3')" color="is-danger" text="difficulty3"
                    @click="setDifficulty('3')">
           <Speedometer :class="getSizeClass('mdi')" />
         </ButtonMDI>
@@ -93,14 +93,7 @@ export default {
       return this.customCount !== ''
     },
     countAllWords () {
-      let count = 0
-      let vocabs = this.$store.getters.getVocabs
-
-      for (var category of this.$store.state.categoriesChosen) {
-        count += vocabs.words[category].length
-      }
-
-      return count
+      return this.$store.getters.getVocabs.words.length
     }
   },
   methods: {

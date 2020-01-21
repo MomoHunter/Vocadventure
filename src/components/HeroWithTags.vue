@@ -9,7 +9,7 @@
     <div class="hero-foot">
       <div class="field is-grouped is-grouped-centered">
         <div class="control" v-for="tag of tagObjects" :key="tag.nameId">
-          <TagBasic :textOne="tag.nameId" colorTwo="is-primary" :textTwo="tag.valueId" />
+          <TagBasic :textOne="tag.nameId" :colorTwo="tag.color" :textTwo="tag.valueId" />
         </div>
       </div>
     </div>
