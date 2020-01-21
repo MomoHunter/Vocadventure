@@ -60,6 +60,7 @@ import ButtonBasic from '@/components/ButtonBasic.vue'
 import ButtonText from '@/components/ButtonText.vue'
 import ButtonTextNoTranslation from '@/components/ButtonTextNoTranslation.vue'
 import InputWithButton from '@/components/InputWithButton.vue'
+import TheNotification from '@/components/TheNotification.vue'
 
 import SpeedometerSlow from 'vue-material-design-icons/SpeedometerSlow.vue'
 import SpeedometerMedium from 'vue-material-design-icons/SpeedometerMedium.vue'
@@ -74,6 +75,7 @@ export default {
     ButtonText,
     ButtonTextNoTranslation,
     InputWithButton,
+    TheNotification,
     SpeedometerSlow,
     SpeedometerMedium,
     Speedometer
