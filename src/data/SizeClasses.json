@@ -35,6 +35,12 @@
     "medium": "is-medium",
     "large": "is-large"
   },
+  "icon": {
+    "small": "is-small",
+    "normal": "",
+    "medium": "is-medium",
+    "large": "is-large"
+  },
   "input": {
     "small": "is-small",
     "normal": "",

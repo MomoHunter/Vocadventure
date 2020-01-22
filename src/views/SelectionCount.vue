@@ -84,7 +84,7 @@ export default {
     return {
       isInputVisible: false,
       customCount: '',
-      availableOptions: [10, 20, 50, 100, 200, 500],
+      availableOptions: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200],
       showNotification: false
     }
   },
@@ -105,6 +105,7 @@ export default {
     },
     setDifficulty (difficulty) {
       this.$store.commit('setDifficulty', difficulty)
+      this.showNotification = false
     },
     optionClasses (option) {
       let index = this.availableOptions.indexOf(option) % 3
@@ -126,6 +127,7 @@ export default {
     setWordCount (count) {
       this.$store.commit('setWordCount', count)
       this.customCount = ''
+      this.showNotification = false
     },
     showInput () {
       this.isInputVisible = true

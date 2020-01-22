@@ -253,6 +253,8 @@ export default {
     navTo (destination) {
       if (destination === 'menu') {
         this.$store.commit('setCategories', [])
+        this.$store.commit('setDifficulty', '')
+        this.$store.commit('setWordCount', 0)
         this.$router.push({ name: 'menu', query: { sub: this.destination } })
       } else {
         if (this.$store.state.categoriesChosen.length !== 0) {
