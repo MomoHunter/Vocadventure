@@ -28,7 +28,12 @@
     { "german": "Wie wäre es damit?", "english": "How about this?", "romaji": "Ikaga desu ka.", "kana": "いかがですか。", "difficulty": "2" },
     { "german": "Ja, bitte.", "english": "Yes, please.", "romaji": "Itadakimasu.", "kana": "いただきます。", "difficulty": "2" },
     { "german": "Nein, danke.", "english": "No, thanks.", "romaji": "Kekkou desu.", "kana": "結構です。", "difficulty": "3" },
-    { "german": "Danke. (kurz und formlos)", "english": "Thanks. (short and informal)", "romaji": "Doumo.", "kana": "どうも。", "difficulty": "1" }
+    { "german": "Danke. (kurz und formlos)", "english": "Thanks. (short and informal)", "romaji": "Doumo.", "kana": "どうも。", "difficulty": "1" },
+    { "german": "Danke.", "english": "Thank you.", "romaji": "Arigatou.", "kana": "ありがとう。", "difficulty": "1" },
+    { "german": "Danke. (Kansai-Dialekt)", "english": "Thanks. (Kansai-dialect)", "romaji": "Ooki ni.", "kana": "おおきに。", "difficulty": "1" },
+    { "german": "Keine Ursache. Nichts zu danken. (höflich)", "english": "No problem. You're welcome. (polite)", "romaji": "Dou itashimashite.", "kana": "どういたしまして。", "difficulty": "2" },
+    { "german": "Ach was! Kein Thema! (neutral)", "english": "No problem. (neutral)", "romaji": "Iie.", "kana": "いいえ。", "difficulty": "1" },
+    { "german": "Um Himmels Willen, nein! (Starke Erwiderung auf Dank/Lob)", "english": "No problem! (strong reaction to thanks/praise", "romaji": "Tonde mo nai (desu).", "kana": "とんでもない(です)。", "difficulty": "2" }
   ],
   "japaneseCategory3": [
     
