@@ -36,19 +36,19 @@
     { "german": "Um Himmels Willen, nein! (Starke Erwiderung auf Dank/Lob)", "english": "No problem! (strong reaction to thanks/praise", "romaji": "Tonde mo nai (desu).", "kana": "とんでもない(です)。", "difficulty": "2" }
   ],
   "japaneseCategory3": [
-    
+    { "german": "sich entschuldigen", "english": "to apologize", "romaji": "ayamaru", "kana": "謝る", "difficulty": "3" }
   ],
   "japaneseCategory4": [
-    
+    { "german": "Gruß, Begrüßung, Grußrede", "english": "Greetings", "romaji": "aisatsu", "kana": "挨拶", "difficulty": "3" }
   ],
   "japaneseCategory5": [
-    
+    { "german": "ich (allgemein)", "english": "I (in general)", "romaji": "watashi", "kana": "私", "difficulty": "3" }
   ],
   "japaneseCategory6": [
-    
+    { "german": "das hier", "english": "this here", "romaji": "kore", "kana": "これ", "difficulty": "1" }
   ],
   "japaneseCategory7": [
-    
+    { "german": "was", "english": "what", "romaji": "nani", "kana": "何", "difficulty": "3" }
   ],
   "japaneseCategory8": [
     
