@@ -12,7 +12,7 @@
       <DropdownBasic class="marginBottomSmall" icon="expand-arrows-alt" :options="sizes"
                      :selected="$store.state.size" @change="changeValue('newSize', $event)" />
       <ButtonBasic class="marginBottomSmall" color="is-danger" icon="trash" text="settingsButtonDelete"
-                   @click="$store.commit('showModal')" />
+                   @click="$store.commit('vueDict/showModal')" />
     </div>
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="settingsButton1"
@@ -26,6 +26,7 @@
 <script>
 import Texts from '@/data/Texts.json'
 import Themes from '@/data/Themes.json'
+import Vocabulary from '@/data/Vocabulary.js'
 import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import DropdownBasic from '@/components/DropdownBasic.vue'
@@ -50,7 +51,7 @@ export default {
       return Object.keys(Texts)
     },
     targetLanguages () {
-      return ['japanese', 'greek']
+      return Object.keys(Vocabulary)
     },
     themes () {
       return Object.keys(Themes)

@@ -5,5 +5,10 @@ export default {
     'words': JapaneseVocabs,
     'latinAlphabet': 'romaji',
     'foreignAlphabet': 'kana'
+  },
+  'greek': {
+    'words': [],
+    'latinAlphabet': '',
+    'foreignAlphabet': ''
   }
 }

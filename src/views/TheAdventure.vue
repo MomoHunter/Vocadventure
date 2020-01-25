@@ -5,26 +5,27 @@
       <canvas id="adventureCanvas" width="600" height="300"></canvas>
     </div>
     <div class="innerFlexContainerInput">
-      <span v-show="resultsVisible" class="icon is-1" :class="[getSizeClass('icon'), romajiIconColor]">
-        <font-awesome-icon :icon="['fas', romajiIcon]" />
+      <span class="icon is-1" :class="[getSizeClass('icon'), latinIconColor]">
+        <font-awesome-icon v-show="resultsVisible" :icon="['fas', latinIcon]" />
       </span>
-      <input class="input is-rounded is-10" type="text" :class="getSizeClass('input')" :placeholder="getText('romaji')"
-             v-model="romajiInput" />
-      <span v-show="resultsVisible" class="icon is-1 has-text-warning" :class="getSizeClass('icon')">
-        <font-awesome-icon :icon="['fas', 'coins']" />
+      <input class="input is-rounded is-10" type="text" :placeholder="getText(words.latinAlphabet)"
+             :class="[getSizeClass('input'), { 'is-link': solutionVisible}]" v-model="latinInput"
+             :readonly="resultsVisible" />
+      <span class="icon is-1 has-text-warning" :class="getSizeClass('icon')">
+        <font-awesome-icon v-show="resultsVisible && isLatinCorrect" :icon="['fas', 'coins']" />
       </span>
     </div>
     <div class="innerFlexContainerInput">
-      <span v-show="resultsVisible" class="icon is-1" :class="[getSizeClass('icon'), kanaIconColor]">
-        <font-awesome-icon :icon="['fas', kanaIcon]" />
+      <span class="icon is-1" :class="[getSizeClass('icon'), foreignIconColor]">
+        <font-awesome-icon v-show="resultsVisible" :icon="['fas', foreignIcon]" />
       </span>
-      <input class="input is-rounded is-10" type="text" :class="getSizeClass('input')" :placeholder="getText('kana')"
-             v-model="kanaInput" />
-      <span v-show="resultsVisible" class="icon is-1 has-text-warning" :class="getSizeClass('icon')">
-        <font-awesome-icon :icon="['fas', 'coins']" />
+      <input class="input is-rounded is-10" type="text" :placeholder="getText(words.foreignAlphabet)"
+             :class="[getSizeClass('input'), { 'is-link': solutionVisible}]" v-model="foreignInput" readonly />
+      <span class="icon is-1 has-text-warning" :class="getSizeClass('icon')">
+        <font-awesome-icon v-show="resultsVisible && isForeignCorrect" :icon="['fas', 'coins']" />
       </span>
     </div>
-    <div class="innerFlexContainerButton is-10" :class="currentWord === 0 ? 'dirBackward' : 'dirForward'">
+    <div class="innerFlexContainerButton is-10">
       <ButtonBasic class="is-half marginBottomSmall marginRightSmall" icon="times" color="is-danger"
                    text="adventureButton1" @click="showAbortModal()" />
       <ButtonBasic v-show="!resultsVisible" class="is-half marginBottomSmall marginLeftSmall" icon="check"
@@ -38,7 +39,7 @@
       <ButtonBasic v-show="resultsVisible && solutionVisible" icon="eye-slash" color="is-link" text="adventureButton6"
                    @click="hideSolution()" />
     </div>
-    <TheProgressBar class="is-10" color="is-success" :text="progressText" :value="currentWord"
+    <TheProgressBar class="is-10" color="is-success" :text="progressText" :value="currentWord + 1"
                     :maxValue="words.words.length" />
   </div>
 </template>
@@ -58,8 +59,10 @@ export default {
   data () {
     return {
       currentWord: 0,
-      romajiInput: '',
-      kanaInput: '',
+      latinInput: '',
+      foreignInput: '',
+      userLatinInput: '',
+      userForeignInput: '',
       resultsVisible: false,
       solutionVisible: false
     }
@@ -74,18 +77,18 @@ export default {
         },
         {
           nameId: 'adventureCountTag',
-          valueId: this.$store.state.wordCount,
+          valueId: this.$store.state.vueDict.wordCount,
           color: 'is-primary'
         },
         {
           nameId: 'adventureDifficultyTag',
-          valueId: 'difficulty' + this.$store.state.difficulty,
+          valueId: 'difficulty' + this.$store.state.vueDict.difficulty,
           color: this.difficultyColor
         }
       ]
     },
     difficultyColor () {
-      switch (this.$store.state.difficulty) {
+      switch (this.$store.state.vueDict.difficulty) {
         case '1':
           return 'is-success'
         case '2':
@@ -95,25 +98,47 @@ export default {
       }
     },
     words () {
-      return this.$store.getters.getShuffledVocabs
+      let vocabs = this.$store.getters['vueDict/getShuffledVocabs']
+      let length = this.$store.state.vueDict.wordCount
+
+      if (vocabs.words.length === length) {
+        return vocabs
+      } else {
+        let wordObjects = [
+          JSON.parse(JSON.stringify(vocabs.words[Math.random() * vocabs.words.length]))
+        ]
+
+        while (wordObjects.length < length) {
+          let i = wordObjects.length
+          let random = Math.random() * vocabs.words.length
+
+          if (wordObjects[i - 1][vocabs.latinAlphabet] !== vocabs.words[random][vocabs.latinAlphabet]) {
+            wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
+          }
+        }
+
+        vocabs.words = wordObjects
+
+        return vocabs
+      }
     },
-    isRomajiCorrect () {
-      return this.romajiInput.toLowerCase() === this.words.words[this.currentWord].romaji.toLowerCase()
+    isLatinCorrect () {
+      return this.userLatinInput.toLowerCase() === this.words.words[this.currentWord][this.words.latinAlphabet].toLowerCase()
     },
-    romajiIcon () {
-      return this.isRomajiCorrect ? 'check' : 'times'
+    latinIcon () {
+      return this.isLatinCorrect ? 'check' : 'times'
     },
-    romajiIconColor () {
-      return this.isRomajiCorrect ? 'has-text-success' : 'has-text-danger'
+    latinIconColor () {
+      return this.isLatinCorrect ? 'has-text-success' : 'has-text-danger'
     },
-    isKanaCorrect () {
-      return this.kanaInput.toLowerCase() === this.words.words[this.currentWord].kana.toLowerCase()
+    isForeignCorrect () {
+      return this.userForeignInput.toLowerCase() === this.words.words[this.currentWord][this.words.foreignAlphabet].toLowerCase()
     },
-    kanaIcon () {
-      return this.isKanaCorrect ? 'check' : 'times'
+    foreignIcon () {
+      return this.isForeignCorrect ? 'check' : 'times'
     },
-    kanaIconColor () {
-      return this.isKanaCorrect ? 'has-text-success' : 'has-text-danger'
+    foreignIconColor () {
+      return this.isForeignCorrect ? 'has-text-success' : 'has-text-danger'
     },
     progressText () {
       return (this.currentWord + 1) + ' / ' + this.words.words.length
@@ -134,15 +159,23 @@ export default {
     },
     checkInput () {
       this.resultsVisible = true
+      this.userLatinInput = this.latinInput
+      this.userForeignInput = this.foreignInput
     },
     nextWord () {
       this.resultsVisible = false
+      this.userLatinInput = ''
+      this.userForeignInput = ''
     },
     showSolution () {
       this.solutionVisible = true
+      this.latinInput = this.words.words[this.currentWord][this.words.latinAlphabet]
+      this.foreignInput = this.words.words[this.currentWord][this.words.foreignAlphabet]
     },
     hideSolution () {
       this.solutionVisible = false
+      this.latinInput = this.userLatinInput
+      this.foreignInput = this.userForeignInput
     }
   }
 }
@@ -158,7 +191,7 @@ export default {
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
-  height: 100%;
+  height: calc(100% - .5rem);
 
   &.justifyBetween {
     justify-content: space-between;

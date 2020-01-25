@@ -35,7 +35,7 @@
       <ButtonBasic icon="times" color="is-danger" text="trainingButton4"
                    @click="$router.push({ name: 'category', params: { destination: 'training' } })" />
     </div>
-    <TheProgressBar class="is-10 marginBottomSmall" color="is-success" :value="currentWord + 1"
+    <TheProgressBar class="is-10" color="is-success" :value="currentWord + 1"
                     :maxValue="words.words.length" :text="progressText" />
   </div>
 </template>
@@ -63,7 +63,7 @@ export default {
   },
   computed: {
     words () {
-      return this.$store.getters.getShuffledVocabs
+      return this.$store.getters['vueDict/getShuffledVocabs']
     },
     tags () {
       return [
@@ -101,7 +101,7 @@ export default {
       }
     },
     navToMenu () {
-      this.$store.commit('setCategories', [])
+      this.$store.commit('vueDict/setCategories', [])
       this.$router.push({ name: 'menu' })
     }
   }
@@ -118,7 +118,7 @@ export default {
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
-  height: 100%;
+  height: calc(100% - .5rem);
 
   &.spaceBetween {
     justify-content: space-between;

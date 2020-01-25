@@ -30,7 +30,7 @@
                iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
     <div class="field is-grouped is-grouped-multiline maxThirdHeight overflowAuto is-10 flexShrink marginBottomSmall"
          v-show="!nothingSelected">
-      <div v-for="category of $store.state.categoriesChosen" :key="category" class="control">
+      <div v-for="category of $store.state.vueDict.categoriesChosen" :key="category" class="control">
         <TagWithDelete :textOne="category" colorOne="is-primary" colorDelete="is-danger"
                        @click="removeCategory(category)"/>
       </div>
@@ -105,13 +105,13 @@ export default {
       ]
     },
     categoriesAvailable () {
-      return this.$store.getters.getCategories.filter(entry => {
-        return !this.$store.state.categoriesChosen.includes(entry) &&
+      return this.$store.getters['vueDict/getCategories'].filter(entry => {
+        return !this.$store.state.vueDict.categoriesChosen.includes(entry) &&
           this.getText(entry).toLowerCase().includes(this.searchString.toLowerCase())
       }, this).sort(this.sortFunction(this))
     },
     nothingSelected () {
-      return this.$store.state.categoriesChosen.length === 0
+      return this.$store.state.vueDict.categoriesChosen.length === 0
     }
   },
   methods: {
@@ -122,7 +122,7 @@ export default {
       return this.$store.getters.getSizeClass(type)
     },
     getCategoryPlayed (id) {
-      return this.$store.getters.getCategoryPlayed(id)
+      return this.$store.getters['vueDict/getCategoryPlayed'](id)
     },
     toggleSort () {
       this.showSort = !this.showSort
@@ -134,18 +134,18 @@ export default {
       }
     },
     addCategory (category) {
-      this.$store.commit('addCategory', category)
+      this.$store.commit('vueDict/addCategory', category)
       this.closeNotification()
     },
     addAllCategories () {
-      this.$store.commit('setCategories', Object.keys(this.getCategories()))
+      this.$store.commit('vueDict/setCategories', Object.keys(this.getCategories()))
       this.closeNotification()
     },
     removeCategory (category) {
-      this.$store.commit('removeCategory', category)
+      this.$store.commit('vueDict/removeCategory', category)
     },
     removeAllCategories () {
-      this.$store.commit('setCategories', [])
+      this.$store.commit('vueDict/setCategories', [])
     },
     sort (type) {
       if (type.endsWith('Asc')) {
@@ -252,12 +252,12 @@ export default {
     },
     navTo (destination) {
       if (destination === 'menu') {
-        this.$store.commit('setCategories', [])
-        this.$store.commit('setDifficulty', '')
-        this.$store.commit('setWordCount', 0)
+        this.$store.commit('vueDict/setCategories', [])
+        this.$store.commit('vueDict/setDifficulty', '')
+        this.$store.commit('vueDict/setWordCount', 0)
         this.$router.push({ name: 'menu', query: { sub: this.destination } })
       } else {
-        if (this.$store.state.categoriesChosen.length !== 0) {
+        if (this.$store.state.vueDict.categoriesChosen.length !== 0) {
           if (this.destination === 'training') {
             this.$router.push({ name: 'training' })
           } else {

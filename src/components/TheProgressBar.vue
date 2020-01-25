@@ -9,7 +9,12 @@
 <script>
 export default {
   name: 'TheProgressBar',
-  props: ['color', 'value', 'maxValue', 'text'],
+  props: {
+    color: String,
+    value: Number,
+    maxValue: Number,
+    text: String
+  },
   methods: {
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)

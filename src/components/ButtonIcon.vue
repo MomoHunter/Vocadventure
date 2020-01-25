@@ -10,7 +10,10 @@
 <script>
 export default {
   name: 'ButtonIcon',
-  props: ['icon', 'color'],
+  props: {
+    icon: String,
+    color: String
+  },
   methods: {
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)

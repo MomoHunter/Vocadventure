@@ -18,7 +18,14 @@ import ButtonIcon from '@/components/ButtonIcon.vue'
 
 export default {
   name: 'SearchBar',
-  props: ['colorInput', 'colorButton', 'type', 'iconInput', 'iconButton', 'value'],
+  props: {
+    colorInput: String,
+    colorButton: String,
+    type: String,
+    iconInput: String,
+    iconButton: String,
+    value: String
+  },
   components: {
     ButtonIcon
   },

@@ -11,7 +11,11 @@
 <script>
 export default {
   name: 'ButtonBasic',
-  props: ['icon', 'text', 'color'],
+  props: {
+    icon: String,
+    text: String,
+    color: String
+  },
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)

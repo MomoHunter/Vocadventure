@@ -21,7 +21,11 @@ import TagBasic from '@/components/TagBasic.vue'
 
 export default {
   name: 'TheHero',
-  props: ['title', 'subtitle', 'tagObjects'],
+  props: {
+    title: String,
+    subtitle: String,
+    tagObjects: Array
+  },
   components: {
     TagBasic
   },

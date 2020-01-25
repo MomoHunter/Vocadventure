@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <TheStatus class="statusMargin"></TheStatus>
+    <TheStatus class="statusMargin" :status="$store.state.vueDict.status"></TheStatus>
     <div class="page">
       <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition">
         <router-view></router-view>
       </transition>
     </div>
-    <TheModal :show="$store.state.showModal" />
+    <TheModal :show="$store.state.vueDict.showModal" />
   </div>
 </template>
 
@@ -56,10 +56,10 @@ export default {
           this.$store.commit('changeSize', data.size)
         }
         if (data.status) {
-          this.$store.commit('changeStatus', data.status)
+          this.$store.commit('vueDict/changeStatus', data.status)
         }
         if (data.categoriesPlayed) {
-          this.$store.commit('changeCategoriesPlayed', data.categoriesPlayed)
+          this.$store.commit('vueDict/changeCategoriesPlayed', data.categoriesPlayed)
         }
       }
     }

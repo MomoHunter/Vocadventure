@@ -8,7 +8,11 @@
 <script>
 export default {
   name: 'ButtonText',
-  props: ['text', 'color', 'selected'],
+  props: {
+    text: String,
+    color: String,
+    selected: Boolean
+  },
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)

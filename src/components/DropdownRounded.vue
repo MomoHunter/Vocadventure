@@ -16,7 +16,12 @@
 <script>
 export default {
   name: 'DropdownRounded',
-  props: ['options', 'selected', 'icon', 'color'],
+  props: {
+    options: Array,
+    selected: String,
+    icon: String,
+    color: String
+  },
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)

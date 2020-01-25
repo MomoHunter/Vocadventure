@@ -11,7 +11,11 @@
 <script>
 export default {
   name: 'ButtonMDI',
-  props: ['color', 'text', 'selected'],
+  props: {
+    color: String,
+    text: String,
+    selected: Boolean
+  },
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)

@@ -10,7 +10,9 @@
 <script>
 export default {
   name: 'ButtonMDIIcon',
-  props: ['color'],
+  props: {
+    color: String
+  },
   methods: {
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)

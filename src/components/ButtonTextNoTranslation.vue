@@ -8,7 +8,11 @@
 <script>
 export default {
   name: 'ButtonTextNoTranslation',
-  props: ['text', 'color', 'selected'],
+  props: {
+    text: [String, Number],
+    color: String,
+    selected: Boolean
+  },
   methods: {
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)

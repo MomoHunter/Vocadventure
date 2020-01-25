@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VueDict from '@/store/vueDict.js'
+import CanvasDict from '@/store/canvasDict.js'
 import Texts from '@/data/Texts.json'
-import Vocabulary from '@/data/Vocabulary.js'
 import SizeClasses from '@/data/SizeClasses.json'
 import Themes from '@/data/Themes.json'
 
@@ -13,17 +14,7 @@ export default new Vuex.Store({
     lang: 'german',
     targetLanguage: 'japanese',
     theme: 'bulma',
-    size: 'normal',
-    status: [
-      { id: 'points', count: 0 },
-      { id: 'steps', count: 0 },
-      { id: 'coins', count: 0 }
-    ],
-    categoriesChosen: [],
-    categoriesPlayed: [],
-    difficulty: '',
-    wordCount: 0,
-    showModal: false
+    size: 'normal'
   },
   getters: {
     getText: (state) => (id) => {
@@ -36,44 +27,6 @@ export default new Vuex.Store({
     getSizeClass: (state) => (type) => {
       return SizeClasses[type][state.size]
     },
-    getCategories: (state) => {
-      return Object.keys(Vocabulary[state.targetLanguage].words)
-    },
-    getVocabs: (state) => {
-      let wordObjects = []
-      let vocabs = Vocabulary[state.targetLanguage]
-
-      for (let category of state.categoriesChosen) {
-        vocabs.words[category].forEach(word => {
-          let wordCopy = JSON.parse(JSON.stringify(word))
-          wordCopy.category = category
-          wordObjects.push(wordCopy)
-        }, this)
-      }
-
-      return {
-        words: wordObjects,
-        latinAlphabet: vocabs.latinAlphabet,
-        foreignAlphabet: vocabs.foreignAlphabet
-      }
-    },
-    getShuffledVocabs: (state, getters) => {
-      let vocabs = getters.getVocabs
-      let wordsShuffled = []
-
-      while (vocabs.words.length > 0) {
-        let random = Math.floor(Math.random() * vocabs.words.length)
-        wordsShuffled.push(vocabs.words.splice(random, 1)[0])
-      }
-
-      vocabs.words = wordsShuffled
-
-      return vocabs
-    },
-    getCategoryPlayed: (state) => (id) => {
-      let data = state.categoriesPlayed.find(entry => entry.id === id)
-      return data || { id: id, count: 0 }
-    },
     getSaveData: (state) => {
       return {
         version: state.version,
@@ -81,8 +34,8 @@ export default new Vuex.Store({
         targetLanguage: state.targetLanguage,
         theme: state.theme,
         size: state.size,
-        status: state.status,
-        categoriesPlayed: state.categoriesPlayed
+        status: state.vueDict.status,
+        categoriesPlayed: state.vueDict.categoriesPlayed
       }
     }
   },
@@ -99,46 +52,10 @@ export default new Vuex.Store({
     },
     changeSize (state, size) {
       state.size = size
-    },
-    changeStatus (state, status) {
-      state.status = status
-    },
-    changeCategoriesPlayed (state, categoriesPlayed) {
-      state.categoriesPlayed = categoriesPlayed
-    },
-    addCategory (state, category) {
-      state.categoriesChosen.push(category)
-    },
-    removeCategory (state, category) {
-      state.categoriesChosen = state.categoriesChosen.filter(entry => entry !== category)
-    },
-    setCategories (state, categories) {
-      state.categoriesChosen = categories
-    },
-    increaseCategoryPlayed (state, id) {
-      let data = state.categoriesPlayed.find(entry => entry.id === id)
-
-      if (data) {
-        data.count++
-      } else {
-        state.categoriesPlayed.push({ id: id, count: 1 })
-      }
-    },
-    setDifficulty (state, difficulty) {
-      state.difficulty = difficulty
-    },
-    setWordCount (state, count) {
-      state.wordCount = count
-    },
-    showModal (state) {
-      state.showModal = true
-    },
-    closeModal (state) {
-      state.showModal = false
     }
   },
-  actions: {
-  },
   modules: {
+    vueDict: VueDict,
+    canvasDict: CanvasDict
   }
 })

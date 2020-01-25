@@ -93,7 +93,7 @@ export default {
       return this.customCount !== ''
     },
     countAllWords () {
-      return this.$store.getters.getVocabs.words.length
+      return this.$store.getters['vueDict/getVocabs'].words.length
     }
   },
   methods: {
@@ -101,10 +101,10 @@ export default {
       return this.$store.getters.getSizeClass(type)
     },
     difficultySelected (difficulty) {
-      return this.$store.state.difficulty === difficulty
+      return this.$store.state.vueDict.difficulty === difficulty
     },
     setDifficulty (difficulty) {
-      this.$store.commit('setDifficulty', difficulty)
+      this.$store.commit('vueDict/setDifficulty', difficulty)
       this.showNotification = false
     },
     optionClasses (option) {
@@ -122,10 +122,10 @@ export default {
       }
     },
     wordCountSelected (count) {
-      return this.$store.state.wordCount === count
+      return this.$store.state.vueDict.wordCount === count
     },
     setWordCount (count) {
-      this.$store.commit('setWordCount', count)
+      this.$store.commit('vueDict/setWordCount', count)
       this.customCount = ''
       this.showNotification = false
     },
@@ -135,11 +135,11 @@ export default {
     hideInput () {
       this.isInputVisible = false
       if (this.customCountSet) {
-        this.$store.commit('setWordCount', parseInt(this.customCount))
+        this.$store.commit('vueDict/setWordCount', parseInt(this.customCount))
       }
     },
     navTo () {
-      if (this.$store.state.difficulty === '' || this.$store.state.wordCount === 0) {
+      if (this.$store.state.vueDict.difficulty === '' || this.$store.state.vueDict.wordCount === 0) {
         this.showNotification = true
       } else {
         this.$router.push({ name: 'adventure' })

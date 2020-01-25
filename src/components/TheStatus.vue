@@ -10,14 +10,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
   name: 'TheStatus',
-  computed: {
-    ...mapState([
-      'status'
-    ])
+  props: {
+    status: Array
   },
   methods: {
     getText (id) {

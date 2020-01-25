@@ -10,7 +10,12 @@
 <script>
 export default {
   name: 'InputReadonly',
-  props: ['color', 'type', 'value', 'icon'],
+  props: {
+    color: String,
+    type: String,
+    value: String,
+    icon: String
+  },
   methods: {
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)

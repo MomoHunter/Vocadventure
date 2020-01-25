@@ -12,7 +12,10 @@
 <script>
 export default {
   name: 'TheHero',
-  props: ['title', 'subtitle'],
+  props: {
+    title: String,
+    subtitle: String
+  },
   computed: {
     showSubtitle () {
       return this.getText(this.subtitle)

@@ -33,8 +33,9 @@
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"
                     leave-active-class="animated fadeOut customDuration">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-danger" icon="arrow-left" text="menuTrainingButton3"
-                      @click="$router.push({ name: 'menu' })" v-show="query === 'training'" />
+          <ButtonBasic class="is-relative marginBottomSmall" color="is-danger" icon="arrow-left"
+                       text="menuTrainingButton3" @click="$router.push({ name: 'menu' })"
+                       v-show="query === 'training'" />
         </transition>
       </div>
       <div class="is-absolute">
@@ -46,13 +47,15 @@
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"
                     leave-active-class="animated fadeOut customDuration">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-warning" icon="shopping-cart" text="menuAdventureButton2"
-                      @click="$router.push({ name: 'shop' })" v-show="query === 'adventure'" />
+          <ButtonBasic class="is-relative marginBottomSmall" color="is-warning" icon="shopping-cart"
+                       text="menuAdventureButton2" @click="$router.push({ name: 'shop' })"
+                       v-show="query === 'adventure'" />
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"
                     leave-active-class="animated fadeOut customDuration">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-danger" icon="arrow-left" text="menuAdventureButton3"
-                      @click="$router.push({ name: 'menu' })" v-show="query === 'adventure'" />
+          <ButtonBasic class="is-relative marginBottomSmall" color="is-danger" icon="arrow-left"
+                       text="menuAdventureButton3" @click="$router.push({ name: 'menu' })"
+                       v-show="query === 'adventure'" />
         </transition>
       </div>
     </div>

@@ -10,11 +10,11 @@
           <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="modalButton1"
                       @click="deleteData()" />
           <ButtonBasic color="is-danger" icon="times" text="modalButton2"
-                      @click="$store.commit('closeModal')" />
+                      @click="$store.commit('vueDict/closeModal')" />
         </div>
       </div>
     </div>
-    <button class="modal-close" :class="getSizeClass('button')" @click="$store.commit('closeModal')" />
+    <button class="modal-close" :class="getSizeClass('button')" @click="$store.commit('vueDict/closeModal')" />
   </div>
 </template>
 
@@ -23,7 +23,9 @@ import ButtonBasic from '@/components/ButtonBasic.vue'
 
 export default {
   name: 'TheModal',
-  props: ['show'],
+  props: {
+    show: Boolean
+  },
   components: {
     ButtonBasic
   },
