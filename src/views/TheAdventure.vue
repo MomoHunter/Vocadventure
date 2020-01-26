@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import * as Helper from '@/canvas/helper.js'
 import HeroWithTags from '@/components/HeroWithTags.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
@@ -58,6 +59,8 @@ export default {
   },
   data () {
     return {
+      loopActivated: false,
+      raf: null,
       currentWord: 0,
       latinInput: '',
       foreignInput: '',
@@ -68,10 +71,12 @@ export default {
     }
   },
   mounted () {
-    console.log('mounted')
+    this.$store.commit('canvasDict/initCanvas')
+    this.loopActivated = true
+    this.canvasLoop()
   },
   beforeDestroy () {
-    console.log('before destroy')
+    this.loopActivated = false
   },
   computed: {
     tags () {
@@ -179,17 +184,6 @@ export default {
         rightColor: 'is-success'
       })
     },
-    handleModal (input) {
-      this.modalVisible = false
-      switch (input) {
-        case 'buttonLeft':
-          break
-        case 'buttonRight':
-          this.$router.push({ name: 'selection' })
-          break
-        default:
-      }
-    },
     checkInput () {
       this.resultsVisible = true
       this.userLatinInput = this.latinInput
@@ -213,6 +207,45 @@ export default {
       this.solutionVisible = false
       this.latinInput = this.userLatinInput
       this.foreignInput = this.userForeignInput
+    },
+    canvasLoop (timestamp) {
+      if (this.loopActivated) {
+        this.raf = requestAnimationFrame(timestamp => this.canvasLoop(timestamp))
+
+        this.$store.commit('canvasDict/addLag', timestamp - this.$store.state.canvasDict.startTS)
+
+        while (this.$store.state.canvasDict.lag > this.$store.state.canvasDict.refreshrate) {
+          this.$store.commit('canvasDict/invreaseFrameNo')
+
+          // this.canvasUpdate()
+
+          if (this.lag > this.refreshrate * 5) {
+            this.$store.commit('canvasDict/eliminateLag')
+          } else {
+            this.$store.commit('canvasDict/reduceLag')
+          }
+        }
+
+        this.clearCanvas()
+        this.canvasDraw()
+
+        this.$store.commit('canvasDict/setStartTS', timestamp)
+      }
+    },
+    clearCanvas () {
+      this.$store.state.canvasDict.context.clearRect(
+        0, 0, this.$store.getters['canvasDict/canvasWidth'], this.$store.getters['canvasDict/canvasHeight']
+      )
+    },
+    canvasDraw () {
+      let ctx = this.$store.state.canvasDict.context
+      let canvasWidth = this.$store.getters['canvasDict/canvasWidth']
+      // let canvasHeight = this.$store.getters['canvasDict/canvasHeight']
+
+      Helper.drawCanvasRect(0, 0, canvasWidth, 30, 'standardBlur', ctx)
+      Helper.drawCanvasText(
+        canvasWidth / 2, 15, this.words.words[this.currentWord][this.$store.state.lang], 'standard', ctx
+      )
     }
   },
   watch: {
