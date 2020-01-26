@@ -6,21 +6,25 @@
         <router-view></router-view>
       </transition>
     </div>
-    <TheModal :show="$store.state.vueDict.showModal" />
+    <ModalAreYouSure :show="$store.state.vueDict.showModals.name === 'areYouSure'" />
+    <ModalMessage :show="$store.state.vueDict.showModals.name === 'message'" :options="$store.state.vueDict.showModals"
+                  @click="$store.commit('vueDict/modalAnswer', $event)" />
   </div>
 </template>
 
 <script>
 import Store from '@/store/index.js'
 import TheStatus from '@/components/TheStatus.vue'
-import TheModal from '@/components/TheModal.vue'
+import ModalAreYouSure from '@/components/ModalAreYouSure.vue'
+import ModalMessage from '@/components/ModalMessage.vue'
 
 export default {
   name: 'app',
   store: Store,
   components: {
     TheStatus,
-    TheModal
+    ModalAreYouSure,
+    ModalMessage
   },
   mounted () {
     let viewport = document.querySelector('[name~=viewport][content]')

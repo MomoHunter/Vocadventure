@@ -27,7 +27,7 @@
     </div>
     <div class="innerFlexContainerButton is-10">
       <ButtonBasic class="is-half marginBottomSmall marginRightSmall" icon="times" color="is-danger"
-                   text="adventureButton1" @click="showAbortModal()" />
+                   text="adventureButton1" @click="showMessageModal()" />
       <ButtonBasic v-show="!resultsVisible" class="is-half marginBottomSmall marginLeftSmall" icon="check"
                    color="is-success" text="adventureButton2" @click="checkInput()" />
       <ButtonBasic v-show="resultsVisible" class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right"
@@ -67,6 +67,12 @@ export default {
       solutionVisible: false
     }
   },
+  mounted () {
+    console.log('mounted')
+  },
+  beforeDestroy () {
+    console.log('before destroy')
+  },
   computed: {
     tags () {
       return [
@@ -98,22 +104,24 @@ export default {
       }
     },
     words () {
-      let vocabs = this.$store.getters['vueDict/getShuffledVocabs']
+      let vocabs = JSON.parse(JSON.stringify(this.$store.getters['vueDict/getVocabs']))
       let length = this.$store.state.vueDict.wordCount
 
       if (vocabs.words.length === length) {
         return vocabs
       } else {
-        let wordObjects = [
-          JSON.parse(JSON.stringify(vocabs.words[Math.random() * vocabs.words.length]))
-        ]
+        let wordObjects = []
 
         while (wordObjects.length < length) {
           let i = wordObjects.length
-          let random = Math.random() * vocabs.words.length
+          let random = Math.floor(Math.random() * vocabs.words.length)
 
-          if (wordObjects[i - 1][vocabs.latinAlphabet] !== vocabs.words[random][vocabs.latinAlphabet]) {
-            wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
+          if (parseInt(vocabs.words[random].difficulty) <= parseInt(this.$store.state.vueDict.difficulty)) {
+            if (wordObjects.length === 0) {
+              wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
+            } else if (wordObjects[i - 1][vocabs.latinAlphabet] !== vocabs.words[random][vocabs.latinAlphabet]) {
+              wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
+            }
           }
         }
 
@@ -142,6 +150,9 @@ export default {
     },
     progressText () {
       return (this.currentWord + 1) + ' / ' + this.words.words.length
+    },
+    answer () {
+      return this.$store.state.vueDict.currentModalAnswer
     }
   },
   methods: {
@@ -154,8 +165,30 @@ export default {
     showItems () {
 
     },
-    showAbortModal () {
-
+    showMessageModal () {
+      this.$store.commit('vueDict/showModal', {
+        name: 'message',
+        title: 'adventureModalTitle',
+        text: 'adventureModalText',
+        color: '',
+        leftIcon: 'times',
+        leftText: 'adventureModalButtonLeft',
+        leftColor: 'is-danger',
+        rightIcon: 'check',
+        rightText: 'adventureModalButtonRight',
+        rightColor: 'is-success'
+      })
+    },
+    handleModal (input) {
+      this.modalVisible = false
+      switch (input) {
+        case 'buttonLeft':
+          break
+        case 'buttonRight':
+          this.$router.push({ name: 'selection' })
+          break
+        default:
+      }
     },
     checkInput () {
       this.resultsVisible = true
@@ -163,9 +196,13 @@ export default {
       this.userForeignInput = this.foreignInput
     },
     nextWord () {
+      this.hideSolution()
       this.resultsVisible = false
       this.userLatinInput = ''
       this.userForeignInput = ''
+      this.latinInput = ''
+      this.foreignInput = ''
+      this.currentWord++
     },
     showSolution () {
       this.solutionVisible = true
@@ -176,6 +213,20 @@ export default {
       this.solutionVisible = false
       this.latinInput = this.userLatinInput
       this.foreignInput = this.userForeignInput
+    }
+  },
+  watch: {
+    answer () {
+      switch (this.answer) {
+        case 'buttonLeft':
+          this.$store.commit('vueDict/closeModal')
+          break
+        case 'buttonRight':
+          this.$router.push({ name: 'selection' })
+          this.$store.commit('vueDict/closeModal')
+          break
+        default:
+      }
     }
   }
 }

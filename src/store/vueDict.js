@@ -12,7 +12,10 @@ export default {
     categoriesPlayed: [],
     difficulty: '',
     wordCount: 0,
-    showModal: false
+    showModals: {
+      name: ''
+    },
+    currentModalAnswer: ''
   },
   getters: {
     getCategories: (state, getters, rootState) => {
@@ -85,11 +88,23 @@ export default {
     setWordCount (state, count) {
       state.wordCount = count
     },
-    showModal (state) {
-      state.showModal = true
+    showModal (state, options) {
+      state.showModals = options
+    },
+    modalAnswer (state, answer) {
+      if (answer === 'close') {
+        state.showModals = {
+          name: ''
+        }
+      } else {
+        state.currentModalAnswer = answer
+      }
     },
     closeModal (state) {
-      state.showModal = false
+      state.showModals = {
+        name: ''
+      }
+      state.currentModalAnswer = ''
     }
   },
   actions: {

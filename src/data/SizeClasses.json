@@ -70,5 +70,11 @@
     "normal": "",
     "medium": "is-medium",
     "large": "is-large"
+  },
+  "message": {
+    "small": "is-small",
+    "normal": "",
+    "medium": "is-medium",
+    "large": "is-large"
   }
 }

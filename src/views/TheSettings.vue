@@ -12,7 +12,7 @@
       <DropdownBasic class="marginBottomSmall" icon="expand-arrows-alt" :options="sizes"
                      :selected="$store.state.size" @change="changeValue('newSize', $event)" />
       <ButtonBasic class="marginBottomSmall" color="is-danger" icon="trash" text="settingsButtonDelete"
-                   @click="$store.commit('vueDict/showModal')" />
+                   @click="$store.commit('vueDict/showModal', { name: 'areYouSure' })" />
     </div>
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="settingsButton1"
