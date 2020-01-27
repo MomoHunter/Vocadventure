@@ -4,9 +4,9 @@ export default {
   namespaced: true,
   state: {
     status: [
-      { id: 'points', count: 0 },
-      { id: 'steps', count: 0 },
-      { id: 'coins', count: 0 }
+      { id: 'points', count: 0, additional: 0 },
+      { id: 'steps', count: 0, additional: 0 },
+      { id: 'coins', count: 0, additional: 0 }
     ],
     categoriesChosen: [],
     categoriesPlayed: [],

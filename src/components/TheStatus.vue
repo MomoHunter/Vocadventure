@@ -3,7 +3,12 @@
     <div class="level-item has-text-centered" v-for="state in status" :key="state.id">
       <div>
         <p class="heading">{{ getText(state.id) }}</p>
-        <p class="title">{{ state.count }}</p>
+        <p class="title">
+          {{ state.count }}
+          <span v-show="inAdventure" class="has-text-success">
+            +{{ state.additional }}
+          </span>
+        </p>
       </div>
     </div>
   </nav>
@@ -14,6 +19,11 @@ export default {
   name: 'TheStatus',
   props: {
     status: Array
+  },
+  computed: {
+    inAdventure () {
+      return this.$route.name === 'adventure'
+    }
   },
   methods: {
     getText (id) {

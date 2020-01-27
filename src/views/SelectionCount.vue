@@ -135,6 +135,9 @@ export default {
     hideInput () {
       this.isInputVisible = false
       if (this.customCountSet) {
+        if (this.customCount > 9001) {
+          this.customCount = 9001
+        }
         this.$store.commit('vueDict/setWordCount', parseInt(this.customCount))
       }
     },

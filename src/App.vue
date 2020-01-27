@@ -46,7 +46,13 @@ export default {
     loadData () {
       let data = JSON.parse(window.localStorage.getItem('globalDict'))
 
-      if (data && data.version && data.version === this.$store.state.version) {
+      if (data && data.version) {
+        if (data.version === '0.1.0') {
+          data.status.forEach(element => {
+            element.additional = 0
+          }, this)
+        }
+
         if (data.lang) {
           this.$store.commit('changeLanguage', data.lang)
         }
@@ -64,6 +70,10 @@ export default {
         }
         if (data.categoriesPlayed) {
           this.$store.commit('vueDict/changeCategoriesPlayed', data.categoriesPlayed)
+        }
+
+        if (data.version !== this.$store.state.version) {
+          window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
         }
       }
     }
