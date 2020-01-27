@@ -3,6 +3,7 @@ export default {
   state: {
     canvas: null,
     context: null,
+    raf: null,
     lag: 0,
     startTS: 0,
     refreshrate: 1000 / 60,
@@ -18,10 +19,11 @@ export default {
   },
   mutations: {
     initCanvas (state) {
-      if (!state.canvas) {
-        state.canvas = document.getElementById('adventureCanvas')
-        state.context = state.canvas.getContext('2d')
-      }
+      state.canvas = document.getElementById('adventureCanvas')
+      state.context = state.canvas.getContext('2d')
+    },
+    setRaf (state, raf) {
+      state.raf = raf
     },
     setStartTS (state, startTS) {
       state.startTS = startTS

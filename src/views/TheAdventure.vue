@@ -1,10 +1,10 @@
 <template>
-  <div class="flexContainer justifyBetween">
+  <div class="flexContainer justifyBetween" :class="statisticsVisible ? 'height-statistics' : 'height-ingame'">
     <div>
       <HeroWithTags title="adventureTitle" :tagObjects="tags" />
       <canvas id="adventureCanvas" width="600" height="300"></canvas>
     </div>
-    <div class="innerFlexContainerInput">
+    <div class="innerFlexContainerInput" v-show="!statisticsVisible">
       <span class="icon is-1" :class="[getSizeClass('icon'), latinIconColor]">
         <font-awesome-icon v-show="resultsVisible" :icon="['fas', latinIcon]" />
       </span>
@@ -15,7 +15,7 @@
         <font-awesome-icon v-show="resultsVisible && isLatinCorrect" :icon="['fas', 'coins']" />
       </span>
     </div>
-    <div class="innerFlexContainerInput">
+    <div class="innerFlexContainerInput" v-show="!statisticsVisible">
       <span class="icon is-1" :class="[getSizeClass('icon'), foreignIconColor]">
         <font-awesome-icon v-show="resultsVisible" :icon="['fas', foreignIcon]" />
       </span>
@@ -25,22 +25,34 @@
         <font-awesome-icon v-show="resultsVisible && isForeignCorrect" :icon="['fas', 'coins']" />
       </span>
     </div>
-    <div class="innerFlexContainerButton is-10">
+    <div class="innerFlexContainerButton is-10" v-show="!statisticsVisible">
       <ButtonBasic class="is-half marginBottomSmall marginRightSmall" icon="times" color="is-danger"
                    text="adventureButton1" @click="showMessageModal()" />
       <ButtonBasic v-show="!resultsVisible" class="is-half marginBottomSmall marginLeftSmall" icon="check"
                    color="is-success" text="adventureButton2" @click="checkInput()" />
-      <ButtonBasic v-show="resultsVisible" class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right"
-                   color="is-success" text="adventureButton3" @click="nextWord()" />
-      <ButtonBasic v-show="!resultsVisible" icon="briefcase" color="is-primary" text="adventureButton4"
+      <ButtonBasic v-show="resultsVisible && currentWord + 1 !== $store.state.vueDict.wordCount"
+                   class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
+                   text="adventureButton3" @click="nextWord()" />
+      <ButtonBasic v-show="resultsVisible && currentWord + 1 === $store.state.vueDict.wordCount"
+                   class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
+                   text="adventureButton4" @click="showStatistics()" />
+      <ButtonBasic v-show="!resultsVisible" icon="briefcase" color="is-primary" text="adventureButton5"
                    @click="showItems()" />
-      <ButtonBasic v-show="resultsVisible && !solutionVisible" icon="eye" color="is-link" text="adventureButton5"
+      <ButtonBasic v-show="resultsVisible && !solutionVisible" icon="eye" color="is-link" text="adventureButton6"
                    @click="showSolution()" />
-      <ButtonBasic v-show="resultsVisible && solutionVisible" icon="eye-slash" color="is-link" text="adventureButton6"
+      <ButtonBasic v-show="resultsVisible && solutionVisible" icon="eye-slash" color="is-link" text="adventureButton7"
                    @click="hideSolution()" />
     </div>
-    <TheProgressBar class="is-10" color="is-success" :text="progressText" :value="currentWord + 1"
-                    :maxValue="words.words.length" />
+    <TheProgressBar v-show="!statisticsVisible" class="is-10" color="is-success" :text="progressText"
+                    :value="progressBarCount" :maxValue="words.words.length" />
+    <BarChartBasic v-show="statisticsVisible" class="is-10" :title="words.latinAlphabet" :values="correctLatinWords" />
+    <BarChartBasic v-show="statisticsVisible" class="is-10" :title="words.foreignAlphabet"
+                   :values="correctForeignWords" />
+    <div v-show="statisticsVisible" class="is-10">
+      <ButtonBasic class="marginBottomSmall" icon="arrow-left" color="is-warning" text="adventureButton8"
+                   @click="navTo('category')" />
+      <ButtonBasic icon="check" color="is-success" text="adventureButton9" @click="navTo('menu')" />
+    </div>
   </div>
 </template>
 
@@ -49,25 +61,30 @@ import * as Helper from '@/canvas/helper.js'
 import HeroWithTags from '@/components/HeroWithTags.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
+import BarChartBasic from '@/components/BarChartBasic.vue'
 
 export default {
   name: 'TheAdventure',
   components: {
     HeroWithTags,
     ButtonBasic,
-    TheProgressBar
+    TheProgressBar,
+    BarChartBasic
   },
   data () {
     return {
       loopActivated: false,
-      raf: null,
       currentWord: 0,
+      progressBarCount: 0,
       latinInput: '',
       foreignInput: '',
       userLatinInput: '',
       userForeignInput: '',
+      correctLatinWords: [],
+      correctForeignWords: [],
       resultsVisible: false,
-      solutionVisible: false
+      solutionVisible: false,
+      statisticsVisible: false
     }
   },
   mounted () {
@@ -154,7 +171,7 @@ export default {
       return this.isForeignCorrect ? 'has-text-success' : 'has-text-danger'
     },
     progressText () {
-      return (this.currentWord + 1) + ' / ' + this.words.words.length
+      return this.progressBarCount + ' / ' + this.words.words.length
     },
     answer () {
       return this.$store.state.vueDict.currentModalAnswer
@@ -188,6 +205,9 @@ export default {
       this.resultsVisible = true
       this.userLatinInput = this.latinInput
       this.userForeignInput = this.foreignInput
+      this.correctLatinWords.push(this.isLatinCorrect)
+      this.correctForeignWords.push(this.isForeignCorrect)
+      this.progressBarCount++
     },
     nextWord () {
       this.hideSolution()
@@ -208,9 +228,13 @@ export default {
       this.latinInput = this.userLatinInput
       this.foreignInput = this.userForeignInput
     },
+    showStatistics () {
+      this.statisticsVisible = true
+    },
     canvasLoop (timestamp) {
       if (this.loopActivated) {
-        this.raf = requestAnimationFrame(timestamp => this.canvasLoop(timestamp))
+        let raf = requestAnimationFrame(timestamp => this.canvasLoop(timestamp))
+        this.$store.commit('canvasDict/setRaf', raf)
 
         this.$store.commit('canvasDict/addLag', timestamp - this.$store.state.canvasDict.startTS)
 
@@ -246,6 +270,9 @@ export default {
       Helper.drawCanvasText(
         canvasWidth / 2, 15, this.words.words[this.currentWord][this.$store.state.lang], 'standard', ctx
       )
+    },
+    navTo (name) {
+      this.$router.push({ name: name })
     }
   },
   watch: {
@@ -275,7 +302,14 @@ export default {
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
-  height: calc(100% - .5rem);
+
+  &.height-ingame {
+    height: calc(100% - .5rem);
+  }
+
+  &.height-statistics {
+    height: calc(100% - 71px);
+  }
 
   &.justifyBetween {
     justify-content: space-between;
