@@ -3,6 +3,7 @@
 
 $dark: $grey;
 $input-background-color: $grey-dark;
+$progress-bar-background-color: $grey-dark;
 
 @import "./../node_modules/bulma/bulma.sass";
 @import "./../node_modules/bulmaswatch/darkly/overrides";
