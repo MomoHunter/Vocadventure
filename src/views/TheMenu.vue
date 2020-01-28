@@ -6,30 +6,31 @@
         <transition :enter-active-class="trainingAnimation.enter"
                     :leave-active-class="trainingAnimation.leave">
           <ButtonBasic class="is-relative marginBottomSmall" color="is-info" icon="book" text="menuButton1"
-                      @click="$router.push({ name: 'menu', query: { sub: 'training' } })" v-show="!query" />
+                       @click="$router.push({ name: 'menu', query: { sub: 'training' } })" v-show="!query" />
         </transition>
         <transition :enter-active-class="adventureAnimation.enter"
                     :leave-active-class="adventureAnimation.leave">
           <ButtonBasic class="is-relative marginBottomSmall" color="is-link" icon="gem" text="menuButton2"
-                      @click="$router.push({ name: 'menu', query: { sub: 'adventure' } })" v-show="!query" />
+                       @click="$router.push({ name: 'menu', query: { sub: 'adventure' } })" v-show="!query" />
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"
                     leave-active-class="animated fadeOut customDuration">
           <ButtonBasic class="is-relative marginBottomSmall" color="is-dark" icon="cog" text="menuButton3"
-                      @click="$router.push({ name: 'settings' })" v-show="!query" />
+                       @click="$router.push({ name: 'settings' })" v-show="!query" />
         </transition>
       </div>
       <div class="is-absolute">
         <transition enter-active-class="animated invisible customDuration2"
                     leave-active-class="animated disappear customDuration2">
           <ButtonBasic class="is-relative marginBottomSmall" color="is-info" icon="book" text="menuTrainingButton1"
-                      @click="$router.push({ name: 'category', params: { destination: 'training' } })"
-                      v-show="query === 'training'" />
+                       @click="$router.push({ name: 'category', params: { destination: 'training' } })"
+                       v-show="query === 'training'" />
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"
                     leave-active-class="animated fadeOut customDuration">
           <ButtonBasic class="is-relative marginBottomSmall" color="is-success" icon="pen" text="menuTrainingButton2"
-                      @click="$router.push({ name: 'kanji' })" v-show="query === 'training'" />
+                       @click="$router.push({ name: 'category', params: { destination: 'kanji' } })"
+                       v-show="query === 'training'" />
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"
                     leave-active-class="animated fadeOut customDuration">
@@ -42,8 +43,8 @@
         <transition enter-active-class="animated invisible customDuration2"
                     leave-active-class="animated slideOutDownC customDuration2">
           <ButtonBasic class="is-relative marginBottomSmall" color="is-link" icon="gem" text="menuAdventureButton1"
-                      @click="$router.push({ name: 'category', params: { destination: 'adventure' } })"
-                      v-show="query === 'adventure'" />
+                       @click="$router.push({ name: 'category', params: { destination: 'adventure' } })"
+                       v-show="query === 'adventure'" />
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"
                     leave-active-class="animated fadeOut customDuration">

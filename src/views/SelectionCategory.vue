@@ -255,7 +255,11 @@ export default {
         this.$store.commit('vueDict/setCategories', [])
         this.$store.commit('vueDict/setDifficulty', '')
         this.$store.commit('vueDict/setWordCount', 0)
-        this.$router.push({ name: 'menu', query: { sub: this.destination } })
+        if (this.destination === 'adventure') {
+          this.$router.push({ name: 'menu', query: { sub: 'adventure' } })
+        } else {
+          this.$router.push({ name: 'menu', query: { sub: 'training' } })
+        }
       } else {
         if (this.$store.state.vueDict.categoriesChosen.length !== 0) {
           if (this.destination === 'training') {
