@@ -1,6 +1,6 @@
 <template>
   <div class="flexContainer">
-    <HeroBasic class="marginBottomSmall" :title="destination" />
+    <HeroBasic class="marginBottomSmall" :title="destination" subtitle="selectionCategorySubtitle" />
     <div v-show="!showSearch && !showSort" class="field has-addons is-10">
       <div class="control fullWidth">
         <ButtonBasic color="is-link" :icon="sortIcon" text="categoryButton1" @click="toggleSort()" />
@@ -260,6 +260,8 @@ export default {
         if (this.$store.state.vueDict.categoriesChosen.length !== 0) {
           if (this.destination === 'training') {
             this.$router.push({ name: 'training' })
+          } else if (this.destination === 'kanji') {
+            this.$router.push({ name: 'words' })
           } else {
             this.$router.push({ name: 'selection' })
           }

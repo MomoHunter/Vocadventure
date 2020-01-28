@@ -1,6 +1,6 @@
 <template>
   <div class="flexContainer spaceBetween">
-    <HeroBasic title="selectionCountTitle" />
+    <HeroBasic title="selectionCountTitle" subtitle="selectionCountSubtitle" />
     <div class="field has-addons is-10">
       <div class="control is-third">
         <ButtonMDI :selected="difficultySelected('1')" color="is-success" text="difficulty1"

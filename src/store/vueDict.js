@@ -61,6 +61,9 @@ export default {
     changeStatus (state, status) {
       state.status = status
     },
+    addStatAddit (state, object) {
+      state.status.find(entry => entry.id === object.id).additional += object.count
+    },
     changeCategoriesPlayed (state, categoriesPlayed) {
       state.categoriesPlayed = categoriesPlayed
     },

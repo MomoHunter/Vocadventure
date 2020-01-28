@@ -213,6 +213,17 @@ export default {
       this.userForeignInput = this.foreignInput
       this.correctLatinWords.push(this.isLatinCorrect)
       this.correctForeignWords.push(this.isForeignCorrect)
+
+      if (this.isLatinCorrect) {
+        this.$store.commit('vueDict/addStatAddit', { id: 'points', count: 1 })
+        this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: 1 })
+      }
+      if (this.isForeignCorrect) {
+        let count = parseInt(this.words.words[this.currentWord].difficulty)
+        this.$store.commit('vueDict/addStatAddit', { id: 'points', count: count })
+        this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: count })
+      }
+
       this.progressBarCount++
     },
     nextWord () {
