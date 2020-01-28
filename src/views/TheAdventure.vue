@@ -1,6 +1,6 @@
 <template>
   <div class="flexContainer justifyBetween" :class="statisticsVisible ? 'height-statistics' : 'height-ingame'">
-    <div>
+    <div class="fullWidth">
       <HeroWithTags title="adventureTitle" :tagObjects="tags" />
       <canvas id="adventureCanvas" width="600" height="300"></canvas>
     </div>
@@ -128,12 +128,19 @@ export default {
     words () {
       let vocabs = JSON.parse(JSON.stringify(this.$store.getters['vueDict/getVocabs']))
       let length = this.$store.state.vueDict.wordCount
+      let wordObjects = []
 
       if (vocabs.words.length === length) {
-        return vocabs
-      } else {
-        let wordObjects = []
+        while (vocabs.words.length > 0) {
+          let random = Math.floor(Math.random() * vocabs.words.length)
 
+          if (parseInt(vocabs.words[random].difficulty) <= parseInt(this.$store.state.vueDict.difficulty)) {
+            wordObjects.push(vocabs.words.splice(random, 1)[0])
+          } else {
+            vocabs.words.splice(random, 1)
+          }
+        }
+      } else {
         while (wordObjects.length < length) {
           let i = wordObjects.length
           let random = Math.floor(Math.random() * vocabs.words.length)
@@ -146,11 +153,10 @@ export default {
             }
           }
         }
-
-        vocabs.words = wordObjects
-
-        return vocabs
       }
+      vocabs.words = wordObjects
+
+      return vocabs
     },
     isLatinCorrect () {
       return this.userLatinInput.toLowerCase() === this.words.words[this.currentWord][this.words.latinAlphabet].toLowerCase()
@@ -273,6 +279,11 @@ export default {
     },
     navTo (name) {
       this.$router.push({ name: name })
+      if (name === 'menu') {
+        this.$store.commit('vueDict/setCategories', [])
+        this.$store.commit('vueDict/setDifficulty', '')
+        this.$store.commit('vueDict/setWordCount', 0)
+      }
     }
   },
   watch: {

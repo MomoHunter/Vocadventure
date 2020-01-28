@@ -88,6 +88,12 @@ export default {
       showNotification: false
     }
   },
+  mounted () {
+    let wordCount = this.$store.state.vueDict.wordCount
+    if (!this.availableOptions.includes(wordCount) && wordCount !== 0 && wordCount !== this.countAllWords) {
+      this.customCount = wordCount.toString()
+    }
+  },
   computed: {
     customCountSet () {
       return this.customCount !== ''

@@ -51,25 +51,25 @@
     { "german": "was", "english": "what", "romaji": "nani", "kana": "何", "difficulty": "3" }
   ],
   "japaneseCategory8": [
-    
+    { "german": "Ort, Stelle, bei/zu jdm.", "english": "Place, position, at/to somebody", "romaji": "tokoro", "kana": "所", "difficulty": "3" }
   ],
   "japaneseCategory9": [
-    
+    { "german": "Person, Mensch, Leute", "english": "Person, human, people", "romaji": "hito", "kana": "人", "difficulty": "3" }
   ],
   "japaneseCategory10": [
-    
+    { "german": "Baby", "english": "Baby", "romaji": "aka-chan", "kana": "赤ちゃん", "difficulty": "3" }
   ],
   "japaneseCategory11": [
-    
+    { "german": "Liebe (allgemein)", "english": "Love (in general)", "romaji": "ai", "kana": "愛", "difficulty": "3" }
   ],
   "japaneseCategory12": [
-    
+    { "german": "Familie", "english": "Family", "romaji": "kazoku", "kana": "家族", "difficulty": "3" }
   ],
   "japaneseCategory13": [
-    
+    { "german": "Herr..., Frau... (allgemeine Anrede, oft mit Familiennamen)", "english": "Mr..., Mrs... (general salutation, often with familyname)", "romaji": "...-san", "kana": "...さん", "difficulty": "1" }
   ],
   "japaneseCategory14": [
-    
+    { "german": "(man) selbst", "english": "by myself", "romaji": "jibun", "kana": "自分", "difficulty": "3" }
   ],
   "japaneseCategory15": [
     
