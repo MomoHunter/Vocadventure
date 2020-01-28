@@ -1,12 +1,12 @@
 <template>
   <div class="barChartContainer">
-    <span class="content inlineBlock flexGrow">
+    <span class="content inlineBlock flexGrow" :class="getSizeClass('content')">
       {{ getText(title) }}
     </span>
-    <span class="content inlineBlock">
+    <span class="content inlineBlock" :class="getSizeClass('content')">
       {{ percentage }}%
     </span>
-    <div class="barContainer">
+    <div class="barContainer" :class="getSizeClass('barContainer')">
       <div class="block" :class="value ? 'has-background-success' : 'has-background-danger'"
            v-for="(value, index) in values" :key="index"></div>
     </div>
@@ -30,6 +30,9 @@ export default {
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)
+    },
+    getSizeClass (type) {
+      return this.$store.getters.getSizeClass(type)
     }
   }
 }
@@ -53,8 +56,23 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    height: 1.5rem;
     width: 100%;
+
+    &.is-small {
+      height: .75rem;
+    }
+
+    &.is-normal {
+      height: 1rem;
+    }
+
+    &.is-medium {
+      height: 1.5rem;
+    }
+
+    &.is-large {
+      height: 2rem;
+    }
 
     .block {
       flex-grow: 1;
