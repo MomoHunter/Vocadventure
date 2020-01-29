@@ -60,7 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 .maxHeight {
-  max-height: 40%;
+  max-height: 500%;
 }
 
 .overflowAuto {
