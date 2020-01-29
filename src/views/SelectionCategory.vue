@@ -262,12 +262,10 @@ export default {
         }
       } else {
         if (this.$store.state.vueDict.categoriesChosen.length !== 0) {
-          if (this.destination === 'training') {
-            this.$router.push({ name: 'training' })
-          } else if (this.destination === 'kanji') {
-            this.$router.push({ name: 'words' })
-          } else {
+          if (this.destination === 'adventure') {
             this.$router.push({ name: 'selection' })
+          } else {
+            this.$router.push({ name: this.destination })
           }
         } else {
           this.showNotification = true

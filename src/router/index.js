@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import TheMenu from '@/views/TheMenu.vue'
 import SelectionCategory from '@/views/SelectionCategory.vue'
 import SelectionCount from '@/views/SelectionCount.vue'
-import SelectionWords from '@/views/SelectionWords.vue'
 import TheTraining from '@/views/TheTraining.vue'
 import TheWriteKanji from '@/views/TheWriteKanji.vue'
 import TheAdventure from '@/views/TheAdventure.vue'
@@ -33,7 +32,7 @@ const routes = [
       forward: [
         'selection',
         'training',
-        'words'
+        'kanji'
       ]
     }
   },
@@ -44,16 +43,6 @@ const routes = [
     meta: {
       forward: [
         'adventure'
-      ]
-    }
-  },
-  {
-    path: '/words',
-    name: 'words',
-    component: SelectionWords,
-    meta: {
-      forward: [
-        'kanji'
       ]
     }
   },

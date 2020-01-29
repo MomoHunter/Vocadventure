@@ -7,14 +7,14 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faBook, faGem, faShoppingCart, faCog, faArrowLeft, faArrowRight, faPen, faCheck, faTrash, faTimes, faGlobe, faPalette,
   faExpandArrowsAlt, faUserGraduate, faHome, faSort, faSortUp, faSortDown, faSearch, faCoins, faBriefcase, faEye,
-  faEyeSlash, faClipboardCheck
+  faEyeSlash, faClipboardCheck, faAngleDown, faAngleUp
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(
   faBook, faGem, faShoppingCart, faCog, faArrowLeft, faArrowRight, faPen, faCheck, faTrash, faTimes, faGlobe, faPalette,
   faExpandArrowsAlt, faUserGraduate, faHome, faSort, faSortUp, faSortDown, faSearch, faCoins, faBriefcase, faEye,
-  faEyeSlash, faClipboardCheck
+  faEyeSlash, faClipboardCheck, faAngleDown, faAngleUp
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

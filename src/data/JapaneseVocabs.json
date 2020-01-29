@@ -21,8 +21,8 @@
   "japaneseCategory2": [
     { "german": "Dankbarkeit, Dank", "english": "Gratitude", "romaji": "kansha", "kana": "感謝", "difficulty": "3" },
     { "german": "Dank", "english": "Thanks", "romaji": "o-rei", "kana": "お礼", "difficulty": "3" },
-    { "german": "Bitte (geben Sie mir/ tun Sie ...)", "english": "please (give me/ do ...)", "romaji": "...kudasai", "kana": "...下さい", "difficulty": "3" },
-    { "german": "Bitte... (vertraut)", "english": "please... (familiar)", "romaji": "...choudai", "kana": "...ちょうだい", "difficulty": "1" },
+    { "german": "Bitte (geben Sie mir/ tun Sie ...)", "english": "please (give me/ do ...)", "romaji": "...kudasai", "kana": "・・・下さい", "difficulty": "3" },
+    { "german": "Bitte... (vertraut)", "english": "please... (familiar)", "romaji": "...choudai", "kana": "・・・ちょうだい", "difficulty": "1" },
     { "german": "Ja, bitte. Ich bitte darum.", "english": "Yes, please. I would ask for it.", "romaji": "O-negai shimasu.", "kana": "お願いします。", "difficulty": "3" },
     { "german": "Hier, bitte! (beim Anbieten)", "english": "There you go! (offering)", "romaji": "Douzo.", "kana": "どうぞ", "difficulty": "1" },
     { "german": "Wie wäre es damit?", "english": "How about this?", "romaji": "Ikaga desu ka.", "kana": "いかがですか。", "difficulty": "2" },
@@ -66,31 +66,31 @@
     { "german": "Familie", "english": "Family", "romaji": "kazoku", "kana": "家族", "difficulty": "3" }
   ],
   "japaneseCategory13": [
-    { "german": "Herr..., Frau... (allgemeine Anrede, oft mit Familiennamen)", "english": "Mr..., Mrs... (general salutation, often with familyname)", "romaji": "...-san", "kana": "...さん", "difficulty": "1" }
+    { "german": "Herr..., Frau... (allgemeine Anrede, oft mit Familiennamen)", "english": "Mr..., Mrs... (general salutation, often with familyname)", "romaji": "...-san", "kana": "・・・さん", "difficulty": "1" }
   ],
   "japaneseCategory14": [
     { "german": "(man) selbst", "english": "by myself", "romaji": "jibun", "kana": "自分", "difficulty": "3" }
   ],
   "japaneseCategory15": [
-    
+    { "german": "das (menschliche) Leben", "english": "the (human) life", "romaji": "jinsei", "kana": "人生", "difficulty": "3" }
   ],
   "japaneseCategory16": [
-    
+    { "german": "sterben", "english": "to die", "romaji": "shinu", "kana": "死ぬ", "difficulty": "3" }
   ],
   "japaneseCategory17": [
-    
+    { "german": "Kopf", "english": "head", "romaji": "atama", "kana": "頭", "difficulty": "3" }
   ],
   "japaneseCategory18": [
-    
+    { "german": "Körper", "english": "body", "romaji": "karada", "kana": "体", "difficulty": "3" }
   ],
   "japaneseCategory19": [
-    
+    { "german": "nackt", "english": "nude", "romaji": "hadaka no/de", "kana": "裸の・で", "difficulty": "3" }
   ],
   "japaneseCategory20": [
-    
+    { "german": "Fleisch", "english": "Meat", "romaji": "niku", "kana": "肉", "difficulty": "3" }
   ],
   "japaneseCategory21": [
-    
+    { "german": "gesund; Gesundheit", "english": "healthy; Health", "romaji": "kenkou na", "kana": "健康な", "difficulty": "3" }
   ],
   "japaneseCategory22": [
     

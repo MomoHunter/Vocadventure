@@ -290,6 +290,7 @@ export default {
     },
     navTo (name) {
       this.$router.push({ name: name })
+      this.$store.commit('vueDict/transferAdditionalStat')
       if (name === 'menu') {
         this.$store.commit('vueDict/setCategories', [])
         this.$store.commit('vueDict/setDifficulty', '')

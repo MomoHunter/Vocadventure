@@ -39,6 +39,20 @@ export default {
         foreignAlphabet: vocabs.foreignAlphabet
       }
     },
+    getVocabsWithCategories: (state, getters, rootState) => {
+      let objects = {}
+      let vocabs = Vocabulary[rootState.targetLanguage]
+
+      for (let category of state.categoriesChosen) {
+        objects[category] = JSON.parse(JSON.stringify(vocabs.words[category]))
+      }
+
+      return {
+        words: objects,
+        latinAlphabet: vocabs.latinAlphabet,
+        foreignAlphabet: vocabs.foreignAlphabet
+      }
+    },
     getShuffledVocabs: (state, getters) => {
       let vocabs = getters.getVocabs
       let wordsShuffled = []
@@ -63,6 +77,12 @@ export default {
     },
     addStatAddit (state, object) {
       state.status.find(entry => entry.id === object.id).additional += object.count
+    },
+    transferAdditionalStat (state) {
+      state.status.forEach(entry => {
+        entry.count += entry.additional
+        entry.additional = 0
+      })
     },
     changeCategoriesPlayed (state, categoriesPlayed) {
       state.categoriesPlayed = categoriesPlayed
