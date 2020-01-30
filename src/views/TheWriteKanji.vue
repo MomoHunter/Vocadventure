@@ -4,7 +4,13 @@
     <div class="is-10 marginBottomSmall">
       <DropdownSpecial buttonText="writeKanjiDropdown" buttonColor="is-link" :vocabs="words" />
     </div>
-    <div class="is-10 box flexGrow">
+    <div class="box is-10 flexGrow centerText specialFont">
+      {{ currentWord[words.foreignAlphabet][currentLetter] }}
+    </div>
+    <div class="field is-max-10 has-addons overflowAuto">
+      <div class="control" v-for="(letter, index) in currentWord[words.foreignAlphabet]" :key="index">
+        <ButtonText :text="letter" color="is-link" :selected="currentLetter === index" @click="setCurrentLetter(index)" />
+      </div>
     </div>
     <div class="is-10">
       <ButtonBasic color="is-danger" icon="arrow-left" text="writeKanjiButton1"
@@ -16,6 +22,7 @@
 <script>
 import HeroWithTags from '@/components/HeroWithTags.vue'
 import DropdownSpecial from '@/components/DropdownSpecial.vue'
+import ButtonText from '@/components/ButtonText.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 
 export default {
@@ -23,25 +30,66 @@ export default {
   components: {
     HeroWithTags,
     DropdownSpecial,
+    ButtonText,
     ButtonBasic
+  },
+  mounted () {
+    let storeLink = this.$store.state.vueDict.writeKanji
+    if (storeLink) {
+      this.setCurrentWord(storeLink.category, storeLink.index)
+    } else {
+      this.setCurrentWord(this.$store.state.vueDict.categoriesChosen[0], 0)
+    }
+  },
+  data () {
+    return {
+      currentCategory: '',
+      currentWord: {},
+      currentLetter: 0
+    }
   },
   computed: {
     tags () {
       return [
         {
           nameId: 'writeKanjiCategoryTag',
-          valueId: '',
+          valueId: this.currentCategory,
+          color: 'is-primary'
+        },
+        {
+          nameId: 'writeKanjiWordTag',
+          valueId: this.currentWord[this.$store.state.lang],
           color: 'is-primary'
         },
         {
           nameId: 'writeKanjiDifficultyTag',
-          valueId: '',
-          color: 'is-danger'
+          valueId: 'difficulty' + this.currentWord['difficulty'],
+          color: this.getDifficultyColor(this.currentWord['difficulty'])
         }
       ]
     },
     words () {
       return this.$store.getters['vueDict/getVocabsWithCategories']
+    }
+  },
+  methods: {
+    setCurrentWord (category, index) {
+      this.currentCategory = category
+      this.currentLetter = 0
+      this.currentWord = this.words.words[category][index]
+    },
+    setCurrentLetter (index) {
+      this.currentLetter = index
+    },
+    getDifficultyColor (difficulty) {
+      switch (difficulty) {
+        case '1':
+          return 'is-success'
+        case '2':
+          return 'is-warning'
+        default:
+          return 'is-danger'
+      }
     }
   }
 }
@@ -66,8 +114,25 @@ export default {
     width: calc(100% / 1.2);
   }
 
+  .is-max-10 {
+    max-width: calc(100% / 1.2);
+  }
+
   .flexGrow {
     flex-grow: 1;
+  }
+
+  .overflowAuto {
+    overflow: auto;
+  }
+
+  .centerText {
+    text-align: center;
+    font-size: 200pt;
+  }
+
+  .specialFont {
+    font-family: "KanjiStrokeOrders";
   }
 }
 </style>

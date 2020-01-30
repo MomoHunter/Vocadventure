@@ -19,7 +19,7 @@ export default new Vuex.Store({
   getters: {
     getText: (state) => (id) => {
       if (isNaN(id)) {
-        return Texts[state.lang][id]
+        return Texts[state.lang][id] || id
       } else {
         return id.toString()
       }

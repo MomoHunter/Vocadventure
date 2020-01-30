@@ -23,13 +23,13 @@
     </div>
     <div class="field is-grouped is-grouped-multiline is-10">
       <div class="control is-third" :class="optionClasses(option)" v-for="option of availableOptions" :key="option">
-        <ButtonTextNoTranslation class="is-fullwidth" color="is-primary" :text="option" @click="setWordCount(option)"
+        <ButtonText class="is-fullwidth" color="is-primary" :text="option" @click="setWordCount(option)"
                                  :selected="wordCountSelected(option)" />
       </div>
       <div class="control is-two-third left-row">
         <ButtonText v-show="!isInputVisible && !customCountSet" class="is-fullwidth" color="is-primary"
                     text="selectionCountCustom" @click="showInput()" />
-        <ButtonTextNoTranslation v-show="!isInputVisible && customCountSet" class="is-fullwidth" color="is-primary"
+        <ButtonText v-show="!isInputVisible && customCountSet" class="is-fullwidth" color="is-primary"
                                  :text="customCount" @click="showInput()"
                                  :selected="wordCountSelected(parseInt(customCount))" />
         <InputWithButton v-show="isInputVisible" colorInput="is-primary" colorButton="is-success" type="number"
@@ -58,7 +58,6 @@ import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonMDI from '@/components/ButtonMDI.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import ButtonText from '@/components/ButtonText.vue'
-import ButtonTextNoTranslation from '@/components/ButtonTextNoTranslation.vue'
 import InputWithButton from '@/components/InputWithButton.vue'
 import TheNotification from '@/components/TheNotification.vue'
 
@@ -73,7 +72,6 @@ export default {
     ButtonMDI,
     ButtonBasic,
     ButtonText,
-    ButtonTextNoTranslation,
     InputWithButton,
     TheNotification,
     SpeedometerSlow,

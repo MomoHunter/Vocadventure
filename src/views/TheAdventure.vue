@@ -289,12 +289,18 @@ export default {
       )
     },
     navTo (name) {
-      this.$router.push({ name: name })
+      for (let category of this.$store.state.vueDict.categoriesChosen) {
+        this.$store.commit('vueDict/increaseCategoryPlayed', category)
+      }
       this.$store.commit('vueDict/transferAdditionalStat')
+      window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
       if (name === 'menu') {
         this.$store.commit('vueDict/setCategories', [])
         this.$store.commit('vueDict/setDifficulty', '')
         this.$store.commit('vueDict/setWordCount', 0)
+        this.$router.push({ name: 'menu' })
+      } else {
+        this.$router.push({ name: 'category', params: { destination: 'adventure' } })
       }
     }
   },

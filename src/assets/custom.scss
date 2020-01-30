@@ -1,6 +1,11 @@
 @charset "utf-8";
 @import "./../../node_modules/animate.css/animate.min.css";
 
+@font-face {
+  font-family: "KanjiStrokeOrders";
+  src: url("KanjiStrokeOrders_v4.002.ttf") format("truetype");
+}
+
 html, body {
   overflow: hidden;
   height: 100%;

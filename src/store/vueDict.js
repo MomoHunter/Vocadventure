@@ -10,6 +10,7 @@ export default {
     ],
     categoriesChosen: [],
     categoriesPlayed: [],
+    writeKanji: null,
     difficulty: '',
     wordCount: 0,
     showModals: {
@@ -83,6 +84,9 @@ export default {
         entry.count += entry.additional
         entry.additional = 0
       })
+    },
+    setWriteKanji (state, object) {
+      state.writeKanji = object
     },
     changeCategoriesPlayed (state, categoriesPlayed) {
       state.categoriesPlayed = categoriesPlayed
