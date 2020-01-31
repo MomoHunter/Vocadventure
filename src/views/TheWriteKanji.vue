@@ -1,11 +1,12 @@
 <template>
   <div class="flexContainer spaceBetween">
-    <HeroWithTags class="marginBottomSmall" title="writeKanjiTitle" :tagObjects="tags" />
+    <HeroWithTags class="marginBottomSmall" title="writeKanjiTitle" :subtitle="currentWord[$store.state.lang]"
+                  :tagObjects="tags" />
     <div class="is-10 marginBottomSmall">
       <DropdownSpecial buttonText="writeKanjiDropdown" buttonColor="is-link" :vocabs="words" />
     </div>
-    <div class="box is-10 flexGrow centerText specialFont">
-      {{ currentWord[words.foreignAlphabet][currentLetter] }}
+    <div class="box is-10 flexGrow centerText specialFont" v-maxFontSize>
+      <span>{{ currentWord[words.foreignAlphabet][currentLetter] }}</span>
     </div>
     <div class="field is-max-10 has-addons overflowAuto">
       <div class="control" v-for="(letter, index) in currentWord[words.foreignAlphabet]" :key="index">
@@ -33,19 +34,19 @@ export default {
     ButtonText,
     ButtonBasic
   },
-  mounted () {
-    let storeLink = this.$store.state.vueDict.writeKanji
-    if (storeLink) {
-      this.setCurrentWord(storeLink.category, storeLink.index)
-    } else {
-      this.setCurrentWord(this.$store.state.vueDict.categoriesChosen[0], 0)
-    }
-  },
   data () {
     return {
       currentCategory: '',
       currentWord: {},
       currentLetter: 0
+    }
+  },
+  beforeMount () {
+    let storeLink = this.$store.state.vueDict.writeKanji
+    if (storeLink) {
+      this.setCurrentWord(storeLink.category, storeLink.index)
+    } else {
+      this.setCurrentWord(this.$store.state.vueDict.categoriesChosen[0], 0)
     }
   },
   computed: {
@@ -54,11 +55,6 @@ export default {
         {
           nameId: 'writeKanjiCategoryTag',
           valueId: this.currentCategory,
-          color: 'is-primary'
-        },
-        {
-          nameId: 'writeKanjiWordTag',
-          valueId: this.currentWord[this.$store.state.lang],
           color: 'is-primary'
         },
         {
@@ -127,8 +123,10 @@ export default {
   }
 
   .centerText {
-    text-align: center;
-    font-size: 200pt;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 0;
   }
 
   .specialFont {

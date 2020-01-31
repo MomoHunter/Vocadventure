@@ -19,6 +19,12 @@ library.add(
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
+Vue.directive('maxFontSize', {
+  inserted (el) {
+    el.style.fontSize = (Math.min(el.offsetWidth, el.offsetHeight) * 0.8) + 'px'
+  }
+})
+
 Vue.config.productionTip = false
 
 new Vue({
