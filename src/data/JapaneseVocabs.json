@@ -87,45 +87,45 @@
     { "german": "nackt", "english": "nude", "romaji": "hadaka no/de", "kana": "裸の・で", "difficulty": "3" }
   ],
   "japaneseCategory20": [
-    { "german": "Fleisch", "english": "Meat", "romaji": "niku", "kana": "肉", "difficulty": "3" }
+    { "german": "Fleisch", "english": "meat", "romaji": "niku", "kana": "肉", "difficulty": "3" }
   ],
   "japaneseCategory21": [
     { "german": "gesund; Gesundheit", "english": "healthy; Health", "romaji": "kenkou na", "kana": "健康な", "difficulty": "3" }
   ],
   "japaneseCategory22": [
-    
+    { "german": "Verletzung", "english": "injury", "romaji": "kega", "kana": "怪我", "difficulty": "3" }
   ],
   "japaneseCategory23": [
-    
+    { "german": "schmerzen, wehtun", "english": "to hurt", "romaji": "itai", "kana": "痛い", "difficulty": "3" }
   ],
   "japaneseCategory24": [
-    
+    { "german": "Erkältung, grippaler Infekt", "english": "a cold, flu-like infection", "romaji": "kaze", "kana": "風邪", "difficulty": "3" }
   ],
   "japaneseCategory25": [
-    
+    { "german": "Medizin", "english": "Medicine", "romaji": "igaku", "kana": "医学", "difficulty": "3" }
   ],
   "japaneseCategory26": [
-    
+    { "german": "Medikament, Arznei", "english": "Drug, remedy", "romaji": "kusuri", "kana": "薬", "difficulty": "3" }
   ],
   "japaneseCategory27": [
-    
+    { "german": "Erste Hilfe, Notfallmaßnahmen", "english": "first aid, emergency measures", "romaji": "kyuukyuu-teate", "kana": "救急手当て", "difficulty": "3" }
   ],
   "japaneseCategory28": [
-    
+    { "german": "waschen", "english": "to wash", "romaji": "arau", "kana": "洗う", "difficulty": "3" }
   ],
   "japaneseCategory29": [
-    
+    { "german": "Parfüm", "english": "perfume", "romaji": "kousui", "kana": "香水", "difficulty": "3" }
   ],
   "japaneseCategory30": [
-    
+    { "german": "Wetter", "english": "weather", "romaji": "tenki", "kana": "天気", "difficulty": "3" }
   ],
   "japaneseCategory31": [
-    
+    { "german": "Astronomie", "english": "astronomy", "romaji": "tenmon-gaku", "kana": "天文学", "difficulty": "3" }
   ],
   "japaneseCategory32": [
-    
+    { "german": "Astrologie", "english": "astrology", "romaji": "hoshi-uranai", "kana": "星占い", "difficulty": "3" }
   ],
   "japaneseCategory33": [
-    
+    { "german": "Natur", "english": "nature", "romaji": "shizen", "kana": "自然", "difficulty": "3" }
   ]
 }
