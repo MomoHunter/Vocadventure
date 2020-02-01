@@ -1,4 +1,5 @@
 import Vocabulary from '@/data/Vocabulary.js'
+import Items from '@/data/Items.json'
 
 export default {
   namespaced: true,
@@ -14,6 +15,8 @@ export default {
     trainingStash: null,
     difficulty: '',
     wordCount: 0,
+    items: Items,
+    inventory: [],
     showModals: {
       name: ''
     },

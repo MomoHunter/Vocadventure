@@ -1,12 +1,12 @@
 <template>
   <div class="flexContainer">
-    <HeroBasic class="marginBottomSmall" title="shopTitle" />
+    <HeroBasic class="marginBottomSmall" title="inventoryTitle" />
     <div v-show="!showSearch && !showSort" class="field has-addons is-10">
       <div class="control halfWidth">
-        <ButtonBasic color="is-link" :icon="sortIcon" text="shopButton1" @click="toggleSort()" />
+        <ButtonBasic color="is-link" :icon="sortIcon" text="inventoryButton1" @click="toggleSort()" />
       </div>
       <div class="control halfWidth">
-        <ButtonBasic color="is-link" icon="search" text="shopButton2" @click="toggleSearch()" />
+        <ButtonBasic color="is-link" icon="search" text="inventoryButton2" @click="toggleSearch()" />
       </div>
     </div>
     <div v-show="showSort" class="field has-addons is-10">
@@ -21,10 +21,8 @@
     <div class="is-10 flexGrow itemContainer">
     </div>
     <div class="is-10">
-      <ButtonBasic class="marginBottomSmall" color="is-primary" icon="briefcase" text="shopButton4"
-                   @click="$router.push({ name: 'inventory' })" />
-      <ButtonBasic color="is-danger" icon="arrow-left" text="shopButton5"
-                   @click="$router.push({ name: 'menu', query: { sub: 'adventure' } })" />
+      <ButtonBasic color="is-danger" icon="arrow-left" text="inventoryButton5"
+                   @click="$router.push({ name: 'shop' })" />
     </div>
   </div>
 </template>

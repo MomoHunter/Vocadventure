@@ -1,0 +1,169 @@
+[
+  {
+    "id": "wood",
+    "spriteKey": "img/sprites/Item/Wood.png",
+    "quantity": 1,
+    "points": 3,
+    "costs": [
+      { "id": "coins", "quantity": 35 }
+    ]
+  },
+  {
+    "id": "stone",
+    "spriteKey": "img/sprites/Item/Stone.png",
+    "quantity": 1,
+    "points": 3,
+    "costs": [
+      { "id": "coins", "quantity": 25 }
+    ]
+  },
+  {
+    "id": "ironore",
+    "spriteKey": "img/sprites/Item/Ironore.png",
+    "quantity": 1,
+    "points": 9,
+    "costs": [
+      { "id": "coins", "quantity": 250 }
+    ]
+  },
+  {
+    "id": "fish",
+    "spriteKey": "img/sprites/Item/Fish.png",
+    "quantity": 1,
+    "points": 6,
+    "costs": [
+      { "id": "coins", "quantity": 75 }
+    ]
+  },
+  {
+    "id": "worm",
+    "spriteKey": "img/sprites/Item/Worm.png",
+    "quantity": 1,
+    "points": 1,
+    "costs": [
+      { "id": "coins", "quantity": 45 }
+    ]
+  },
+  {
+    "id": "apple",
+    "spriteKey": "img/sprites/Item/Apple.png",
+    "quantity": 1,
+    "points": 5,
+    "costs": [
+      { "id": "coins", "quantity": 500 }
+    ]
+  },
+  {
+    "id": "string",
+    "spriteKey": "img/sprites/Item/String.png",
+    "quantity": 1,
+    "points": 7,
+    "costs": [
+      { "id": "cobwebs", "quantity": 12 },
+      { "id": "coins", "quantity": 60 }
+    ]
+  },
+  {
+    "id": "shovel",
+    "spriteKey": "img/sprites/Item/Shovel.png",
+    "quantity": 1,
+    "points": 11,
+    "durability": 13,
+    "costs": [
+      {"id": "wood", "quantity": 4},
+      {"id": "stone", "quantity": 2},
+      {"id": "string", "quantity": 2},
+      {"id": "coins", "quantity": 120}
+    ]
+  },
+  {
+    "id": "axe",
+    "spriteKey": "img/sprites/Item/Axe.png",
+    "quantity": 1,
+    "points": 13,
+    "durability": 10,
+    "costs": [
+      { "id": "wood", "quantity": 4 },
+      { "id": "stone", "quantity": 2 },
+      { "id": "string", "quantity": 2 },
+      { "id": "coins", "quantity": 160 }
+    ]
+  },
+  {
+    "id": "fishingRod",
+    "spriteKey": "img/sprites/Item/Fishing_Rod.png",
+    "quantity": 1,
+    "points": 16,
+    "durability": 8,
+    "costs": [
+      { "id": "wood", "quantity": 3 },
+      { "id": "string", "quantity": 5 },
+      { "id": "coins", "quantity": 210 }
+    ]
+  },
+  {
+    "id": "pickaxe",
+    "spriteKey": "img/sprites/Item/Pickaxe.png",
+    "quantity": 1,
+    "points": 18,
+    "durability": 16,
+    "costs": [
+      { "id": "wood", "quantity": 3 },
+      { "id": "stone", "quantity": 5 },
+      { "id": "string", "quantity": 2 },
+      { "id": "coins", "quantity": 300 }
+    ]
+  },
+  {
+    "id": "furnace",
+    "spriteKey": "img/sprites/Item/Furnace.png",
+    "quantity": 1,
+    "points": 12,
+    "costs": [
+      { "id": "stone", "quantity": 8 },
+      { "id": "coins", "quantity": 450 }
+    ]
+  },
+  {
+    "id": "ironbar",
+    "spriteKey": "img/sprites/Item/Ironbar.png",
+    "quantity": 3,
+    "points": 36,
+    "costs": [
+      { "id": "furnace", "quantity": 1 },
+      { "id": "ironore", "quantity": 6 },
+      { "id": "coal", "quantity": 12 },
+      { "id": "coins", "quantity": 777 }
+    ]
+  },
+  {
+    "id": "glass",
+    "spriteKey": "img/sprites/Item/Glass.png",
+    "quantity": 8,
+    "points": 64,
+    "costs": [
+      { "id": "sandBucket", "quantity": 8 },
+      { "id": "coal", "quantity": 6 },
+      { "id": "furnace", "quantity": 1 },
+      { "id": "coins", "quantity": 320 }
+    ]
+  },
+  {
+    "id": "coal",
+    "spriteKey": "img/sprites/Item/Coal.png",
+    "quantity": 1,
+    "points": 3
+  },
+  {
+    "id": "cobwebs",
+    "spriteKey": "img/sprites/Item/Cobwebs.png",
+    "quantity": 1,
+    "points": 5
+  },
+  {
+    "id": "sandBucket",
+    "spriteKey": "img/sprites/Item/Sand_Bucket.png",
+    "quantity": 1,
+    "points": 6
+  }
+]

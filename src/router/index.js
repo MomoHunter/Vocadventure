@@ -6,6 +6,8 @@ import SelectionCount from '@/views/SelectionCount.vue'
 import TheTraining from '@/views/TheTraining.vue'
 import TheWriteKanji from '@/views/TheWriteKanji.vue'
 import TheAdventure from '@/views/TheAdventure.vue'
+import TheShop from '@/views/TheShop.vue'
+import TheInventory from '@/views/TheInventory.vue'
 import TheSettings from '@/views/TheSettings.vue'
 import TheNotFound from '@/views/TheNotFound.vue'
 
@@ -68,6 +70,25 @@ const routes = [
     path: '/adventure',
     name: 'adventure',
     component: TheAdventure,
+    meta: {
+      forward: []
+    }
+  },
+  {
+    path: '/shop',
+    name: 'shop',
+    component: TheShop,
+    meta: {
+      forward: [
+        'inventory',
+        'details'
+      ]
+    }
+  },
+  {
+    path: '/inventory',
+    name: 'inventory',
+    component: TheInventory,
     meta: {
       forward: []
     }
