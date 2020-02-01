@@ -138,7 +138,7 @@ export default {
       this.closeNotification()
     },
     addAllCategories () {
-      this.$store.commit('vueDict/setCategories', Object.keys(this.getCategories()))
+      this.$store.commit('vueDict/setCategories', this.$store.getters['vueDict/getCategories'])
       this.closeNotification()
     },
     removeCategory (category) {

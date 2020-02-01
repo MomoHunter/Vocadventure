@@ -51,7 +51,9 @@ const routes = [
     name: 'training',
     component: TheTraining,
     meta: {
-      forward: []
+      forward: [
+        'kanji'
+      ]
     }
   },
   {

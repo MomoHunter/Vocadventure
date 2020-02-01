@@ -11,6 +11,7 @@ export default {
     categoriesChosen: [],
     categoriesPlayed: [],
     writeKanji: null,
+    trainingStash: null,
     difficulty: '',
     wordCount: 0,
     showModals: {
@@ -27,9 +28,10 @@ export default {
       let vocabs = Vocabulary[rootState.targetLanguage]
 
       for (let category of state.categoriesChosen) {
-        vocabs.words[category].forEach(word => {
+        vocabs.words[category].forEach((word, index) => {
           let wordCopy = JSON.parse(JSON.stringify(word))
           wordCopy.category = category
+          wordCopy.index = index
           wordObjects.push(wordCopy)
         }, this)
       }
@@ -87,6 +89,9 @@ export default {
     },
     setWriteKanji (state, object) {
       state.writeKanji = object
+    },
+    setTrainingStash (state, object) {
+      state.trainingStash = object
     },
     changeCategoriesPlayed (state, categoriesPlayed) {
       state.categoriesPlayed = categoriesPlayed

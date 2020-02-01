@@ -3,7 +3,8 @@
     <HeroWithTags class="marginBottomSmall" title="writeKanjiTitle" :subtitle="currentWord[$store.state.lang]"
                   :tagObjects="tags" />
     <div class="is-10 marginBottomSmall">
-      <DropdownSpecial buttonText="writeKanjiDropdown" buttonColor="is-link" :vocabs="words" />
+      <DropdownSpecial buttonText="writeKanjiDropdown" buttonColor="is-link" :vocabs="words"
+                       @click="setCurrentWord($event.category, $event.index)" />
     </div>
     <div class="box is-10 flexGrow centerText specialFont" v-maxFontSize>
       <span>{{ currentWord[words.foreignAlphabet][currentLetter] }}</span>
@@ -15,7 +16,7 @@
     </div>
     <div class="is-10">
       <ButtonBasic color="is-danger" icon="arrow-left" text="writeKanjiButton1"
-                   @click="$router.push({ name: 'category', params: { destination: 'kanji' } })" />
+                   @click="navBack()" />
     </div>
   </div>
 </template>
@@ -86,6 +87,14 @@ export default {
         default:
           return 'is-danger'
       }
+    },
+    navBack () {
+      if (this.$store.state.vueDict.writeKanji) {
+        this.$store.commit('vueDict/setWriteKanji', null)
+        this.$router.push({ name: 'training' })
+      } else {
+        this.$router.push({ name: 'category', params: { destination: 'kanji' } })
+      }
     }
   }
 }
@@ -126,11 +135,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    line-height: 0;
   }
 
   .specialFont {
     font-family: "KanjiStrokeOrders";
+    line-height: 0;
   }
 }
 </style>
