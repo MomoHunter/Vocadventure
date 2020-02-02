@@ -12,7 +12,7 @@
              :class="[getSizeClass('input'), { 'is-link': solutionVisible}]" v-model="latinInput"
              :readonly="resultsVisible" />
       <span class="icon is-1 has-text-warning">
-        <font-awesome-icon v-show="resultsVisible && isLatinCorrect" :icon="['fas', 'coins']"
+        <font-awesome-icon v-show="resultsVisible && isLatinCorrect > 0" :icon="['fas', 'coins']"
                            :size="getSizeClass('fas')" />
       </span>
     </div>
@@ -24,7 +24,7 @@
       <input class="input is-rounded is-10" type="text" :placeholder="getText(words.foreignAlphabet)"
              :class="[getSizeClass('input'), { 'is-link': solutionVisible}]" v-model="foreignInput" readonly />
       <span class="icon is-1 has-text-warning">
-        <font-awesome-icon v-show="resultsVisible && isForeignCorrect" :icon="['fas', 'coins']"
+        <font-awesome-icon v-show="resultsVisible && isForeignCorrect > 0" :icon="['fas', 'coins']"
                            :size="getSizeClass('fas')" />
       </span>
     </div>
@@ -162,22 +162,62 @@ export default {
       return vocabs
     },
     isLatinCorrect () {
-      return this.userLatinInput.toLowerCase() === this.words.words[this.currentWord][this.words.latinAlphabet].toLowerCase()
+      if (this.userLatinInput.toLowerCase() ===
+          this.words.words[this.currentWord][this.words.latinAlphabet].toLowerCase()) {
+        return 2
+      } else if (this.streamline(this.userLatinInput) ===
+                 this.streamline(this.words.words[this.currentWord][this.words.latinAlphabet])) {
+        return 1
+      } else {
+        return 0
+      }
     },
     latinIcon () {
-      return this.isLatinCorrect ? 'check' : 'times'
+      switch (this.isLatinCorrect) {
+        case 0:
+          return 'times'
+        default:
+          return 'check'
+      }
     },
     latinIconColor () {
-      return this.isLatinCorrect ? 'has-text-success' : 'has-text-danger'
+      switch (this.isLatinCorrect) {
+        case 2:
+          return 'has-text-success'
+        case 1:
+          return 'has-text-warning'
+        default:
+          return 'has-text-danger'
+      }
     },
     isForeignCorrect () {
-      return this.userForeignInput.toLowerCase() === this.words.words[this.currentWord][this.words.foreignAlphabet].toLowerCase()
+      if (this.userForeignInput.toLowerCase() ===
+          this.words.words[this.currentWord][this.words.foreignAlphabet].toLowerCase()) {
+        return 2
+      } else if (this.streamline(this.userForeignInput) ===
+                 this.streamline(this.words.words[this.currentWord][this.words.foreignAlphabet])) {
+        return 1
+      } else {
+        return 0
+      }
     },
     foreignIcon () {
-      return this.isForeignCorrect ? 'check' : 'times'
+      switch (this.isForeignCorrect) {
+        case 0:
+          return 'times'
+        default:
+          return 'check'
+      }
     },
     foreignIconColor () {
-      return this.isForeignCorrect ? 'has-text-success' : 'has-text-danger'
+      switch (this.isForeignCorrect) {
+        case 2:
+          return 'has-text-success'
+        case 1:
+          return 'has-text-warning'
+        default:
+          return 'has-text-danger'
+      }
     },
     progressText () {
       return this.progressBarCount + ' / ' + this.words.words.length
@@ -192,6 +232,9 @@ export default {
     },
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
+    },
+    streamline (word) {
+      return word.toLowerCase().replace(/(\(.+\))|[-, .!?/！。・]/g, '')
     },
     showItems () {
 
@@ -217,14 +260,13 @@ export default {
       this.correctLatinWords.push(this.isLatinCorrect)
       this.correctForeignWords.push(this.isForeignCorrect)
 
-      if (this.isLatinCorrect) {
-        this.$store.commit('vueDict/addStatAddit', { id: 'points', count: 1 })
-        this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: 1 })
+      if (this.isLatinCorrect > 0) {
+        this.$store.commit('vueDict/addStatAddit', { id: 'points', count: this.isLatinCorrect })
+        this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: this.isLatinCorrect })
       }
-      if (this.isForeignCorrect) {
-        let count = parseInt(this.words.words[this.currentWord].difficulty)
-        this.$store.commit('vueDict/addStatAddit', { id: 'points', count: count })
-        this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: count })
+      if (this.isForeignCorrect > 0) {
+        this.$store.commit('vueDict/addStatAddit', { id: 'points', count: this.isForeignCorrect * 2 })
+        this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: this.isForeignCorrect * 2 })
       }
 
       this.progressBarCount++

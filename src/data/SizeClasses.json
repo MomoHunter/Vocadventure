@@ -25,7 +25,7 @@
   },
   "fas": {
     "small": "sm",
-    "normal": "",
+    "normal": "1x",
     "medium": "lg",
     "large": "2x"
   },

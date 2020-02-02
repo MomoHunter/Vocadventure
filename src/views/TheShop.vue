@@ -19,6 +19,30 @@
     <InputWithButton v-show="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
                iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
     <div class="is-10 flexGrow itemContainer">
+      <div class="box customBox">
+        <p class="content" :class="getSizeClass('content')">{{ sortIcon }}</p>
+        <div class="flexGrow fullWidth">
+
+        </div>
+      </div>
+      <div class="box customBox">
+        <p class="content" :class="getSizeClass('content')">{{ sortIcon }}</p>
+        <div class="flexGrow fullWidth">
+
+        </div>
+      </div>
+      <div class="box customBox">
+        <p class="content" :class="getSizeClass('content')">{{ sortIcon }}</p>
+        <div class="flexGrow fullWidth">
+
+        </div>
+      </div>
+      <div class="box customBox">
+        <p class="content" :class="getSizeClass('content')">{{ sortIcon }}</p>
+        <div class="flexGrow fullWidth">
+
+        </div>
+      </div>
     </div>
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" color="is-primary" icon="briefcase" text="shopButton4"
@@ -64,6 +88,9 @@ export default {
     }
   },
   methods: {
+    getSizeClass (type) {
+      return this.$store.getters.getSizeClass(type)
+    },
     sort (type) {
       if (type.endsWith('Asc')) {
         this.sortIcon = 'sort-down'
@@ -143,6 +170,28 @@ export default {
 
   .flexGrow {
     flex-grow: 1;
+  }
+}
+
+.itemContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+
+  .customBox {
+    display: flex;
+    flex-direction: column;
+    width: calc(50% - .5rem);
+    margin-bottom: 1rem;
+
+    &:nth-child(odd) {
+      margin-right: .5rem;
+    }
+
+    &:nth-child(even) {
+      margin-left: .5rem;
+    }
   }
 }
 </style>

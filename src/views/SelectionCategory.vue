@@ -244,7 +244,7 @@ export default {
       }
     },
     getDifficulty (id) {
-      let vocabs = this.getCategories()[id]
+      let vocabs = this.$store.getters['vueDict/getCategories'][id]
 
       return vocabs.reduce((acc, entry) => {
         return acc + parseInt(entry.difficulty)

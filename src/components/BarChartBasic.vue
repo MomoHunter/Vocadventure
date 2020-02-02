@@ -7,8 +7,7 @@
       {{ percentage }}%
     </span>
     <div class="barContainer" :class="getSizeClass('barContainer')">
-      <div class="block" :class="value ? 'has-background-success' : 'has-background-danger'"
-           v-for="(value, index) in values" :key="index"></div>
+      <div class="block" :class="backgroundColor(value)" v-for="(value, index) in values" :key="index"></div>
     </div>
   </div>
 </template>
@@ -23,7 +22,14 @@ export default {
   computed: {
     percentage () {
       return (this.values.reduce((result, value) => {
-        return value ? result + 1 : result
+        switch (value) {
+          case 2:
+            return result + 1
+          case 1:
+            return result + 0.5
+          default:
+            return result
+        }
       }, 0) / this.values.length * 100).toFixed(2)
     }
   },
@@ -33,6 +39,16 @@ export default {
     },
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
+    },
+    backgroundColor (value) {
+      switch (value) {
+        case 2:
+          return 'has-background-success'
+        case 1:
+          return 'has-background-warning'
+        default:
+          return 'has-background-danger'
+      }
     }
   }
 }
