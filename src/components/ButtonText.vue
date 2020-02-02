@@ -9,7 +9,7 @@
 export default {
   name: 'ButtonText',
   props: {
-    text: String,
+    text: [String, Number],
     color: String,
     selected: Boolean
   },

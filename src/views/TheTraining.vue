@@ -26,8 +26,8 @@
       <div class="control is-1 is-marginless"></div>
       <InputReadonly class="is-10 is-marginless" type="text" :value="getForeignWord" />
       <div class="control is-1 is-marginless centerIcon" @click="navTo('kanji')">
-        <span class="icon has-text-success" :class="getSizeClass('icon')">
-          <font-awesome-icon :icon="['fas', 'edit']" />
+        <span class="icon has-text-success">
+          <font-awesome-icon :icon="['fas', 'edit']" :size="getSizeClass('fas')" />
         </span>
       </div>
     </div>

@@ -24,7 +24,7 @@
     "large": "is-large"
   },
   "fas": {
-    "small": "",
+    "small": "sm",
     "normal": "",
     "medium": "lg",
     "large": "2x"
@@ -80,6 +80,12 @@
   "barContainer": {
     "small": "is-small",
     "normal": "is-normal",
+    "medium": "is-medium",
+    "large": "is-large"
+  },
+  "td": {
+    "small": "is-small",
+    "normal": "",
     "medium": "is-medium",
     "large": "is-large"
   }

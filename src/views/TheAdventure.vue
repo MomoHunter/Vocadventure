@@ -5,24 +5,27 @@
       <canvas id="adventureCanvas" width="600" height="300"></canvas>
     </div>
     <div class="innerFlexContainerInput" v-show="!statisticsVisible">
-      <span class="icon is-1" :class="[getSizeClass('icon'), latinIconColor]">
-        <font-awesome-icon v-show="resultsVisible" :icon="['fas', latinIcon]" />
+      <span class="icon is-1" :class="latinIconColor">
+        <font-awesome-icon v-show="resultsVisible" :icon="['fas', latinIcon]" :size="getSizeClass('fas')" />
       </span>
       <input class="input is-rounded is-10" type="text" :placeholder="getText(words.latinAlphabet)"
              :class="[getSizeClass('input'), { 'is-link': solutionVisible}]" v-model="latinInput"
              :readonly="resultsVisible" />
-      <span class="icon is-1 has-text-warning" :class="getSizeClass('icon')">
-        <font-awesome-icon v-show="resultsVisible && isLatinCorrect" :icon="['fas', 'coins']" />
+      <span class="icon is-1 has-text-warning">
+        <font-awesome-icon v-show="resultsVisible && isLatinCorrect" :icon="['fas', 'coins']"
+                           :size="getSizeClass('fas')" />
       </span>
     </div>
     <div class="innerFlexContainerInput" v-show="!statisticsVisible">
-      <span class="icon is-1" :class="[getSizeClass('icon'), foreignIconColor]">
-        <font-awesome-icon v-show="resultsVisible" :icon="['fas', foreignIcon]" />
+      <span class="icon is-1" :class="foreignIconColor">
+        <font-awesome-icon v-show="resultsVisible" :icon="['fas', foreignIcon]"
+                           :size="getSizeClass('fas')" />
       </span>
       <input class="input is-rounded is-10" type="text" :placeholder="getText(words.foreignAlphabet)"
              :class="[getSizeClass('input'), { 'is-link': solutionVisible}]" v-model="foreignInput" readonly />
-      <span class="icon is-1 has-text-warning" :class="getSizeClass('icon')">
-        <font-awesome-icon v-show="resultsVisible && isForeignCorrect" :icon="['fas', 'coins']" />
+      <span class="icon is-1 has-text-warning">
+        <font-awesome-icon v-show="resultsVisible && isForeignCorrect" :icon="['fas', 'coins']"
+                           :size="getSizeClass('fas')" />
       </span>
     </div>
     <div class="innerFlexContainerButton is-10" v-show="!statisticsVisible">

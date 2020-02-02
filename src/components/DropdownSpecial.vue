@@ -10,13 +10,15 @@
             <table class="table fullWidth" v-for="(words, key) in vocabs.words" :key="key">
               <thead>
                 <tr class="headerSticky">
-                  <td colspan="4" class="has-background-primary has-text-centered">{{ getText(key) }}</td>
+                  <td colspan="4" class="has-background-primary has-text-centered" :class="getSizeClass('td')">
+                    {{ getText(key) }}
+                  </td>
                 </tr>
               </thead>
               <tr v-for="(word, index) in words" :key="index">
-                <td class="tenthWidth">{{ index + 1 }}</td>
-                <td class="halfWidth">{{ word[$store.state.lang] }}</td>
-                <td>{{ word[vocabs.foreignAlphabet] }}</td>
+                <td class="tenthWidth" :class="getSizeClass('td')">{{ index + 1 }}</td>
+                <td class="halfWidth" :class="getSizeClass('td')">{{ word[$store.state.lang] }}</td>
+                <td :class="getSizeClass('td')">{{ word[vocabs.foreignAlphabet] }}</td>
                 <td class="tenthWidth is-paddingless">
                   <ButtonIcon color="is-success" icon="arrow-right"
                               @click="selectWord(key, index)" />
@@ -59,6 +61,9 @@ export default {
     getText (id) {
       return this.$store.getters.getText(id)
     },
+    getSizeClass (type) {
+      return this.$store.getters.getSizeClass(type)
+    },
     selectWord (category, index) {
       this.$emit('click', { category: category, index: index })
       this.toggleDropdown()
@@ -95,5 +100,17 @@ export default {
 
 .halfWidth {
   width: 50%;
+}
+
+.is-small {
+  font-size: .85em;
+}
+
+.is-medium {
+  font-size: 1.25rem;
+}
+
+.is-large {
+  font-size: 1.5rem;
 }
 </style>
