@@ -3,7 +3,7 @@
     { "german": "Ja", "english": "Yes", "romaji": "hai", "kana": "はい", "difficulty": "1" },
     { "german": "Ja 2", "english": "Yes 2", "romaji": "ee", "kana": "ええ", "difficulty": "1" },
     { "german": "m-hm", "english": "u-huh", "romaji": "un", "kana": "うん", "difficulty": "1" },
-    { "german": "Ja, genau, stimmt", "english": "yes, exactly, correct", "romaji": "sou (sou sou)", "kana": "そう　(そう　そう)", "difficulty": "2" },
+    { "german": "Ja, genau, stimmt", "english": "yes, exactly, correct", "romaji": "sou (sou sou)", "kana": "そう（そうそう）", "difficulty": "2" },
     { "german": "aha", "english": "mhm", "romaji": "naruhodo", "kana": "なるほど", "difficulty": "1" },
     { "german": "Nein", "english": "no", "romaji": "iie", "kana": "いいえ", "difficulty": "1" },
     { "german": "Nein (emotionaler)", "english": "no (more emotional)", "romaji": "iya", "kana": "いや", "difficulty": "1" },
@@ -33,7 +33,8 @@
     { "german": "Danke. (Kansai-Dialekt)", "english": "Thanks. (Kansai-dialect)", "romaji": "Ooki ni.", "kana": "おおきに。", "difficulty": "1" },
     { "german": "Keine Ursache. Nichts zu danken. (höflich)", "english": "No problem. You're welcome. (polite)", "romaji": "Dou itashimashite.", "kana": "どういたしまして。", "difficulty": "2" },
     { "german": "Ach was! Kein Thema! (neutral)", "english": "No problem. (neutral)", "romaji": "Iie.", "kana": "いいえ。", "difficulty": "1" },
-    { "german": "Um Himmels Willen, nein! (Starke Erwiderung auf Dank/Lob)", "english": "No problem! (strong reaction to thanks/praise", "romaji": "Tonde mo nai (desu).", "kana": "とんでもない(です)。", "difficulty": "2" }
+    { "german": "Um Himmels Willen, nein! (Starke Erwiderung auf Dank/Lob)", "english": "No problem! (strong reaction to thanks/praise", "romaji": "Tonde mo nai (desu).", "kana": "とんでもない（です）。", "difficulty": "2" },
+    { "german": "Danke für ihre Mühe./Es war anstrengend für Sie.", "english": "Thanks for your Effort./It was exhausting for you.", "romaji": "O-tsukare-sama (deshita)", "kana": "お疲れ様（でした）。", "difficulty": "3" }
   ],
   "japaneseCategory3": [
     { "german": "sich entschuldigen", "english": "to apologize", "romaji": "ayamaru", "kana": "謝る", "difficulty": "3" }

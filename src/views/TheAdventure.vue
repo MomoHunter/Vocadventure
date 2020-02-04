@@ -234,7 +234,7 @@ export default {
       return this.$store.getters.getSizeClass(type)
     },
     streamline (word) {
-      return word.toLowerCase().replace(/(\(.+\))|[-, .!?/！。・]/g, '')
+      return word.toLowerCase().replace(/(\(.+\)|（.+）)|[-, .!?/！。・]/g, '')
     },
     showItems () {
 

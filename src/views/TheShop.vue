@@ -44,6 +44,7 @@
         </div>
       </div>
     </div>
+    <PaginationBasic :pages="9" :currentPage="currentPage" @click="changePage($event)" />
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" color="is-primary" icon="briefcase" text="shopButton4"
                    @click="$router.push({ name: 'inventory' })" />
@@ -59,6 +60,7 @@ import ButtonBasic from '@/components/ButtonBasic.vue'
 import DropdownRounded from '@/components/DropdownRounded.vue'
 import ButtonIcon from '@/components/ButtonIcon.vue'
 import InputWithButton from '@/components/InputWithButton.vue'
+import PaginationBasic from '@/components/PaginationBasic.vue'
 
 export default {
   name: 'TheShop',
@@ -67,7 +69,8 @@ export default {
     ButtonBasic,
     DropdownRounded,
     ButtonIcon,
-    InputWithButton
+    InputWithButton,
+    PaginationBasic
   },
   data () {
     return {
@@ -75,6 +78,7 @@ export default {
       showSort: false,
       searchString: '',
       sortIcon: 'sort',
+      currentPage: 1,
       sortFunction (that) {
         return (a, b) => { return 0 }
       }
@@ -142,6 +146,11 @@ export default {
       this.showSearch = !this.showSearch
       if (!this.showSearch) {
         this.searchString = ''
+      }
+    },
+    changePage (page) {
+      if (page !== '&hellip;') {
+        this.currentPage = page
       }
     }
   }
