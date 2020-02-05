@@ -18,33 +18,20 @@
     </div>
     <InputWithButton v-show="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
                iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
-    <div class="is-10 flexGrow itemContainer">
-      <div class="box customBox">
-        <p class="content" :class="getSizeClass('content')">{{ sortIcon }}</p>
-        <div class="flexGrow fullWidth">
-
-        </div>
-      </div>
-      <div class="box customBox">
-        <p class="content" :class="getSizeClass('content')">{{ sortIcon }}</p>
-        <div class="flexGrow fullWidth">
-
-        </div>
-      </div>
-      <div class="box customBox">
-        <p class="content" :class="getSizeClass('content')">{{ sortIcon }}</p>
-        <div class="flexGrow fullWidth">
-
-        </div>
-      </div>
-      <div class="box customBox">
-        <p class="content" :class="getSizeClass('content')">{{ sortIcon }}</p>
-        <div class="flexGrow fullWidth">
-
+    <div v-if="visibleItems.length > 0" class="is-10 flexGrow itemContainer">
+      <div class="box customBox" v-for="item in visibleItems" :key="item.id"
+           @click="$router.push({ name: 'details', params: { item: item.id } })">
+        <p class="content boxTitle" :class="getSizeClass('content')">{{ getText(item.id) }}</p>
+        <div class="flexGrow fullWidth backgroundPicture" :style="{ backgroundImage: 'url(' + item.spriteKey + ')' }">
         </div>
       </div>
     </div>
-    <PaginationBasic :pages="9" :currentPage="currentPage" @click="changePage($event)" />
+    <div v-else class="is-10 flexGrow emptyPage">
+      <p class="content" :class="getSizeClass('content')">
+        {{ getText('shopNoItems') }}
+      </p>
+    </div>
+    <PaginationBasic v-show="pages > 0" :pages="pages" :currentPage="currentPage" @click="changePage($event)" />
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" color="is-primary" icon="briefcase" text="shopButton4"
                    @click="$router.push({ name: 'inventory' })" />
@@ -89,9 +76,27 @@ export default {
       return [
         'sortStandard', 'sortAlphAsc', 'sortAlphDesc'
       ]
+    },
+    visibleItems () {
+      let result = []
+      for (let i = (this.currentPage - 1) * 4; i < Math.min(this.items.length, this.currentPage * 4); i++) {
+        result.push(this.items[i])
+      }
+      return result
+    },
+    items () {
+      return this.$store.state.vueDict.items.filter(entry => {
+        return this.getText(entry.id).toLowerCase().includes(this.searchString.toLowerCase())
+      }, this).sort(this.sortFunction(this))
+    },
+    pages () {
+      return Math.ceil(this.items.length / 4)
     }
   },
   methods: {
+    getText (id) {
+      return this.$store.getters.getText(id)
+    },
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
     },
@@ -113,9 +118,9 @@ export default {
         case 'sortAlphAsc':
           this.sortFunction = function (that) {
             return (a, b) => {
-              if (that.getText(a).toString() > that.getText(b).toString()) {
+              if (that.getText(a.id) > that.getText(b.id)) {
                 return 1
-              } else if (that.getText(a).toString() < that.getText(b).toString()) {
+              } else if (that.getText(a.id) < that.getText(b.id)) {
                 return -1
               } else {
                 return 0
@@ -126,9 +131,9 @@ export default {
         case 'sortAlphDesc':
           this.sortFunction = function (that) {
             return (a, b) => {
-              if (that.getText(a).toString() < that.getText(b).toString()) {
+              if (that.getText(a.id) < that.getText(b.id)) {
                 return 1
-              } else if (that.getText(a).toString() > that.getText(b).toString()) {
+              } else if (that.getText(a.id) > that.getText(b.id)) {
                 return -1
               } else {
                 return 0
@@ -152,6 +157,11 @@ export default {
       if (page !== '&hellip;') {
         this.currentPage = page
       }
+    }
+  },
+  watch: {
+    searchString () {
+      this.currentPage = 1
     }
   }
 }
@@ -180,19 +190,25 @@ export default {
   .flexGrow {
     flex-grow: 1;
   }
+
+  .emptyPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .itemContainer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-items: stretch;
 
   .customBox {
     display: flex;
     flex-direction: column;
     width: calc(50% - .5rem);
     margin-bottom: 1rem;
+    height: calc(50% - 1rem);
 
     &:nth-child(odd) {
       margin-right: .5rem;
@@ -200,6 +216,16 @@ export default {
 
     &:nth-child(even) {
       margin-left: .5rem;
+    }
+
+    .boxTitle {
+      text-align: center;
+    }
+
+    .backgroundPicture {
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
     }
   }
 }

@@ -75,6 +75,12 @@ export default {
     getCategoryPlayed: (state) => (id) => {
       let data = state.categoriesPlayed.find(entry => entry.id === id)
       return data || { id: id, count: 0 }
+    },
+    getItemObject: (state) => (id) => {
+      return state.items.find(item => item.id === id)
+    },
+    getInventoryObject: (state) => (id) => {
+      return state.inventory.find(item => item.id === id)
     }
   },
   mutations: {

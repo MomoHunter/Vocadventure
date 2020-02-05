@@ -88,5 +88,11 @@
     "normal": "",
     "medium": "is-medium",
     "large": "is-large"
+  },
+  "pagination": {
+    "small": "is-small",
+    "normal": "",
+    "medium": "is-medium",
+    "large": "is-large"
   }
 }

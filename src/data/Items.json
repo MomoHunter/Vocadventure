@@ -1,7 +1,7 @@
 [
   {
     "id": "wood",
-    "spriteKey": "img/sprites/Item/Wood.png",
+    "spriteKey": "img/items/Wood.png",
     "quantity": 1,
     "points": 3,
     "costs": [
@@ -10,7 +10,7 @@
   },
   {
     "id": "stone",
-    "spriteKey": "img/sprites/Item/Stone.png",
+    "spriteKey": "img/items/Stone.png",
     "quantity": 1,
     "points": 3,
     "costs": [
@@ -19,7 +19,7 @@
   },
   {
     "id": "ironore",
-    "spriteKey": "img/sprites/Item/Ironore.png",
+    "spriteKey": "img/items/Ironore.png",
     "quantity": 1,
     "points": 9,
     "costs": [
@@ -28,7 +28,7 @@
   },
   {
     "id": "fish",
-    "spriteKey": "img/sprites/Item/Fish.png",
+    "spriteKey": "img/items/Fish.png",
     "quantity": 1,
     "points": 6,
     "costs": [
@@ -37,7 +37,7 @@
   },
   {
     "id": "worm",
-    "spriteKey": "img/sprites/Item/Worm.png",
+    "spriteKey": "img/items/Worm.png",
     "quantity": 1,
     "points": 1,
     "costs": [
@@ -46,7 +46,7 @@
   },
   {
     "id": "apple",
-    "spriteKey": "img/sprites/Item/Apple.png",
+    "spriteKey": "img/items/Apple.png",
     "quantity": 1,
     "points": 5,
     "costs": [
@@ -55,7 +55,7 @@
   },
   {
     "id": "string",
-    "spriteKey": "img/sprites/Item/String.png",
+    "spriteKey": "img/items/String.png",
     "quantity": 1,
     "points": 7,
     "costs": [
@@ -64,8 +64,8 @@
     ]
   },
   {
-    "id": "shovel",
-    "spriteKey": "img/sprites/Item/Shovel.png",
+    "id": "stoneShovel",
+    "spriteKey": "img/items/Stone_Shovel.png",
     "quantity": 1,
     "points": 11,
     "durability": 13,
@@ -77,8 +77,8 @@
     ]
   },
   {
-    "id": "axe",
-    "spriteKey": "img/sprites/Item/Axe.png",
+    "id": "stoneAxe",
+    "spriteKey": "img/items/Stone_Axe.png",
     "quantity": 1,
     "points": 13,
     "durability": 10,
@@ -90,8 +90,8 @@
     ]
   },
   {
-    "id": "fishingRod",
-    "spriteKey": "img/sprites/Item/Fishing_Rod.png",
+    "id": "woodenFishingRod",
+    "spriteKey": "img/items/Wooden_Fishing_Rod.png",
     "quantity": 1,
     "points": 16,
     "durability": 8,
@@ -102,8 +102,8 @@
     ]
   },
   {
-    "id": "pickaxe",
-    "spriteKey": "img/sprites/Item/Pickaxe.png",
+    "id": "stonePickaxe",
+    "spriteKey": "img/items/Stone_Pickaxe.png",
     "quantity": 1,
     "points": 18,
     "durability": 16,
@@ -116,7 +116,7 @@
   },
   {
     "id": "furnace",
-    "spriteKey": "img/sprites/Item/Furnace.png",
+    "spriteKey": "img/items/Furnace.png",
     "quantity": 1,
     "points": 12,
     "costs": [
@@ -126,7 +126,7 @@
   },
   {
     "id": "ironbar",
-    "spriteKey": "img/sprites/Item/Ironbar.png",
+    "spriteKey": "img/items/Ironbar.png",
     "quantity": 3,
     "points": 36,
     "costs": [
@@ -138,7 +138,7 @@
   },
   {
     "id": "glass",
-    "spriteKey": "img/sprites/Item/Glass.png",
+    "spriteKey": "img/items/Glass.png",
     "quantity": 8,
     "points": 64,
     "costs": [
@@ -150,19 +150,19 @@
   },
   {
     "id": "coal",
-    "spriteKey": "img/sprites/Item/Coal.png",
+    "spriteKey": "img/items/Coal.png",
     "quantity": 1,
     "points": 3
   },
   {
     "id": "cobwebs",
-    "spriteKey": "img/sprites/Item/Cobwebs.png",
+    "spriteKey": "img/items/Cobwebs.png",
     "quantity": 1,
     "points": 5
   },
   {
-    "id": "sandBucket",
-    "spriteKey": "img/sprites/Item/Sand_Bucket.png",
+    "id": "sand",
+    "spriteKey": "img/items/Sand.png",
     "quantity": 1,
     "points": 6
   }

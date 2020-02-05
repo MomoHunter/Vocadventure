@@ -7,6 +7,7 @@ import TheTraining from '@/views/TheTraining.vue'
 import TheWriteKanji from '@/views/TheWriteKanji.vue'
 import TheAdventure from '@/views/TheAdventure.vue'
 import TheShop from '@/views/TheShop.vue'
+import TheDetails from '@/views/TheDetails.vue'
 import TheInventory from '@/views/TheInventory.vue'
 import TheSettings from '@/views/TheSettings.vue'
 import TheNotFound from '@/views/TheNotFound.vue'
@@ -83,6 +84,14 @@ const routes = [
         'inventory',
         'details'
       ]
+    }
+  },
+  {
+    path: '/details/:item',
+    name: 'details',
+    component: TheDetails,
+    meta: {
+      forward: []
     }
   },
   {

@@ -165,9 +165,9 @@ export default {
         case 'sortAlphAsc':
           this.sortFunction = function (that) {
             return (a, b) => {
-              if (that.getText(a).toString() > that.getText(b).toString()) {
+              if (that.getText(a) > that.getText(b)) {
                 return 1
-              } else if (that.getText(a).toString() < that.getText(b).toString()) {
+              } else if (that.getText(a) < that.getText(b)) {
                 return -1
               } else {
                 return 0
@@ -178,9 +178,9 @@ export default {
         case 'sortAlphDesc':
           this.sortFunction = function (that) {
             return (a, b) => {
-              if (that.getText(a).toString() < that.getText(b).toString()) {
+              if (that.getText(a) < that.getText(b)) {
                 return 1
-              } else if (that.getText(a).toString() > that.getText(b).toString()) {
+              } else if (that.getText(a) > that.getText(b)) {
                 return -1
               } else {
                 return 0
