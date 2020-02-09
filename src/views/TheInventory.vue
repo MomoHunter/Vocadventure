@@ -19,20 +19,30 @@
     <InputWithButton v-show="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
                iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
     <div v-if="visibleItems.length > 0" class="is-10 flexGrow itemContainer">
-      <div class="box customBox" v-for="item in visibleItems" :key="item.id">
-        <p class="content boxTitle" :class="getSizeClass('content')">{{ getText(item.id) }}</p>
-        <div class="flexGrow fullWidth backgroundPicture"
-             :style="{ backgroundImage: 'url(' + item.spriteKey + ')' }">
-
+      <transition-group class="transitionGroup" tag="div" :enter-active-class="enterTransition"
+                        :leave-active-class="leaveTransition">
+        <div class="box customBox" :class="absoluteClass(index)" v-for="(item, index) in visibleItems" :key="item.id">
+          <p class="content has-text-centered" :class="getSizeClass('content')">{{ getText(item.id) }}</p>
+          <div class="flexGrow fullWidth backgroundPicture"
+              :style="{ backgroundImage: 'url(' + baseUrl + item.spriteKey + ')' }"></div>
+          <div class="fullWidth infoBar">
+            <div class="content noMarginBottom" :class="getSizeClass('content')">
+              {{ item.quantity }}
+            </div>
+            <progress v-show="item.durability" class="progress flexGrow"
+                      :class="[getSizeClass('progress'), getProgressColor(item)]" :value="item.durability"
+                      :max="item.maxDurability">
+            </progress>
+          </div>
         </div>
-      </div>
+      </transition-group>
     </div>
     <div v-else class="is-10 flexGrow emptyPage">
       <p class="content" :class="getSizeClass('content')">
         {{ getText('inventoryNoItems') }}
       </p>
     </div>
-    <PaginationBasic v-show="pages > 0" :pages="pages" :currentPage="currentPage" @click="changePage($event)" />
+    <PaginationBasic v-show="pages > 1" :pages="pages" :currentPage="currentPage" @click="changePage($event)" />
     <div class="is-10">
       <ButtonBasic color="is-danger" icon="arrow-left" text="inventoryButton5"
                    @click="$router.push({ name: 'shop' })" />
@@ -65,6 +75,8 @@ export default {
       searchString: '',
       sortIcon: 'sort',
       currentPage: 1,
+      enterTransition: 'animated fadeInLeft',
+      leaveTransition: 'animated fadeOutRight',
       sortFunction (that) {
         return (a, b) => { return 0 }
       }
@@ -90,6 +102,9 @@ export default {
     },
     pages () {
       return Math.ceil(this.items.length / 4)
+    },
+    baseUrl () {
+      return process.env.BASE_URL
     }
   },
   methods: {
@@ -156,11 +171,43 @@ export default {
       if (page !== '&hellip;') {
         this.currentPage = page
       }
+    },
+    absoluteClass (index) {
+      switch (index) {
+        case 0:
+          return 'alignTop alignLeft'
+        case 1:
+          return 'alignTop alignRight'
+        case 2:
+          return 'alignBottom alignLeft'
+        case 3:
+          return 'alignBottom alignRight'
+        default:
+          return 'alignTop alignLeft'
+      }
+    },
+    getProgressColor (item) {
+      if (item.durability < item.maxDurability / 3) {
+        return 'is-danger'
+      } else if (item.durability < item.maxDurability / 1.5) {
+        return 'is-warning'
+      } else {
+        return 'is-success'
+      }
     }
   },
   watch: {
     searchString () {
       this.currentPage = 1
+    },
+    currentPage (to, from) {
+      if (to > from) {
+        this.enterTransition = 'animated fadeInRight'
+        this.leaveTransition = 'animated fadeOutLeft'
+      } else {
+        this.enterTransition = 'animated fadeInLeft'
+        this.leaveTransition = 'animated fadeOutRight'
+      }
     }
   }
 }
@@ -198,33 +245,52 @@ export default {
 }
 
 .itemContainer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  .transitionGroup {
+    position: relative;
+    width: 100%;
+    height: 100%;
 
-  .customBox {
-    display: flex;
-    flex-direction: column;
-    width: calc(50% - .5rem);
-    margin-bottom: 1rem;
-    height: calc(50% - 1rem);
+    .customBox {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      width: calc(50% - .5rem);
+      margin-bottom: 1rem;
+      height: calc(50% - 1rem);
 
-    &:nth-child(odd) {
-      margin-right: .5rem;
-    }
+      &.alignLeft {
+        margin-right: .5rem;
+        left: 0px;
+      }
 
-    &:nth-child(even) {
-      margin-left: .5rem;
-    }
+      &.alignRight {
+        margin-left: .5rem;
+        right: 0px;
+      }
 
-    .boxTitle {
-      text-align: center;
-    }
+      &.alignTop {
+        top: 0px;
+      }
 
-    .backgroundPicture {
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: contain;
+      &.alignBottom {
+        bottom: 0px;
+      }
+
+      .backgroundPicture {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+
+      .infoBar {
+        display: flex;
+        flex-direction: row-reverse;
+        flex-wrap: nowrap;
+
+        .noMarginBottom {
+          margin-bottom: 0px;
+        }
+      }
     }
   }
 }

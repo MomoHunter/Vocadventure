@@ -2,7 +2,7 @@
   <div class="flexContainer">
     <HeroBasic class="marginBottomSmall" :title="item.id" />
     <div class="box is-10 flexGrow">
-      <div class="fullWidth fullHeight backgroundPicture" :style="{ backgroundImage: 'url(../' + item.spriteKey + ')' }">
+      <div class="fullWidth fullHeight backgroundPicture" :style="{ backgroundImage: 'url(' + baseUrl + item.spriteKey + ')' }">
       </div>
     </div>
     <table class="table is-10">
@@ -39,6 +39,9 @@ export default {
   computed: {
     item () {
       return this.$store.getters['vueDict/getItemObject'](this.$route.params.item)
+    },
+    baseUrl () {
+      return process.env.BASE_URL
     }
   },
   methods: {
@@ -46,23 +49,54 @@ export default {
       return this.$store.getters.getText(id)
     },
     isEnough (costObject) {
-      let inventoryObject = this.$store.getters['vueDict/getInventoryObject'](costObject.id)
-      if (inventoryObject) {
-        if (inventoryObject.quantity >= costObject.quantity) {
-          return 'has-background-success'
-        }
+      if (this.ownQuantity(costObject.id) >= costObject.quantity) {
+        return 'has-background-success'
       }
       return 'has-background-danger'
     },
     ownQuantity (id) {
-      let inventoryObject = this.$store.getters['vueDict/getInventoryObject'](id)
-      if (inventoryObject) {
-        return inventoryObject.quantity
+      if (id === 'coins') {
+        return this.$store.getters['vueDict/getCoins'].count
+      } else {
+        let inventoryObject = this.$store.getters['vueDict/getInventoryObject'](id)
+        if (inventoryObject) {
+          return inventoryObject.quantity
+        }
+        return 0
       }
-      return 0
     },
     buy () {
+      let buyable = true
 
+      this.item.costs.forEach(entry => {
+        if (this.ownQuantity(entry.id) < entry.quantity) {
+          buyable = false
+        }
+      }, this)
+
+      if (buyable) {
+        this.item.costs.forEach(entry => {
+          if (entry.id === 'coins') {
+            this.$store.commit('vueDict/addStat', { id: entry.id, quantity: -entry.quantity })
+          } else {
+            this.$store.commit('vueDict/addToInventory', { id: entry.id, quantity: -entry.quantity })
+          }
+        }, this)
+
+        this.$store.commit('vueDict/addToInventory', {
+          id: this.item.id,
+          quantity: this.item.quantity,
+          item: {
+            id: this.item.id,
+            quantity: this.item.quantity,
+            spriteKey: this.item.spriteKey,
+            durability: this.item.durability || null,
+            maxDurability: this.item.durability || null
+          }
+        })
+        this.$store.commit('vueDict/addStat', { id: 'points', quantity: this.item.points })
+        window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
+      }
     }
   }
 }

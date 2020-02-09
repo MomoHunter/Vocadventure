@@ -4,6 +4,7 @@
     "spriteKey": "img/items/Wood.png",
     "quantity": 1,
     "points": 3,
+    "unlocked": false,
     "costs": [
       { "id": "coins", "quantity": 35 }
     ]
@@ -13,6 +14,7 @@
     "spriteKey": "img/items/Stone.png",
     "quantity": 1,
     "points": 3,
+    "unlocked": false,
     "costs": [
       { "id": "coins", "quantity": 25 }
     ]
@@ -22,6 +24,7 @@
     "spriteKey": "img/items/Ironore.png",
     "quantity": 1,
     "points": 9,
+    "unlocked": false,
     "costs": [
       { "id": "coins", "quantity": 250 }
     ]
@@ -31,6 +34,7 @@
     "spriteKey": "img/items/Fish.png",
     "quantity": 1,
     "points": 6,
+    "unlocked": false,
     "costs": [
       { "id": "coins", "quantity": 75 }
     ]
@@ -40,6 +44,7 @@
     "spriteKey": "img/items/Worm.png",
     "quantity": 1,
     "points": 1,
+    "unlocked": false,
     "costs": [
       { "id": "coins", "quantity": 45 }
     ]
@@ -49,6 +54,7 @@
     "spriteKey": "img/items/Apple.png",
     "quantity": 1,
     "points": 5,
+    "unlocked": false,
     "costs": [
       { "id": "coins", "quantity": 500 }
     ]
@@ -58,6 +64,7 @@
     "spriteKey": "img/items/String.png",
     "quantity": 1,
     "points": 7,
+    "unlocked": false,
     "costs": [
       { "id": "cobwebs", "quantity": 12 },
       { "id": "coins", "quantity": 60 }
@@ -69,6 +76,7 @@
     "quantity": 1,
     "points": 11,
     "durability": 13,
+    "unlocked": false,
     "costs": [
       {"id": "wood", "quantity": 4},
       {"id": "stone", "quantity": 2},
@@ -82,6 +90,7 @@
     "quantity": 1,
     "points": 13,
     "durability": 10,
+    "unlocked": false,
     "costs": [
       { "id": "wood", "quantity": 4 },
       { "id": "stone", "quantity": 2 },
@@ -95,6 +104,7 @@
     "quantity": 1,
     "points": 16,
     "durability": 8,
+    "unlocked": false,
     "costs": [
       { "id": "wood", "quantity": 3 },
       { "id": "string", "quantity": 5 },
@@ -107,6 +117,7 @@
     "quantity": 1,
     "points": 18,
     "durability": 16,
+    "unlocked": false,
     "costs": [
       { "id": "wood", "quantity": 3 },
       { "id": "stone", "quantity": 5 },
@@ -119,6 +130,7 @@
     "spriteKey": "img/items/Furnace.png",
     "quantity": 1,
     "points": 12,
+    "unlocked": false,
     "costs": [
       { "id": "stone", "quantity": 8 },
       { "id": "coins", "quantity": 450 }
@@ -129,6 +141,7 @@
     "spriteKey": "img/items/Ironbar.png",
     "quantity": 3,
     "points": 36,
+    "unlocked": false,
     "costs": [
       { "id": "furnace", "quantity": 1 },
       { "id": "ironore", "quantity": 6 },
@@ -141,6 +154,7 @@
     "spriteKey": "img/items/Glass.png",
     "quantity": 8,
     "points": 64,
+    "unlocked": false,
     "costs": [
       { "id": "sandBucket", "quantity": 8 },
       { "id": "coal", "quantity": 6 },
@@ -152,18 +166,21 @@
     "id": "coal",
     "spriteKey": "img/items/Coal.png",
     "quantity": 1,
-    "points": 3
+    "points": 3,
+    "unlocked": false
   },
   {
     "id": "cobwebs",
     "spriteKey": "img/items/Cobwebs.png",
     "quantity": 1,
-    "points": 5
+    "points": 5,
+    "unlocked": false
   },
   {
     "id": "sand",
     "spriteKey": "img/items/Sand.png",
     "quantity": 1,
-    "points": 6
+    "points": 6,
+    "unlocked": false
   }
 ]

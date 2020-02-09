@@ -1,9 +1,11 @@
 <template>
-  <section class="hero maxWidth">
+  <section class="hero fullWidth">
     <div class="hero-body">
       <div class="container">
-        <h1 class="title textCenter" :class="getSizeClass('title')">{{ getText(title) }}</h1>
-        <h2 class="subtitle textCenter" :class="getSizeClass('subtitle')" v-if="showSubtitle">{{ getText(subtitle) }}</h2>
+        <h1 class="title has-text-centered" :class="getSizeClass('title')">{{ getText(title) }}</h1>
+        <h2 class="subtitle has-text-centered" :class="getSizeClass('subtitle')" v-if="showSubtitle">
+          {{ getText(subtitle) }}
+        </h2>
       </div>
     </div>
     <div class="hero-foot">
@@ -44,13 +46,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.textCenter {
-  text-align: center;
-}
-
-.maxWidth {
-  width: 100%;
-}
-</style>

@@ -357,6 +357,7 @@ export default {
           break
         case 'buttonRight':
           this.$router.push({ name: 'selection' })
+          this.$store.commit('vueDict/resetAdditional')
           this.$store.commit('vueDict/closeModal')
           break
         default:

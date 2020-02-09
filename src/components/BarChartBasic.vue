@@ -73,6 +73,8 @@ export default {
     flex-direction: row;
     flex-wrap: nowrap;
     width: 100%;
+    border-radius: 290486px;
+    overflow: hidden;
 
     &.is-small {
       height: .75rem;

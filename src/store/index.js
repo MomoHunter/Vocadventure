@@ -10,7 +10,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    version: '0.1.1',
+    version: '0.3.0',
     lang: 'german',
     targetLanguage: 'japanese',
     theme: 'bulma',
@@ -35,7 +35,9 @@ export default new Vuex.Store({
         theme: state.theme,
         size: state.size,
         status: state.vueDict.status,
-        categoriesPlayed: state.vueDict.categoriesPlayed
+        categoriesPlayed: state.vueDict.categoriesPlayed,
+        unlockedItems: state.vueDict.unlockedItems,
+        inventory: state.vueDict.inventory
       }
     }
   },

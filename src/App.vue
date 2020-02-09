@@ -51,6 +51,13 @@ export default {
           data.status.forEach(element => {
             element.additional = 0
           }, this)
+          data.unlockedItems = new Set()
+          data.inventory = []
+        } else if (data.version === '0.1.1') {
+          data.unlockedItems = new Set()
+          data.inventory = []
+        } else if (data.version === '0.2.0') {
+          data.inventory = []
         }
 
         if (data.lang) {
@@ -70,6 +77,14 @@ export default {
         }
         if (data.categoriesPlayed) {
           this.$store.commit('vueDict/changeCategoriesPlayed', data.categoriesPlayed)
+        }
+        if (data.unlockedItems) {
+          for (let item in data.unlockedItems) {
+            this.$store.commit('vueDict/unlockItem', data.unlockedItems[item])
+          }
+        }
+        if (data.inventory) {
+          this.$store.commit('vueDict/changeInventory', data.inventory)
         }
 
         if (data.version !== this.$store.state.version) {

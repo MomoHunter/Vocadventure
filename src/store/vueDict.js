@@ -17,6 +17,7 @@ export default {
     wordCount: 0,
     items: Items,
     inventory: [],
+    unlockedItems: new Set(),
     showModals: {
       name: ''
     },
@@ -76,6 +77,9 @@ export default {
       let data = state.categoriesPlayed.find(entry => entry.id === id)
       return data || { id: id, count: 0 }
     },
+    getCoins: (state) => {
+      return state.status.find(status => status.id === 'coins')
+    },
     getItemObject: (state) => (id) => {
       return state.items.find(item => item.id === id)
     },
@@ -87,12 +91,20 @@ export default {
     changeStatus (state, status) {
       state.status = status
     },
+    addStat (state, object) {
+      state.status.find(entry => entry.id === object.id).count += object.quantity
+    },
     addStatAddit (state, object) {
       state.status.find(entry => entry.id === object.id).additional += object.count
     },
     transferAdditionalStat (state) {
       state.status.forEach(entry => {
         entry.count += entry.additional
+        entry.additional = 0
+      })
+    },
+    resetAdditional (state) {
+      state.status.forEach(entry => {
         entry.additional = 0
       })
     },
@@ -131,6 +143,25 @@ export default {
     },
     showModal (state, options) {
       state.showModals = options
+    },
+    changeInventory (state, inventory) {
+      state.inventory = inventory
+    },
+    unlockItem (state, item) {
+      state.items.find(item => item.id === item).unlocked = true
+      state.unlockedItems.add(item)
+    },
+    addToInventory (state, object) {
+      if (object.quantity > 0) {
+        let item = state.inventory.find(item => item.id === object.id)
+        if (item) {
+          item.quantity += object.quantity
+        } else {
+          state.inventory.push(object.item)
+        }
+      } else {
+        state.inventory.find(item => item.id === object.id).quantity += object.quantity
+      }
     },
     modalAnswer (state, answer) {
       if (answer === 'close') {
