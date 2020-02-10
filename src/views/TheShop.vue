@@ -94,7 +94,7 @@ export default {
     },
     items () {
       return this.$store.state.vueDict.items.filter(entry => {
-        return !entry.unlocked && this.getText(entry.id).toLowerCase().includes(this.searchString.toLowerCase())
+        return entry.unlocked && this.getText(entry.id).toLowerCase().includes(this.searchString.toLowerCase())
       }, this).sort(this.sortFunction(this))
     },
     pages () {

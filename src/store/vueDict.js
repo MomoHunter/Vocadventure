@@ -73,6 +73,16 @@ export default {
 
       return vocabs
     },
+    getVocabsWithDifficulty: (state, getters) => {
+      let vocabs = getters.getVocabs
+      let words = vocabs.words.filter(vocab => parseInt(vocab.difficulty) <= parseInt(state.difficulty))
+
+      return {
+        words: words,
+        latinAlphabet: vocabs.latinAlphabet,
+        foreignAlphabet: vocabs.foreignAlphabet
+      }
+    },
     getCategoryPlayed: (state) => (id) => {
       let data = state.categoriesPlayed.find(entry => entry.id === id)
       return data || { id: id, count: 0 }

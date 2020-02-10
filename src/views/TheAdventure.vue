@@ -153,6 +153,8 @@ export default {
               wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
             } else if (wordObjects[i - 1][vocabs.latinAlphabet] !== vocabs.words[random][vocabs.latinAlphabet]) {
               wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
+            } else if (vocabs.words.length === 1) {
+              wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
             }
           }
         }

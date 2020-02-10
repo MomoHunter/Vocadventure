@@ -47,7 +47,7 @@
                    @click="$router.push({ name: 'category', params: { destination: 'adventure' } })" />
     </div>
     <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-      <TheNotification v-show="showNotification" color="is-danger" text="selectionCountNotification"
+      <TheNotification v-show="showNotification" color="is-danger" :text="notificationId"
                        @click="closeNotification()" />
     </transition>
   </div>
@@ -83,7 +83,8 @@ export default {
       isInputVisible: false,
       customCount: '',
       availableOptions: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200],
-      showNotification: false
+      showNotification: false,
+      notificationId: 'selectionCountNotification1'
     }
   },
   mounted () {
@@ -148,6 +149,10 @@ export default {
     navTo () {
       if (this.$store.state.vueDict.difficulty === '' || this.$store.state.vueDict.wordCount === 0) {
         this.showNotification = true
+        this.notificationId = 'selectionCountNotification1'
+      } else if (this.$store.getters['vueDict/getVocabsWithDifficulty'].words.length === 0) {
+        this.showNotification = true
+        this.notificationId = 'selectionCountNotification2'
       } else {
         this.$router.push({ name: 'adventure' })
       }
