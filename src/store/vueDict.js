@@ -13,7 +13,7 @@ export default {
     categoriesPlayed: [],
     writeKanji: null,
     trainingStash: null,
-    difficulty: '',
+    difficulty: 0,
     wordCount: 0,
     items: Items,
     inventory: [],
@@ -26,6 +26,13 @@ export default {
   getters: {
     getCategories: (state, getters, rootState) => {
       return Object.keys(Vocabulary[rootState.targetLanguage].words)
+    },
+    getCategoryDifficulty: (state, getters, rootState) => (id) => {
+      let category = Vocabulary[rootState.targetLanguage].words[id]
+
+      return category.reduce((acc, word) => {
+        return acc + word.difficulty
+      }, 0) / category.length
     },
     getVocabs: (state, getters, rootState) => {
       let wordObjects = []
@@ -75,7 +82,7 @@ export default {
     },
     getVocabsWithDifficulty: (state, getters) => {
       let vocabs = getters.getVocabs
-      let words = vocabs.words.filter(vocab => parseInt(vocab.difficulty) <= parseInt(state.difficulty))
+      let words = vocabs.words.filter(vocab => vocab.difficulty <= state.difficulty)
 
       return {
         words: words,

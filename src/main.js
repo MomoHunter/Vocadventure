@@ -25,6 +25,12 @@ Vue.directive('maxFontSize', {
   }
 })
 
+Vue.directive('focus', {
+  inserted (el) {
+    el.focus()
+  }
+})
+
 Vue.config.productionTip = false
 
 new Vue({

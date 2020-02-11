@@ -113,16 +113,16 @@ export default {
         },
         {
           nameId: 'adventureDifficultyTag',
-          valueId: 'difficulty' + this.$store.state.vueDict.difficulty,
+          valueId: 'difficulty' + this.$store.state.vueDict.difficulty.toString(),
           color: this.difficultyColor
         }
       ]
     },
     difficultyColor () {
       switch (this.$store.state.vueDict.difficulty) {
-        case '1':
+        case 1:
           return 'is-success'
-        case '2':
+        case 2:
           return 'is-warning'
         default:
           return 'is-danger'
@@ -137,7 +137,7 @@ export default {
         while (vocabs.words.length > 0) {
           let random = Math.floor(Math.random() * vocabs.words.length)
 
-          if (parseInt(vocabs.words[random].difficulty) <= parseInt(this.$store.state.vueDict.difficulty)) {
+          if (vocabs.words[random].difficulty <= this.$store.state.vueDict.difficulty) {
             wordObjects.push(vocabs.words.splice(random, 1)[0])
           } else {
             vocabs.words.splice(random, 1)
@@ -148,7 +148,7 @@ export default {
           let i = wordObjects.length
           let random = Math.floor(Math.random() * vocabs.words.length)
 
-          if (parseInt(vocabs.words[random].difficulty) <= parseInt(this.$store.state.vueDict.difficulty)) {
+          if (vocabs.words[random].difficulty <= this.$store.state.vueDict.difficulty) {
             if (wordObjects.length === 0) {
               wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
             } else if (wordObjects[i - 1][vocabs.latinAlphabet] !== vocabs.words[random][vocabs.latinAlphabet]) {

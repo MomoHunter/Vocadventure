@@ -1,7 +1,7 @@
 <template>
   <div class="field has-addons">
     <div class="control is-expanded" :class="{ 'has-icons-left': hasIconLeft }">
-      <input class="input is-rounded is-fullwidth" :class="[colorInput, getSizeClass('input')]" :type="type"
+      <input v-focus class="input is-rounded is-fullwidth" :class="[colorInput, getSizeClass('input')]" :type="type"
              @input="$emit('input', $event.target.value)" :value="value" />
       <span v-if="hasIconLeft" class="icon is-left">
         <font-awesome-icon :icon="['fas', iconInput]" />

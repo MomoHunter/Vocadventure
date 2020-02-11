@@ -3,20 +3,20 @@
     <HeroBasic title="selectionCountTitle" subtitle="selectionCountSubtitle" />
     <div class="field has-addons is-10">
       <div class="control is-third">
-        <ButtonMDI :selected="difficultySelected('1')" color="is-success" text="difficulty1"
-                   @click="setDifficulty('1')">
+        <ButtonMDI :selected="difficultySelected(1)" color="is-success" text="difficulty1"
+                   @click="setDifficulty(1)">
           <SpeedometerSlow :class="getSizeClass('mdi')" />
         </ButtonMDI>
       </div>
       <div class="control is-third">
-        <ButtonMDI :selected="difficultySelected('2')" color="is-warning" text="difficulty2"
-                   @click="setDifficulty('2')">
+        <ButtonMDI :selected="difficultySelected(2)" color="is-warning" text="difficulty2"
+                   @click="setDifficulty(2)">
           <SpeedometerMedium :class="getSizeClass('mdi')" />
         </ButtonMDI>
       </div>
       <div class="control is-third">
-        <ButtonMDI :selected="difficultySelected('3')" color="is-danger" text="difficulty3"
-                   @click="setDifficulty('3')">
+        <ButtonMDI :selected="difficultySelected(3)" color="is-danger" text="difficulty3"
+                   @click="setDifficulty(3)">
           <Speedometer :class="getSizeClass('mdi')" />
         </ButtonMDI>
       </div>
@@ -32,7 +32,7 @@
         <ButtonText v-show="!isInputVisible && customCountSet" class="is-fullwidth" color="is-primary"
                                  :text="customCount" @click="showInput()"
                                  :selected="wordCountSelected(parseInt(customCount))" />
-        <InputWithButton v-show="isInputVisible" colorInput="is-primary" colorButton="is-success" type="number"
+        <InputWithButton v-if="isInputVisible" colorInput="is-primary" colorButton="is-success" type="number"
                          iconButton="check" @click="hideInput()" v-model="customCount" />
       </div>
       <div class="control is-third right-row">
@@ -144,10 +144,12 @@ export default {
           this.customCount = 9001
         }
         this.$store.commit('vueDict/setWordCount', parseInt(this.customCount))
+      } else {
+        this.$store.commit('vueDict/setWordCount', 0)
       }
     },
     navTo () {
-      if (this.$store.state.vueDict.difficulty === '' || this.$store.state.vueDict.wordCount === 0) {
+      if (this.$store.state.vueDict.difficulty === 0 || this.$store.state.vueDict.wordCount === 0) {
         this.showNotification = true
         this.notificationId = 'selectionCountNotification1'
       } else if (this.$store.getters['vueDict/getVocabsWithDifficulty'].words.length === 0) {

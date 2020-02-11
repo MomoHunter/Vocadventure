@@ -26,8 +26,8 @@
         <ButtonIcon color="is-danger" icon="times" @click="toggleSort()" />
       </div>
     </div>
-    <InputWithButton v-show="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
-               iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
+    <InputWithButton v-if="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
+                     iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
     <div class="field is-grouped is-grouped-multiline maxThirdHeight overflowAuto is-10 flexShrink marginBottomSmall"
          v-show="!nothingSelected">
       <div v-for="category of $store.state.vueDict.categoriesChosen" :key="category" class="control">
@@ -244,11 +244,7 @@ export default {
       }
     },
     getDifficulty (id) {
-      let vocabs = this.$store.getters['vueDict/getCategories'][id]
-
-      return vocabs.reduce((acc, entry) => {
-        return acc + parseInt(entry.difficulty)
-      }, 0) / vocabs.length
+      return this.$store.getters['vueDict/getCategoryDifficulty'](id)
     },
     navTo (destination) {
       if (destination === 'menu') {

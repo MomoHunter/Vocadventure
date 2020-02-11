@@ -1,132 +1,135 @@
 {
   "japaneseCategory1": [
-    { "german": "Ja", "english": "Yes", "romaji": "hai", "kana": "はい", "difficulty": "1" },
-    { "german": "Ja 2", "english": "Yes 2", "romaji": "ee", "kana": "ええ", "difficulty": "1" },
-    { "german": "m-hm", "english": "u-huh", "romaji": "un", "kana": "うん", "difficulty": "1" },
-    { "german": "Ja, genau, stimmt", "english": "yes, exactly, correct", "romaji": "sou (sou sou)", "kana": "そう（そうそう）", "difficulty": "2" },
-    { "german": "aha", "english": "mhm", "romaji": "naruhodo", "kana": "なるほど", "difficulty": "1" },
-    { "german": "Nein", "english": "no", "romaji": "iie", "kana": "いいえ", "difficulty": "1" },
-    { "german": "Nein (emotionaler)", "english": "no (more emotional)", "romaji": "iya", "kana": "いや", "difficulty": "1" },
-    { "german": "Nö", "english": "Nah, nope", "romaji": "uun", "kana": "ううん", "difficulty": "1" },
-    { "german": "Äh", "english": "um", "romaji": "ano", "kana": "あの", "difficulty": "1" },
-    { "german": "Hm...", "english": "Hm...", "romaji": "saa", "kana": "さあ", "difficulty": "1" },
-    { "german": "Waaas? Wow! Boa!", "english": "Whaaat? Wow! Whoa!", "romaji": "hee", "kana": "へえ", "difficulty": "1" },
-    { "german": "Oh! (Frauensprache)", "english": "Oh! (Womenlanguage)", "romaji": "Ara!", "kana": "あら！", "difficulty": "1" },
-    { "german": "Nein, oder? Meine Güte! Von wegen!", "english": "No right? My god! As if!", "romaji": "masaka", "kana": "まさか", "difficulty": "1" },
-    { "german": "Alles klar. Einverstanden. (höflich)", "english": "Alright! Agreed! (polite)", "romaji": "Wakarimashita.", "kana": "分かりました。", "difficulty": "3" },
-    { "german": "Ich habe verstanden. Sofort. (sehr höflich)", "english": "I have understood. Immediately. (really polite)", "romaji": "Kashikomarimashita.", "kana": "かしこまりました。", "difficulty": "2" },
-    { "german": "Da kann man nichts machen.", "english": "There is nothing you can do.", "romaji": "shikata ga nai", "kana": "仕方がない", "difficulty": "3" },
-    { "german": "Da kann man nichts machen. 2", "english": "There is nothing you can do. 2", "romaji": "shou ga nai", "kana": "しょうがない", "difficulty": "3" }
+    { "german": "Ja", "english": "Yes", "romaji": "hai", "kana": "はい", "difficulty": 1 },
+    { "german": "Ja 2", "english": "Yes 2", "romaji": "ee", "kana": "ええ", "difficulty": 1 },
+    { "german": "m-hm", "english": "u-huh", "romaji": "un", "kana": "うん", "difficulty": 1 },
+    { "german": "Ja, genau, stimmt", "english": "yes, exactly, correct", "romaji": "sou (sou sou)", "kana": "そう（そうそう）", "difficulty": 2 },
+    { "german": "aha", "english": "mhm", "romaji": "naruhodo", "kana": "なるほど", "difficulty": 1 },
+    { "german": "Nein", "english": "no", "romaji": "iie", "kana": "いいえ", "difficulty": 1 },
+    { "german": "Nein (emotionaler)", "english": "no (more emotional)", "romaji": "iya", "kana": "いや", "difficulty": 1 },
+    { "german": "Nö", "english": "Nah, nope", "romaji": "uun", "kana": "ううん", "difficulty": 1 },
+    { "german": "Äh", "english": "um", "romaji": "ano", "kana": "あの", "difficulty": 1 },
+    { "german": "Hm...", "english": "Hm...", "romaji": "saa", "kana": "さあ", "difficulty": 1 },
+    { "german": "Waaas? Wow! Boa!", "english": "Whaaat? Wow! Whoa!", "romaji": "hee", "kana": "へえ", "difficulty": 1 },
+    { "german": "Oh! (Frauensprache)", "english": "Oh! (Womenlanguage)", "romaji": "Ara!", "kana": "あら！", "difficulty": 1 },
+    { "german": "Nein, oder? Meine Güte! Von wegen!", "english": "No right? My god! As if!", "romaji": "masaka", "kana": "まさか", "difficulty": 1 },
+    { "german": "Alles klar. Einverstanden. (höflich)", "english": "Alright! Agreed! (polite)", "romaji": "Wakarimashita.", "kana": "分かりました。", "difficulty": 3 },
+    { "german": "Ich habe verstanden. Sofort. (sehr höflich)", "english": "I have understood. Immediately. (really polite)", "romaji": "Kashikomarimashita.", "kana": "かしこまりました。", "difficulty": 2 },
+    { "german": "Da kann man nichts machen.", "english": "There is nothing you can do.", "romaji": "shikata ga nai", "kana": "仕方がない", "difficulty": 3 },
+    { "german": "Da kann man nichts machen. 2", "english": "There is nothing you can do. 2", "romaji": "shou ga nai", "kana": "しょうがない", "difficulty": 3 }
   ],
   "japaneseCategory2": [
-    { "german": "Dankbarkeit, Dank", "english": "Gratitude", "romaji": "kansha", "kana": "感謝", "difficulty": "3" },
-    { "german": "Dank", "english": "Thanks", "romaji": "o-rei", "kana": "お礼", "difficulty": "3" },
-    { "german": "Bitte (geben Sie mir/ tun Sie ...)", "english": "please (give me/ do ...)", "romaji": "...kudasai", "kana": "・・・下さい", "difficulty": "3" },
-    { "german": "Bitte... (vertraut)", "english": "please... (familiar)", "romaji": "...choudai", "kana": "・・・ちょうだい", "difficulty": "1" },
-    { "german": "Ja, bitte. Ich bitte darum.", "english": "Yes, please. I would ask for it.", "romaji": "O-negai shimasu.", "kana": "お願いします。", "difficulty": "3" },
-    { "german": "Hier, bitte! (beim Anbieten)", "english": "There you go! (offering)", "romaji": "Douzo.", "kana": "どうぞ", "difficulty": "1" },
-    { "german": "Wie wäre es damit?", "english": "How about this?", "romaji": "Ikaga desu ka.", "kana": "いかがですか。", "difficulty": "2" },
-    { "german": "Ja, bitte.", "english": "Yes, please.", "romaji": "Itadakimasu.", "kana": "いただきます。", "difficulty": "2" },
-    { "german": "Nein, danke.", "english": "No, thanks.", "romaji": "Kekkou desu.", "kana": "結構です。", "difficulty": "3" },
-    { "german": "Danke. (kurz und formlos)", "english": "Thanks. (short and informal)", "romaji": "Doumo.", "kana": "どうも。", "difficulty": "1" },
-    { "german": "Danke.", "english": "Thank you.", "romaji": "Arigatou.", "kana": "ありがとう。", "difficulty": "1" },
-    { "german": "Danke. (Kansai-Dialekt)", "english": "Thanks. (Kansai-dialect)", "romaji": "Ooki ni.", "kana": "おおきに。", "difficulty": "1" },
-    { "german": "Keine Ursache. Nichts zu danken. (höflich)", "english": "No problem. You're welcome. (polite)", "romaji": "Dou itashimashite.", "kana": "どういたしまして。", "difficulty": "2" },
-    { "german": "Ach was! Kein Thema! (neutral)", "english": "No problem. (neutral)", "romaji": "Iie.", "kana": "いいえ。", "difficulty": "1" },
-    { "german": "Um Himmels Willen, nein! (Starke Erwiderung auf Dank/Lob)", "english": "No problem! (strong reaction to thanks/praise", "romaji": "Tonde mo nai (desu).", "kana": "とんでもない（です）。", "difficulty": "2" },
-    { "german": "Danke für ihre Mühe./Es war anstrengend für Sie.", "english": "Thanks for your Effort./It was exhausting for you.", "romaji": "O-tsukare-sama (deshita)", "kana": "お疲れ様（でした）。", "difficulty": "3" }
+    { "german": "Dankbarkeit, Dank", "english": "Gratitude", "romaji": "kansha", "kana": "感謝", "difficulty": 3 },
+    { "german": "Dank", "english": "Thanks", "romaji": "o-rei", "kana": "お礼", "difficulty": 3 },
+    { "german": "Bitte (geben Sie mir/ tun Sie ...)", "english": "please (give me/ do ...)", "romaji": "...kudasai", "kana": "・・・下さい", "difficulty": 3 },
+    { "german": "Bitte... (vertraut)", "english": "please... (familiar)", "romaji": "...choudai", "kana": "・・・ちょうだい", "difficulty": 1 },
+    { "german": "Ja, bitte. Ich bitte darum.", "english": "Yes, please. I would ask for it.", "romaji": "O-negai shimasu.", "kana": "お願いします。", "difficulty": 3 },
+    { "german": "Hier, bitte! (beim Anbieten)", "english": "There you go! (offering)", "romaji": "Douzo.", "kana": "どうぞ", "difficulty": 1 },
+    { "german": "Wie wäre es damit?", "english": "How about this?", "romaji": "Ikaga desu ka.", "kana": "いかがですか。", "difficulty": 2 },
+    { "german": "Ja, bitte.", "english": "Yes, please.", "romaji": "Itadakimasu.", "kana": "いただきます。", "difficulty": 2 },
+    { "german": "Nein, danke.", "english": "No, thanks.", "romaji": "Kekkou desu.", "kana": "結構です。", "difficulty": 3 },
+    { "german": "Danke. (kurz und formlos)", "english": "Thanks. (short and informal)", "romaji": "Doumo.", "kana": "どうも。", "difficulty": 1 },
+    { "german": "Danke.", "english": "Thank you.", "romaji": "Arigatou.", "kana": "ありがとう。", "difficulty": 1 },
+    { "german": "Danke. (Kansai-Dialekt)", "english": "Thanks. (Kansai-dialect)", "romaji": "Ooki ni.", "kana": "おおきに。", "difficulty": 1 },
+    { "german": "Keine Ursache. Nichts zu danken. (höflich)", "english": "No problem. You're welcome. (polite)", "romaji": "Dou itashimashite.", "kana": "どういたしまして。", "difficulty": 2 },
+    { "german": "Ach was! Kein Thema! (neutral)", "english": "No problem. (neutral)", "romaji": "Iie.", "kana": "いいえ。", "difficulty": 1 },
+    { "german": "Um Himmels Willen, nein! (Starke Erwiderung auf Dank/Lob)", "english": "No problem! (strong reaction to thanks/praise", "romaji": "Tonde mo nai (desu).", "kana": "とんでもない（です）。", "difficulty": 2 },
+    { "german": "Danke für ihre Mühe./Es war anstrengend für Sie.", "english": "Thanks for your Effort./It was exhausting for you.", "romaji": "O-tsukare-sama (deshita).", "kana": "お疲れ様（でした）。", "difficulty": 3 },
+    { "german": "Wie 'o-tsukare-sama', aber gegenüber Rangniedrigeren", "english": "Like 'o-tsukare-sama', but to lower ranked people", "romaji": "Go-kurou-sama (deshita).", "kana": "ご苦労様（でした）。", "difficulty": 3 },
+    { "german": "Ich bin so frei. (vor dem Essen od. wenn man etw. entgegennimmt)", "english": "I take the liberty (before dinner or if you accept sth)", "romaji": "Itadakimasu.", "kana": "いただきます。", "difficulty": 2 },
+    { "german": "Danke, es war gut. (höflich; nach dem Essen)", "english": "Thanks for the meal. It was delicious. (polite; after a meal)", "romaji": "Go-chisou-sama deshita", "kana": "ご馳走様でした。", "difficulty": 3 }
   ],
   "japaneseCategory3": [
-    { "german": "sich entschuldigen", "english": "to apologize", "romaji": "ayamaru", "kana": "謝る", "difficulty": "3" }
+    { "german": "sich entschuldigen", "english": "to apologize", "romaji": "ayamaru", "kana": "謝る", "difficulty": 3 }
   ],
   "japaneseCategory4": [
-    { "german": "Gruß, Begrüßung, Grußrede", "english": "Greetings", "romaji": "aisatsu", "kana": "挨拶", "difficulty": "3" }
+    { "german": "Gruß, Begrüßung, Grußrede", "english": "Greetings", "romaji": "aisatsu", "kana": "挨拶", "difficulty": 3 }
   ],
   "japaneseCategory5": [
-    { "german": "ich (allgemein)", "english": "I (in general)", "romaji": "watashi", "kana": "私", "difficulty": "3" }
+    { "german": "ich (allgemein)", "english": "I (in general)", "romaji": "watashi", "kana": "私", "difficulty": 3 }
   ],
   "japaneseCategory6": [
-    { "german": "das hier", "english": "this here", "romaji": "kore", "kana": "これ", "difficulty": "1" }
+    { "german": "das hier", "english": "this here", "romaji": "kore", "kana": "これ", "difficulty": 1 }
   ],
   "japaneseCategory7": [
-    { "german": "was", "english": "what", "romaji": "nani", "kana": "何", "difficulty": "3" }
+    { "german": "was", "english": "what", "romaji": "nani", "kana": "何", "difficulty": 3 }
   ],
   "japaneseCategory8": [
-    { "german": "Ort, Stelle, bei/zu jdm.", "english": "Place, position, at/to somebody", "romaji": "tokoro", "kana": "所", "difficulty": "3" }
+    { "german": "Ort, Stelle, bei/zu jdm.", "english": "Place, position, at/to somebody", "romaji": "tokoro", "kana": "所", "difficulty": 3 }
   ],
   "japaneseCategory9": [
-    { "german": "Person, Mensch, Leute", "english": "Person, human, people", "romaji": "hito", "kana": "人", "difficulty": "3" }
+    { "german": "Person, Mensch, Leute", "english": "Person, human, people", "romaji": "hito", "kana": "人", "difficulty": 3 }
   ],
   "japaneseCategory10": [
-    { "german": "Baby", "english": "Baby", "romaji": "aka-chan", "kana": "赤ちゃん", "difficulty": "3" }
+    { "german": "Baby", "english": "Baby", "romaji": "aka-chan", "kana": "赤ちゃん", "difficulty": 3 }
   ],
   "japaneseCategory11": [
-    { "german": "Liebe (allgemein)", "english": "Love (in general)", "romaji": "ai", "kana": "愛", "difficulty": "3" }
+    { "german": "Liebe (allgemein)", "english": "Love (in general)", "romaji": "ai", "kana": "愛", "difficulty": 3 }
   ],
   "japaneseCategory12": [
-    { "german": "Familie", "english": "Family", "romaji": "kazoku", "kana": "家族", "difficulty": "3" }
+    { "german": "Familie", "english": "Family", "romaji": "kazoku", "kana": "家族", "difficulty": 3 }
   ],
   "japaneseCategory13": [
-    { "german": "Herr..., Frau... (allgemeine Anrede, oft mit Familiennamen)", "english": "Mr..., Mrs... (general salutation, often with familyname)", "romaji": "...-san", "kana": "・・・さん", "difficulty": "1" }
+    { "german": "Herr..., Frau... (allgemeine Anrede, oft mit Familiennamen)", "english": "Mr..., Mrs... (general salutation, often with familyname)", "romaji": "...-san", "kana": "・・・さん", "difficulty": 1 }
   ],
   "japaneseCategory14": [
-    { "german": "(man) selbst", "english": "by myself", "romaji": "jibun", "kana": "自分", "difficulty": "3" }
+    { "german": "(man) selbst", "english": "by myself", "romaji": "jibun", "kana": "自分", "difficulty": 3 }
   ],
   "japaneseCategory15": [
-    { "german": "das (menschliche) Leben", "english": "the (human) life", "romaji": "jinsei", "kana": "人生", "difficulty": "3" }
+    { "german": "das (menschliche) Leben", "english": "the (human) life", "romaji": "jinsei", "kana": "人生", "difficulty": 3 }
   ],
   "japaneseCategory16": [
-    { "german": "sterben", "english": "to die", "romaji": "shinu", "kana": "死ぬ", "difficulty": "3" }
+    { "german": "sterben", "english": "to die", "romaji": "shinu", "kana": "死ぬ", "difficulty": 3 }
   ],
   "japaneseCategory17": [
-    { "german": "Kopf", "english": "head", "romaji": "atama", "kana": "頭", "difficulty": "3" }
+    { "german": "Kopf", "english": "head", "romaji": "atama", "kana": "頭", "difficulty": 3 }
   ],
   "japaneseCategory18": [
-    { "german": "Körper", "english": "body", "romaji": "karada", "kana": "体", "difficulty": "3" }
+    { "german": "Körper", "english": "body", "romaji": "karada", "kana": "体", "difficulty": 3 }
   ],
   "japaneseCategory19": [
-    { "german": "nackt", "english": "nude", "romaji": "hadaka no/de", "kana": "裸の・で", "difficulty": "3" }
+    { "german": "nackt", "english": "nude", "romaji": "hadaka no/de", "kana": "裸の・で", "difficulty": 3 }
   ],
   "japaneseCategory20": [
-    { "german": "Fleisch", "english": "meat", "romaji": "niku", "kana": "肉", "difficulty": "3" }
+    { "german": "Fleisch", "english": "meat", "romaji": "niku", "kana": "肉", "difficulty": 3 }
   ],
   "japaneseCategory21": [
-    { "german": "gesund; Gesundheit", "english": "healthy; Health", "romaji": "kenkou na", "kana": "健康な", "difficulty": "3" }
+    { "german": "gesund; Gesundheit", "english": "healthy; Health", "romaji": "kenkou na", "kana": "健康な", "difficulty": 3 }
   ],
   "japaneseCategory22": [
-    { "german": "Verletzung", "english": "injury", "romaji": "kega", "kana": "怪我", "difficulty": "3" }
+    { "german": "Verletzung", "english": "injury", "romaji": "kega", "kana": "怪我", "difficulty": 3 }
   ],
   "japaneseCategory23": [
-    { "german": "schmerzen, wehtun", "english": "to hurt", "romaji": "itai", "kana": "痛い", "difficulty": "3" }
+    { "german": "schmerzen, wehtun", "english": "to hurt", "romaji": "itai", "kana": "痛い", "difficulty": 3 }
   ],
   "japaneseCategory24": [
-    { "german": "Erkältung, grippaler Infekt", "english": "a cold, flu-like infection", "romaji": "kaze", "kana": "風邪", "difficulty": "3" }
+    { "german": "Erkältung, grippaler Infekt", "english": "a cold, flu-like infection", "romaji": "kaze", "kana": "風邪", "difficulty": 3 }
   ],
   "japaneseCategory25": [
-    { "german": "Medizin", "english": "Medicine", "romaji": "igaku", "kana": "医学", "difficulty": "3" }
+    { "german": "Medizin", "english": "Medicine", "romaji": "igaku", "kana": "医学", "difficulty": 3 }
   ],
   "japaneseCategory26": [
-    { "german": "Medikament, Arznei", "english": "Drug, remedy", "romaji": "kusuri", "kana": "薬", "difficulty": "3" }
+    { "german": "Medikament, Arznei", "english": "Drug, remedy", "romaji": "kusuri", "kana": "薬", "difficulty": 3 }
   ],
   "japaneseCategory27": [
-    { "german": "Erste Hilfe, Notfallmaßnahmen", "english": "first aid, emergency measures", "romaji": "kyuukyuu-teate", "kana": "救急手当て", "difficulty": "3" }
+    { "german": "Erste Hilfe, Notfallmaßnahmen", "english": "first aid, emergency measures", "romaji": "kyuukyuu-teate", "kana": "救急手当て", "difficulty": 3 }
   ],
   "japaneseCategory28": [
-    { "german": "waschen", "english": "to wash", "romaji": "arau", "kana": "洗う", "difficulty": "3" }
+    { "german": "waschen", "english": "to wash", "romaji": "arau", "kana": "洗う", "difficulty": 3 }
   ],
   "japaneseCategory29": [
-    { "german": "Parfüm", "english": "perfume", "romaji": "kousui", "kana": "香水", "difficulty": "3" }
+    { "german": "Parfüm", "english": "perfume", "romaji": "kousui", "kana": "香水", "difficulty": 3 }
   ],
   "japaneseCategory30": [
-    { "german": "Wetter", "english": "weather", "romaji": "tenki", "kana": "天気", "difficulty": "3" }
+    { "german": "Wetter", "english": "weather", "romaji": "tenki", "kana": "天気", "difficulty": 3 }
   ],
   "japaneseCategory31": [
-    { "german": "Astronomie", "english": "astronomy", "romaji": "tenmon-gaku", "kana": "天文学", "difficulty": "3" }
+    { "german": "Astronomie", "english": "astronomy", "romaji": "tenmon-gaku", "kana": "天文学", "difficulty": 3 }
   ],
   "japaneseCategory32": [
-    { "german": "Astrologie", "english": "astrology", "romaji": "hoshi-uranai", "kana": "星占い", "difficulty": "3" }
+    { "german": "Astrologie", "english": "astrology", "romaji": "hoshi-uranai", "kana": "星占い", "difficulty": 3 }
   ],
   "japaneseCategory33": [
-    { "german": "Natur", "english": "nature", "romaji": "shizen", "kana": "自然", "difficulty": "3" }
+    { "german": "Natur", "english": "nature", "romaji": "shizen", "kana": "自然", "difficulty": 3 }
   ]
 }

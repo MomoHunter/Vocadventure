@@ -16,8 +16,8 @@
         <ButtonIcon color="is-danger" icon="times" @click="toggleSort()" />
       </div>
     </div>
-    <InputWithButton v-show="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
-               iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
+    <InputWithButton v-if="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
+                     iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
     <div v-if="visibleItems.length > 0" class="is-10 flexGrow itemContainer">
       <transition-group class="transitionGroup" tag="div" :enter-active-class="enterTransition"
                         :leave-active-class="leaveTransition">
