@@ -1,7 +1,7 @@
 <template>
   <button class="button is-rounded" @click="$emit('click')"
           :class="[getSizeClass('button'), color, { 'is-outlined': !selected }]">
-    {{ getText(text) }}
+    <span>{{ getText(text) }}</span>
   </button>
 </template>
 

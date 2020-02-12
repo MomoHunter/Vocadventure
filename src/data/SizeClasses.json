@@ -94,5 +94,11 @@
     "normal": "",
     "medium": "is-medium",
     "large": "is-large"
+  },
+  "tabs": {
+    "small": "is-small",
+    "normal": "",
+    "medium": "is-medium",
+    "large": "is-large"
   }
 }

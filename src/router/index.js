@@ -35,7 +35,7 @@ const routes = [
       forward: [
         'selection',
         'training',
-        'kanji'
+        'writeKanji'
       ]
     }
   },
@@ -55,13 +55,13 @@ const routes = [
     component: TheTraining,
     meta: {
       forward: [
-        'kanji'
+        'writeKanji'
       ]
     }
   },
   {
     path: '/writeKanji',
-    name: 'kanji',
+    name: 'writeKanji',
     component: TheWriteKanji,
     meta: {
       forward: []

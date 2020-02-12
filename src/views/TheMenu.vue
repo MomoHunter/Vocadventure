@@ -29,7 +29,7 @@
         <transition enter-active-class="animated fadeIn customDuration customDelay"
                     leave-active-class="animated fadeOut customDuration">
           <ButtonBasic class="is-relative marginBottomSmall" color="is-success" icon="pen" text="menuTrainingButton2"
-                       @click="$router.push({ name: 'category', params: { destination: 'kanji' } })"
+                       @click="$router.push({ name: 'category', params: { destination: 'writeKanji' } })"
                        v-show="query === 'training'" />
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"

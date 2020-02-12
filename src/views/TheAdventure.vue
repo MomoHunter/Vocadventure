@@ -1,10 +1,10 @@
 <template>
   <div class="flexContainer justifyBetween" :class="statisticsVisible ? 'height-statistics' : 'height-ingame'">
-    <div class="fullWidth">
+    <div class="fullWidth" :class="{ marginBottomBig: keyboardVisible }">
       <HeroWithTags title="adventureTitle" :tagObjects="tags" />
       <canvas id="adventureCanvas" width="600" height="300"></canvas>
     </div>
-    <div class="innerFlexContainerInput" v-show="!statisticsVisible">
+    <div class="innerFlexContainerInput" :class="{ marginBottomBig: keyboardVisible }" v-show="!statisticsVisible">
       <span class="icon is-1" :class="latinIconColor">
         <font-awesome-icon v-show="resultsVisible" :icon="['fas', latinIcon]" :size="getSizeClass('fas')" />
       </span>
@@ -16,19 +16,30 @@
                            :size="getSizeClass('fas')" />
       </span>
     </div>
-    <div class="innerFlexContainerInput" v-show="!statisticsVisible">
+    <div class="innerFlexContainerInput" :class="{ marginBottomBig: keyboardVisible }" v-show="!statisticsVisible">
       <span class="icon is-1" :class="foreignIconColor">
         <font-awesome-icon v-show="resultsVisible" :icon="['fas', foreignIcon]"
                            :size="getSizeClass('fas')" />
       </span>
-      <input class="input is-rounded is-10" type="text" :placeholder="getText(words.foreignAlphabet)"
-             :class="[getSizeClass('input'), { 'is-link': solutionVisible}]" v-model="foreignInput" readonly />
+      <div class="field is-10 has-addons">
+        <div v-if="keyboardVisible" class="control">
+          <ButtonIcon icon="backspace" color="is-danger" @click="removeLetter()" />
+        </div>
+        <div class="control fullWidth">
+          <input class="input is-rounded" type="text" :placeholder="getText(words.foreignAlphabet)"
+                :class="[getSizeClass('input'), { 'is-link': solutionVisible}]" v-model="foreignInput"
+                @click="showKeyboard()" readonly />
+        </div>
+        <div v-if="keyboardVisible" class="control">
+          <ButtonIcon icon="check" color="is-success" @click="hideKeyboard()" />
+        </div>
+      </div>
       <span class="icon is-1 has-text-warning">
         <font-awesome-icon v-show="resultsVisible && isForeignCorrect > 0" :icon="['fas', 'coins']"
                            :size="getSizeClass('fas')" />
       </span>
     </div>
-    <div class="innerFlexContainerButton is-10" v-show="!statisticsVisible">
+    <div class="innerFlexContainerButton is-10" v-show="!statisticsVisible && !keyboardVisible">
       <ButtonBasic class="is-half marginBottomSmall marginRightSmall" icon="times" color="is-danger"
                    text="adventureButton1" @click="showMessageModal()" />
       <ButtonBasic v-show="!resultsVisible" class="is-half marginBottomSmall marginLeftSmall" icon="check"
@@ -46,8 +57,17 @@
       <ButtonBasic v-show="resultsVisible && solutionVisible" icon="eye-slash" color="is-link" text="adventureButton7"
                    @click="hideSolution()" />
     </div>
-    <TheProgressBar v-show="!statisticsVisible" class="is-10" color="is-success" :text="progressText"
-                    :value="progressBarCount" :maxValue="words.words.length" />
+    <div v-show="keyboardVisible" class="flexGrow fullWidth keyboard">
+      <TabsBasic :names="keyboardNames" :selected="currentKeyboardTab" @click="setTab($event)" radiusless />
+      <div class="bottomKeyboard">
+        <div class="keyContainer">
+          <ButtonText class="is-radiusless keyboardButton" :text="sign" v-for="(sign, index) in keyboardSigns"
+                        :key="index" @click="addLetter(sign)" />
+        </div>
+      </div>
+    </div>
+    <TheProgressBar v-show="!statisticsVisible && !keyboardVisible" class="is-10" color="is-success"
+                    :text="progressText" :value="progressBarCount" :maxValue="words.words.length" />
     <BarChartBasic v-show="statisticsVisible" class="is-10" :title="words.latinAlphabet" :values="correctLatinWords" />
     <BarChartBasic v-show="statisticsVisible" class="is-10" :title="words.foreignAlphabet"
                    :values="correctForeignWords" />
@@ -63,15 +83,23 @@
 import * as Helper from '@/canvas/helper.js'
 import HeroWithTags from '@/components/HeroWithTags.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
+import ButtonIcon from '@/components/ButtonIcon.vue'
+import ButtonText from '@/components/ButtonText.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
+import TabsBasic from '@/components/TabsBasic.vue'
 import BarChartBasic from '@/components/BarChartBasic.vue'
+
+import JapaneseSigns from '@/data/JapaneseSigns.json'
 
 export default {
   name: 'TheAdventure',
   components: {
     HeroWithTags,
     ButtonBasic,
+    ButtonIcon,
+    ButtonText,
     TheProgressBar,
+    TabsBasic,
     BarChartBasic
   },
   data () {
@@ -85,13 +113,16 @@ export default {
       userForeignInput: '',
       correctLatinWords: [],
       correctForeignWords: [],
+      currentKeyboardTab: '',
       resultsVisible: false,
       solutionVisible: false,
+      keyboardVisible: false,
       statisticsVisible: false
     }
   },
   mounted () {
     this.$store.commit('canvasDict/initCanvas')
+    this.currentKeyboardTab = this.keyboardNames[3] || ''
     this.loopActivated = true
     this.canvasLoop()
   },
@@ -221,6 +252,12 @@ export default {
           return 'has-text-danger'
       }
     },
+    keyboardNames () {
+      return Object.keys(JapaneseSigns)
+    },
+    keyboardSigns () {
+      return JapaneseSigns[this.currentKeyboardTab]
+    },
     progressText () {
       return this.progressBarCount + ' / ' + this.words.words.length
     },
@@ -257,6 +294,7 @@ export default {
     },
     checkInput () {
       this.resultsVisible = true
+      this.keyboardVisible = false
       this.userLatinInput = this.latinInput
       this.userForeignInput = this.foreignInput
       this.correctLatinWords.push(this.isLatinCorrect)
@@ -291,6 +329,23 @@ export default {
       this.solutionVisible = false
       this.latinInput = this.userLatinInput
       this.foreignInput = this.userForeignInput
+    },
+    showKeyboard () {
+      if (!this.resultsVisible) {
+        this.keyboardVisible = true
+      }
+    },
+    hideKeyboard () {
+      this.keyboardVisible = false
+    },
+    setTab (id) {
+      this.currentKeyboardTab = id
+    },
+    addLetter (letter) {
+      this.foreignInput += letter
+    },
+    removeLetter () {
+      this.foreignInput = this.foreignInput.slice(0, -1)
     },
     showStatistics () {
       this.statisticsVisible = true
@@ -377,7 +432,7 @@ export default {
   left: 0px;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
 
   &.height-ingame {
@@ -399,6 +454,10 @@ export default {
   .is-10 {
     width: calc(100% / 1.2);
   }
+
+  .flexGrow {
+    flex-grow: 1;
+  }
 }
 
 .innerFlexContainerInput {
@@ -415,6 +474,33 @@ export default {
 
   .is-half {
     width: calc(50% - .25rem);
+  }
+}
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  .bottomKeyboard {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 0;
+    overflow: auto;
+    flex-grow: 1;
+
+    .keyContainer {
+      width: 95%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      .keyboardButton {
+        flex: 1 0 2.5em;
+      }
+    }
   }
 }
 </style>
