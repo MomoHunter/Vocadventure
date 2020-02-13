@@ -230,10 +230,10 @@ export default {
     isForeignCorrect () {
       if (this.userForeignInput.toLowerCase() ===
           this.words.words[this.currentWord][this.words.foreignAlphabet].toLowerCase()) {
-        return 2 * this.$store.state.vueDict.difficulty
+        return 2
       } else if (this.streamline(this.userForeignInput) ===
                  this.streamline(this.words.words[this.currentWord][this.words.foreignAlphabet])) {
-        return 1 * this.$store.state.vueDict.difficulty
+        return 1
       } else {
         return 0
       }
@@ -330,8 +330,14 @@ export default {
         this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: this.isLatinCorrect })
       }
       if (this.isForeignCorrect > 0) {
-        this.$store.commit('vueDict/addStatAddit', { id: 'points', count: this.isForeignCorrect })
-        this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: this.isForeignCorrect })
+        this.$store.commit('vueDict/addStatAddit', {
+          id: 'points',
+          count: this.isForeignCorrect * this.$store.state.vueDict.difficulty
+        })
+        this.$store.commit('vueDict/addStatAddit', {
+          id: 'coins',
+          count: this.isForeignCorrect * this.$store.state.vueDict.difficulty
+        })
       }
 
       this.progressBarCount++
