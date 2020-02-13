@@ -56,6 +56,10 @@ html, body {
     -webkit-animation-delay: .1s;
     animation-delay: .1s;
   }
+
+  &.super-fast {
+    animation-duration: .1s;
+  }
 }
 
 .material-design-icon {

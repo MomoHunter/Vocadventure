@@ -57,15 +57,18 @@
       <ButtonBasic v-show="resultsVisible && solutionVisible" icon="eye-slash" color="is-link" text="adventureButton7"
                    @click="hideSolution()" />
     </div>
-    <div v-show="keyboardVisible" class="flexGrow fullWidth keyboard">
-      <TabsBasic :names="keyboardNames" :selected="currentKeyboardTab" @click="setTab($event)" radiusless />
-      <div class="bottomKeyboard">
-        <div class="keyContainer">
-          <ButtonText class="is-radiusless keyboardButton" :text="sign" v-for="(sign, index) in keyboardSigns"
-                        :key="index" @click="addLetter(sign)" />
+    <transition enter-active-class="animated fadeInUp super-fast"
+                leave-active-class="animated fadeOutDown super-fast is-absolute">
+      <div v-show="keyboardVisible" class="flexGrow fullWidth keyboard">
+        <TabsBasic :names="keyboardNames" :selected="currentKeyboardTab" @click="setTab($event)" radiusless />
+        <div class="bottomKeyboard">
+          <div class="keyContainer">
+            <ButtonText class="is-radiusless keyboardButton" :text="sign" v-for="(sign, index) in keyboardSigns"
+                          :key="index" @click="addLetter(sign)" />
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
     <TheProgressBar v-show="!statisticsVisible && !keyboardVisible" class="is-10" color="is-success"
                     :text="progressText" :value="progressBarCount" :maxValue="words.words.length" />
     <BarChartBasic v-show="statisticsVisible" class="is-10" :title="words.latinAlphabet" :values="correctLatinWords" />
@@ -122,12 +125,13 @@ export default {
   },
   mounted () {
     this.$store.commit('canvasDict/initCanvas')
-    this.currentKeyboardTab = this.keyboardNames[3] || ''
+    this.currentKeyboardTab = this.keyboardNames[0] || ''
     this.loopActivated = true
     this.canvasLoop()
   },
   beforeDestroy () {
     this.loopActivated = false
+    this.$store.commit('vueDict/resetAdditional')
   },
   computed: {
     tags () {
@@ -226,10 +230,10 @@ export default {
     isForeignCorrect () {
       if (this.userForeignInput.toLowerCase() ===
           this.words.words[this.currentWord][this.words.foreignAlphabet].toLowerCase()) {
-        return 2
+        return 2 * this.$store.state.vueDict.difficulty
       } else if (this.streamline(this.userForeignInput) ===
                  this.streamline(this.words.words[this.currentWord][this.words.foreignAlphabet])) {
-        return 1
+        return 1 * this.$store.state.vueDict.difficulty
       } else {
         return 0
       }
@@ -256,7 +260,28 @@ export default {
       return Object.keys(JapaneseSigns)
     },
     keyboardSigns () {
-      return JapaneseSigns[this.currentKeyboardTab]
+      let signs = JapaneseSigns
+      signs.kanji = this.getKanji
+
+      return signs[this.currentKeyboardTab]
+    },
+    getKanji () {
+      let kanji = []
+      let kanjiSet = new Set(this.$store.getters['vueDict/getVocabs'].words.flatMap(word =>
+        word[this.words.foreignAlphabet].split('')
+      ))
+
+      this.keyboardNames.filter(name => name !== 'kanji').forEach(name => {
+        JapaneseSigns[name].forEach(sign => {
+          kanjiSet.delete(sign)
+        })
+      })
+
+      kanjiSet.forEach(sign => {
+        kanji.push(sign)
+      })
+
+      return kanji
     },
     progressText () {
       return this.progressBarCount + ' / ' + this.words.words.length
@@ -305,8 +330,8 @@ export default {
         this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: this.isLatinCorrect })
       }
       if (this.isForeignCorrect > 0) {
-        this.$store.commit('vueDict/addStatAddit', { id: 'points', count: this.isForeignCorrect * 2 })
-        this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: this.isForeignCorrect * 2 })
+        this.$store.commit('vueDict/addStatAddit', { id: 'points', count: this.isForeignCorrect })
+        this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: this.isForeignCorrect })
       }
 
       this.progressBarCount++
@@ -457,6 +482,11 @@ export default {
 
   .flexGrow {
     flex-grow: 1;
+  }
+
+  .is-absolute {
+    position: absolute;
+    bottom: 0;
   }
 }
 
