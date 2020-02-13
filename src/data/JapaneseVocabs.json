@@ -40,10 +40,39 @@
     { "german": "Danke, es war gut. (höflich; nach dem Essen)", "english": "Thanks for the meal. It was delicious. (polite; after a meal)", "romaji": "Go-chisou-sama deshita", "kana": "ご馳走様でした。", "difficulty": 3 }
   ],
   "japaneseCategory3": [
-    { "german": "sich entschuldigen", "english": "to apologize", "romaji": "ayamaru", "kana": "謝る", "difficulty": 3 }
+    { "german": "sich entschuldigen", "english": "to apologize", "romaji": "ayamaru", "kana": "謝る", "difficulty": 3 },
+    { "german": "vergeben; erlauben", "english": "to forgive; to allow", "romaji": "yurusu", "kana": "許す", "difficulty": 3 },
+    { "german": "Entschuldigung. Verzeihung. Danke.", "english": "Excuse me. I'm sorry. Thanks.", "romaji": "Sumimasen.", "kana": "すみません。", "difficulty": 1 },
+    { "german": "Es tut mir leid. (höflich)", "english": "I'm sorry. (polite)", "romaji": "Gomen-nasai.", "kana": "ごめんなさい。", "difficulty": 2 },
+    { "german": "Tut mir leid. (neutral)", "english": "I'm sorry. (neutral)", "romaji": "Gomen.", "kana": "ごめん。", "difficulty": 1 },
+    { "german": "Entschuldigen Sie. (wenn man stört, sich verabschiedet, etc.)", "english": "Excuse me. (if you're disturbing, saying good bye, etc.)", "romaji": "Shitsurei shimasu.", "kana": "失礼します。", "difficulty": 3 },
+    { "german": "Es tut mir wirklich leid.", "english": "I am really sorry.", "romaji": "Moushiwake arimasen.", "kana": "申し訳ありません。", "difficulty": 3 },
+    { "german": "Das macht nichts. (höflich)", "english": "No problem. (polite)", "romaji": "Kamaimasen.", "kana": "かまいません。", "difficulty": 2 },
+    { "german": "Das macht nichts. (neutral)", "english": "No problem. (neutral)", "romaji": "Kamawanai.", "kana": "かまわない。", "difficulty": 1 },
+    { "german": "Kein Problem.", "english": "No problem. / Everything fine.", "romaji": "Daijoubu desu.", "kana": "大丈夫です。", "difficulty": 3 },
+    { "german": "Kein Thema! Alles gut! (Jugendsprache)", "english": "Don't mind it! Everything good! (Teenlanguage)", "romaji": "Heiki! Heiki!", "kana": "平気！平気！", "difficulty": 3 },
+    { "german": "(wörtl. 'Ich erst recht.')", "english": "(lit. 'me especially')", "romaji": "kochira koso", "kana": "こちらこそ", "difficulty": 1 },
+    { "german": "Ich habe Sie warten lassen.", "english": "I kept you waiting.", "romaji": "O-matase shimashita.", "kana": "お待たせしました。", "difficulty": 3 },
+    { "german": "Ich habe Sie warten lassen. 2", "english": "I kept you waiting. 2", "romaji": "O-machi-dou-sama deshita", "kana": "お待ちどう様でした。", "difficulty": 3 }
   ],
   "japaneseCategory4": [
-    { "german": "Gruß, Begrüßung, Grußrede", "english": "Greetings", "romaji": "aisatsu", "kana": "挨拶", "difficulty": 3 }
+    { "german": "Gruß, Begrüßung, Grußrede", "english": "Greetings", "romaji": "aisatsu", "kana": "挨拶", "difficulty": 3 },
+    { "german": "(sich) (be-)grüßen", "english": "to greet (sb.)", "romaji": "aisatsu suru", "kana": "挨拶する", "difficulty": 3 },
+    { "german": "empfangen", "english": "to receive", "romaji": "mukaeru", "kana": "迎える", "difficulty": 3 },
+    { "german": "willkommen heißen", "english": "to welcome sb./sth.", "romaji": "kangei suru", "kana": "歓迎する", "difficulty": 3 },
+    { "german": "(zum Abschied) begleiten", "english": "(for goodbye) accompany", "romaji": "(mi-)okuru", "kana": "（見）送る", "difficulty": 3 },
+    { "german": "Handschlag", "english": "Handshake", "romaji": "akushu", "kana": "握手", "difficulty": 3 },
+    { "german": "Verbeugung", "english": "Bow (as to bow)", "romaji": "o-jigi", "kana": "お辞儀", "difficulty": 3 },
+    { "german": "sich verbeugen", "english": "to bow", "romaji": "o-jigi o suru", "kana": "お辞儀をする", "difficulty": 3 },
+    { "german": "Hey! (von weitem rufen)", "english": "Hey! (call from afar)", "romaji": "Yaa!", "kana": "やあ！", "difficulty": 1 },
+    { "german": "Hallo! (beim betreten eines Hauses oder Ladens, wenn niemand da ist)", "english": "Hello! (when entering a house or store, if no ones there)", "romaji": "Gomen kudasai!", "kana": "ごめんください！", "difficulty": 2 },
+    { "german": "Hallo. (hauptsächlich am Telefon)", "english": "Hello. (mostly at the phone)", "romaji": "Moshimoshi.", "kana": "もしもし。", "difficulty": 1 },
+    { "german": "Hallo. Guten Tag. (ganztägig)", "english": "Hello. Good day. (all day)", "romaji": "Konnichi wa.", "kana": "こんにちは。", "difficulty": 1 },
+    { "german": "Guten Morgen. (höflich)", "english": "Good morning. (polite)", "romaji": "O-hayou gozaimasu.", "kana": "おはようございます。", "difficulty": 2 },
+    { "german": "(Guten) Morgen. (neutral)", "english": "(Good) Morning. (neutral)", "romaji": "O-hayou.", "kana": "おはよう。", "difficulty": 1 },
+    { "german": "Guten Abend.", "english": "Good evening.", "romaji": "Konban wa.", "kana": "こんばんは。", "difficulty": 1 },
+    { "german": "Gute Nacht. Schlafen Sie gut. (höflich)", "english": "Good night. Sleep well. (polite)", "romaji": "O-yasumi-nasai.", "kana": "おやすみなさい。", "difficulty": 2 },
+    { "german": "Gute Nacht. Schlaf gut. (neutral)", "english": "Good night. Sleep well. (neutral)", "romaji": "O-yasumi.", "kana": "おやすみ。", "difficulty": 1 }
   ],
   "japaneseCategory5": [
     { "german": "ich (allgemein)", "english": "I (in general)", "romaji": "watashi", "kana": "私", "difficulty": 3 }
