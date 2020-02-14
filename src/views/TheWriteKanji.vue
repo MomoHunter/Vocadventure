@@ -93,7 +93,7 @@ export default {
         this.$store.commit('vueDict/setWriteKanji', null)
         this.$router.push({ name: 'training' })
       } else {
-        this.$router.push({ name: 'category', params: { destination: 'kanji' } })
+        this.$router.push({ name: 'category', params: { destination: 'writeKanji' } })
       }
     }
   }

@@ -278,7 +278,7 @@ export default {
       })
 
       kanjiSet.forEach(sign => {
-        kanji.push(sign)
+        kanji.splice(Math.floor(Math.random() * (kanji.length + 1)), 0, sign)
       })
 
       return kanji
