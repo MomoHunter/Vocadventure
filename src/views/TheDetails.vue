@@ -8,9 +8,9 @@
     <table class="table is-10">
       <thead>
         <tr>
-          <td>{{ getText('detailsColumn1') }}</td>
-          <td class="has-text-centered">{{ getText('detailsColumn2') }}</td>
-          <td class="has-text-centered">{{ getText('detailsColumn3') }}</td>
+          <td class="has-background-primary">{{ getText('detailsColumn1') }}</td>
+          <td class="has-background-primary has-text-centered">{{ getText('detailsColumn2') }}</td>
+          <td class="has-background-primary has-text-centered">{{ getText('detailsColumn3') }}</td>
         </tr>
       </thead>
       <tr v-for="cost in item.costs" :key="cost.id">
@@ -50,9 +50,9 @@ export default {
     },
     isEnough (costObject) {
       if (this.ownQuantity(costObject.id) >= costObject.quantity) {
-        return 'has-background-success'
+        return 'has-text-success'
       }
-      return 'has-background-danger'
+      return 'has-text-danger'
     },
     ownQuantity (id) {
       if (id === 'coins') {

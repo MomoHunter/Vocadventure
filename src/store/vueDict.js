@@ -17,7 +17,7 @@ export default {
     wordCount: 0,
     items: Items,
     inventory: [],
-    unlockedItems: new Set(),
+    unlockedItems: [],
     showModals: {
       name: ''
     },
@@ -164,9 +164,11 @@ export default {
     changeInventory (state, inventory) {
       state.inventory = inventory
     },
-    unlockItem (state, item) {
-      state.items.find(item => item.id === item).unlocked = true
-      state.unlockedItems.add(item)
+    unlockItem (state, itemId) {
+      if (!state.unlockedItems.includes(itemId)) {
+        state.items.find(item => item.id === itemId).unlocked = true
+        state.unlockedItems.push(itemId)
+      }
     },
     addToInventory (state, object) {
       if (object.quantity > 0) {

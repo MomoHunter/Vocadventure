@@ -11,7 +11,7 @@
     </div>
     <div class="field is-max-10 has-addons overflowAuto">
       <div class="control" v-for="(letter, index) in currentWord[words.foreignAlphabet]" :key="index">
-        <ButtonText :text="letter" color="is-link" :selected="currentLetter === index" @click="setCurrentLetter(index)" />
+        <ButtonText :text="letter" color="is-primary" :selected="currentLetter === index" @click="setCurrentLetter(index)" />
       </div>
     </div>
     <div class="is-10">
@@ -56,7 +56,7 @@ export default {
         {
           nameId: 'writeKanjiCategoryTag',
           valueId: this.currentCategory,
-          color: 'is-primary'
+          color: 'is-info'
         },
         {
           nameId: 'writeKanjiDifficultyTag',

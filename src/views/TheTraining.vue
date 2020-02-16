@@ -3,7 +3,7 @@
     <HeroBasic title="trainingTitle" />
     <div class="field is-10 is-grouped is-grouped-multiline">
       <div class="control fullWidth">
-        <TagBasic textOne="trainingCategoryTag" :textTwo="words.words[currentWord].category" colorTwo="is-primary" />
+        <TagBasic textOne="trainingCategoryTag" :textTwo="words.words[currentWord].category" colorTwo="is-info" />
       </div>
       <div class="control fullWidth">
         <div class="box">

@@ -12,6 +12,8 @@ $link-active-border: $link-focus-border;
 $dark: $grey-light;
 
 $input-background-color: $grey-dark;
+$progress-bar-background-color: $grey-dark;
+$tag-background-color: $grey-darker;
 
 @import "./../node_modules/bulma/bulma.sass";
 @import "./../node_modules/bulmaswatch/slate/overrides";

@@ -2,5 +2,10 @@
   "bulma": "css/bulma.min.css",
   "darkly": "css/darkly.bw.min.css",
   "cerulean": "css/cerulean.bw.min.css",
+  "cosmo": "css/cosmo.bw.min.css",
+  "cyborg": "css/cyborg.bw.min.css",
+  "flatly": "css/flatly.bw.min.css",
+  "journal": "css/journal.bw.min.css",
+  "litera": "css/litera.bw.min.css",
   "slate": "css/slate.bw.min.css"
 }

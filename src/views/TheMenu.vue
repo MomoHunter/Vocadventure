@@ -5,12 +5,12 @@
       <div class="is-absolute">
         <transition :enter-active-class="trainingAnimation.enter"
                     :leave-active-class="trainingAnimation.leave">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-info" icon="book" text="menuButton1"
+          <ButtonBasic class="is-relative marginBottomSmall" color="is-link" icon="book" text="menuButton1"
                        @click="$router.push({ name: 'menu', query: { sub: 'training' } })" v-show="!query" />
         </transition>
         <transition :enter-active-class="adventureAnimation.enter"
                     :leave-active-class="adventureAnimation.leave">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-link" icon="gem" text="menuButton2"
+          <ButtonBasic class="is-relative marginBottomSmall" color="is-primary" icon="gem" text="menuButton2"
                        @click="$router.push({ name: 'menu', query: { sub: 'adventure' } })" v-show="!query" />
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"
@@ -22,7 +22,7 @@
       <div class="is-absolute">
         <transition enter-active-class="animated invisible customDuration2"
                     leave-active-class="animated disappear customDuration2">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-info" icon="book" text="menuTrainingButton1"
+          <ButtonBasic class="is-relative marginBottomSmall" color="is-link" icon="book" text="menuTrainingButton1"
                        @click="$router.push({ name: 'category', params: { destination: 'training' } })"
                        v-show="query === 'training'" />
         </transition>
@@ -42,7 +42,7 @@
       <div class="is-absolute">
         <transition enter-active-class="animated invisible customDuration2"
                     leave-active-class="animated slideOutDownC customDuration2">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-link" icon="gem" text="menuAdventureButton1"
+          <ButtonBasic class="is-relative marginBottomSmall" color="is-primary" icon="gem" text="menuAdventureButton1"
                        @click="$router.push({ name: 'category', params: { destination: 'adventure' } })"
                        v-show="query === 'adventure'" />
         </transition>

@@ -9,7 +9,7 @@
         <font-awesome-icon v-show="resultsVisible" :icon="['fas', latinIcon]" :size="getSizeClass('fas')" />
       </span>
       <input class="input is-rounded is-10" type="text" :placeholder="getText(words.latinAlphabet)"
-             :class="[getSizeClass('input'), { 'is-link': solutionVisible}]" v-model="latinInput"
+             :class="[getSizeClass('input'), { 'is-info': solutionVisible}]" v-model="latinInput"
              :readonly="resultsVisible" />
       <span class="icon is-1 has-text-warning">
         <font-awesome-icon v-show="resultsVisible && isLatinCorrect > 0" :icon="['fas', 'coins']"
@@ -21,13 +21,13 @@
         <font-awesome-icon v-show="resultsVisible" :icon="['fas', foreignIcon]"
                            :size="getSizeClass('fas')" />
       </span>
-      <div class="field is-10 has-addons">
+      <div class="field is-10 has-addons noMarginBottom">
         <div v-if="keyboardVisible" class="control">
           <ButtonIcon icon="backspace" color="is-danger" @click="removeLetter()" />
         </div>
         <div class="control fullWidth">
           <input class="input is-rounded" type="text" :placeholder="getText(words.foreignAlphabet)"
-                :class="[getSizeClass('input'), { 'is-link': solutionVisible}]" v-model="foreignInput"
+                :class="[getSizeClass('input'), { 'is-info': solutionVisible}]" v-model="foreignInput"
                 @click="showKeyboard()" readonly />
         </div>
         <div v-if="keyboardVisible" class="control">
@@ -52,9 +52,9 @@
                    text="adventureButton4" @click="showStatistics()" />
       <ButtonBasic v-show="!resultsVisible" icon="briefcase" color="is-primary" text="adventureButton5"
                    @click="showItems()" />
-      <ButtonBasic v-show="resultsVisible && !solutionVisible" icon="eye" color="is-link" text="adventureButton6"
+      <ButtonBasic v-show="resultsVisible && !solutionVisible" icon="eye" color="is-info" text="adventureButton6"
                    @click="showSolution()" />
-      <ButtonBasic v-show="resultsVisible && solutionVisible" icon="eye-slash" color="is-link" text="adventureButton7"
+      <ButtonBasic v-show="resultsVisible && solutionVisible" icon="eye-slash" color="is-info" text="adventureButton7"
                    @click="hideSolution()" />
     </div>
     <transition enter-active-class="animated fadeInUp super-fast"
@@ -139,12 +139,12 @@ export default {
         {
           nameId: 'adventureCategoryTag',
           valueId: this.words.words[this.currentWord].category,
-          color: 'is-primary'
+          color: 'is-info'
         },
         {
           nameId: 'adventureCountTag',
           valueId: this.$store.state.vueDict.wordCount,
-          color: 'is-primary'
+          color: 'is-info'
         },
         {
           nameId: 'adventureDifficultyTag',
@@ -493,6 +493,10 @@ export default {
   .is-absolute {
     position: absolute;
     bottom: 0;
+  }
+
+  .noMarginBottom {
+    margin-bottom: 0;
   }
 }
 
