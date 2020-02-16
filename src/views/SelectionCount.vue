@@ -47,7 +47,7 @@
                    @click="$router.push({ name: 'category', params: { destination: 'adventure' } })" />
     </div>
     <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-      <TheNotification v-show="showNotification" color="is-danger" :text="notificationId"
+      <TheNotification v-show="showNotification" class="fullWidth" color="is-danger" :text="notificationId"
                        @click="closeNotification()" />
     </transition>
   </div>

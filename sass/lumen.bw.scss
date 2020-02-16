@@ -1,0 +1,25 @@
+@charset "utf-8";
+@import "./../node_modules/bulmaswatch/lumen/variables";
+@import "./../node_modules/bulma/bulma.sass";
+@import "./../node_modules/bulmaswatch/lumen/overrides";
+
+.select select {
+  height: 2.5em;
+  font-size: 0.91em;
+}
+
+.select:not(.is-multiple) {
+  height: 2.273em;
+}
+
+.field.has-addons .control .select select {
+  height: 2.48em;
+}
+
+.control.has-icons-left .icon {
+  height: 2.273em;
+}
+
+.input {
+  height: 2.273em;
+}

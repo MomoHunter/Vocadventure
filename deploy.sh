@@ -12,6 +12,8 @@ sass sass/cyborg.bw.scss public/css/cyborg.bw.min.css --style=compressed
 sass sass/flatly.bw.scss public/css/flatly.bw.min.css --style=compressed
 sass sass/journal.bw.scss public/css/journal.bw.min.css --style=compressed
 sass sass/litera.bw.scss public/css/litera.bw.min.css --style=compressed
+sass sass/lumen.bw.scss public/css/lumen.bw.min.css --style=compressed
+sass sass/lux.bw.scss public/css/lux.bw.min.css --style=compressed
 
 # build
 npm run build

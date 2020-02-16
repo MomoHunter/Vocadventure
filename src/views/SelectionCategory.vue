@@ -48,7 +48,7 @@
                    @click="navTo('menu')" />
     </div>
     <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-      <TheNotification v-show="showNotification" color="is-danger" text="selectionCategoryNotification"
+      <TheNotification v-show="showNotification" class="fullWidth" color="is-danger" text="selectionCategoryNotification"
                        @click="closeNotification()" />
     </transition>
   </div>
