@@ -3,7 +3,7 @@
     <div class="control is-expanded" :class="{ 'has-icons-left': hasIconLeft }">
       <input v-focus class="input is-rounded is-fullwidth" :class="[colorInput, getSizeClass('input')]" :type="type"
              @input="$emit('input', $event.target.value)" :value="value" />
-      <span v-if="hasIconLeft" class="icon is-left">
+      <span v-if="hasIconLeft" class="icon is-left" :class="getSizeClass('icon')">
         <font-awesome-icon :icon="['fas', iconInput]" />
       </span>
     </div>

@@ -11,7 +11,7 @@
       <input class="input is-rounded is-10" type="text" :placeholder="getText(words.latinAlphabet)"
              :class="[getSizeClass('input'), { 'is-info': solutionVisible}]" v-model="latinInput"
              :readonly="resultsVisible" />
-      <span class="icon is-1 has-text-warning">
+      <span class="icon is-1" :class="latinCoinColor">
         <font-awesome-icon v-show="resultsVisible && isLatinCorrect > 0" :icon="['fas', 'coins']"
                            :size="getSizeClass('fas')" />
       </span>
@@ -34,7 +34,7 @@
           <ButtonIcon icon="check" color="is-success" @click="hideKeyboard()" />
         </div>
       </div>
-      <span class="icon is-1 has-text-warning">
+      <span class="icon is-1" :class="foreignCoinColor">
         <font-awesome-icon v-show="resultsVisible && isForeignCorrect > 0" :icon="['fas', 'coins']"
                            :size="getSizeClass('fas')" />
       </span>
@@ -44,10 +44,10 @@
                    text="adventureButton1" @click="showMessageModal()" />
       <ButtonBasic v-show="!resultsVisible" class="is-half marginBottomSmall marginLeftSmall" icon="check"
                    color="is-success" text="adventureButton2" @click="checkInput()" />
-      <ButtonBasic v-show="resultsVisible && currentWord + 1 !== $store.state.vueDict.wordCount"
+      <ButtonBasic v-show="resultsVisible && currentWord + 1 !== words.words.length"
                    class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
                    text="adventureButton3" @click="nextWord()" />
-      <ButtonBasic v-show="resultsVisible && currentWord + 1 === $store.state.vueDict.wordCount"
+      <ButtonBasic v-show="resultsVisible && currentWord + 1 === words.words.length"
                    class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
                    text="adventureButton4" @click="showStatistics()" />
       <ButtonBasic v-show="!resultsVisible" icon="briefcase" color="is-primary" text="adventureButton5"
@@ -143,7 +143,7 @@ export default {
         },
         {
           nameId: 'adventureCountTag',
-          valueId: this.$store.state.vueDict.wordCount,
+          valueId: this.words.words.length,
           color: 'is-info'
         },
         {
@@ -227,6 +227,14 @@ export default {
           return 'has-text-danger'
       }
     },
+    latinCoinColor () {
+      switch (this.isLatinCorrect) {
+        case 2:
+          return 'has-text-warning'
+        default:
+          return 'has-text-grey-lighter'
+      }
+    },
     isForeignCorrect () {
       if (this.userForeignInput.toLowerCase() ===
           this.words.words[this.currentWord][this.words.foreignAlphabet].toLowerCase()) {
@@ -254,6 +262,14 @@ export default {
           return 'has-text-warning'
         default:
           return 'has-text-danger'
+      }
+    },
+    foreignCoinColor () {
+      switch (this.isForeignCorrect) {
+        case 2:
+          return 'has-text-warning'
+        default:
+          return 'has-text-grey-lighter'
       }
     },
     keyboardNames () {
@@ -345,6 +361,7 @@ export default {
     nextWord () {
       this.hideSolution()
       this.resultsVisible = false
+      this.currentKeyboardTab = this.keyboardNames[0] || ''
       this.userLatinInput = ''
       this.userForeignInput = ''
       this.latinInput = ''

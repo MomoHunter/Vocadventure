@@ -249,7 +249,7 @@ export default {
     navTo (destination) {
       if (destination === 'menu') {
         this.$store.commit('vueDict/setCategories', [])
-        this.$store.commit('vueDict/setDifficulty', '')
+        this.$store.commit('vueDict/setDifficulty', 0)
         this.$store.commit('vueDict/setWordCount', 0)
         if (this.destination === 'adventure') {
           this.$router.push({ name: 'menu', query: { sub: 'adventure' } })

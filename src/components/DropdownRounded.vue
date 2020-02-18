@@ -7,7 +7,7 @@
         </option>
       </select>
     </span>
-    <span class="icon is-left">
+    <span class="icon is-left" :class="getSizeClass('icon')">
       <font-awesome-icon :icon="['fas', icon]" />
     </span>
   </div>

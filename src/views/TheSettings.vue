@@ -70,6 +70,7 @@ export default {
       this.$store.commit('changeTheme', this.newTheme)
       this.$store.commit('changeSize', this.newSize)
       window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
+      this.$router.push({ name: 'menu' })
     }
   }
 }

@@ -3,23 +3,70 @@
 @import "./../node_modules/bulma/bulma.sass";
 @import "./../node_modules/bulmaswatch/lumen/overrides";
 
-.select select {
-  height: 2.5em;
-  font-size: 0.91em;
-}
-
 .select:not(.is-multiple) {
   height: 2.273em;
 }
 
+.select.is-large:not(.is-multiple) {
+  height: 2.648em;
+}
+
+.field.has-addons .control .select.is-small select {
+  height: 2.648em;
+  font-size: 1em;
+}
+
 .field.has-addons .control .select select {
-  height: 2.48em;
+  height: 2.5em;
+  font-size: 0.91em;
+}
+
+.field.has-addons .control .select.is-medium select {
+  height: 2.648em;
+  font-size: 1em;
+}
+
+.field.has-addons .control .select.is-large select {
+  height: 2.648em;
+  font-size: 1em;
+}
+
+.control.has-icons-left .icon.is-small {
+  height: 2.5em;
 }
 
 .control.has-icons-left .icon {
   height: 2.273em;
 }
 
+.control.has-icons-left .icon.is-medium {
+  height: 2.5em;
+}
+
+.control.has-icons-left .icon.is-large {
+  height: 2.5em;
+}
+
+.select.is-small:not(.is-multiple):not(.is-loading)::after {
+  margin-top: -0.2em;
+}
+
+.input.is-small {
+  height: 2.648em;
+  border-bottom-width: 4px;
+}
+
 .input {
   height: 2.273em;
+  border-bottom-width: 4px;
+}
+
+.input.is-medium {
+  height: 2.648em;
+  border-bottom-width: 4px;
+}
+
+.input.is-large {
+  height: 2.648em;
+  border-bottom-width: 4px;
 }
