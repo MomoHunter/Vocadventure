@@ -8,5 +8,10 @@
   "lumen": "css/lumen.bw.min.css",
   "darkLumen": "css/darkLumen.min.css",
   "lux": "css/lux.bw.min.css",
-  "slate": "css/slate.bw.min.css"
+  "materia": "css/materia.bw.min.css",
+  "nuclear": "css/nuclear.bw.min.css",
+  "slate": "css/slate.bw.min.css",
+  "solar": "css/solar.bw.min.css",
+  "spacelab": "css/spacelab.bw.min.css",
+  "superhero": "css/superhero.bw.min.css"
 }

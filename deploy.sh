@@ -13,6 +13,11 @@ sass sass/flatly.bw.scss public/css/flatly.bw.min.css --style=compressed
 sass sass/lumen.bw.scss public/css/lumen.bw.min.css --style=compressed
 sass sass/darkLumen.scss public/css/darkLumen.min.css --style=compressed
 sass sass/lux.bw.scss public/css/lux.bw.min.css --style=compressed
+sass sass/materia.bw.scss public/css/materia.bw.min.css --style=compressed
+sass sass/nuclear.bw.scss public/css/nuclear.bw.min.css --style=compressed
+sass sass/solar.bw.scss public/css/solar.bw.min.css --style=compressed
+sass sass/spacelab.bw.scss public/css/spacelab.bw.min.css --style=compressed
+sass sass/superhero.bw.scss public/css/superhero.bw.min.css --style=compressed
 
 # build
 npm run build
