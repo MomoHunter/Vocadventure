@@ -6,6 +6,7 @@
   "cyborg": "css/cyborg.bw.min.css",
   "flatly": "css/flatly.bw.min.css",
   "lumen": "css/lumen.bw.min.css",
+  "darkLumen": "css/darkLumen.min.css",
   "lux": "css/lux.bw.min.css",
   "slate": "css/slate.bw.min.css"
 }

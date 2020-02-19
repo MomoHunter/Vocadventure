@@ -7,7 +7,7 @@
       <div class="dropdown-content customPadding">
         <div class="maxHeight overflowAuto">
           <div>
-            <table class="table fullWidth" v-for="(words, key) in vocabs.words" :key="key">
+            <table class="table fullWidth vAlign" v-for="(words, key) in vocabs.words" :key="key">
               <thead>
                 <tr class="headerSticky">
                   <td colspan="4" class="has-background-primary has-text-centered" :class="getSizeClass('td')">
@@ -88,6 +88,10 @@ export default {
   position: sticky;
   top: 0px;
   z-index: 20;
+}
+
+.vAlign tr td {
+  vertical-align: middle;
 }
 
 .customPadding {

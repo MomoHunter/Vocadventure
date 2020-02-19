@@ -1,0 +1,133 @@
+@charset "utf-8";
+@import "./../node_modules/bulmaswatch/lumen/variables";
+
+$grey-lighter: #dbdee0;
+$grey-light:   #878b8b;
+$grey:         darken($grey-light, 11);
+$grey-dark:    darken($grey, 23);
+$grey-darker:  darken($grey, 31);
+$dark:         $grey;
+
+$body-background-color: darken($grey-darker, 7);
+$body-color: $grey-light;
+
+$button-color: $grey-light;
+$button-background-color: $grey-darker;
+$button-border-color: $grey-dark;
+$button-focus-color: $grey-light;
+
+$input-background-color: $grey-darker;
+$input-color: $grey-light;
+$input-border-color: $grey-dark;
+$input-icon-color: $grey-light;
+$input-icon-active-color: $grey-light;
+
+$box-color: $grey-light;
+$box-background-color: $grey-darker;
+
+$tag-background-color: $grey-darker;
+$tag-color: $grey-light;
+
+$progress-bar-background-color: $grey-darker;
+
+$dropdown-content-background-color: $grey-darker;
+$dropdown-content-shadow: 0 0 0 1px $grey-dark, 0 #{$thickness} 0 1px $grey-dark;
+
+$table-color: $grey-light;
+$table-background-color: darken($grey-darker, 3);
+$table-cell-border: 1px solid $grey-dark;
+
+$tabs-border-bottom-color: $grey-dark;
+$tabs-toggle-link-border-color: $grey-dark;
+$tabs-toggle-link-hover-background-color: darken($grey-dark, 3);
+
+@import "./../node_modules/bulma/bulma.sass";
+@import "./../node_modules/bulmaswatch/lumen/overrides";
+
+.hero {
+  background-color: darken($grey-darker, 3);
+}
+
+.title {
+  color: $grey-light;
+}
+
+.subtitle {
+  color: $grey;
+}
+
+.box {
+  border-color: $grey-dark;
+}
+
+.dropdown-content {
+  border-color: $grey-dark;
+}
+
+.select:not(.is-multiple) {
+  height: 2.273em;
+}
+
+.select.is-large:not(.is-multiple) {
+  height: 2.648em;
+}
+
+.field.has-addons .control .select.is-small select {
+  height: 2.648em;
+  font-size: 1em;
+}
+
+.field.has-addons .control .select select {
+  height: 2.5em;
+  font-size: 0.91em;
+}
+
+.field.has-addons .control .select.is-medium select {
+  height: 2.648em;
+  font-size: 1em;
+}
+
+.field.has-addons .control .select.is-large select {
+  height: 2.648em;
+  font-size: 1em;
+}
+
+.control.has-icons-left .icon.is-small {
+  height: 2.5em;
+}
+
+.control.has-icons-left .icon {
+  height: 2.273em;
+}
+
+.control.has-icons-left .icon.is-medium {
+  height: 2.5em;
+}
+
+.control.has-icons-left .icon.is-large {
+  height: 2.5em;
+}
+
+.select.is-small:not(.is-multiple):not(.is-loading)::after {
+  margin-top: -0.2em;
+}
+
+.input.is-small {
+  height: 2.648em;
+  border-bottom-width: 4px;
+}
+
+.input {
+  height: 2.273em;
+  border-bottom-width: 4px;
+}
+
+.input.is-medium {
+  height: 2.648em;
+  border-bottom-width: 4px;
+}
+
+.input.is-large {
+  height: 2.648em;
+  border-bottom-width: 4px;
+}
