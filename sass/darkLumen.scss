@@ -22,6 +22,8 @@ $input-border-color: $grey-dark;
 $input-icon-color: $grey-light;
 $input-icon-active-color: $grey-light;
 
+$label-color: $grey-light;
+
 $box-color: $grey-light;
 $box-background-color: $grey-darker;
 
@@ -37,6 +39,7 @@ $table-color: $grey-light;
 $table-background-color: darken($grey-darker, 3);
 $table-cell-border: 1px solid $grey-dark;
 
+$tabs-link-color: $grey;
 $tabs-border-bottom-color: $grey-dark;
 $tabs-toggle-link-border-color: $grey-dark;
 $tabs-toggle-link-hover-background-color: darken($grey-dark, 3);
@@ -45,7 +48,7 @@ $tabs-toggle-link-hover-background-color: darken($grey-dark, 3);
 @import "./../node_modules/bulmaswatch/lumen/overrides";
 
 .hero {
-  background-color: darken($grey-darker, 3);
+  background-color: lighten($grey-darker, 3);
 }
 
 .title {
