@@ -72,7 +72,16 @@
     { "german": "(Guten) Morgen. (neutral)", "english": "(Good) Morning. (neutral)", "romaji": "O-hayou.", "kana": "おはよう。", "difficulty": 1 },
     { "german": "Guten Abend.", "english": "Good evening.", "romaji": "Konban wa.", "kana": "こんばんは。", "difficulty": 1 },
     { "german": "Gute Nacht. Schlafen Sie gut. (höflich)", "english": "Good night. Sleep well. (polite)", "romaji": "O-yasumi-nasai.", "kana": "おやすみなさい。", "difficulty": 2 },
-    { "german": "Gute Nacht. Schlaf gut. (neutral)", "english": "Good night. Sleep well. (neutral)", "romaji": "O-yasumi.", "kana": "おやすみ。", "difficulty": 1 }
+    { "german": "Gute Nacht. Schlaf gut. (neutral)", "english": "Good night. Sleep well. (neutral)", "romaji": "O-yasumi.", "kana": "おやすみ。", "difficulty": 1 },
+    { "german": "Auf Wiedersehen. (höflich, auf längere Zeit)", "english": "Goodbye. (polite, for a longer time)", "romaji": "Sayounara.", "kana": "さようなら。", "difficulty": 1 },
+    { "german": "Ich werde so langsam gehen.", "english": "I will soon head out.", "romaji": "Sorosoro shitsurei shimasu.", "kana": "そろそろ失礼します。", "difficulty": 3 },
+    { "german": "Tschüss (neutral)", "english": "Bye (neutral)", "romaji": "Ja ne.", "kana": "じゃね。", "difficulty": 1 },
+    { "german": "Tschüss (neutral) 2", "english": "Bye (neutral) 2", "romaji": "Ja mata.", "kana": "じゃまた。", "difficulty": 1 },
+    { "german": "Tschüss (neutral) 3", "english": "Bye (neutral) 3", "romaji": "Mata ne.", "kana": "またね。", "difficulty": 1 },
+    { "german": "Tschüss (neutral) 4", "english": "Bye (neutral) 4", "romaji": "Baibai.", "kana": "バイバイ。", "difficulty": 2 },
+    { "german": "Bis morgen.", "english": "Till tomorrow.", "romaji": "Mata ashita.", "kana": "またあした。", "difficulty": 1 },
+    { "german": "Bis nächste Woche.", "english": "Till next week.", "romaji": "Mata raishuu.", "kana": "また来週。", "difficulty": 3 },
+    { "german": "Bis die Tage.", "english": "See you around.", "romaji": "Mata kondo.", "kana": "また今度。", "difficulty": 3 }
   ],
   "japaneseCategory5": [
     { "german": "ich (allgemein)", "english": "I (in general)", "romaji": "watashi", "kana": "私", "difficulty": 3 }
