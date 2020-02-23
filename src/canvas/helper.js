@@ -52,3 +52,60 @@ export function drawCanvasTextBorder (x, y, text, styleKey, context) {
   context.setLineDash(style.lineDash)
   context.strokeText(text, x, y)
 }
+
+/**
+ * Retrieves sprite information, falling back to the placeholder image if needed.
+ * @param {string} spriteKey
+ * @param {CanvasDict} cD
+ * @return {{spriteWidth: number, spriteHeight: number, full: Array, key: string}}
+ */
+export function getSpriteData (spriteKey, cD) {
+  let spriteData = cD.spriteDict[spriteKey]
+  if (!spriteData) {
+    console.error('Wrong key: ', spriteKey)
+    return getSpriteData('special_placeholder', cD)
+  } else {
+    return { spriteWidth: spriteData[3], spriteHeight: spriteData[4], full: spriteData, key: spriteKey }
+  }
+}
+
+/**
+ * Draw a Sprite-Image onto the used canvas.
+ * Its size is determined by the defined data of the given Sprite.
+ * @param {number} x x-coordinate of the top-left corner
+ * @param {number} y y-coordinate of the top-left corner
+ * @param {string} spriteKey defines which sprite should be drawn
+ * @param {CanvasDict} cD
+ * @param {number} animationSpeed the speed of the animation, default: 8
+ * @param {boolean} useCustomStart if animation should count from cD.animationStartFrame
+ * @param {number} rotation  gives the rotation in degree
+ */
+export function drawCanvasImage (x, y, spriteKey, cD, animationSpeed = 12, useCustomStart = false, rotation = 0) {
+  let { full: spriteData } = getSpriteData(spriteKey, cD)
+  let [isAnim, spriteX, spriteY, spriteWidth, spriteHeight] = spriteData
+
+  if (isAnim && useCustomStart) {
+    let frameNo = Math.floor((cD.frameNo - cD.animationStartFrame) / animationSpeed) % spriteY.length
+    spriteY = spriteY[frameNo]
+  } else if (isAnim) {
+    let frameNo = Math.floor(cD.frameNo / animationSpeed) % spriteY.length
+    spriteY = spriteY[frameNo]
+  }
+  if (rotation !== 0) {
+    cD.context.translate(x + spriteWidth / 2, y + spriteHeight / 2)
+    cD.context.rotate(rotation / 180 * Math.PI)
+    cD.context.drawImage(
+      cD.spritesheet,
+      spriteX, spriteY, spriteWidth, spriteHeight,
+      -spriteWidth / 2, -spriteHeight / 2, spriteWidth, spriteHeight
+    )
+    cD.context.rotate(-(rotation / 180 * Math.PI))
+    cD.context.translate(-(x + spriteWidth / 2), -(y + spriteHeight / 2))
+  } else {
+    cD.context.drawImage(
+      cD.spritesheet,
+      spriteX, spriteY, spriteWidth, spriteHeight,
+      x, y, spriteWidth, spriteHeight
+    )
+  }
+}

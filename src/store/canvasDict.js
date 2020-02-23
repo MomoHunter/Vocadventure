@@ -10,6 +10,7 @@ export default {
     startTS: 0,
     refreshrate: 1000 / 60,
     frameNo: 0,
+    animationStartFrame: 0,
     watchedIntro: false,
     spritesheet: new Image(),
     // start spriteDict
@@ -26,7 +27,8 @@ export default {
       'background_snow': [false, 0, 602, 300, 300],
       'background_universe': [false, 0, 903, 600, 300],
       'background_world': [false, 0, 1204, 600, 300],
-      'player_standing': [false, 601, 0, 25, 43]
+      'player_standing': [false, 601, 0, 25, 43],
+      'special_placeholder': [false, 627, 0, 50, 50]
     }
     // end spriteDict
   },

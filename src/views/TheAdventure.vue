@@ -437,12 +437,14 @@ export default {
       let canvasWidth = this.$store.getters['canvasDict/canvasWidth']
       // let canvasHeight = this.$store.getters['canvasDict/canvasHeight']
 
-      ctx.drawImage(this.$store.state.canvasDict.spritesheet, 0, 903, 600, 300, 0, 0, 600, 300)
-
-      Helper.drawCanvasRect(0, 0, canvasWidth, 30, 'standardBlur', ctx)
-      Helper.drawCanvasText(
-        canvasWidth / 2, 15, this.words.words[this.currentWord][this.$store.state.lang], 'standard', ctx
-      )
+      if (this.introPlaying) {
+        Helper.drawCanvasImage(0, 0, 'background_universe', this.$store.state.canvasDict)
+      } else {
+        Helper.drawCanvasRect(0, 0, canvasWidth, 30, 'standardBlur', ctx)
+        Helper.drawCanvasText(
+          canvasWidth / 2, 15, this.words.words[this.currentWord][this.$store.state.lang], 'standard', ctx
+        )
+      }
     },
     navTo (name) {
       for (let category of this.$store.state.vueDict.categoriesChosen) {
