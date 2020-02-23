@@ -1,3 +1,5 @@
+import Spritesheet from '@/assets/Spritesheet.png'
+
 export default {
   namespaced: true,
   state: {
@@ -7,7 +9,26 @@ export default {
     lag: 0,
     startTS: 0,
     refreshrate: 1000 / 60,
-    frameNo: 0
+    frameNo: 0,
+    watchedIntro: false,
+    spritesheet: new Image(),
+    // start spriteDict
+    // The following code is auto-generated, don't change it!
+    /**
+     * Maps a Sprite-Key to Location Information regarding the Sprite-Sheet as a key-value-dict.
+     * @type {Object.<string, [boolean, number, number|Array<number>, number, number]>}
+     * Each value's array has the contents: isAnimated, x-pos, y-pos, width, height.
+     * If isAnimated is true, y-pos is an array, otherwise just a single number.
+     */
+    spriteDict: {
+      'background_forest': [false, 0, 0, 300, 300],
+      'background_home': [false, 0, 301, 600, 300],
+      'background_snow': [false, 0, 602, 300, 300],
+      'background_universe': [false, 0, 903, 600, 300],
+      'background_world': [false, 0, 1204, 600, 300],
+      'player_standing': [false, 601, 0, 25, 43]
+    }
+    // end spriteDict
   },
   getters: {
     canvasWidth: (state) => {
@@ -21,6 +42,10 @@ export default {
     initCanvas (state) {
       state.canvas = document.getElementById('adventureCanvas')
       state.context = state.canvas.getContext('2d')
+    },
+    setSpritesheet (state) {
+      console.log(Spritesheet)
+      state.spritesheet.src = Spritesheet
     },
     setRaf (state, raf) {
       state.raf = raf
@@ -39,6 +64,9 @@ export default {
     },
     increaseFrameNo (state) {
       state.frameNo++
+    },
+    setWatchedIntro (state) {
+      state.watchedIntro = true
     }
   },
   actions: {

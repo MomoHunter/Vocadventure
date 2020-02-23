@@ -120,13 +120,17 @@ export default {
       resultsVisible: false,
       solutionVisible: false,
       keyboardVisible: false,
-      statisticsVisible: false
+      statisticsVisible: false,
+      introPlaying: false
     }
   },
   mounted () {
     this.$store.commit('canvasDict/initCanvas')
     this.currentKeyboardTab = this.keyboardNames[0] || ''
     this.loopActivated = true
+    if (!this.$store.state.canvasDict.watchedIntro) {
+      this.introPlaying = true
+    }
     this.canvasLoop()
   },
   beforeDestroy () {
@@ -432,6 +436,8 @@ export default {
       let ctx = this.$store.state.canvasDict.context
       let canvasWidth = this.$store.getters['canvasDict/canvasWidth']
       // let canvasHeight = this.$store.getters['canvasDict/canvasHeight']
+
+      ctx.drawImage(this.$store.state.canvasDict.spritesheet, 0, 903, 600, 300, 0, 0, 600, 300)
 
       Helper.drawCanvasRect(0, 0, canvasWidth, 30, 'standardBlur', ctx)
       Helper.drawCanvasText(

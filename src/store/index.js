@@ -37,7 +37,8 @@ export default new Vuex.Store({
         status: state.vueDict.status,
         categoriesPlayed: state.vueDict.categoriesPlayed,
         unlockedItems: state.vueDict.unlockedItems,
-        inventory: state.vueDict.inventory
+        inventory: state.vueDict.inventory,
+        watchedIntro: state.canvasDict.watchedIntro
       }
     }
   },
