@@ -121,7 +121,9 @@ export default {
       solutionVisible: false,
       keyboardVisible: false,
       statisticsVisible: false,
-      introPlaying: false
+      introPlaying: false,
+      animationProgressCounter: 0,
+      introTransitionPlaying: false
     }
   },
   mounted () {
@@ -131,7 +133,7 @@ export default {
     if (!this.$store.state.canvasDict.watchedIntro) {
       this.introPlaying = true
     }
-    this.canvasLoop()
+    this.canvasLoop(0)
   },
   beforeDestroy () {
     this.loopActivated = false
@@ -308,6 +310,22 @@ export default {
     },
     answer () {
       return this.$store.state.vueDict.currentModalAnswer
+    },
+    introTexts () {
+      let intro = this.getText('adventureIntro')
+      let texts = ['']
+
+      for (let part of intro.split(' ')) {
+        let measuredText = texts[texts.length - 1] + ' ' + part
+        measuredText.trim()
+        if (Helper.getTextWidth(measuredText, 'intro', this.$store.state.canvasDict.context).width > 400) {
+          texts.push(part)
+        } else {
+          texts[texts.length - 1] += ' ' + part
+        }
+      }
+
+      return texts
     }
   },
   methods: {
@@ -404,17 +422,16 @@ export default {
     },
     canvasLoop (timestamp) {
       if (this.loopActivated) {
-        let raf = requestAnimationFrame(timestamp => this.canvasLoop(timestamp))
+        let raf = requestAnimationFrame(newTs => this.canvasLoop(newTs))
         this.$store.commit('canvasDict/setRaf', raf)
-
         this.$store.commit('canvasDict/addLag', timestamp - this.$store.state.canvasDict.startTS)
 
         while (this.$store.state.canvasDict.lag > this.$store.state.canvasDict.refreshrate) {
-          this.$store.commit('canvasDict/invreaseFrameNo')
+          this.$store.commit('canvasDict/increaseFrameNo')
 
-          // this.canvasUpdate()
+          this.canvasUpdate()
 
-          if (this.lag > this.refreshrate * 5) {
+          if (this.$store.state.canvasDict.lag > this.$store.state.canvasDict.refreshrate * 5) {
             this.$store.commit('canvasDict/eliminateLag')
           } else {
             this.$store.commit('canvasDict/reduceLag')
@@ -432,14 +449,55 @@ export default {
         0, 0, this.$store.getters['canvasDict/canvasWidth'], this.$store.getters['canvasDict/canvasHeight']
       )
     },
-    canvasDraw () {
-      let ctx = this.$store.state.canvasDict.context
+    canvasUpdate () {
       let canvasWidth = this.$store.getters['canvasDict/canvasWidth']
-      // let canvasHeight = this.$store.getters['canvasDict/canvasHeight']
+      let canvasHeight = this.$store.getters['canvasDict/canvasHeight']
 
       if (this.introPlaying) {
-        Helper.drawCanvasImage(0, 0, 'background_universe', this.$store.state.canvasDict)
+        this.animationProgressCounter += 0.5
+
+        if (canvasHeight + (20 * this.introTexts.length) - this.animationProgressCounter < -20) {
+          this.introPlaying = false
+          this.$store.commit('canvasDict/setWatchedIntro')
+          this.animationProgressCounter = 0
+          this.introTransitionPlaying = true
+        }
+      } else if (this.introTransitionPlaying) {
+        this.animationProgressCounter += 3
+
+        if (this.animationProgressCounter > canvasWidth / 2 * 1.4) {
+          this.introTransitionPlaying = false
+        }
+      }
+    },
+    canvasDraw () {
+      const cD = this.$store.state.canvasDict // read-only
+      let ctx = this.$store.state.canvasDict.context
+      let canvasWidth = this.$store.getters['canvasDict/canvasWidth']
+      let canvasHeight = this.$store.getters['canvasDict/canvasHeight']
+
+      if (this.introPlaying) {
+        Helper.drawCanvasImage(0, 0, 'background_universe', cD)
+
+        for (let i = 0; i < this.introTexts.length; i++) {
+          Helper.drawCanvasText(
+            canvasWidth / 2, canvasHeight + (20 * (i + 1)) - this.animationProgressCounter,
+            this.introTexts[i], 'intro', ctx
+          )
+        }
+      } else if (this.introTransitionPlaying) {
+        Helper.drawCanvasImage(0, 0, 'background_universe', cD)
+        ctx.save()
+        Helper.clipCanvasCircle(canvasWidth / 2, canvasHeight / 2, this.animationProgressCounter, ctx)
+        ctx.clip()
+        Helper.drawCanvasImage(0, 0, 'background_world', cD)
+        Helper.drawCanvasRect(0, 0, canvasWidth, 30, 'standardBlur', ctx)
+        Helper.drawCanvasText(
+          canvasWidth / 2, 15, this.words.words[this.currentWord][this.$store.state.lang], 'standard', ctx
+        )
+        ctx.restore()
       } else {
+        Helper.drawCanvasImage(0, 0, 'background_world', cD)
         Helper.drawCanvasRect(0, 0, canvasWidth, 30, 'standardBlur', ctx)
         Helper.drawCanvasText(
           canvasWidth / 2, 15, this.words.words[this.currentWord][this.$store.state.lang], 'standard', ctx

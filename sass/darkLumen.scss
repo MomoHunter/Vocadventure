@@ -39,6 +39,12 @@ $table-color: $grey-light;
 $table-background-color: darken($grey-darker, 3);
 $table-cell-border: 1px solid $grey-dark;
 
+$message-background-color: $grey-dark;
+$message-header-background-color: $grey-darker;
+$message-header-color: $grey-light;
+$message-body-border-color: $grey-dark;
+$message-body-color: $grey-light;
+
 $tabs-link-color: $grey;
 $tabs-border-bottom-color: $grey-dark;
 $tabs-toggle-link-border-color: $grey-dark;
@@ -65,6 +71,14 @@ $tabs-toggle-link-hover-background-color: darken($grey-dark, 3);
 
 .dropdown-content {
   border-color: $grey-dark;
+}
+
+.message-header .delete::before {
+  background-color: $grey-light;
+}
+
+.message-header .delete::after {
+  background-color: $grey-light;
 }
 
 .select:not(.is-multiple) {

@@ -46,7 +46,6 @@ export default {
       state.context = state.canvas.getContext('2d')
     },
     setSpritesheet (state) {
-      console.log(Spritesheet)
       state.spritesheet.src = Spritesheet
     },
     setRaf (state, raf) {

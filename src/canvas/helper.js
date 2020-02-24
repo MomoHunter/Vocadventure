@@ -109,3 +109,31 @@ export function drawCanvasImage (x, y, spriteKey, cD, animationSpeed = 12, useCu
     )
   }
 }
+
+/**
+ * Return the width of text that will be on the canvas
+ * @param {string} styleKey key of the used style
+ * @param {string} text measured text
+ * @param {CanvasRenderingContext2D} context context of the used canvas
+ * @returns {TextMetrics} returns the width of the text
+ */
+export function getTextWidth (text, styleKey, context) {
+  let style = Styles.text[styleKey]
+  context.textAlign = style.align
+  context.textBaseline = style.baseline
+  context.font = style.font
+  context.fillStyle = `rgba(${style.color})`
+  return context.measureText(text)
+}
+
+/**
+ * forms a circle to be clipped with corresponding functions
+ * @param {number} centerX x-center of the circle
+ * @param {number} centerY y-center of the circle
+ * @param {number} radius radius of the circle
+ * @param {CanvasRenderingContext2D} context context of the used canvas
+ */
+export function clipCanvasCircle (centerX, centerY, radius, context) {
+  context.beginPath()
+  context.arc(centerX, centerY, radius, 0, Math.PI * 2)
+}
