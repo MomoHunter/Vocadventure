@@ -81,7 +81,16 @@
     { "german": "Tschüss (neutral) 4", "english": "Bye (neutral) 4", "romaji": "Baibai.", "kana": "バイバイ。", "difficulty": 2 },
     { "german": "Bis morgen.", "english": "Till tomorrow.", "romaji": "Mata ashita.", "kana": "またあした。", "difficulty": 1 },
     { "german": "Bis nächste Woche.", "english": "Till next week.", "romaji": "Mata raishuu.", "kana": "また来週。", "difficulty": 3 },
-    { "german": "Bis die Tage.", "english": "See you around.", "romaji": "Mata kondo.", "kana": "また今度。", "difficulty": 3 }
+    { "german": "Bis die Tage.", "english": "See you around.", "romaji": "Mata kondo.", "kana": "また今度。", "difficulty": 3 },
+    { "german": "Tschüss. (höflich; sagt die Person, die geht)", "english": "Bye. (polite; says the person, who leaves)", "romaji": "Itte kimasu.", "kana": "いってきます。", "difficulty": 2 },
+    { "german": "Tschüss. (zu der Person, die geht)", "english": "Bye. (to the person, who leaves)", "romaji": "Itte rasshai.", "kana": "いってらっしゃい。", "difficulty": 2 },
+    { "german": "Hallo. Da bin ich wieder. (sagt die Person, die zurückkommt)", "english": "Hello. I'm back. (says the person, who comes back)", "romaji": "Tadaima.", "kana": "ただいま。", "difficulty": 1 },
+    { "german": "Hallo. Da sind Sie ja wieder. (höfl. zu der Person, die zurückkommt)", "english": "Hello and welcome back. (polite to the person, who comes back)", "romaji": "O-kaeri-nasai.", "kana": "おかえりなさい。", "difficulty": 2 },
+    { "german": "Hallo. Da bist du ja wieder. (neutral)", "english": "Hello and welcome back. (neutral)", "romaji": "O-kaeri.", "kana": "おかえり。", "difficulty": 1 },
+    { "german": "Lange nicht gesehen. (höflich)", "english": "Long time no see. (polite)", "romaji": "O-hisashi-buri desu ne.", "kana": "お久しぶりですね。", "difficulty": 3 },
+    { "german": "Lange nicht gesehen. (neutral)", "english": "Long time no see. (neutral)", "romaji": "O-hisashi-buri.", "kana": "お久しぶり。", "difficulty": 3 },
+    { "german": "Ich habe lange nichts von mir hören lassen.", "english": "I haven't been heard from in a while.", "romaji": "Go-busata shite imasu.", "kana": "ご無沙汰しています。", "difficulty": 3 },
+    { "german": "Guten Tag. Hereinspaziert. (höflich, in Geschäften zu Kunden)", "english": "Welcome. Come in. (polite, in stores to customers)", "romaji": "Irasshaimase.", "kana": "いらっしゃいませ。", "difficulty": 2 }
   ],
   "japaneseCategory5": [
     { "german": "ich (allgemein)", "english": "I (in general)", "romaji": "watashi", "kana": "私", "difficulty": 3 }
