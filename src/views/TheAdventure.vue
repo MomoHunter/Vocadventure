@@ -1,83 +1,11 @@
 <template>
-  <div class="flexContainer justifyBetween" :class="statisticsVisible ? 'height-statistics' : 'height-ingame'">
-    <div class="fullWidth" :class="{ marginBottomBig: keyboardVisible }">
+  <div class="flexContainer">
+    <div class="fullWidth marginBottomBig">
       <HeroWithTags title="adventureTitle" :tagObjects="tags" />
       <canvas id="adventureCanvas" width="600" height="300"></canvas>
     </div>
-    <div class="innerFlexContainerInput" :class="{ marginBottomBig: keyboardVisible }" v-show="!statisticsVisible">
-      <span class="icon is-1" :class="latinIconColor">
-        <font-awesome-icon v-show="resultsVisible" :icon="['fas', latinIcon]" :size="getSizeClass('fas')" />
-      </span>
-      <input class="input is-rounded is-10" type="text" :placeholder="getText(words.latinAlphabet)"
-             :class="[getSizeClass('input'), { 'is-info': solutionVisible}]" v-model="latinInput"
-             :readonly="resultsVisible" />
-      <span class="icon is-1" :class="latinCoinColor">
-        <font-awesome-icon v-show="resultsVisible && isLatinCorrect > 0" :icon="['fas', 'coins']"
-                           :size="getSizeClass('fas')" />
-      </span>
-    </div>
-    <div class="innerFlexContainerInput" :class="{ marginBottomBig: keyboardVisible }" v-show="!statisticsVisible">
-      <span class="icon is-1" :class="foreignIconColor">
-        <font-awesome-icon v-show="resultsVisible" :icon="['fas', foreignIcon]"
-                           :size="getSizeClass('fas')" />
-      </span>
-      <div class="field is-10 has-addons noMarginBottom">
-        <div v-if="keyboardVisible" class="control">
-          <ButtonIcon icon="backspace" color="is-danger" @click="removeLetter()" />
-        </div>
-        <div class="control fullWidth">
-          <input class="input is-rounded" type="text" :placeholder="getText(words.foreignAlphabet)"
-                :class="[getSizeClass('input'), { 'is-info': solutionVisible}]" v-model="foreignInput"
-                @click="showKeyboard()" readonly />
-        </div>
-        <div v-if="keyboardVisible" class="control">
-          <ButtonIcon icon="check" color="is-success" @click="hideKeyboard()" />
-        </div>
-      </div>
-      <span class="icon is-1" :class="foreignCoinColor">
-        <font-awesome-icon v-show="resultsVisible && isForeignCorrect > 0" :icon="['fas', 'coins']"
-                           :size="getSizeClass('fas')" />
-      </span>
-    </div>
-    <div class="innerFlexContainerButton is-10" v-show="!statisticsVisible && !keyboardVisible">
-      <ButtonBasic class="is-half marginBottomSmall marginRightSmall" icon="times" color="is-danger"
-                   text="adventureButton1" @click="showMessageModal()" />
-      <ButtonBasic v-show="!resultsVisible" class="is-half marginBottomSmall marginLeftSmall" icon="check"
-                   color="is-success" text="adventureButton2" @click="checkInput()" />
-      <ButtonBasic v-show="resultsVisible && currentWord + 1 !== words.words.length"
-                   class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
-                   text="adventureButton3" @click="nextWord()" />
-      <ButtonBasic v-show="resultsVisible && currentWord + 1 === words.words.length"
-                   class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
-                   text="adventureButton4" @click="showStatistics()" />
-      <ButtonBasic v-show="!resultsVisible" icon="briefcase" color="is-primary" text="adventureButton5"
-                   @click="showItems()" />
-      <ButtonBasic v-show="resultsVisible && !solutionVisible" icon="eye" color="is-info" text="adventureButton6"
-                   @click="showSolution()" />
-      <ButtonBasic v-show="resultsVisible && solutionVisible" icon="eye-slash" color="is-info" text="adventureButton7"
-                   @click="hideSolution()" />
-    </div>
-    <transition enter-active-class="animated fadeInUp super-fast"
-                leave-active-class="animated fadeOutDown super-fast is-absolute">
-      <div v-show="keyboardVisible" class="flexGrow fullWidth keyboard">
-        <TabsBasic :names="keyboardNames" :selected="currentKeyboardTab" @click="setTab($event)" radiusless />
-        <div class="bottomKeyboard">
-          <div class="keyContainer">
-            <ButtonText class="is-radiusless keyboardButton" :text="sign" v-for="(sign, index) in keyboardSigns"
-                          :key="index" @click="addLetter(sign)" />
-          </div>
-        </div>
-      </div>
-    </transition>
-    <TheProgressBar v-show="!statisticsVisible && !keyboardVisible" class="is-10" color="is-success"
-                    :text="progressText" :value="progressBarCount" :maxValue="words.words.length" />
-    <BarChartBasic v-show="statisticsVisible" class="is-10" :title="words.latinAlphabet" :values="correctLatinWords" />
-    <BarChartBasic v-show="statisticsVisible" class="is-10" :title="words.foreignAlphabet"
-                   :values="correctForeignWords" />
-    <div v-show="statisticsVisible" class="is-10">
-      <ButtonBasic class="marginBottomSmall" icon="arrow-left" color="is-warning" text="adventureButton8"
-                   @click="navTo('category')" />
-      <ButtonBasic icon="check" color="is-success" text="adventureButton9" @click="navTo('menu')" />
+    <div class="routerView fullWidth">
+      <router-view @click="viewClickHandler($event)"></router-view>
     </div>
   </div>
 </template>
@@ -85,54 +13,53 @@
 <script>
 import * as Helper from '@/canvas/helper.js'
 import HeroWithTags from '@/components/HeroWithTags.vue'
-import ButtonBasic from '@/components/ButtonBasic.vue'
-import ButtonIcon from '@/components/ButtonIcon.vue'
-import ButtonText from '@/components/ButtonText.vue'
-import TheProgressBar from '@/components/TheProgressBar.vue'
-import TabsBasic from '@/components/TabsBasic.vue'
-import BarChartBasic from '@/components/BarChartBasic.vue'
 
-import JapaneseSigns from '@/data/JapaneseSigns.json'
+// import JapaneseSigns from '@/data/JapaneseSigns.json'
 
 export default {
   name: 'TheAdventure',
   components: {
-    HeroWithTags,
-    ButtonBasic,
-    ButtonIcon,
-    ButtonText,
-    TheProgressBar,
-    TabsBasic,
-    BarChartBasic
+    HeroWithTags
   },
   data () {
     return {
-      loopActivated: false,
       currentWord: 0,
-      progressBarCount: 0,
-      latinInput: '',
-      foreignInput: '',
-      userLatinInput: '',
-      userForeignInput: '',
-      correctLatinWords: [],
-      correctForeignWords: [],
-      currentKeyboardTab: '',
-      resultsVisible: false,
-      solutionVisible: false,
-      keyboardVisible: false,
-      statisticsVisible: false,
       introPlaying: false,
-      animationProgressCounter: 0,
-      introTransitionPlaying: false
+      introTransitionPlaying: false,
+      loopActivated: false,
+      animationProgressCounter: 0
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(component => {
+      if (!component.$store.state.canvasDict.watchedIntro) {
+        component.introPlaying = true
+        component.$router.replace({ name: 'adventureIntro' })
+      } else if (!component.$store.state.canvasDict.inLevel) {
+        component.$router.replace({ name: 'adventureMap' })
+      }
+    })
+  },
+  beforeRouteUpdate (to, from, next) {
+    next()
+  },
+  beforeRouteLeave (to, from, next) {
+    if (this.answer === '') {
+      if (!this.loopActivated) {
+        this.$store.commit('vueDict/resetAdditional')
+        this.$store.commit('vueDict/closeModal')
+        next()
+      } else {
+        this.showMessageModal()
+        next(false)
+      }
+    } else {
+      next()
     }
   },
   mounted () {
     this.$store.commit('canvasDict/initCanvas')
-    this.currentKeyboardTab = this.keyboardNames[0] || ''
     this.loopActivated = true
-    if (!this.$store.state.canvasDict.watchedIntro) {
-      this.introPlaying = true
-    }
     this.canvasLoop(0)
   },
   beforeDestroy () {
@@ -141,6 +68,9 @@ export default {
   },
   computed: {
     tags () {
+      if (!this.$store.state.canvasDict.inLevel) {
+        return []
+      }
       return [
         {
           nameId: 'adventureCategoryTag',
@@ -204,110 +134,6 @@ export default {
 
       return vocabs
     },
-    isLatinCorrect () {
-      if (this.userLatinInput.toLowerCase() ===
-          this.words.words[this.currentWord][this.words.latinAlphabet].toLowerCase()) {
-        return 2
-      } else if (this.streamline(this.userLatinInput) ===
-                 this.streamline(this.words.words[this.currentWord][this.words.latinAlphabet])) {
-        return 1
-      } else {
-        return 0
-      }
-    },
-    latinIcon () {
-      switch (this.isLatinCorrect) {
-        case 0:
-          return 'times'
-        default:
-          return 'check'
-      }
-    },
-    latinIconColor () {
-      switch (this.isLatinCorrect) {
-        case 2:
-          return 'has-text-success'
-        case 1:
-          return 'has-text-warning'
-        default:
-          return 'has-text-danger'
-      }
-    },
-    latinCoinColor () {
-      switch (this.isLatinCorrect) {
-        case 2:
-          return 'has-text-warning'
-        default:
-          return 'has-text-grey-lighter'
-      }
-    },
-    isForeignCorrect () {
-      if (this.userForeignInput.toLowerCase() ===
-          this.words.words[this.currentWord][this.words.foreignAlphabet].toLowerCase()) {
-        return 2
-      } else if (this.streamline(this.userForeignInput) ===
-                 this.streamline(this.words.words[this.currentWord][this.words.foreignAlphabet])) {
-        return 1
-      } else {
-        return 0
-      }
-    },
-    foreignIcon () {
-      switch (this.isForeignCorrect) {
-        case 0:
-          return 'times'
-        default:
-          return 'check'
-      }
-    },
-    foreignIconColor () {
-      switch (this.isForeignCorrect) {
-        case 2:
-          return 'has-text-success'
-        case 1:
-          return 'has-text-warning'
-        default:
-          return 'has-text-danger'
-      }
-    },
-    foreignCoinColor () {
-      switch (this.isForeignCorrect) {
-        case 2:
-          return 'has-text-warning'
-        default:
-          return 'has-text-grey-lighter'
-      }
-    },
-    keyboardNames () {
-      return Object.keys(JapaneseSigns)
-    },
-    keyboardSigns () {
-      let signs = JapaneseSigns
-      signs.kanji = this.getKanji
-
-      return signs[this.currentKeyboardTab]
-    },
-    getKanji () {
-      let kanji = []
-      let kanjiSet = new Set(this.$store.getters['vueDict/getVocabs'].words.flatMap(word =>
-        word[this.words.foreignAlphabet].split('')
-      ))
-
-      this.keyboardNames.filter(name => name !== 'kanji').forEach(name => {
-        JapaneseSigns[name].forEach(sign => {
-          kanjiSet.delete(sign)
-        })
-      })
-
-      kanjiSet.forEach(sign => {
-        kanji.splice(Math.floor(Math.random() * (kanji.length + 1)), 0, sign)
-      })
-
-      return kanji
-    },
-    progressText () {
-      return this.progressBarCount + ' / ' + this.words.words.length
-    },
     answer () {
       return this.$store.state.vueDict.currentModalAnswer
     },
@@ -326,6 +152,18 @@ export default {
       }
 
       return texts
+    },
+    ctx () {
+      return this.$store.state.canvasDict.context
+    },
+    canvasWidth () {
+      return this.$store.getters['canvasDict/canvasWidth']
+    },
+    canvasHeight () {
+      return this.$store.getters['canvasDict/canvasHeight']
+    },
+    currentPoint () {
+      return this.$store.getters['canvasDict/currentPoint']
     }
   },
   methods: {
@@ -335,11 +173,27 @@ export default {
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
     },
-    streamline (word) {
-      return word.toLowerCase().replace(/(\(.+\)|（.+）)|[-, .!?/！。・]/g, '')
-    },
-    showItems () {
-
+    viewClickHandler (object) {
+      switch (object.type) {
+        case 'skip':
+          this.$store.commit('canvasDict/setWatchedIntro')
+          // window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
+          this.introPlaying = false
+          this.introTransitionPlaying = true
+          this.animationProgressCounter = 0
+          this.$router.replace({ name: 'adventureMap' })
+          break
+        case 'select':
+          console.log('sth sth select')
+          break
+        case 'navigate':
+          this.$store.commit('canvasDict/setMapPoint', object.value)
+          break
+        case 'abort':
+          this.showMessageModal()
+          break
+        default:
+      }
     },
     showMessageModal () {
       this.$store.commit('vueDict/showModal', {
@@ -354,71 +208,7 @@ export default {
         rightText: 'adventureModalButtonRight',
         rightColor: 'is-success'
       })
-    },
-    checkInput () {
-      this.resultsVisible = true
-      this.keyboardVisible = false
-      this.userLatinInput = this.latinInput
-      this.userForeignInput = this.foreignInput
-      this.correctLatinWords.push(this.isLatinCorrect)
-      this.correctForeignWords.push(this.isForeignCorrect)
-
-      if (this.isLatinCorrect > 0) {
-        this.$store.commit('vueDict/addStatAddit', { id: 'points', count: this.isLatinCorrect })
-        this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: this.isLatinCorrect })
-      }
-      if (this.isForeignCorrect > 0) {
-        this.$store.commit('vueDict/addStatAddit', {
-          id: 'points',
-          count: this.isForeignCorrect * this.$store.state.vueDict.difficulty
-        })
-        this.$store.commit('vueDict/addStatAddit', {
-          id: 'coins',
-          count: this.isForeignCorrect * this.$store.state.vueDict.difficulty
-        })
-      }
-
-      this.progressBarCount++
-    },
-    nextWord () {
-      this.hideSolution()
-      this.resultsVisible = false
-      this.currentKeyboardTab = this.keyboardNames[0] || ''
-      this.userLatinInput = ''
-      this.userForeignInput = ''
-      this.latinInput = ''
-      this.foreignInput = ''
-      this.currentWord++
-    },
-    showSolution () {
-      this.solutionVisible = true
-      this.latinInput = this.words.words[this.currentWord][this.words.latinAlphabet]
-      this.foreignInput = this.words.words[this.currentWord][this.words.foreignAlphabet]
-    },
-    hideSolution () {
-      this.solutionVisible = false
-      this.latinInput = this.userLatinInput
-      this.foreignInput = this.userForeignInput
-    },
-    showKeyboard () {
-      if (!this.resultsVisible) {
-        this.keyboardVisible = true
-      }
-    },
-    hideKeyboard () {
-      this.keyboardVisible = false
-    },
-    setTab (id) {
-      this.currentKeyboardTab = id
-    },
-    addLetter (letter) {
-      this.foreignInput += letter
-    },
-    removeLetter () {
-      this.foreignInput = this.foreignInput.slice(0, -1)
-    },
-    showStatistics () {
-      this.statisticsVisible = true
+      this.loopActivated = false
     },
     canvasLoop (timestamp) {
       if (this.loopActivated) {
@@ -445,79 +235,68 @@ export default {
       }
     },
     clearCanvas () {
-      this.$store.state.canvasDict.context.clearRect(
-        0, 0, this.$store.getters['canvasDict/canvasWidth'], this.$store.getters['canvasDict/canvasHeight']
-      )
+      this.$store.state.canvasDict.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
     },
     canvasUpdate () {
-      let canvasWidth = this.$store.getters['canvasDict/canvasWidth']
-      let canvasHeight = this.$store.getters['canvasDict/canvasHeight']
-
       if (this.introPlaying) {
         this.animationProgressCounter += 0.5
 
-        if (canvasHeight + (20 * this.introTexts.length) - this.animationProgressCounter < -20) {
+        if (this.canvasHeight - 50 + (30 * (this.introTexts.length - 1)) - this.animationProgressCounter < -20) {
           this.introPlaying = false
           this.$store.commit('canvasDict/setWatchedIntro')
           this.animationProgressCounter = 0
           this.introTransitionPlaying = true
+          this.$router.replace({ name: 'adventureMap' })
         }
       } else if (this.introTransitionPlaying) {
         this.animationProgressCounter += 3
 
-        if (this.animationProgressCounter > canvasWidth / 2 * 1.4) {
+        if (this.animationProgressCounter > this.canvasWidth / 2 * 1.4) {
           this.introTransitionPlaying = false
+          this.animationProgressCounter = 0
         }
       }
     },
     canvasDraw () {
       const cD = this.$store.state.canvasDict // read-only
-      let ctx = this.$store.state.canvasDict.context
-      let canvasWidth = this.$store.getters['canvasDict/canvasWidth']
-      let canvasHeight = this.$store.getters['canvasDict/canvasHeight']
 
       if (this.introPlaying) {
-        Helper.drawCanvasImage(0, 0, 'background_universe', cD)
+        Helper.drawCanvasImage(0, 0, 'background_intro_background', cD)
 
         for (let i = 0; i < this.introTexts.length; i++) {
           Helper.drawCanvasText(
-            canvasWidth / 2, canvasHeight + (20 * (i + 1)) - this.animationProgressCounter,
-            this.introTexts[i], 'intro', ctx
+            this.canvasWidth / 2, 250 + (30 * i) - this.animationProgressCounter,
+            this.introTexts[i], 'intro', this.ctx
           )
         }
+
+        Helper.drawCanvasImage(0, 0, 'background_intro_foreground', cD)
       } else if (this.introTransitionPlaying) {
-        Helper.drawCanvasImage(0, 0, 'background_universe', cD)
-        ctx.save()
-        Helper.clipCanvasCircle(canvasWidth / 2, canvasHeight / 2, this.animationProgressCounter, ctx)
-        ctx.clip()
-        Helper.drawCanvasImage(0, 0, 'background_world', cD)
-        Helper.drawCanvasRect(0, 0, canvasWidth, 30, 'standardBlur', ctx)
-        Helper.drawCanvasText(
-          canvasWidth / 2, 15, this.words.words[this.currentWord][this.$store.state.lang], 'standard', ctx
-        )
-        ctx.restore()
+        Helper.drawCanvasImage(0, 0, 'background_intro', cD)
+        this.ctx.save()
+        Helper.clipCanvasCircle(this.canvasWidth / 2, this.canvasHeight / 2, this.animationProgressCounter, this.ctx)
+        this.ctx.clip()
+        this.drawMap()
+        this.ctx.restore()
       } else {
-        Helper.drawCanvasImage(0, 0, 'background_world', cD)
-        Helper.drawCanvasRect(0, 0, canvasWidth, 30, 'standardBlur', ctx)
-        Helper.drawCanvasText(
-          canvasWidth / 2, 15, this.words.words[this.currentWord][this.$store.state.lang], 'standard', ctx
-        )
+        this.drawMap()
       }
     },
-    navTo (name) {
-      for (let category of this.$store.state.vueDict.categoriesChosen) {
-        this.$store.commit('vueDict/increaseCategoryPlayed', category)
-      }
-      this.$store.commit('vueDict/transferAdditionalStat')
-      window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
-      if (name === 'menu') {
-        this.$store.commit('vueDict/setCategories', [])
-        this.$store.commit('vueDict/setDifficulty', '')
-        this.$store.commit('vueDict/setWordCount', 0)
-        this.$router.push({ name: 'menu' })
-      } else {
-        this.$router.push({ name: 'category', params: { destination: 'adventure' } })
-      }
+    drawMap () {
+      const cD = this.$store.state.canvasDict // read-only
+      let playerData = Helper.getSpriteData('player_standing', cD)
+
+      Helper.drawCanvasImage(0, 0, 'background_world', cD)
+      Helper.drawCanvasImage(
+        this.currentPoint.x - Math.floor(playerData.spriteWidth / 2), this.currentPoint.y - playerData.spriteHeight,
+        'player_standing', cD
+      )
+    },
+    drawCurrentWord () {
+      Helper.drawCanvasRect(0, 0, this.canvasWidth, 30, 'standardBlur', this.ctx)
+      Helper.drawCanvasText(
+        this.canvasWidth / 2, 15, this.words.words[this.currentWord][this.$store.state.lang], 'standard', this.ctx
+      )
     }
   },
   watch: {
@@ -525,6 +304,8 @@ export default {
       switch (this.answer) {
         case 'buttonLeft':
           this.$store.commit('vueDict/closeModal')
+          this.loopActivated = true
+          this.canvasLoop(0)
           break
         case 'buttonRight':
           this.$router.push({ name: 'selection' })
@@ -548,82 +329,14 @@ export default {
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
+  height: calc(100% - .5rem);
+  justify-content: space-between;
 
-  &.height-ingame {
-    height: calc(100% - .5rem);
-  }
-
-  &.height-statistics {
-    height: calc(100% - 71px);
-  }
-
-  &.justifyBetween {
-    justify-content: space-between;
-  }
-
-  .is-1 {
-    width: calc(100% / 12);
-  }
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .flexGrow {
-    flex-grow: 1;
-  }
-
-  .is-absolute {
-    position: absolute;
-    bottom: 0;
-  }
-
-  .noMarginBottom {
-    margin-bottom: 0;
-  }
-}
-
-.innerFlexContainerInput {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.innerFlexContainerButton {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-
-  .is-half {
-    width: calc(50% - .25rem);
-  }
-}
-
-.keyboard {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-
-  .bottomKeyboard {
+  .routerView {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
     align-items: center;
-    height: 0;
-    overflow: auto;
     flex-grow: 1;
-
-    .keyContainer {
-      width: 95%;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-
-      .keyboardButton {
-        flex: 1 0 2.5em;
-      }
-    }
   }
 }
 </style>

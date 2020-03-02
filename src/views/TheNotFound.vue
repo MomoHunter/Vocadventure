@@ -1,6 +1,6 @@
 <template>
   <div class="flexContainer justifyEvenly">
-    <HeroBasic title="notFoundTitle" subtitle="notFoundSubtitle" />
+    <HeroBasic class="marginBottomSmall" title="notFoundTitle" subtitle="notFoundSubtitle" />
     <div class="is-10">
       <ButtonBasic color="is-success" icon="home" text="notFoundButton" @click="$router.push({ name: 'menu' })" />
     </div>

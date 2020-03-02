@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     inAdventure () {
-      return this.$route.name === 'adventure'
+      return this.$route.name.startsWith('adventure')
     }
   },
   methods: {

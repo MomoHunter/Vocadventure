@@ -6,6 +6,10 @@ import SelectionCount from '@/views/SelectionCount.vue'
 import TheTraining from '@/views/TheTraining.vue'
 import TheWriteKanji from '@/views/TheWriteKanji.vue'
 import TheAdventure from '@/views/TheAdventure.vue'
+import AdventureIntro from '@/views/AdventureIntro.vue'
+import AdventureMapNavigation from '@/views/AdventureMapNavigation.vue'
+import AdventureInputs from '@/views/AdventureInputs.vue'
+import AdventureStatistics from '@/views/AdventureStatistics.vue'
 import TheShop from '@/views/TheShop.vue'
 import TheDetails from '@/views/TheDetails.vue'
 import TheInventory from '@/views/TheInventory.vue'
@@ -45,7 +49,8 @@ const routes = [
     component: SelectionCount,
     meta: {
       forward: [
-        'adventure'
+        'adventure',
+        'adventureInputs'
       ]
     }
   },
@@ -69,8 +74,41 @@ const routes = [
   },
   {
     path: '/adventure',
-    name: 'adventure',
     component: TheAdventure,
+    children: [
+      {
+        path: '',
+        name: 'adventure',
+        component: AdventureInputs,
+        meta: {
+          forward: []
+        }
+      },
+      {
+        path: 'intro',
+        name: 'adventureIntro',
+        component: AdventureIntro,
+        meta: {
+          forward: []
+        }
+      },
+      {
+        path: 'map',
+        name: 'adventureMap',
+        component: AdventureMapNavigation,
+        meta: {
+          forward: []
+        }
+      },
+      {
+        path: 'statistics',
+        name: 'adventureStatistics',
+        component: AdventureStatistics,
+        meta: {
+          forward: []
+        }
+      }
+    ],
     meta: {
       forward: []
     }

@@ -103,7 +103,7 @@ sprite_dict_text = json.dumps(sprite_dict_data)\
     .replace('{', '{\n' + text_indent)\
     .replace('], "', '],\n' + text_indent + '"')\
     .replace('"', "'")\
-    .replace(']}', ']\n}')
+    .replace(']}', ']\n},')
 #   => one item per line plus indent for the inner lines
 #   (when using the indent option of dumps, it splits tha data into separate lines)
 sprite_dict_text = 'spriteDict: ' + sprite_dict_text
