@@ -40,7 +40,8 @@ export default new Vuex.Store({
         inventory: state.vueDict.inventory,
         watchedIntro: state.canvasDict.watchedIntro,
         inLevel: state.canvasDict.inLevel,
-        currentMapPoint: state.canvasDict.currentMapPoint
+        currentLevel: state.canvasDict.currentLevel,
+        unlockedLevels: state.canvasDict.unlockedLevels
       }
     }
   },

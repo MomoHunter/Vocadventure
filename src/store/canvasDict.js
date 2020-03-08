@@ -22,21 +22,24 @@ export default {
      * If isAnimated is true, y-pos is an array, otherwise just a single number.
      */
     spriteDict: {
-      'background_forest': [false, 0, 0, 300, 300],
-      'background_home': [false, 0, 301, 600, 300],
-      'background_intro': [false, 0, 602, 600, 300],
-      'background_intro_background': [false, 0, 903, 600, 300],
-      'background_intro_foreground': [false, 0, 1204, 600, 300],
-      'background_snow': [false, 0, 1505, 300, 300],
-      'background_universe': [false, 0, 1806, 600, 300],
-      'background_world': [false, 0, 2107, 600, 300],
-      'player_standing': [false, 601, 0, 25, 43],
-      'special_placeholder': [false, 627, 0, 50, 50]
+      'background_forest_background': [false, 0, 0, 300, 300],
+      'background_forest_foreground': [false, 0, 301, 300, 300],
+      'background_home': [false, 0, 602, 600, 300],
+      'background_intro': [false, 0, 903, 600, 300],
+      'background_intro_background': [false, 0, 1204, 600, 300],
+      'background_intro_foreground': [false, 0, 1505, 600, 300],
+      'background_snow': [false, 0, 1806, 300, 300],
+      'background_universe': [false, 0, 2107, 600, 300],
+      'background_world': [false, 0, 2408, 600, 300],
+      'obstacles_trunk': [false, 601, 0, 84, 95],
+      'obstacles_wall': [false, 601, 96, 60, 86],
+      'player_standing': [false, 686, 0, 25, 43],
+      'special_placeholder': [false, 712, 0, 50, 50]
     },
     // end spriteDict
     inLevel: false,
-    currentMapPoint: 'home',
-    mapPoints: {
+    currentLevel: 'home',
+    levels: {
       'home': {
         x: 64,
         y: 67,
@@ -61,7 +64,37 @@ export default {
         cr: false,
         bl: false,
         bc: 'snow',
-        br: 'volcano'
+        br: 'volcano',
+        backgroundChances: [
+          {
+            id: 'forestBasic',
+            spriteKey: 'background_forest',
+            chance: 1,
+            foundOn: [1, 2, 3],
+            canBefound: [
+              { id: 'woodBranch', chance: 0.025 },
+              { id: 'stone', chance: 0.025 }
+            ]
+          }
+        ],
+        obstacles: [
+          {
+            id: 'forestTrunk',
+            spriteKey: 'obstacles_trunk',
+            durability: 20,
+            items: [
+              { id: 'wood', chance: 1 }
+            ]
+          },
+          {
+            id: 'forestWall',
+            spriteKey: 'obstacles_wall',
+            durability: 30,
+            items: [
+              { id: 'stone', chance: 1 }
+            ]
+          }
+        ]
       },
       'snow': {
         x: 168,
@@ -74,7 +107,9 @@ export default {
         cr: false,
         bl: 'plains',
         bc: false,
-        br: 'mines'
+        br: 'mines',
+        backgroundChances: [],
+        obstacles: []
       },
       'plains': {
         x: 67,
@@ -87,7 +122,9 @@ export default {
         cr: 'desert',
         bl: false,
         bc: false,
-        br: false
+        br: false,
+        backgroundChances: [],
+        obstacles: []
       },
       'desert': {
         x: 166,
@@ -100,7 +137,9 @@ export default {
         cr: false,
         bl: false,
         bc: false,
-        br: false
+        br: false,
+        backgroundChances: [],
+        obstacles: []
       },
       'volcano': {
         x: 277,
@@ -113,7 +152,9 @@ export default {
         cr: 'city',
         bl: false,
         bc: false,
-        br: false
+        br: false,
+        backgroundChances: [],
+        obstacles: []
       },
       'mines': {
         x: 273,
@@ -126,7 +167,9 @@ export default {
         cr: false,
         bl: false,
         bc: false,
-        br: false
+        br: false,
+        backgroundChances: [],
+        obstacles: []
       },
       'city': {
         x: 410,
@@ -139,7 +182,9 @@ export default {
         cr: false,
         bl: 'mines',
         bc: false,
-        br: 'spacestation'
+        br: 'spacestation',
+        backgroundChances: [],
+        obstacles: []
       },
       'cemetry': {
         x: 407,
@@ -152,7 +197,9 @@ export default {
         cr: 'underwater',
         bl: false,
         bc: 'city',
-        br: false
+        br: false,
+        backgroundChances: [],
+        obstacles: []
       },
       'spacestation': {
         x: 468,
@@ -165,7 +212,9 @@ export default {
         cr: 'beach',
         bl: false,
         bc: false,
-        br: false
+        br: false,
+        backgroundChances: [],
+        obstacles: []
       },
       'beach': {
         x: 550,
@@ -178,7 +227,9 @@ export default {
         cr: false,
         bl: false,
         bc: false,
-        br: false
+        br: false,
+        backgroundChances: [],
+        obstacles: []
       },
       'underwater': {
         x: 546,
@@ -191,8 +242,16 @@ export default {
         cr: false,
         bl: false,
         bc: 'beach',
-        br: false
+        br: false,
+        backgroundChances: [],
+        obstacles: []
       }
+    },
+    unlockedLevels: ['home', 'forest'],
+    backgrounds: {
+      'home': [
+        { x: 0, y: 0, spriteKey: 'background_home' }
+      ]
     }
   },
   getters: {
@@ -203,7 +262,10 @@ export default {
       return state.canvas.height
     },
     currentPoint: (state) => {
-      return state.mapPoints[state.currentMapPoint]
+      return state.levels[state.currentLevel]
+    },
+    getBackgrounds: (state) => (level) => {
+      return state.backgrounds[level]
     }
   },
   mutations: {
@@ -239,7 +301,15 @@ export default {
       state.inLevel = bool
     },
     setMapPoint (state, point) {
-      state.currentMapPoint = point
+      state.currentLevel = point
+    },
+    unlockLevel (state, level) {
+      if (!state.unlockedLevels.includes(level)) {
+        state.unlockedLevels.push(level)
+      }
+    },
+    initLevel (state, level) {
+      state.backgrounds[level] = []
     }
   },
   actions: {

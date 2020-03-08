@@ -80,9 +80,9 @@ export default {
     },
     getDifficultyColor (difficulty) {
       switch (difficulty) {
-        case '1':
+        case 1:
           return 'is-success'
-        case '2':
+        case 2:
           return 'is-warning'
         default:
           return 'is-danger'

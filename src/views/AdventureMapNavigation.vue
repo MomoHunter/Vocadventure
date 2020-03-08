@@ -1,26 +1,26 @@
 <template>
   <div class="flexboxContainer">
     <div class="levelContainer is-10">
-      <span>{{ getText($store.state.canvasDict.currentMapPoint) }}</span>
+      <span>{{ getText($store.state.canvasDict.currentLevel) }}</span>
     </div>
     <div class="gridContainer is-10">
-      <ButtonIcon class="top-left" :class="{ invisible: !currentPoint.tl }" icon="long-arrow-alt-left" color="is-link"
+      <ButtonIcon class="top-left" :class="getInvisible(currentPoint.tl)" icon="long-arrow-alt-left" color="is-link"
                   :rotation="45" @click="$emit('click', getClickObject(currentPoint.tl))" />
-      <ButtonIcon class="top-center" :class="{ invisible: !currentPoint.tc }" icon="long-arrow-alt-up" color="is-link"
+      <ButtonIcon class="top-center" :class="getInvisible(currentPoint.tc)" icon="long-arrow-alt-up" color="is-link"
                   @click="$emit('click', getClickObject(currentPoint.tc))" />
-      <ButtonIcon class="top-right" :class="{ invisible: !currentPoint.tr }" icon="long-arrow-alt-up" color="is-link"
+      <ButtonIcon class="top-right" :class="getInvisible(currentPoint.tr)" icon="long-arrow-alt-up" color="is-link"
                   :rotation="45" @click="$emit('click', getClickObject(currentPoint.tr))" />
-      <ButtonIcon class="center-left" :class="{ invisible: !currentPoint.cl }" icon="long-arrow-alt-left"
+      <ButtonIcon class="center-left" :class="getInvisible(currentPoint.cl)" icon="long-arrow-alt-left"
                   color="is-link" @click="$emit('click', getClickObject(currentPoint.cl))" />
-      <ButtonIcon class="center-center" :class="{ invisible: !currentPoint.cc }" icon="home" color="is-success"
+      <ButtonIcon class="center-center" :class="getInvisible(currentPoint.cc)" icon="home" color="is-success"
                   @click="$emit('click', getClickObject(currentPoint.cc))" />
-      <ButtonIcon class="center-right" :class="{ invisible: !currentPoint.cr }" icon="long-arrow-alt-right"
+      <ButtonIcon class="center-right" :class="getInvisible(currentPoint.cr)" icon="long-arrow-alt-right"
                   color="is-link" @click="$emit('click', getClickObject(currentPoint.cr))" />
-      <ButtonIcon class="bottom-left" :class="{ invisible: !currentPoint.bl }" icon="long-arrow-alt-down"
+      <ButtonIcon class="bottom-left" :class="getInvisible(currentPoint.bl)" icon="long-arrow-alt-down"
                   color="is-link" :rotation="45" @click="$emit('click', getClickObject(currentPoint.bl))" />
-      <ButtonIcon class="bottom-center" :class="{ invisible: !currentPoint.bc }" icon="long-arrow-alt-down"
+      <ButtonIcon class="bottom-center" :class="getInvisible(currentPoint.bc)" icon="long-arrow-alt-down"
                   color="is-link" @click="$emit('click', getClickObject(currentPoint.bc))" />
-      <ButtonIcon class="bottom-right" :class="{ invisible: !currentPoint.br }" icon="long-arrow-alt-right"
+      <ButtonIcon class="bottom-right" :class="getInvisible(currentPoint.br)" icon="long-arrow-alt-right"
                   color="is-link" :rotation="45" @click="$emit('click', getClickObject(currentPoint.br))" />
     </div>
     <div class="is-10">
@@ -49,6 +49,12 @@ export default {
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)
+    },
+    getInvisible (link) {
+      if (!link || !this.$store.state.canvasDict.unlockedLevels.includes(link)) {
+        return 'invisible'
+      }
+      return ''
     },
     getClickObject (target) {
       return {

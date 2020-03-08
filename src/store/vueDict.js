@@ -18,6 +18,10 @@ export default {
     items: Items,
     inventory: [],
     unlockedItems: [],
+    words: {},
+    currentWordIndex: 0,
+    correctLatinWords: [],
+    correctForeignWords: [],
     showModals: {
       name: ''
     },
@@ -102,6 +106,9 @@ export default {
     },
     getInventoryObject: (state) => (id) => {
       return state.inventory.find(item => item.id === id)
+    },
+    getCurrentWord: (state) => {
+      return state.words.words[state.currentWordIndex]
     }
   },
   mutations: {
@@ -157,6 +164,28 @@ export default {
     },
     setWordCount (state, count) {
       state.wordCount = count
+    },
+    setWords (state, words) {
+      state.words = words
+    },
+    resetWords (state) {
+      state.words = {}
+      state.currentWordIndex = 0
+    },
+    incCurrentWord (state) {
+      state.currentWordIndex++
+    },
+    addCorrectLatin (state, bool) {
+      state.correctLatinWords.push(bool)
+    },
+    addCorrectForeign (state, bool) {
+      state.correctForeignWords.push(bool)
+    },
+    resetCorrectLatin (state) {
+      state.correctLatinWords = []
+    },
+    resetCorrectForeign (state) {
+      state.correctForeignWords = []
     },
     showModal (state, options) {
       state.showModals = options

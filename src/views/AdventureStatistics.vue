@@ -1,19 +1,28 @@
 <template>
   <div class="flexboxContainer">
-    <BarChartBasic v-show="statisticsVisible" class="is-10" :title="words.latinAlphabet" :values="correctLatinWords" />
-    <BarChartBasic v-show="statisticsVisible" class="is-10" :title="words.foreignAlphabet"
-                   :values="correctForeignWords" />
-    <div v-show="statisticsVisible" class="is-10">
-      <ButtonBasic class="marginBottomSmall" icon="arrow-left" color="is-warning" text="adventureButton8"
-                   @click="navTo('category')" />
-      <ButtonBasic icon="check" color="is-success" text="adventureButton9" @click="navTo('menu')" />
+    <BarChartBasic class="is-10" :title="$store.state.vueDict.words.latinAlphabet"
+                   :values="$store.state.vueDict.correctLatinWords" />
+    <BarChartBasic class="is-10" :title="$store.state.vueDict.words.foreignAlphabet"
+                   :values="$store.state.vueDict.correctForeignWords" />
+    <div class="is-10">
+      <ButtonBasic class="marginBottomSmall" icon="arrow-left" color="is-warning" text="adventureStatisticsButton1"
+                   @click="$emit('click', { type: 'navTo', value: 'category' })" />
+      <ButtonBasic icon="check" color="is-success" text="adventureStatisticsButton2"
+                   @click="$emit('click', { type: 'navTo', value: 'menu' })" />
     </div>
   </div>
 </template>
 
 <script>
+import BarChartBasic from '@/components/BarChartBasic.vue'
+import ButtonBasic from '@/components/ButtonBasic.vue'
+
 export default {
-  name: 'AdventureStatistics'
+  name: 'AdventureStatistics',
+  components: {
+    BarChartBasic,
+    ButtonBasic
+  }
 }
 </script>
 
@@ -21,5 +30,13 @@ export default {
 .flexboxContainer {
   display: flex;
   flex-direction: column;
+  height: calc(100% - 71px);
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+  .is-10 {
+    width: calc(100% / 1.2);
+  }
 }
 </style>
