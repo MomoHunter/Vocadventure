@@ -24,6 +24,7 @@ export default {
       introPlaying: false,
       introTransitionPlaying: false,
       mapTransitionPlaying: false,
+      levelTransitionPlaying: false,
       loopActivated: false,
       animationProgressCounter: 0
     }
@@ -167,6 +168,12 @@ export default {
         case 'navigate':
           this.$store.commit('canvasDict/setMapPoint', object.value)
           break
+        case 'toMap':
+          this.$store.commit('canvasDict/setInLevel', false)
+          this.levelTransitionPlaying = true
+          this.animationProgressCounter = 0
+          this.$router.replace({ name: 'adventureMap' })
+          break
         case 'abort':
           this.showMessageModal()
           break
@@ -294,6 +301,13 @@ export default {
           this.mapTransitionPlaying = false
           this.animationProgressCounter = 0
         }
+      } else if (this.levelTransitionPlaying) {
+        this.animationProgressCounter += 3
+
+        if (this.animationProgressCounter > this.canvasWidth / 2 * 1.4) {
+          this.levelTransitionPlaying = false
+          this.animationProgressCounter = 0
+        }
       }
     },
     canvasDraw () {
@@ -319,6 +333,11 @@ export default {
         this.drawTransition(
           that => { that.drawMap() },
           that => { that.drawLevel(that.$store.state.canvasDict.currentLevel) }
+        )
+      } else if (this.levelTransitionPlaying) {
+        this.drawTransition(
+          that => { that.drawLevel(that.$store.state.canvasDict.currentLevel) },
+          that => { that.drawMap() }
         )
       } else if (this.$store.state.canvasDict.inLevel) {
         this.drawLevel(this.$store.state.canvasDict.currentLevel)

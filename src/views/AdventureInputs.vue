@@ -45,11 +45,13 @@
       <ButtonBasic v-show="resultsVisible && currentWordIndex + 1 === words.words.length"
                    class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
                    text="adventureButton4" @click="$emit('click', { type: 'finish' })" />
-      <ButtonBasic v-show="!resultsVisible" icon="briefcase" color="is-primary" text="adventureButton5"
-                   @click="showItems()" />
-      <ButtonBasic v-show="resultsVisible && !solutionVisible" icon="eye" color="is-info" text="adventureButton6"
+      <ButtonBasic v-show="!resultsVisible" class="is-half marginRightSmall" icon="map" color="is-warning"
+                   text="adventureButton5" @click="$emit('click', { type: 'toMap' })" />
+      <ButtonBasic v-show="!resultsVisible" class="is-half marginLeftSmall" icon="briefcase" color="is-primary"
+                   text="adventureButton6" @click="showItems()" />
+      <ButtonBasic v-show="resultsVisible && !solutionVisible" icon="eye" color="is-info" text="adventureButton7"
                    @click="showSolution()" />
-      <ButtonBasic v-show="resultsVisible && solutionVisible" icon="eye-slash" color="is-info" text="adventureButton7"
+      <ButtonBasic v-show="resultsVisible && solutionVisible" icon="eye-slash" color="is-info" text="adventureButton8"
                    @click="hideSolution()" />
     </div>
     <TheProgressBar v-show="!keyboardVisible" class="is-10" color="is-success" :text="progressText"
@@ -223,7 +225,7 @@ export default {
       return this.$store.getters.getSizeClass(type)
     },
     streamline (word) {
-      return word.toLowerCase().replace(/(\(.+\)|（.+）)|[-, .!?/！。・]/g, '')
+      return word.toLowerCase().replace(/(\(.+\)|（.+）)|[-, .!?/！。・、？]/g, '')
     },
     checkInput () {
       this.resultsVisible = true

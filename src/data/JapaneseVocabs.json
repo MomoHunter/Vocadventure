@@ -37,7 +37,7 @@
     { "german": "Danke für ihre Mühe./Es war anstrengend für Sie.", "english": "Thanks for your Effort./It was exhausting for you.", "romaji": "O-tsukare-sama (deshita).", "kana": "お疲れ様（でした）。", "difficulty": 3 },
     { "german": "Wie 'o-tsukare-sama', aber gegenüber Rangniedrigeren", "english": "Like 'o-tsukare-sama', but to lower ranked people", "romaji": "Go-kurou-sama (deshita).", "kana": "ご苦労様（でした）。", "difficulty": 3 },
     { "german": "Ich bin so frei. (vor dem Essen od. wenn man etw. entgegennimmt)", "english": "I take the liberty (before dinner or if you accept sth)", "romaji": "Itadakimasu.", "kana": "いただきます。", "difficulty": 2 },
-    { "german": "Danke, es war gut. (höflich; nach dem Essen)", "english": "Thanks for the meal. It was delicious. (polite; after a meal)", "romaji": "Go-chisou-sama deshita", "kana": "ご馳走様でした。", "difficulty": 3 }
+    { "german": "Danke, es war gut. (höflich; nach dem Essen)", "english": "Thanks for the meal. It was delicious. (polite; after a meal)", "romaji": "Go-chisou-sama deshita.", "kana": "ご馳走様でした。", "difficulty": 3 }
   ],
   "japaneseCategory3": [
     { "german": "sich entschuldigen", "english": "to apologize", "romaji": "ayamaru", "kana": "謝る", "difficulty": 3 },
@@ -90,7 +90,31 @@
     { "german": "Lange nicht gesehen. (höflich)", "english": "Long time no see. (polite)", "romaji": "O-hisashi-buri desu ne.", "kana": "お久しぶりですね。", "difficulty": 3 },
     { "german": "Lange nicht gesehen. (neutral)", "english": "Long time no see. (neutral)", "romaji": "O-hisashi-buri.", "kana": "お久しぶり。", "difficulty": 3 },
     { "german": "Ich habe lange nichts von mir hören lassen.", "english": "I haven't been heard from in a while.", "romaji": "Go-busata shite imasu.", "kana": "ご無沙汰しています。", "difficulty": 3 },
-    { "german": "Guten Tag. Hereinspaziert. (höflich, in Geschäften zu Kunden)", "english": "Welcome. Come in. (polite, in stores to customers)", "romaji": "Irasshaimase.", "kana": "いらっしゃいませ。", "difficulty": 2 }
+    { "german": "Guten Tag. Hereinspaziert. (höflich, in Geschäften zu Kunden)", "english": "Welcome. Come in. (polite, in stores to customers)", "romaji": "Irasshaimase.", "kana": "いらっしゃいませ。", "difficulty": 2 },
+    { "german": "Guten Tag. Hereinspaziert. (neutral)", "english": "Welcome. Come in. (neutral)", "romaji": "Irasshai.", "kana": "いらっしゃい。", "difficulty": 2 },
+    { "german": "Auf Wiedersehen. Bitte beehren Sie uns wieder. (in Geschäften zu Kunden)", "english": "Good bye. Please come again. (in stores to customers)", "romaji": "Mata o-koshi kudasaimase.", "kana": "またお越し下さいませ。", "difficulty": 3 },
+    { "german": "Ich bin / heiße...", "english": "I am / My name is...", "romaji": "...desu", "kana": "・・・です", "difficulty": 1 },
+    { "german": "Ich heiße... / Das heißt...", "english": "My name is... / This is called...", "romaji": "...to iimasu", "kana": "・・・と言います", "difficulty": 3 },
+    { "german": "Ich heiße... (bescheiden)", "english": "My name is... (humble)", "romaji": "...to moushimasu", "kana": "・・・と申します", "difficulty": 3 },
+    { "german": "Freut mich, Sie kennenzulernen.", "english": "It's a pleasure to meet you.", "romaji": "Hajimemashite.", "kana": "はじめまして。", "difficulty": 2 },
+    { "german": "\"Bitte seien Sie gut zu mir.\" / Auf gute Zusammenarbeit. (beim ersten Kennenlernen oder dann, wenn man das Gegenüber um Hilfe, Mitarbeit, etc. bittet)", "english": "\"Please be good to me.\" / Here's to good cooperation. (when you first get to know each other or when you ask the other person for help, cooperation, etc.)", "romaji": "Yoroshiku o-negai shimasu.", "kana": "よろしくお願いします。", "difficulty": 3 },
+    { "german": "\"Bitte seien Sie gut zu mir.\" / Auf gute Zusammenarbeit. (beim ersten Kennenlernen oder dann, wenn man das Gegenüber um Hilfe, Mitarbeit, etc. bittet) 2", "english": "\"Please be good to me.\" / Here's to good cooperation. (when you first get to know each other or when you ask the other person for help, cooperation, etc.) 2", "romaji": "Douzo yoroshiku.", "kana": "どうぞよろしく。", "difficulty": 3 },
+    { "german": "Bitte richten Sie Grüße an ... aus.", "english": "Please give my regards to ... .", "romaji": "...ni yoroshiku o-tsutae kudasai.", "kana": "・・・によろしくお伝え下さい。", "difficulty": 3 },
+    { "german": "Es war schön, Sie getroffen zu haben. (bei oder nach einem Treffen)", "english": "It was nice meeting you. (at or after a meeting)", "romaji": "O-ai dekite ureshii desu.", "kana": "お会いできて嬉しいです。", "difficulty": 3 },
+    { "german": "Bitte machen Sie sich keine Umstände!", "english": "Please don't go to any trouble!", "romaji": "Douzo, o-kamai naku.", "kana": "どうぞ、お構いなく。", "difficulty": 3 },
+    { "german": "Machen Sie es sich bequem!", "english": "Make yourself comfortable.", "romaji": "Go-yukkuri douzo.", "kana": "ごゆっくりどうぞ。", "difficulty": 2 },
+    { "german": "Wie geht es Ihnen? \"Geht es Ihnen gut?\"", "english": "How are you doing? \"Are you all right?\"", "romaji": "O-genki desu ka.", "kana": "お元気ですか。", "difficulty": 3 },
+    { "german": "Wie geht's? (vertraut)", "english": "What's up? (familiar)", "romaji": "Genki?", "kana": "元気？", "difficulty": 3 },
+    { "german": "Danke der Nachfrage. (förmlich)", "english": "Thanks for asking. (formally)", "romaji": "O-kage-sama de.", "kana": "お蔭様で。", "difficulty": 3 },
+    { "german": "Ist bei Ihnen alles beim Alten?", "english": "Is everything the same with you?", "romaji": "O-kawari wa arimasen ka.", "kana": "お変わりはありませんか。", "difficulty": 3 },
+    { "german": "Bitte kontaktieren Sie mich.", "english": "Please contact me.", "romaji": "Go-renraku kudasai.", "kana": "ご連絡下さい。", "difficulty": 3 },
+    { "german": "Ich erwarte Ihre Antwort.", "english": "I'll expect your answer.", "romaji": "Go-renraku o o-machi shite orimasu.", "kana": "ご連絡をお待ちしております。", "difficulty": 3 },
+    { "german": "Gute Besserung!", "english": "Get well soon!", "romaji": "O-daiji ni.", "kana": "お大事に。", "difficulty": 3 },
+    { "german": "Herzlichen Glückwunsch", "english": "Congratulations", "romaji": "o-medetou (gozaimasu)", "kana": "おめでとう（ございます）", "difficulty": 2 },
+    { "german": "Herlichen Glückwunsch zum Geburtstag.", "english": "Happy Birthday.", "romaji": "O-tanjou-bi o-medetou.", "kana": "お誕生日おめでとう。", "difficulty": 3 },
+    { "german": "Herzlichen Glückwunsch zur Hochzeit.", "english": "Congratulations on your wedding.", "romaji": "Go-kekkon o-medetou.", "kana": "ご結婚おめでとう。", "difficulty": 3 },
+    { "german": "Hurra! Er / sie / es lebe hoch!", "english": "Hurray! Long live he / she / it!", "romaji": "Banzai!", "kana": "万歳！", "difficulty": 3 },
+    { "german": "Ein Hoch auf Japan!", "english": "Long live Japan!", "romaji": "Nihon banzai!", "kana": "日本万歳！", "difficulty": 3 }
   ],
   "japaneseCategory5": [
     { "german": "ich (allgemein)", "english": "I (in general)", "romaji": "watashi", "kana": "私", "difficulty": 3 }
