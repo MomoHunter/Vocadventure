@@ -96,11 +96,11 @@ export default {
     } else {
       if (this.synth.getVoices().length === 0) {
         this.ttsWorking = false
-      } else if (this.synth.getVoices().filter(voice => voice.lang === this.words.lang).length === 0) {
+      } else if (this.synth.getVoices().filter(voice => this.words.lang.includes(voice.lang)).length === 0) {
         this.ttsWorking = false
       }
       this.synth.onvoiceschanged = () => {
-        if (this.synth.getVoices().filter(voice => voice.lang === this.words.lang).length !== 0) {
+        if (this.synth.getVoices().filter(voice => this.words.lang.includes(voice.lang)).length !== 0) {
           this.ttsWorking = true
         }
       }
@@ -157,7 +157,7 @@ export default {
     speak () {
       if (this.ttsWorking) {
         let speech = new SpeechSynthesisUtterance(this.getForeignWord)
-        let voice = this.synth.getVoices().filter(voice => voice.lang === this.words.lang)[0]
+        let voice = this.synth.getVoices().filter(voice => this.words.lang.includes(voice.lang))[0]
         if (!voice) {
           this.ttsWorking = false
         }
