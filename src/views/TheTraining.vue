@@ -23,7 +23,11 @@
       <label class="label is-10 marginFilling" :class="getSizeClass('label')">
         {{ getText(words.foreignAlphabet) }}
       </label>
-      <div class="control is-1 is-marginless"></div>
+      <div class="control is-1 is-marginless centerIcon" @click="speak()">
+        <span class="icon" :class="ttsIconColor">
+          <font-awesome-icon :icon="['fas', ttsIcon]" :size="getSizeClass('fas')" />
+        </span>
+      </div>
       <InputReadonly class="is-10 is-marginless" type="text" :value="getForeignWord" />
       <div class="control is-1 is-marginless centerIcon" @click="navTo('writeKanji')">
         <span class="icon has-text-success">
@@ -43,6 +47,10 @@
     </div>
     <TheProgressBar class="is-10" color="is-success" :value="currentWord + 1" :maxValue="words.words.length"
                     :text="progressText" />
+    <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
+      <TheNotification v-show="showNotification" class="fullWidth" color="is-danger" text="trainingNotification"
+                       @click="closeNotification()" />
+    </transition>
   </div>
 </template>
 
@@ -52,6 +60,7 @@ import TagBasic from '@/components/TagBasic.vue'
 import InputReadonly from '@/components/InputReadonly.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
+import TheNotification from '@/components/TheNotification.vue'
 
 export default {
   name: 'TheTraining',
@@ -60,12 +69,17 @@ export default {
     TagBasic,
     InputReadonly,
     ButtonBasic,
-    TheProgressBar
+    TheProgressBar,
+    TheNotification
   },
   data () {
     return {
       currentWord: 0,
-      storedWords: null
+      storedWords: null,
+      synth: window.speechSynthesis,
+      ttsWorking: true,
+      ttsPlaying: false,
+      showNotification: false
     }
   },
   beforeMount () {
@@ -74,6 +88,22 @@ export default {
       this.storedWords = stash.storedWords
       this.currentWord = stash.currentWord
       this.$store.commit('vueDict/setTrainingStash', null)
+    }
+  },
+  mounted () {
+    if (!this.synth) {
+      this.ttsWorking = false
+    } else {
+      if (this.synth.getVoices().length === 0) {
+        this.ttsWorking = false
+      } else if (this.synth.getVoices().filter(voice => voice.lang === this.words.lang).length === 0) {
+        this.ttsWorking = false
+      }
+      this.synth.onvoiceschanged = () => {
+        if (this.synth.getVoices().filter(voice => voice.lang === this.words.lang).length !== 0) {
+          this.ttsWorking = true
+        }
+      }
     }
   },
   computed: {
@@ -96,6 +126,15 @@ export default {
     },
     progressText () {
       return (this.currentWord + 1) + ' / ' + this.words.words.length
+    },
+    ttsIcon () {
+      if (this.ttsWorking) {
+        return this.ttsPlaying ? 'volume-up' : 'volume-off'
+      }
+      return 'volume-mute'
+    },
+    ttsIconColor () {
+      return this.ttsWorking ? 'has-text-success' : 'has-text-danger'
     }
   },
   methods: {
@@ -114,6 +153,32 @@ export default {
       if (this.currentWord + 1 < this.words.words.length) {
         this.currentWord++
       }
+    },
+    speak () {
+      if (this.ttsWorking) {
+        let speech = new SpeechSynthesisUtterance(this.getForeignWord)
+        let voice = this.synth.getVoices().filter(voice => voice.lang === this.words.lang)[0]
+        if (!voice) {
+          this.ttsWorking = false
+        }
+        speech.lang = this.words.lang
+        speech.volume = 50
+        speech.rate = 1
+        speech.pitch = 1
+        speech.voice = voice
+        speech.onstart = () => {
+          this.ttsPlaying = true
+        }
+        speech.onend = () => {
+          this.ttsPlaying = false
+        }
+        this.synth.speak(speech)
+      } else {
+        this.showNotification = true
+      }
+    },
+    closeNotification () {
+      this.showNotification = false
     },
     navTo (destination) {
       if (destination === 'menu') {

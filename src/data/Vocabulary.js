@@ -4,11 +4,13 @@ export default {
   'japanese': {
     'words': JapaneseVocabs,
     'latinAlphabet': 'romaji',
-    'foreignAlphabet': 'kana'
+    'foreignAlphabet': 'kana',
+    'lang': 'ja-JP'
   },
   'greek': {
     'words': [],
     'latinAlphabet': '',
-    'foreignAlphabet': ''
+    'foreignAlphabet': '',
+    'lang': 'gk-GK'
   }
 }

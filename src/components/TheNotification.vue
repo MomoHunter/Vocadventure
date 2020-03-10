@@ -1,9 +1,7 @@
 <template>
   <div class="notification atBottom" :class="color">
     <button class="delete" @click="$emit('click')"></button>
-    <div class="content" :class="getSizeClass('content')">
-      {{ getText(text) }}
-    </div>
+    <div class="content" :class="getSizeClass('content')" v-html="getText(text)"></div>
   </div>
 </template>
 

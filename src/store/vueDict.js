@@ -54,7 +54,8 @@ export default {
       return {
         words: wordObjects,
         latinAlphabet: vocabs.latinAlphabet,
-        foreignAlphabet: vocabs.foreignAlphabet
+        foreignAlphabet: vocabs.foreignAlphabet,
+        lang: vocabs.lang
       }
     },
     getVocabsWithCategories: (state, getters, rootState) => {
@@ -68,7 +69,8 @@ export default {
       return {
         words: objects,
         latinAlphabet: vocabs.latinAlphabet,
-        foreignAlphabet: vocabs.foreignAlphabet
+        foreignAlphabet: vocabs.foreignAlphabet,
+        lang: vocabs.lang
       }
     },
     getShuffledVocabs: (state, getters) => {
@@ -91,7 +93,8 @@ export default {
       return {
         words: words,
         latinAlphabet: vocabs.latinAlphabet,
-        foreignAlphabet: vocabs.foreignAlphabet
+        foreignAlphabet: vocabs.foreignAlphabet,
+        lang: vocabs.lang
       }
     },
     getCategoryPlayed: (state) => (id) => {
