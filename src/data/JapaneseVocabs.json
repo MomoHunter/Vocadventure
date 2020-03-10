@@ -65,7 +65,7 @@
     { "german": "Verbeugung", "english": "Bow (as to bow)", "romaji": "o-jigi", "kana": "お辞儀", "difficulty": 3 },
     { "german": "sich verbeugen", "english": "to bow", "romaji": "o-jigi o suru", "kana": "お辞儀をする", "difficulty": 3 },
     { "german": "Hey! (von weitem rufen)", "english": "Hey! (call from afar)", "romaji": "Yaa!", "kana": "やあ！", "difficulty": 1 },
-    { "german": "Hallo! (beim betreten eines Hauses oder Ladens, wenn niemand da ist)", "english": "Hello! (when entering a house or store, if no ones there)", "romaji": "Gomen kudasai!", "kana": "ごめんください！", "difficulty": 2 },
+    { "german": "Hallo! (beim Betreten eines Hauses oder Ladens, wenn niemand da ist)", "english": "Hello! (when entering a house or store, if no ones there)", "romaji": "Gomen kudasai!", "kana": "ごめんください！", "difficulty": 2 },
     { "german": "Hallo. (hauptsächlich am Telefon)", "english": "Hello. (mostly at the phone)", "romaji": "Moshimoshi.", "kana": "もしもし。", "difficulty": 1 },
     { "german": "Hallo. Guten Tag. (ganztägig)", "english": "Hello. Good day. (all day)", "romaji": "Konnichi wa.", "kana": "こんにちは。", "difficulty": 1 },
     { "german": "Guten Morgen. (höflich)", "english": "Good morning. (polite)", "romaji": "O-hayou gozaimasu.", "kana": "おはようございます。", "difficulty": 2 },

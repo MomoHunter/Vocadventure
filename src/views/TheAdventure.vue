@@ -379,9 +379,13 @@ export default {
       this.drawCurrentWord()
     },
     drawCurrentWord () {
+      let word = this.currentWord[this.$store.state.lang]
+      if (word.length > 68) {
+        word = word.substring(0, 65) + '...'
+      }
       Helper.drawCanvasRect(0, 0, this.canvasWidth, 30, 'standardBlur', this.ctx)
       Helper.drawCanvasText(
-        this.canvasWidth / 2, 15, this.currentWord[this.$store.state.lang], 'standard', this.ctx
+        this.canvasWidth / 2, 15, word, 'standard', this.ctx
       )
     }
   },
