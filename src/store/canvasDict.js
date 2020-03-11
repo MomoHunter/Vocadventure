@@ -38,6 +38,7 @@ export default {
     },
     // end spriteDict
     inLevel: false,
+    gameState: 'map',
     currentLevel: 'home',
     levels: {
       'home': {
@@ -261,7 +262,7 @@ export default {
     canvasHeight: (state) => {
       return state.canvas.height
     },
-    currentPoint: (state) => {
+    currentMapPoint: (state) => {
       return state.levels[state.currentLevel]
     },
     getBackgrounds: (state) => (level) => {
@@ -296,6 +297,9 @@ export default {
     },
     setWatchedIntro (state) {
       state.watchedIntro = true
+    },
+    setGameState (state, gameState) {
+      state.gameState = gameState
     },
     setInLevel (state, bool) {
       state.inLevel = bool
