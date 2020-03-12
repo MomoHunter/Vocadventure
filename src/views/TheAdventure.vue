@@ -328,6 +328,8 @@ export default {
         this.$store.commit('canvasDict/setGameState', destination)
         this.counter.increase = 0
         this.counter.animation = 0
+        this.animationQueue = []
+        this.currentAnimation = null
       }
     },
     introUpdate () {
