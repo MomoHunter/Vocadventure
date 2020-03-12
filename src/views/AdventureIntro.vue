@@ -1,7 +1,7 @@
 <template>
   <div class="flexboxContainer is-10">
     <ButtonBasic icon="arrow-right" text="adventureIntroButton1" color="is-warning"
-                 @click="$emit('click', { type: 'skip' })" />
+                 @click="$emit('click', { type: 'skipIntro' })" />
     <ButtonBasic icon="times" text="adventureIntroButton2" color="is-danger"
                  @click="$emit('click', { type: 'abort' })" />
   </div>

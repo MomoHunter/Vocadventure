@@ -37,7 +37,6 @@ export default {
       'special_placeholder': [false, 712, 0, 50, 50]
     },
     // end spriteDict
-    inLevel: false,
     gameState: 'map',
     currentLevel: 'home',
     levels: {

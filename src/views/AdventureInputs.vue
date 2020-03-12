@@ -46,7 +46,7 @@
                    class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
                    text="adventureButton4" @click="$emit('click', { type: 'finish' })" />
       <ButtonBasic v-show="!resultsVisible" class="is-half marginRightSmall" icon="map" color="is-warning"
-                   text="adventureButton5" @click="$emit('click', { type: 'toMap' })" />
+                   text="adventureButton5" @click="$emit('click', { type: 'backToMap' })" />
       <ButtonBasic v-show="!resultsVisible" class="is-half marginLeftSmall" icon="briefcase" color="is-primary"
                    text="adventureButton6" @click="showItems()" />
       <ButtonBasic v-show="resultsVisible && !solutionVisible" icon="eye" color="is-info" text="adventureButton7"
@@ -94,7 +94,6 @@ export default {
       keyboardVisible: false,
       solutionVisible: false,
       resultsVisible: false,
-      progressBarCount: 0,
       latinInput: '',
       foreignInput: '',
       userLatinInput: '',
@@ -186,6 +185,12 @@ export default {
           return 'has-text-grey-lighter'
       }
     },
+    progressBarCount () {
+      if (this.resultsVisible) {
+        return this.$store.state.vueDict.currentWordIndex + 1
+      }
+      return this.$store.state.vueDict.currentWordIndex
+    },
     progressText () {
       return this.progressBarCount + ' / ' + this.words.words.length
     },
@@ -249,8 +254,6 @@ export default {
           count: this.isForeignCorrect * this.$store.state.vueDict.difficulty
         })
       }
-
-      this.progressBarCount++
     },
     nextWord () {
       this.hideSolution()

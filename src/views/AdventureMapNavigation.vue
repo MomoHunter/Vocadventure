@@ -25,7 +25,7 @@
     </div>
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" icon="check" text="adventureMapButton1" color="is-success"
-                   @click="$emit('click', { type: 'select' })" />
+                   @click="$emit('click', { type: 'selectLevel' })" />
       <ButtonBasic icon="times" text="adventureMapButton2" color="is-danger" @click="$emit('click', { type: 'abort' })" />
     </div>
   </div>
@@ -58,7 +58,7 @@ export default {
     },
     getClickObject (target) {
       return {
-        type: 'navigate',
+        type: 'navigateToLevel',
         value: target
       }
     }

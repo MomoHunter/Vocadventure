@@ -31,14 +31,16 @@ export default {
         'intromap',
         'maplevel',
         'levelmap'
-      ]
+      ],
+      animationQueue: [],
+      currentAnimation: null,
+      animationStartFrame: 0
     }
   },
   beforeRouteEnter (to, from, next) {
     next(component => {
       if (!component.$store.state.canvasDict.watchedIntro) {
-        console.log('hello')
-        component.gameState = 'intro'
+        component.$store.commit('canvasDict/setGameState', 'intro')
         component.$router.replace({ name: 'adventureIntro' })
       } else if (component.$store.state.canvasDict.gameState === 'map') {
         component.$router.replace({ name: 'adventureMap' })
@@ -137,13 +139,8 @@ export default {
     currentMapPoint () {
       return this.$store.getters['canvasDict/currentMapPoint']
     },
-    gameState: {
-      get () {
-        return this.$store.state.canvasDict.gameState
-      },
-      set (newState) {
-        this.$store.commit('canvasDict/setGameState', newState)
-      }
+    gameState () {
+      return this.$store.state.canvasDict.gameState
     }
   },
   methods: {
@@ -155,21 +152,28 @@ export default {
     },
     viewClickHandler (object) {
       switch (object.type) {
-        case 'skip':
+        case 'skipIntro':
           this.$store.commit('canvasDict/setWatchedIntro')
           this.$store.commit('canvasDict/setGameState', 'map')
           this.$router.replace({ name: 'adventureMap' })
           break
-        case 'select':
+        case 'selectLevel':
           if (this.$store.state.canvasDict.currentLevel !== 'home') {
             this.$store.commit('canvasDict/setGameState', 'level')
             this.$router.replace({ name: 'adventure' })
           }
           break
-        case 'navigate':
+        case 'navigateToLevel':
+          let startPoint = this.currentMapPoint
+
           this.$store.commit('canvasDict/setMapPoint', object.value)
+          this.animationQueue.push({
+            type: 'navigateOnMap',
+            start: { x: startPoint.x, y: startPoint.y },
+            goal: { x: this.currentMapPoint.x, y: this.currentMapPoint.y }
+          })
           break
-        case 'toMap':
+        case 'backToMap':
           this.$store.commit('canvasDict/setGameState', 'map')
           this.$router.replace({ name: 'adventureMap' })
           break
@@ -297,6 +301,15 @@ export default {
       } else if (this[this.gameState + 'Update']) {
         this[this.gameState + 'Update']()
       }
+
+      if (this.currentAnimation === null && this.animationQueue.length) {
+        this.currentAnimation = this.animationQueue.shift()
+        this.animationStartFrame = this.$store.state.canvasDict.frameNo
+      }
+
+      if (this.currentAnimation && this[this.currentAnimation.type + 'Animation']) {
+        this[this.currentAnimation.type + 'Animation']()
+      }
     },
     intromapTransitionUpdate () {
       this.transitionUpdate('map')
@@ -326,6 +339,24 @@ export default {
         this.$store.commit('canvasDict/setWatchedIntro')
         this.$store.commit('canvasDict/setGameState', 'map')
         this.$router.replace({ name: 'adventureMap' })
+      }
+    },
+    navigateOnMapAnimation () {
+      if (!this.currentAnimation.current) {
+        this.currentAnimation.current = {
+          x: this.currentAnimation.start.x,
+          y: this.currentAnimation.start.y
+        }
+      }
+
+      this.currentAnimation.current.x += (this.currentAnimation.goal.x - this.currentAnimation.start.x) / 120
+      this.currentAnimation.current.y += (this.currentAnimation.goal.y - this.currentAnimation.start.y) / 120
+
+      if (Math.abs(this.currentAnimation.current.x - this.currentAnimation.start.x) >=
+          Math.abs(this.currentAnimation.goal.x - this.currentAnimation.start.x) &&
+          Math.abs(this.currentAnimation.current.y - this.currentAnimation.start.y) >=
+          Math.abs(this.currentAnimation.goal.y - this.currentAnimation.start.y)) {
+        this.currentAnimation = null
       }
     },
     canvasDraw () {
@@ -376,10 +407,17 @@ export default {
       let playerData = Helper.getSpriteData('player_standing', cD)
 
       Helper.drawCanvasImage(0, 0, 'background_world', cD)
-      Helper.drawCanvasImage(
-        this.currentMapPoint.x - Math.floor(playerData.spriteWidth / 2), this.currentMapPoint.y - playerData.spriteHeight,
-        'player_standing', cD
-      )
+      if (this.currentAnimation && this.currentAnimation.type === 'navigateOnMap') {
+        Helper.drawCanvasImage(
+          this.currentAnimation.current.x - Math.floor(playerData.spriteWidth / 2),
+          this.currentAnimation.current.y - playerData.spriteHeight, 'player_standing', cD
+        )
+      } else {
+        Helper.drawCanvasImage(
+          this.currentMapPoint.x - Math.floor(playerData.spriteWidth / 2),
+          this.currentMapPoint.y - playerData.spriteHeight, 'player_standing', cD
+        )
+      }
     },
     levelDraw (level, cD) {
       let backgrounds = this.$store.getters['canvasDict/getBackgrounds'](level)
@@ -424,11 +462,9 @@ export default {
       }
     },
     gameState (newState, oldState) {
-      console.log(newState, oldState)
       if (this.transitions.includes(oldState + newState)) {
         this.$store.commit('canvasDict/setGameState', oldState + newState)
       }
-      console.log(this.gameState)
     }
   }
 }
