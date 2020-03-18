@@ -13,7 +13,7 @@
       <ButtonIcon class="center-left" :class="getInvisible(currentMapPoint.cl)" icon="long-arrow-alt-left"
                   color="is-link" @click="$emit('click', getClickObject(currentMapPoint.cl))" />
       <ButtonIcon class="center-center" :class="getInvisible(currentMapPoint.cc)" icon="home" color="is-success"
-                  @click="$emit('click', getClickObject(currentMapPoint.cc))" />
+                  @click="$emit('click', getClickObject(currentMapPoint.cc, true))" />
       <ButtonIcon class="center-right" :class="getInvisible(currentMapPoint.cr)" icon="long-arrow-alt-right"
                   color="is-link" @click="$emit('click', getClickObject(currentMapPoint.cr))" />
       <ButtonIcon class="bottom-left" :class="getInvisible(currentMapPoint.bl)" icon="long-arrow-alt-down"
@@ -56,10 +56,11 @@ export default {
       }
       return ''
     },
-    getClickObject (target) {
+    getClickObject (target, home = false) {
       return {
         type: 'navigateToLevel',
-        value: target
+        value: target,
+        home: home
       }
     }
   }

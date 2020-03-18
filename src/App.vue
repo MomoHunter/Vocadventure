@@ -90,9 +90,7 @@ export default {
           this.$store.commit('canvasDict/setMapPoint', data.currentLevel)
         }
         if (data.unlockedLevels) {
-          for (let level of data.unlockedLevels) {
-            this.$store.commit('canvasDict/unlockLevel', level)
-          }
+          this.$store.commit('canvasDict/changeUnlockedLevels', data.unlockedLevels)
         }
 
         if (data.version !== this.$store.state.version) {

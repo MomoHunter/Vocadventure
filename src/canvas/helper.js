@@ -76,7 +76,7 @@ export function getSpriteData (spriteKey, cD) {
  * @param {number} y y-coordinate of the top-left corner
  * @param {string} spriteKey defines which sprite should be drawn
  * @param {CanvasDict} cD
- * @param {number} animationSpeed the speed of the animation, default: 8
+ * @param {number} animationSpeed the speed of the animation, default: 12
  * @param {boolean} useCustomStart if animation should count from cD.animationStartFrame
  * @param {number} rotation  gives the rotation in degree
  */
@@ -108,6 +108,32 @@ export function drawCanvasImage (x, y, spriteKey, cD, animationSpeed = 12, useCu
       x, y, spriteWidth, spriteHeight
     )
   }
+}
+
+/**
+ * Draw a Sprite-Image onto the used canvas.
+ * Its size is determined by the defined data of the given Sprite.
+ * @param {number} x x-coordinate of the top-left corner
+ * @param {number} y y-coordinate of the top-left corner
+ * @param {string} spriteKey defines which sprite should be drawn
+ * @param {CanvasDict} cD
+ * @param {number} optWidth gets subtracted from the actual width
+ * @param {number} optHeight gets subtracted from the actual height
+ * @param {number} animationSpeed the speed of the animation, default: 12
+ */
+export function drawCanvasImagePart (x, y, spriteKey, cD, optWidth = 0, optHeight = 0, animationSpeed = 12) {
+  let { full: spriteData } = getSpriteData(spriteKey, cD)
+  let [isAnim, spriteX, spriteY, spriteWidth, spriteHeight] = spriteData
+
+  if (isAnim) {
+    let frameNo = Math.floor(cD.frameNo / animationSpeed) % spriteY.length
+    spriteY = spriteY[frameNo]
+  }
+  cD.context.drawImage(
+    cD.spritesheet,
+    spriteX, spriteY, Math.max(spriteWidth - optWidth, 0), Math.max(spriteHeight - optHeight, 0),
+    x, y, Math.max(spriteWidth - optWidth, 0), Math.max(spriteHeight - optHeight, 0)
+  )
 }
 
 /**

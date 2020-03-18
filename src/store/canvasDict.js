@@ -33,8 +33,9 @@ export default {
       'background_world': [false, 0, 2408, 600, 300],
       'obstacles_trunk': [false, 601, 0, 84, 95],
       'obstacles_wall': [false, 601, 96, 60, 86],
-      'player_standing': [false, 686, 0, 25, 43],
-      'special_placeholder': [false, 712, 0, 50, 50]
+      'player_level_standing': [false, 686, 0, 55, 95],
+      'player_map_standing': [false, 686, 96, 25, 43],
+      'special_placeholder': [false, 742, 0, 50, 50]
     },
     // end spriteDict
     gameState: 'map',
@@ -68,7 +69,7 @@ export default {
         backgroundChances: [
           {
             id: 'forestBasic',
-            spriteKey: 'background_forest',
+            spriteKey: 'background_forest_background',
             chance: 1,
             foundOn: [1, 2, 3],
             canBefound: [
@@ -249,9 +250,19 @@ export default {
     },
     unlockedLevels: ['home', 'forest'],
     backgrounds: {
-      'home': [
-        { x: 0, y: 0, spriteKey: 'background_home' }
-      ]
+      'home': {
+        background: [
+          { x: 0, y: 0, spriteKey: 'background_home' }
+        ],
+        foreground: []
+      },
+      'forest': {
+        background: [],
+        foreground: []
+      }
+    },
+    events: {
+      'forest': []
     }
   },
   getters: {
@@ -266,6 +277,17 @@ export default {
     },
     getBackgrounds: (state) => (level) => {
       return state.backgrounds[level]
+    },
+    getLastBackground: (state) => (level) => {
+      let bg = state.backgrounds[level].background
+
+      if (bg.length === 0) {
+        return null
+      }
+      return bg[bg.length - 1]
+    },
+    getEvents: (state) => (level) => {
+      return state.events[level]
     }
   },
   mutations: {
@@ -306,13 +328,34 @@ export default {
     setMapPoint (state, point) {
       state.currentLevel = point
     },
+    changeUnlockedLevels (state, unlockedLevels) {
+      state.unlockedLevels = unlockedLevels
+    },
     unlockLevel (state, level) {
       if (!state.unlockedLevels.includes(level)) {
         state.unlockedLevels.push(level)
+        if (!state.backgrounds[level]) {
+          state.backgrounds[level] = {
+            background: [],
+            foreground: []
+          }
+        }
+        if (!state.events[level]) {
+          state.events[level] = []
+        }
       }
     },
-    initLevel (state, level) {
-      state.backgrounds[level] = []
+    addBackground (state, background) {
+      state.backgrounds[state.currentLevel].background.push(background)
+    },
+    addForeground (state, foreground) {
+      state.backgrounds[state.currentLevel].foreground.push(foreground)
+    },
+    removeBackgrounds (state, level) {
+      let removedBackground = state.backgrounds[level].background.shift()
+      if (removedBackground.spriteKey.endsWith('background')) {
+        state.backgrounds[level].foreground.shift()
+      }
     }
   },
   actions: {

@@ -12,6 +12,7 @@
 
 <script>
 import * as Helper from '@/canvas/helper.js'
+import { AnimationObject } from '@/canvas/elements.js'
 import HeroWithTags from '@/components/HeroWithTags.vue'
 
 export default {
@@ -141,6 +142,9 @@ export default {
     },
     gameState () {
       return this.$store.state.canvasDict.gameState
+    },
+    lastBackground () {
+      return this.$store.getters['canvasDict/getLastBackground'](this.$store.state.canvasDict.currentLevel)
     }
   },
   methods: {
@@ -167,11 +171,11 @@ export default {
           let startPoint = this.currentMapPoint
 
           this.$store.commit('canvasDict/setMapPoint', object.value)
-          this.animationQueue.push({
-            type: 'navigateOnMap',
-            start: { x: startPoint.x, y: startPoint.y },
-            goal: { x: this.currentMapPoint.x, y: this.currentMapPoint.y }
-          })
+          if (object.home) {
+            this.animationQueue.push(new AnimationObject('teleportHomeMap', startPoint, this.currentMapPoint))
+          } else {
+            this.animationQueue.push(new AnimationObject('navigateOnMap', startPoint, this.currentMapPoint))
+          }
           break
         case 'backToMap':
           this.$store.commit('canvasDict/setGameState', 'map')
@@ -296,19 +300,14 @@ export default {
       this.$store.state.canvasDict.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
     },
     canvasUpdate () {
+      if (this.currentAnimation && this[this.currentAnimation.type + 'Animation']) {
+        this[this.currentAnimation.type + 'Animation']()
+      }
+
       if (this[this.gameState + 'TransitionUpdate']) {
         this[this.gameState + 'TransitionUpdate']()
       } else if (this[this.gameState + 'Update']) {
         this[this.gameState + 'Update']()
-      }
-
-      if (this.currentAnimation === null && this.animationQueue.length) {
-        this.currentAnimation = this.animationQueue.shift()
-        this.animationStartFrame = this.$store.state.canvasDict.frameNo
-      }
-
-      if (this.currentAnimation && this[this.currentAnimation.type + 'Animation']) {
-        this[this.currentAnimation.type + 'Animation']()
       }
     },
     intromapTransitionUpdate () {
@@ -316,6 +315,7 @@ export default {
     },
     maplevelTransitionUpdate () {
       this.transitionUpdate('level')
+      this.levelUpdate()
     },
     levelmapTransitionUpdate () {
       this.transitionUpdate('map')
@@ -343,22 +343,83 @@ export default {
         this.$router.replace({ name: 'adventureMap' })
       }
     },
-    navigateOnMapAnimation () {
-      if (!this.currentAnimation.current) {
-        this.currentAnimation.current = {
-          x: this.currentAnimation.start.x,
-          y: this.currentAnimation.start.y
+    levelUpdate () {
+      let level = this.$store.state.canvasDict.currentLevel
+
+      if (!this.lastBackground) {
+        let newBackground = this.getNewBackground(level, 0, 0)
+        this.$store.commit('canvasDict/addBackground', newBackground)
+
+        if (newBackground.spriteKey.endsWith('background')) {
+          this.$store.commit('canvasDict/addForeground', this.getForeground(newBackground))
         }
       }
 
-      this.currentAnimation.current.x += (this.currentAnimation.goal.x - this.currentAnimation.start.x) / 120
-      this.currentAnimation.current.y += (this.currentAnimation.goal.y - this.currentAnimation.start.y) / 120
+      if (this.lastBackground.x + this.lastBackground.width < this.canvasWidth + 100) {
+        let newX = this.lastBackground.x + this.lastBackground.width
+        let newBackground = this.getNewBackground(level, newX, 0)
+        this.$store.commit('canvasDict/addBackground', newBackground)
+
+        if (newBackground.spriteKey.endsWith('background')) {
+          this.$store.commit('canvasDict/addForeground', this.getForeground(newBackground))
+        }
+      }
+    },
+    getNewBackground (level, x, y) {
+      const cD = this.$store.state.canvasDict
+      let point = this.$store.state.canvasDict.levels[level]
+      let max = point.backgroundChances.reduce((acc, bg) => { return acc + bg.chance }, 0)
+      let random = Math.random() * max
+
+      for (let bg of point.backgroundChances) {
+        random -= bg.chance
+        if (random <= 0) {
+          return {
+            id: bg.id,
+            spriteKey: bg.spriteKey,
+            x: x,
+            y: y,
+            width: Helper.getSpriteData(bg.spriteKey, cD).spriteWidth
+          }
+        }
+      }
+    },
+    getForeground (background) {
+      let names = background.spriteKey.split('_')
+      names.pop()
+      names.push('foreground')
+      return {
+        id: background.id,
+        spriteKey: names.join('_'),
+        x: background.x,
+        y: background.y,
+        width: background.width
+      }
+    },
+    navigateOnMapAnimation () {
+      this.currentAnimation.current.x += (this.currentAnimation.goal.x - this.currentAnimation.start.x) / 60
+      this.currentAnimation.current.y += (this.currentAnimation.goal.y - this.currentAnimation.start.y) / 60
 
       if (Math.abs(this.currentAnimation.current.x - this.currentAnimation.start.x) >=
           Math.abs(this.currentAnimation.goal.x - this.currentAnimation.start.x) &&
           Math.abs(this.currentAnimation.current.y - this.currentAnimation.start.y) >=
           Math.abs(this.currentAnimation.goal.y - this.currentAnimation.start.y)) {
         this.currentAnimation = null
+      }
+    },
+    teleportHomeMapAnimation () {
+      let { spriteHeight } = Helper.getSpriteData('player_map_standing', this.$store.state.canvasDict)
+
+      if (!this.currentAnimation.counter.reverse) {
+        this.currentAnimation.counter.number += 0.8
+        if (this.currentAnimation.counter.number > spriteHeight) {
+          this.currentAnimation.counter.reverse = true
+        }
+      } else {
+        this.currentAnimation.counter.number -= 0.8
+        if (this.currentAnimation.counter.number <= 0) {
+          this.currentAnimation = null
+        }
       }
     },
     canvasDraw () {
@@ -379,12 +440,12 @@ export default {
     maplevelTransitionDraw (cD) {
       this.transitionDraw(
         that => { that.mapDraw(cD) },
-        that => { that.levelDraw(that.$store.state.canvasDict.currentLevel) }
+        that => { that.levelDraw(cD) }
       )
     },
     levelmapTransitionDraw (cD) {
       this.transitionDraw(
-        that => { that.levelDraw(that.$store.state.canvasDict.currentLevel) },
+        that => { that.levelDraw(cD) },
         that => { that.mapDraw(cD) }
       )
     },
@@ -406,31 +467,52 @@ export default {
       Helper.drawCanvasImage(0, 0, 'background_intro_foreground', cD)
     },
     mapDraw (cD) {
-      let playerData = Helper.getSpriteData('player_standing', cD)
+      let playerData = Helper.getSpriteData('player_map_standing', cD)
 
       Helper.drawCanvasImage(0, 0, 'background_world', cD)
       if (this.currentAnimation && this.currentAnimation.type === 'navigateOnMap') {
         Helper.drawCanvasImage(
           this.currentAnimation.current.x - Math.floor(playerData.spriteWidth / 2),
-          this.currentAnimation.current.y - playerData.spriteHeight, 'player_standing', cD
+          this.currentAnimation.current.y - playerData.spriteHeight, 'player_map_standing', cD
         )
+      } else if (this.currentAnimation && this.currentAnimation.type === 'teleportHomeMap') {
+        if (!this.currentAnimation.counter.reverse) {
+          Helper.drawCanvasImagePart(
+            this.currentAnimation.start.x - Math.floor(playerData.spriteWidth / 2),
+            this.currentAnimation.start.y - playerData.spriteHeight + this.currentAnimation.counter.number,
+            'player_map_standing', cD, 0, this.currentAnimation.counter.number
+          )
+        } else {
+          Helper.drawCanvasImagePart(
+            this.currentAnimation.goal.x - Math.floor(playerData.spriteWidth / 2),
+            this.currentAnimation.goal.y - playerData.spriteHeight + this.currentAnimation.counter.number,
+            'player_map_standing', cD, 0, this.currentAnimation.counter.number
+          )
+        }
       } else {
         Helper.drawCanvasImage(
           this.currentMapPoint.x - Math.floor(playerData.spriteWidth / 2),
-          this.currentMapPoint.y - playerData.spriteHeight, 'player_standing', cD
+          this.currentMapPoint.y - playerData.spriteHeight, 'player_map_standing', cD
         )
       }
     },
-    levelDraw (level, cD) {
+    levelDraw (cD) {
+      let level = this.$store.state.canvasDict.currentLevel
       let backgrounds = this.$store.getters['canvasDict/getBackgrounds'](level)
+      let events = this.$store.getters['canvasDict/getEvents'](level)
 
-      if (!backgrounds) {
-        this.$store.commit('canvasDict/initLevel', level)
-        backgrounds = this.$store.getters['canvasDict/getBackgrounds'](level)
+      for (let background of backgrounds.background) {
+        Helper.drawCanvasImage(background.x, background.y, background.spriteKey, cD)
       }
 
-      for (let background of backgrounds) {
-        Helper.drawCanvasImage(background.x, background.y, background.spriteKey, cD)
+      for (let event of events) {
+        Helper.drawCanvasImage(event.x, event.y, event.spriteKey, cD)
+      }
+
+      Helper.drawCanvasImage(17, 145, 'player_level_standing', cD)
+
+      for (let foreground of backgrounds.foreground) {
+        Helper.drawCanvasImage(foreground.x, foreground.y, foreground.spriteKey, cD)
       }
 
       this.drawCurrentWord()
@@ -466,6 +548,20 @@ export default {
     gameState (newState, oldState) {
       if (this.transitions.includes(oldState + newState)) {
         this.$store.commit('canvasDict/setGameState', oldState + newState)
+      }
+    },
+    currentAnimation (newState) {
+      if (newState === null && this.animationQueue.length > 0) {
+        this.currentAnimation = this.animationQueue.shift()
+        this.animationStartFrame = this.$store.state.canvasDict.frameNo
+      } else if (newState === null && this.animationQueue.length === 0) {
+        this.animationStartFrame = 0
+      }
+    },
+    animationQueue () {
+      if (this.animationQueue.length > 0 && this.currentAnimation === null) {
+        this.currentAnimation = this.animationQueue.shift()
+        this.animationStartFrame = this.$store.state.canvasDict.frameNo
       }
     }
   }
