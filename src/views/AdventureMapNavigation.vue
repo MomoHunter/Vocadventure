@@ -1,8 +1,5 @@
 <template>
   <div class="flexboxContainer">
-    <div class="levelContainer is-10">
-      <span>{{ getText($store.state.canvasDict.currentLevel) }}</span>
-    </div>
     <div class="gridContainer is-10">
       <ButtonIcon class="top-left" :class="getInvisible(currentMapPoint.tl)" icon="long-arrow-alt-left" color="is-link"
                   :rotation="45" @click="$emit('click', getClickObject(currentMapPoint.tl))" />
@@ -51,7 +48,7 @@ export default {
       return this.$store.getters.getText(id)
     },
     getInvisible (link) {
-      if (!link || !this.$store.state.canvasDict.unlockedLevels.includes(link)) {
+      if (!link || !this.$store.state.canvasDict.dynamicLevelData[link]) {
         return 'invisible'
       }
       return ''

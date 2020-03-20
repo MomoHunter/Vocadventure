@@ -38,12 +38,7 @@ export default new Vuex.Store({
         categoriesPlayed: state.vueDict.categoriesPlayed,
         unlockedItems: state.vueDict.unlockedItems,
         inventory: state.vueDict.inventory,
-        watchedIntro: state.canvasDict.watchedIntro,
-        currentLevel: state.canvasDict.currentLevel,
-        unlockedLevels: state.canvasDict.unlockedLevels,
-        gameState: state.canvasDict.gameState,
-        backgrounds: state.canvasDict.backgrounds,
-        events: state.canvasDict.events
+        currentLevel: state.canvasDict.currentLevel
       }
     }
   },

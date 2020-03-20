@@ -29,6 +29,10 @@ export function AnimationObject (type, ...params) {
         y: params[1].y
       }
       break
+    case 'moveFirstSteps':
+    case 'moveForward':
+      this.counter = 0
+      break
     default:
   }
 }

@@ -39,8 +39,14 @@ export default {
     },
     // end spriteDict
     gameState: 'map',
+    gameStateStash: [],
+    transitions: [
+      'intromap',
+      'maplevel',
+      'levelmap'
+    ],
     currentLevel: 'home',
-    levels: {
+    staticLevelData: {
       'home': {
         x: 64,
         y: 67,
@@ -248,21 +254,21 @@ export default {
         obstacles: []
       }
     },
-    unlockedLevels: ['home', 'forest'],
-    backgrounds: {
+    dynamicLevelData: {
       'home': {
+        steps: 0,
         background: [
           { x: 0, y: 0, spriteKey: 'background_home' }
         ],
-        foreground: []
+        foreground: [],
+        events: []
       },
       'forest': {
+        steps: 0,
         background: [],
-        foreground: []
+        foreground: [],
+        events: []
       }
-    },
-    events: {
-      'forest': []
     }
   },
   getters: {
@@ -273,21 +279,26 @@ export default {
       return state.canvas.height
     },
     currentMapPoint: (state) => {
-      return state.levels[state.currentLevel]
+      return state.staticLevelData[state.currentLevel]
     },
-    getBackgrounds: (state) => (level) => {
-      return state.backgrounds[level]
+    getDynamicLevelData: (state) => (level) => {
+      return state.dynamicLevelData[level]
     },
     getLastBackground: (state) => (level) => {
-      let bg = state.backgrounds[level].background
+      let bg = state.dynamicLevelData[level].background
 
       if (bg.length === 0) {
         return null
       }
       return bg[bg.length - 1]
     },
-    getEvents: (state) => (level) => {
-      return state.events[level]
+    getNextEvent: (state) => (level) => {
+      let events = state.dynamicLevelData[level].events
+
+      if (events.length === 0) {
+        return null
+      }
+      return events[0]
     }
   },
   mutations: {
@@ -319,43 +330,79 @@ export default {
     setWatchedIntro (state) {
       state.watchedIntro = true
     },
-    setGameState (state, gameState) {
-      state.gameState = gameState
+    addGameState (state, gameState) {
+      state.gameStateStash.push(gameState)
     },
-    setInLevel (state, bool) {
-      state.inLevel = bool
+    checkGameState (state) {
+      if (state.gameStateStash.length > 0) {
+        let newState = state.gameStateStash.shift()
+        if (state.transitions.includes(state.gameState + newState)) {
+          state.gameState = state.gameState + newState
+        } else {
+          state.gameState = newState
+        }
+      }
     },
     setMapPoint (state, point) {
       state.currentLevel = point
     },
-    changeUnlockedLevels (state, unlockedLevels) {
-      state.unlockedLevels = unlockedLevels
-    },
     unlockLevel (state, level) {
-      if (!state.unlockedLevels.includes(level)) {
-        state.unlockedLevels.push(level)
-        if (!state.backgrounds[level]) {
-          state.backgrounds[level] = {
-            background: [],
-            foreground: []
-          }
-        }
-        if (!state.events[level]) {
-          state.events[level] = []
+      if (!state.dynamicLevelData[level]) {
+        state.dynamicLevelData[level] = {
+          steps: 0,
+          background: [],
+          foreground: [],
+          events: []
         }
       }
     },
     addBackground (state, background) {
-      state.backgrounds[state.currentLevel].background.push(background)
+      state.dynamicLevelData[state.currentLevel].background.push(background)
     },
     addForeground (state, foreground) {
-      state.backgrounds[state.currentLevel].foreground.push(foreground)
+      state.dynamicLevelData[state.currentLevel].foreground.push(foreground)
+    },
+    moveBackground (state, object) {
+      let dynLevelData = state.dynamicLevelData[object.level]
+
+      for (let background of dynLevelData.background) {
+        background.x -= object.speedX || 0
+        background.y -= object.speedY || 0
+      }
+
+      for (let foreground of dynLevelData.foreground) {
+        foreground.x -= object.speedX || 0
+        foreground.y -= object.speedY || 0
+      }
+
+      for (let event of dynLevelData.events) {
+        event.x -= object.speedX || 0
+        event.y -= object.speedY || 0
+      }
+    },
+    correctBackgroundPos (state, level) {
+      let dynLevelData = state.dynamicLevelData[level]
+
+      for (let background of dynLevelData.background) {
+        background.x = Math.round(background.x / 100) * 100
+      }
+
+      for (let foreground of dynLevelData.foreground) {
+        foreground.x = Math.round(foreground.x / 100) * 100
+      }
+
+      for (let event of dynLevelData.events) {
+        event.x = Math.round(event.x / 100) * 100
+      }
     },
     removeBackgrounds (state, level) {
-      let removedBackground = state.backgrounds[level].background.shift()
+      let removedBackground = state.dynamicLevelData[level].background.shift()
       if (removedBackground.spriteKey.endsWith('background')) {
-        state.backgrounds[level].foreground.shift()
+        state.dynamicLevelData[level].foreground.shift()
       }
+    },
+    incSteps (state, level) {
+      state.dynamicLevelData[level].steps++
     }
   },
   actions: {

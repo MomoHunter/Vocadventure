@@ -41,7 +41,7 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(component => {
       if (!component.$store.state.canvasDict.watchedIntro) {
-        component.$store.commit('canvasDict/setGameState', 'intro')
+        component.$store.commit('canvasDict/addGameState', 'intro')
         component.$router.replace({ name: 'adventureIntro' })
       } else if (component.$store.state.canvasDict.gameState === 'map') {
         component.$router.replace({ name: 'adventureMap' })
@@ -91,8 +91,28 @@ export default {
   },
   computed: {
     tags () {
-      if (this.$store.state.canvasDict.gameState !== 'level') {
-        return []
+      if (this.gameState.includes('map')) {
+        return [
+          {
+            nameId: 'level',
+            valueId: this.currentLevel,
+            color: 'is-info'
+          },
+          {
+            nameId: 'steps',
+            valueId: this.$store.state.canvasDict.dynamicLevelData[this.currentLevel].steps,
+            color: 'is-info'
+          }
+        ]
+      }
+      if (this.gameState === 'intro') {
+        return [
+          {
+            nameId: 'tipName',
+            valueId: 'tipValue',
+            color: 'is-success'
+          }
+        ]
       }
       return [
         {
@@ -140,11 +160,14 @@ export default {
     currentMapPoint () {
       return this.$store.getters['canvasDict/currentMapPoint']
     },
+    currentLevel () {
+      return this.$store.state.canvasDict.currentLevel
+    },
     gameState () {
       return this.$store.state.canvasDict.gameState
     },
     lastBackground () {
-      return this.$store.getters['canvasDict/getLastBackground'](this.$store.state.canvasDict.currentLevel)
+      return this.$store.getters['canvasDict/getLastBackground'](this.currentLevel)
     }
   },
   methods: {
@@ -158,12 +181,12 @@ export default {
       switch (object.type) {
         case 'skipIntro':
           this.$store.commit('canvasDict/setWatchedIntro')
-          this.$store.commit('canvasDict/setGameState', 'map')
+          this.$store.commit('canvasDict/addGameState', 'map')
           this.$router.replace({ name: 'adventureMap' })
           break
         case 'selectLevel':
-          if (this.$store.state.canvasDict.currentLevel !== 'home') {
-            this.$store.commit('canvasDict/setGameState', 'level')
+          if (this.currentLevel !== 'home') {
+            this.$store.commit('canvasDict/addGameState', 'level')
             this.$router.replace({ name: 'adventure' })
           }
           break
@@ -178,8 +201,20 @@ export default {
           }
           break
         case 'backToMap':
-          this.$store.commit('canvasDict/setGameState', 'map')
+          this.$store.commit('canvasDict/addGameState', 'map')
           this.$router.replace({ name: 'adventureMap' })
+          break
+        case 'correctWord':
+          let dynLevelData = this.$store.getters['canvasDict/getDynamicLevelData'](this.currentLevel)
+          if (dynLevelData.steps < 2) {
+            this.animationQueue.push(new AnimationObject('moveFirstSteps'))
+            this.$store.commit('vueDict/addStatAddit', { id: 'steps', count: 1 })
+          } else {
+            this.animationQueue.push(new AnimationObject('moveForward'))
+            this.$store.commit('vueDict/addStatAddit', { id: 'steps', count: 1 })
+          }
+          break
+        case 'wrongWord':
           break
         case 'abort':
           this.showMessageModal()
@@ -290,6 +325,7 @@ export default {
           }
         }
 
+        this.$store.commit('canvasDict/checkGameState')
         this.clearCanvas()
         this.canvasDraw()
 
@@ -297,7 +333,7 @@ export default {
       }
     },
     clearCanvas () {
-      this.$store.state.canvasDict.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
+      this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
     },
     canvasUpdate () {
       if (this.currentAnimation && this[this.currentAnimation.type + 'Animation']) {
@@ -325,7 +361,7 @@ export default {
       this.counter.animation += this.counter.increase
 
       if (Math.sqrt(Math.pow(this.canvasWidth / 2, 2) + Math.pow(this.canvasHeight / 2, 2)) < this.counter.animation) {
-        this.$store.commit('canvasDict/setGameState', destination)
+        this.$store.commit('canvasDict/addGameState', destination)
         this.counter.increase = 0
         this.counter.animation = 0
         this.animationQueue = []
@@ -339,12 +375,12 @@ export default {
 
       if (this.introTexts[this.introTexts.length - 1].y < -30) {
         this.$store.commit('canvasDict/setWatchedIntro')
-        this.$store.commit('canvasDict/setGameState', 'map')
+        this.$store.commit('canvasDict/addGameState', 'map')
         this.$router.replace({ name: 'adventureMap' })
       }
     },
     levelUpdate () {
-      let level = this.$store.state.canvasDict.currentLevel
+      let level = this.currentLevel
 
       if (!this.lastBackground) {
         let newBackground = this.getNewBackground(level, 0, 0)
@@ -367,7 +403,7 @@ export default {
     },
     getNewBackground (level, x, y) {
       const cD = this.$store.state.canvasDict
-      let point = this.$store.state.canvasDict.levels[level]
+      let point = this.$store.state.canvasDict.staticLevelData[level]
       let max = point.backgroundChances.reduce((acc, bg) => { return acc + bg.chance }, 0)
       let random = Math.random() * max
 
@@ -420,6 +456,29 @@ export default {
         if (this.currentAnimation.counter.number <= 0) {
           this.currentAnimation = null
         }
+      }
+    },
+    moveFirstStepsAnimation () {
+      this.currentAnimation.counter++
+
+      if (this.currentAnimation.counter === 100) {
+        this.$store.commit('canvasDict/incSteps', this.currentLevel)
+        this.currentAnimation = null
+      }
+    },
+    moveForwardAnimation () {
+      let speed = 1
+
+      this.currentAnimation.counter += speed
+      this.$store.commit('canvasDict/moveBackground', {
+        level: this.currentLevel,
+        speedX: speed
+      })
+
+      if (this.currentAnimation.counter >= 100) {
+        this.$store.commit('canvasDict/incSteps', this.currentLevel)
+        this.$store.commit('canvasDict/correctBackgroundPos', this.currentLevel)
+        this.currentAnimation = null
       }
     },
     canvasDraw () {
@@ -497,27 +556,44 @@ export default {
       }
     },
     levelDraw (cD) {
-      let level = this.$store.state.canvasDict.currentLevel
-      let backgrounds = this.$store.getters['canvasDict/getBackgrounds'](level)
-      let events = this.$store.getters['canvasDict/getEvents'](level)
+      let level = this.currentLevel
+      let dynLevelData = this.$store.getters['canvasDict/getDynamicLevelData'](level)
 
-      for (let background of backgrounds.background) {
+      for (let background of dynLevelData.background) {
         Helper.drawCanvasImage(background.x, background.y, background.spriteKey, cD)
       }
 
-      for (let event of events) {
+      for (let event of dynLevelData.events) {
         Helper.drawCanvasImage(event.x, event.y, event.spriteKey, cD)
       }
 
-      Helper.drawCanvasImage(17, 145, 'player_level_standing', cD)
+      this.levelPlayerDraw(dynLevelData, cD)
 
-      for (let foreground of backgrounds.foreground) {
+      for (let foreground of dynLevelData.foreground) {
         Helper.drawCanvasImage(foreground.x, foreground.y, foreground.spriteKey, cD)
       }
 
-      this.drawCurrentWord()
+      this.currentWordDraw()
     },
-    drawCurrentWord () {
+    levelPlayerDraw (dynLevelData, cD) {
+      let playerData = Helper.getSpriteData('player_level_standing', cD)
+
+      if (dynLevelData.steps < 2) {
+        if (this.currentAnimation && this.currentAnimation.type === 'moveFirstSteps') {
+          Helper.drawCanvasImage(
+            dynLevelData.steps * 100 + 50 + this.currentAnimation.counter - Math.floor(playerData.spriteWidth / 2),
+            145, 'player_level_standing', cD
+          )
+        } else {
+          Helper.drawCanvasImage(
+            dynLevelData.steps * 100 + 50 - Math.floor(playerData.spriteWidth / 2), 145, 'player_level_standing', cD
+          )
+        }
+      } else {
+        Helper.drawCanvasImage(250 - Math.floor(playerData.spriteWidth / 2), 145, 'player_level_standing', cD)
+      }
+    },
+    currentWordDraw () {
       let word = this.currentWord[this.$store.state.lang]
       if (word.length > 68) {
         word = word.substring(0, 65) + '...'
@@ -543,11 +619,6 @@ export default {
           this.$store.commit('vueDict/closeModal')
           break
         default:
-      }
-    },
-    gameState (newState, oldState) {
-      if (this.transitions.includes(oldState + newState)) {
-        this.$store.commit('canvasDict/setGameState', oldState + newState)
       }
     },
     currentAnimation (newState) {

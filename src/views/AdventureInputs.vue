@@ -254,6 +254,11 @@ export default {
           count: this.isForeignCorrect * this.$store.state.vueDict.difficulty
         })
       }
+      if (this.isLatinCorrect > 0 || this.isForeignCorrect > 0) {
+        this.$emit('click', { type: 'correctWord' })
+      } else {
+        this.$emit('click', { type: 'wrongWord' })
+      }
     },
     nextWord () {
       this.hideSolution()

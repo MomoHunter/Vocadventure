@@ -80,17 +80,11 @@ export default {
         if (data.inventory) {
           this.$store.commit('vueDict/changeInventory', data.inventory)
         }
-        if (data.watchedIntro) {
-          this.$store.commit('canvasDict/setWatchedIntro')
-        }
         if (data.inLevel) {
           this.$store.commit('canvasDict/setInLevel', data.inLevel)
         }
         if (data.currentLevel) {
           this.$store.commit('canvasDict/setMapPoint', data.currentLevel)
-        }
-        if (data.unlockedLevels) {
-          this.$store.commit('canvasDict/changeUnlockedLevels', data.unlockedLevels)
         }
 
         if (data.version !== this.$store.state.version) {
