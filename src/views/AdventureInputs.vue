@@ -41,10 +41,11 @@
                    color="is-success" text="adventureButton2" @click="checkInput()" />
       <ButtonBasic v-show="resultsVisible && currentWordIndex + 1 !== words.words.length"
                    class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
-                   text="adventureButton3" @click="nextWord()" />
+                   text="adventureButton3" @click="nextWord()" :disabled="$store.state.canvasDict.animationActive" />
       <ButtonBasic v-show="resultsVisible && currentWordIndex + 1 === words.words.length"
                    class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
-                   text="adventureButton4" @click="$emit('click', { type: 'finish' })" />
+                   text="adventureButton4" @click="$emit('click', { type: 'finish' })"
+                   :disabled="$store.state.canvasDict.animationActive" />
       <ButtonBasic v-show="!resultsVisible" class="is-half marginRightSmall" icon="map" color="is-warning"
                    text="adventureButton5" @click="$emit('click', { type: 'backToMap' })" />
       <ButtonBasic v-show="!resultsVisible" class="is-half marginLeftSmall" icon="briefcase" color="is-primary"
@@ -269,6 +270,7 @@ export default {
       this.latinInput = ''
       this.foreignInput = ''
       this.$store.commit('vueDict/incCurrentWord')
+      this.$emit('click', { type: 'nextWord' })
     },
     showSolution () {
       this.solutionVisible = true

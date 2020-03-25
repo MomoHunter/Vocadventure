@@ -22,7 +22,7 @@
     { "german": "Dankbarkeit, Dank", "english": "Gratitude", "romaji": "kansha", "kana": "感謝", "difficulty": 3 },
     { "german": "Dank", "english": "Thanks", "romaji": "o-rei", "kana": "お礼", "difficulty": 3 },
     { "german": "Bitte (geben Sie mir/ tun Sie ...)", "english": "please (give me/ do ...)", "romaji": "...kudasai", "kana": "・・・下さい", "difficulty": 3 },
-    { "german": "Bitte... (vertraut)", "english": "please... (familiar)", "romaji": "...choudai", "kana": "・・・ちょうだい", "difficulty": 1 },
+    { "german": "Bitte... (vertraut)", "english": "please... (aquainted)", "romaji": "...choudai", "kana": "・・・ちょうだい", "difficulty": 1 },
     { "german": "Ja, bitte. Ich bitte darum.", "english": "Yes, please. I would ask for it.", "romaji": "O-negai shimasu.", "kana": "お願いします。", "difficulty": 3 },
     { "german": "Hier, bitte! (beim Anbieten)", "english": "There you go! (offering)", "romaji": "Douzo.", "kana": "どうぞ。", "difficulty": 1 },
     { "german": "Wie wäre es damit?", "english": "How about this?", "romaji": "Ikaga desu ka.", "kana": "いかがですか。", "difficulty": 2 },
@@ -104,7 +104,7 @@
     { "german": "Bitte machen Sie sich keine Umstände!", "english": "Please don't go to any trouble!", "romaji": "Douzo, o-kamai naku.", "kana": "どうぞ、お構いなく。", "difficulty": 3 },
     { "german": "Machen Sie es sich bequem!", "english": "Make yourself comfortable.", "romaji": "Go-yukkuri douzo.", "kana": "ごゆっくりどうぞ。", "difficulty": 2 },
     { "german": "Wie geht es Ihnen? \"Geht es Ihnen gut?\"", "english": "How are you doing? \"Are you all right?\"", "romaji": "O-genki desu ka.", "kana": "お元気ですか。", "difficulty": 3 },
-    { "german": "Wie geht's? (vertraut)", "english": "What's up? (familiar)", "romaji": "Genki?", "kana": "元気？", "difficulty": 3 },
+    { "german": "Wie geht's? (vertraut)", "english": "What's up? (aquainted)", "romaji": "Genki?", "kana": "元気？", "difficulty": 3 },
     { "german": "Danke der Nachfrage. (förmlich)", "english": "Thanks for asking. (formally)", "romaji": "O-kage-sama de.", "kana": "お蔭様で。", "difficulty": 3 },
     { "german": "Ist bei Ihnen alles beim Alten?", "english": "Is everything the same with you?", "romaji": "O-kawari wa arimasen ka.", "kana": "お変わりはありませんか。", "difficulty": 3 },
     { "german": "Bitte kontaktieren Sie mich.", "english": "Please contact me.", "romaji": "Go-renraku kudasai.", "kana": "ご連絡下さい。", "difficulty": 3 },
@@ -117,7 +117,17 @@
     { "german": "Ein Hoch auf Japan!", "english": "Long live Japan!", "romaji": "Nihon banzai!", "kana": "日本万歳！", "difficulty": 3 }
   ],
   "japaneseCategory5": [
-    { "german": "ich (allgemein)", "english": "I (in general)", "romaji": "watashi", "kana": "私", "difficulty": 3 }
+    { "german": "ich (allgemein)", "english": "I (in general)", "romaji": "watashi", "kana": "私", "difficulty": 3 },
+    { "german": "wir (allgemein)", "english": "we (in general)", "romaji": "watashi-tachi", "kana": "私たち", "difficulty": 3 },
+    { "german": "wir (allgemein) 2", "english": "we (in general) 2", "romaji": "watashi-ra", "kana": "私ら", "difficulty": 3 },
+    { "german": "ich (bescheiden, formell)", "english": "I (humble, formally)", "romaji": "watakushi", "kana": "私", "difficulty": 3 },
+    { "german": "wir (bescheiden, formell)", "english": "we (humble, formally)", "romaji": "watakushi-domo", "kana": "私共", "difficulty": 3 },
+    { "german": "ich (Frauensprache)", "english": "I (Womenlanguage)", "romaji": "atashi", "kana": "あたし", "difficulty": 1 },
+    { "german": "wir (Frauensprache)", "english": "we (Womenlanguage)", "romaji": "atashi-tachi", "kana": "あたしたち", "difficulty": 1 },
+    { "german": "wir (Frauensprache) 2", "english": "we (Womenlanguage) 2", "romaji": "atashi-ra", "kana": "あたしら", "difficulty": 1 },
+    { "german": "ich (Männersprache, vertraut)", "english": "ich (Menlanguage, aquainted)", "romaji": "boku", "kana": "僕", "difficulty": 3 },
+    { "german": "wir (Männersprache, vertraut)", "english": "we (Menlanguage, aquainted)", "romaji": "boku-tachi", "kana": "僕たち", "difficulty": 3 },
+    { "german": ""}
   ],
   "japaneseCategory6": [
     { "german": "das hier", "english": "this here", "romaji": "kore", "kana": "これ", "difficulty": 1 }

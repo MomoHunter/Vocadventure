@@ -31,11 +31,13 @@ export default {
       'background_snow': [false, 0, 1806, 300, 300],
       'background_universe': [false, 0, 2107, 600, 300],
       'background_world': [false, 0, 2408, 600, 300],
-      'obstacles_trunk': [false, 601, 0, 84, 95],
-      'obstacles_wall': [false, 601, 96, 60, 86],
-      'player_level_standing': [false, 686, 0, 55, 95],
-      'player_map_standing': [false, 686, 96, 25, 43],
-      'special_placeholder': [false, 742, 0, 50, 50]
+      'items_stone_onfloor': [false, 601, 0, 16, 16],
+      'items_wood_onfloor': [false, 601, 17, 18, 16],
+      'obstacles_trunk': [false, 620, 0, 84, 95],
+      'obstacles_wall': [false, 620, 96, 60, 86],
+      'player_level_standing': [false, 705, 0, 55, 95],
+      'player_map_standing': [false, 705, 96, 25, 43],
+      'special_placeholder': [false, 761, 0, 50, 50]
     },
     // end spriteDict
     gameState: 'map',
@@ -45,6 +47,10 @@ export default {
       'maplevel',
       'levelmap'
     ],
+    animationActive: false,
+    obstacleAhead: false,
+    itemsOnFloor: false,
+    questionKey: '',
     currentLevel: 'home',
     staticLevelData: {
       'home': {
@@ -77,10 +83,11 @@ export default {
             id: 'forestBasic',
             spriteKey: 'background_forest_background',
             chance: 1,
+            fieldCount: 3,
             foundOn: [1, 2, 3],
-            canBefound: [
-              { id: 'woodBranch', chance: 0.025 },
-              { id: 'stone', chance: 0.025 }
+            canBeFound: [
+              { id: 'wood', chance: 0.25 },
+              { id: 'stone', chance: 0.25 }
             ]
           }
         ],
@@ -89,19 +96,22 @@ export default {
             id: 'forestTrunk',
             spriteKey: 'obstacles_trunk',
             durability: 20,
+            chance: 1,
             items: [
-              { id: 'wood', chance: 1 }
+              { id: 'wood', quantity: 3, points: 9 }
             ]
           },
           {
             id: 'forestWall',
             spriteKey: 'obstacles_wall',
             durability: 30,
+            chance: 1,
             items: [
-              { id: 'stone', chance: 1 }
+              { id: 'stone', quantity: 4, points: 16 }
             ]
           }
-        ]
+        ],
+        chanceForObstacle: 0.012
       },
       'snow': {
         x: 168,
@@ -116,7 +126,8 @@ export default {
         bc: false,
         br: 'mines',
         backgroundChances: [],
-        obstacles: []
+        obstacles: [],
+        chanceForObstacle: 0.012
       },
       'plains': {
         x: 67,
@@ -131,7 +142,8 @@ export default {
         bc: false,
         br: false,
         backgroundChances: [],
-        obstacles: []
+        obstacles: [],
+        chanceForObstacle: 0.012
       },
       'desert': {
         x: 166,
@@ -146,7 +158,8 @@ export default {
         bc: false,
         br: false,
         backgroundChances: [],
-        obstacles: []
+        obstacles: [],
+        chanceForObstacle: 0.012
       },
       'volcano': {
         x: 277,
@@ -161,7 +174,8 @@ export default {
         bc: false,
         br: false,
         backgroundChances: [],
-        obstacles: []
+        obstacles: [],
+        chanceForObstacle: 0.012
       },
       'mines': {
         x: 273,
@@ -176,7 +190,8 @@ export default {
         bc: false,
         br: false,
         backgroundChances: [],
-        obstacles: []
+        obstacles: [],
+        chanceForObstacle: 0.012
       },
       'city': {
         x: 410,
@@ -191,7 +206,8 @@ export default {
         bc: false,
         br: 'spacestation',
         backgroundChances: [],
-        obstacles: []
+        obstacles: [],
+        chanceForObstacle: 0.012
       },
       'cemetry': {
         x: 407,
@@ -206,7 +222,8 @@ export default {
         bc: 'city',
         br: false,
         backgroundChances: [],
-        obstacles: []
+        obstacles: [],
+        chanceForObstacle: 0.012
       },
       'spacestation': {
         x: 468,
@@ -221,7 +238,8 @@ export default {
         bc: false,
         br: false,
         backgroundChances: [],
-        obstacles: []
+        obstacles: [],
+        chanceForObstacle: 0.012
       },
       'beach': {
         x: 550,
@@ -236,7 +254,8 @@ export default {
         bc: false,
         br: false,
         backgroundChances: [],
-        obstacles: []
+        obstacles: [],
+        chanceForObstacle: 0.012
       },
       'underwater': {
         x: 546,
@@ -251,7 +270,8 @@ export default {
         bc: 'beach',
         br: false,
         backgroundChances: [],
-        obstacles: []
+        obstacles: [],
+        chanceForObstacle: 0.012
       }
     },
     dynamicLevelData: {
@@ -261,13 +281,17 @@ export default {
           { x: 0, y: 0, spriteKey: 'background_home' }
         ],
         foreground: [],
-        events: []
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
       },
       'forest': {
         steps: 0,
         background: [],
         foreground: [],
-        events: []
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
       }
     }
   },
@@ -292,13 +316,71 @@ export default {
       }
       return bg[bg.length - 1]
     },
-    getNextEvent: (state) => (level) => {
-      let events = state.dynamicLevelData[level].events
+    getNextObstacleEvent: (state) => (level) => {
+      let events = state.dynamicLevelData[level].events.filter(
+        event => event.type === 'obstacle' && !event.registered
+      )
+      let index = 0
 
       if (events.length === 0) {
         return null
       }
-      return events[0]
+
+      for (let i = 0; i < events.length; i++) {
+        if (events[i].field < events[index].field) {
+          index = i
+        }
+      }
+
+      return events[index]
+    },
+    getNextItemEvents: (state) => (level) => {
+      let events = state.dynamicLevelData[level].events
+      let nextItemField = events.find(event => event.type === 'item') || null
+
+      if (events.length === 0 || !nextItemField) {
+        return []
+      }
+
+      nextItemField = nextItemField.field
+
+      for (let event of events) {
+        if (event.type === 'item' && !event.registered && event.field < nextItemField) {
+          nextItemField = event.field
+        }
+      }
+
+      return events.filter(event => event.field === nextItemField)
+    },
+    getBackgroundItemData: (state) => (level, id) => {
+      let background = state.staticLevelData[level].backgroundChances.find(bg => bg.id === id)
+
+      return {
+        foundOn: background.foundOn,
+        canBeFound: background.canBeFound
+      }
+    },
+    hasFieldObstacle: (state) => (level, field) => {
+      let events = state.dynamicLevelData[level].events
+
+      for (let i = 0; i < events.length; i++) {
+        if (events[i].type === 'obstacle' && events[i].field === field) {
+          return true
+        }
+      }
+      return false
+    },
+    getItemNoOnField: (state) => (level, field) => {
+      let events = state.dynamicLevelData[level].events
+      let count = 0
+
+      for (let event of events) {
+        if (event.type === 'item' && event.field === field) {
+          count++
+        }
+      }
+
+      return count
     }
   },
   mutations: {
@@ -330,6 +412,9 @@ export default {
     setWatchedIntro (state) {
       state.watchedIntro = true
     },
+    setAnimationActive (state, bool) {
+      state.animationActive = bool
+    },
     addGameState (state, gameState) {
       state.gameStateStash.push(gameState)
     },
@@ -352,7 +437,9 @@ export default {
           steps: 0,
           background: [],
           foreground: [],
-          events: []
+          events: [],
+          itemsOnFloor: false,
+          obstacleAhead: false
         }
       }
     },
@@ -361,6 +448,39 @@ export default {
     },
     addForeground (state, foreground) {
       state.dynamicLevelData[state.currentLevel].foreground.push(foreground)
+    },
+    addEvent (state, event) {
+      state.dynamicLevelData[state.currentLevel].events.push(event)
+    },
+    setObstacleAhead (state, bool) {
+      state.dynamicLevelData[state.currentLevel].obstacleAhead = bool
+    },
+    setItemsOnFloor (state, bool) {
+      state.dynamicLevelData[state.currentLevel].itemsOnFloor = bool
+    },
+    removeItemsOnFloor (state, object) {
+      state.dynamicLevelData[state.currentLevel].events = state.dynamicLevelData[state.currentLevel].events.filter(
+        event => event.type !== object.type || event.field !== object.field
+      )
+    },
+    reduceObstacleDurability (state, object) {
+      let event = state.dynamicLevelData[state.currentLevel].events.find(
+        event => event.type === 'obstacle' && event.field === object.field
+      )
+
+      event.durability = Math.max(event.durability - object.amount, 0)
+    },
+    setEventsRegistered (state, object) {
+      let events = state.dynamicLevelData[state.currentLevel].events.filter(
+        event => event.type === object.type && event.field === object.field
+      )
+
+      for (let event of events) {
+        event.registered = true
+      }
+    },
+    setQuestionKey (state, key) {
+      state.questionKey = key
     },
     moveBackground (state, object) {
       let dynLevelData = state.dynamicLevelData[object.level]
@@ -389,10 +509,6 @@ export default {
 
       for (let foreground of dynLevelData.foreground) {
         foreground.x = Math.round(foreground.x / 100) * 100
-      }
-
-      for (let event of dynLevelData.events) {
-        event.x = Math.round(event.x / 100) * 100
       }
     },
     removeBackgrounds (state, level) {

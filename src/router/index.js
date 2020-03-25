@@ -9,6 +9,7 @@ import TheAdventure from '@/views/TheAdventure.vue'
 import AdventureIntro from '@/views/AdventureIntro.vue'
 import AdventureMapNavigation from '@/views/AdventureMapNavigation.vue'
 import AdventureInputs from '@/views/AdventureInputs.vue'
+import AdventureChoose from '@/views/AdventureChoose.vue'
 import AdventureStatistics from '@/views/AdventureStatistics.vue'
 import TheShop from '@/views/TheShop.vue'
 import TheDetails from '@/views/TheDetails.vue'
@@ -96,6 +97,14 @@ const routes = [
         path: 'map',
         name: 'adventureMap',
         component: AdventureMapNavigation,
+        meta: {
+          forward: []
+        }
+      },
+      {
+        path: 'choose',
+        name: 'adventureChoose',
+        component: AdventureChoose,
         meta: {
           forward: []
         }

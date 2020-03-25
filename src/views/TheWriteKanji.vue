@@ -6,8 +6,8 @@
       <DropdownSpecial buttonText="writeKanjiDropdown" buttonColor="is-link" :vocabs="words"
                        @click="setCurrentWord($event.category, $event.index)" />
     </div>
-    <div class="box is-10 flexGrow centerText specialFont" v-maxFontSize>
-      <span>{{ currentWord[words.foreignAlphabet][currentLetter] }}</span>
+    <div class="content is-10 flexGrow specialFont" v-maxFontSize>
+      <blockquote class="centerText">{{ currentWord[words.foreignAlphabet][currentLetter] }}</blockquote>
     </div>
     <div class="field is-max-10 has-addons overflowAuto">
       <div class="control" v-for="(letter, index) in currentWord[words.foreignAlphabet]" :key="index">
@@ -140,6 +140,13 @@ export default {
   .specialFont {
     font-family: "KanjiStrokeOrders";
     line-height: 0;
+
+    blockquote {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+    }
   }
 }
 </style>

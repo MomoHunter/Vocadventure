@@ -1,6 +1,6 @@
 <template>
   <div class="flexboxContainer is-10">
-    <ButtonBasic icon="arrow-right" text="adventureIntroButton1" color="is-warning"
+    <ButtonBasic class="marginBottomSmall" icon="arrow-right" text="adventureIntroButton1" color="is-warning"
                  @click="$emit('click', { type: 'skipIntro' })" />
     <ButtonBasic icon="times" text="adventureIntroButton2" color="is-danger"
                  @click="$emit('click', { type: 'abort' })" />
@@ -23,7 +23,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: calc(100% - 71px);
-  justify-content: space-between;
+  justify-content: flex-end;
 
   &.is-10 {
     width: calc(100% / 1.2);

@@ -9,10 +9,10 @@
     },
     "infoText": {
       "font": "bold 12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-      "color": "0, 0, 0, 1",
+      "color": "255, 255, 255, 1",
       "align": "center",
       "baseline": "middle",
-      "borderKey": ""
+      "borderKey": "small"
     },
     "intro": {
       "font": "17pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
@@ -28,12 +28,29 @@
     },
     "standardBlur": {
       "backgroundColor": "255, 255, 255, .6"
+    },
+    "bar": {
+      "backgroundColor": "155, 155, 155, .7"
+    },
+    "barSuccess": {
+      "backgroundColor": "0, 255, 0, 1"
+    },
+    "barWarning": {
+      "backgroundColor": "255, 255, 0, 1"
+    },
+    "barDanger": {
+      "backgroundColor": "255, 0, 0, 1"
     }
   },
   "border": {
     "standard": {
       "borderColor": "0, 0, 0, 1",
       "borderSize": 2,
+      "lineDash": []
+    },
+    "small": {
+      "borderColor": "0, 0, 0, 1",
+      "borderSize": 1,
       "lineDash": []
     }
   }

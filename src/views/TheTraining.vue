@@ -6,10 +6,10 @@
         <TagBasic textOne="trainingCategoryTag" :textTwo="words.words[currentWord].category" colorTwo="is-info" />
       </div>
       <div class="control fullWidth">
-        <div class="box">
-          <div class="content has-text-centered" :class="getSizeClass('content')">
+        <div class="content">
+          <blockquote>
             {{ words.words[currentWord][$store.state.lang] }}
-          </div>
+          </blockquote>
         </div>
       </div>
     </div>
@@ -156,23 +156,25 @@ export default {
     },
     speak () {
       if (this.ttsWorking) {
-        let speech = new SpeechSynthesisUtterance(this.getForeignWord)
-        let voice = this.synth.getVoices().filter(voice => this.words.lang.includes(voice.lang))[0]
-        if (!voice) {
-          this.ttsWorking = false
+        if (!this.ttsPlaying) {
+          let speech = new SpeechSynthesisUtterance(this.getForeignWord)
+          let voice = this.synth.getVoices().filter(voice => this.words.lang.includes(voice.lang))[0]
+          if (!voice) {
+            this.ttsWorking = false
+          }
+          speech.lang = this.words.lang
+          speech.volume = 50
+          speech.rate = 1
+          speech.pitch = 1
+          speech.voice = voice
+          speech.onstart = () => {
+            this.ttsPlaying = true
+          }
+          speech.onend = () => {
+            this.ttsPlaying = false
+          }
+          this.synth.speak(speech)
         }
-        speech.lang = this.words.lang
-        speech.volume = 50
-        speech.rate = 1
-        speech.pitch = 1
-        speech.voice = voice
-        speech.onstart = () => {
-          this.ttsPlaying = true
-        }
-        speech.onend = () => {
-          this.ttsPlaying = false
-        }
-        this.synth.speak(speech)
       } else {
         this.showNotification = true
       }
