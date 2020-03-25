@@ -125,9 +125,18 @@
     { "german": "ich (Frauensprache)", "english": "I (Womenlanguage)", "romaji": "atashi", "kana": "あたし", "difficulty": 1 },
     { "german": "wir (Frauensprache)", "english": "we (Womenlanguage)", "romaji": "atashi-tachi", "kana": "あたしたち", "difficulty": 1 },
     { "german": "wir (Frauensprache) 2", "english": "we (Womenlanguage) 2", "romaji": "atashi-ra", "kana": "あたしら", "difficulty": 1 },
-    { "german": "ich (Männersprache, vertraut)", "english": "ich (Menlanguage, aquainted)", "romaji": "boku", "kana": "僕", "difficulty": 3 },
+    { "german": "ich (Männersprache, vertraut)", "english": "I (Menlanguage, aquainted)", "romaji": "boku", "kana": "僕", "difficulty": 3 },
     { "german": "wir (Männersprache, vertraut)", "english": "we (Menlanguage, aquainted)", "romaji": "boku-tachi", "kana": "僕たち", "difficulty": 3 },
-    { "german": ""}
+    { "german": "wir (Männersprache, vertraut) 2", "english": "we (Menlanguage, aquainted) 2", "romaji": "boku-ra", "kana": "僕ら", "difficulty": 3 },
+    { "german": "ich (Männersprache, vulgär)", "english": "I (Menlanguage, vulgar)", "romaji": "ore", "kana": "俺", "difficulty": 3 },
+    { "german": "wir (Männersprache, vulgär)", "english": "we (Menlanguage, vulgar)", "romaji": "ore-tachi", "kana": "俺たち", "difficulty": 3 },
+    { "german": "wir (Männersprache, vulgär) 2", "english": "we (Menlanguage, vulgar) 2", "romaji": "ore-ra", "kana": "俺ら", "difficulty": 3 },
+    { "german": "wir (als Angehöriger einer Gruppe)", "english": "we (as a member of a group)", "romaji": "wareware", "kana": "我々", "difficulty": 3 },
+    { "german": "wir (als Familie / Haushalt)", "english": "we (as family / household)", "romaji": "uchi", "kana": "うち", "difficulty": 1 },
+    { "german": "du, Sie (urspr. zwischen Ehepartnern; heute allgemein, aber selten; nicht zu Älteren oder Höhergestellten)", "english": "you (originally between spouses; today general, but rare; not to elderly or superior)", "romaji": "anata", "kana": "あなた", "difficulty": 1 },
+    { "german": "Sie (Mehrzahl)", "english": "they", "romaji": "anata-tachi", "kana": "あなたたち", "difficulty": 1 },
+    { "german": "Sie (Mehrzahl, höflich)", "english": "they (polite)", "romaji": "anata-gata", "kana": "あなたがた", "difficulty": 1 },
+    { "german": "Sie (sehr höflich)", "english": "you (really polite)", "romaji": "sochira(-sama)", "kana": "そちら（さま）", "difficulty": 1}
   ],
   "japaneseCategory6": [
     { "german": "das hier", "english": "this here", "romaji": "kore", "kana": "これ", "difficulty": 1 }
