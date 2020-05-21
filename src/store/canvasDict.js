@@ -22,26 +22,29 @@ export default {
      * If isAnimated is true, y-pos is an array, otherwise just a single number.
      */
     spriteDict: {
-      'background_forest_background': [false, 0, 0, 300, 300],
-      'background_forest_foreground': [false, 0, 301, 300, 300],
-      'background_home': [false, 0, 602, 600, 300],
-      'background_intro': [false, 0, 903, 600, 300],
-      'background_intro_background': [false, 0, 1204, 600, 300],
-      'background_intro_foreground': [false, 0, 1505, 600, 300],
-      'background_snow': [false, 0, 1806, 300, 300],
-      'background_universe': [false, 0, 2107, 600, 300],
-      'background_world': [false, 0, 2408, 600, 300],
-      'items_stone_onfloor': [false, 601, 0, 16, 16],
-      'items_wood_onfloor': [false, 601, 17, 18, 16],
-      'obstacles_trunk': [false, 620, 0, 84, 95],
-      'obstacles_wall': [false, 620, 96, 60, 86],
-      'player_level_standing': [false, 705, 0, 55, 95],
-      'player_map_standing': [false, 705, 96, 25, 43],
-      'special_placeholder': [false, 761, 0, 50, 50]
+      'background_forest_2': [false, 0, 0, 200, 300],
+      'background_forest_background': [false, 0, 301, 300, 300],
+      'background_forest_foreground': [false, 0, 602, 300, 300],
+      'background_home': [false, 0, 903, 600, 300],
+      'background_intro': [false, 0, 1204, 600, 300],
+      'background_intro_background': [false, 0, 1505, 600, 300],
+      'background_intro_foreground': [false, 0, 1806, 600, 300],
+      'background_snow': [false, 0, 2107, 300, 300],
+      'background_universe': [false, 0, 2408, 600, 300],
+      'background_world': [false, 0, 2709, 1800, 300],
+      'background_world_old': [false, 0, 3010, 600, 300],
+      'items_stone_onfloor': [false, 1801, 0, 16, 16],
+      'items_wood_onfloor': [false, 1801, 17, 18, 16],
+      'obstacles_trunk': [false, 1820, 0, 84, 95],
+      'obstacles_wall': [false, 1820, 96, 60, 86],
+      'player_level_standing': [false, 1905, 0, 55, 95],
+      'player_map_standing': [false, 1905, 96, 25, 43],
+      'special_placeholder': [false, 1961, 0, 50, 50]
     },
     // end spriteDict
     gameState: 'map',
     gameStateStash: [],
+    mapOffset: 0,
     transitions: [
       'intromap',
       'maplevel',
@@ -52,32 +55,32 @@ export default {
     itemsOnFloor: false,
     questionKey: '',
     currentLevel: 'home',
+    paths: {
+      'forestplains': [
+        { x: 1, y: 0 }, // startvector
+        { x: 200, y: 80, force: 0.02 },
+        { x: 250, y: 250, force: 0.02 },
+        { x: 0, y: 0, force: 0.2 }
+      ]
+    },
     staticLevelData: {
       'home': {
-        x: 64,
-        y: 67,
-        tl: false,
+        x: 45,
+        y: 100,
         tc: false,
-        tr: false,
         cl: false,
         cc: false,
         cr: 'forest',
-        bl: false,
-        bc: false,
-        br: false
+        bc: false
       },
       'forest': {
-        x: 164,
-        y: 67,
-        tl: false,
+        x: 136,
+        y: 170,
         tc: false,
-        tr: false,
         cl: 'home',
         cc: 'home',
-        cr: false,
-        bl: false,
-        bc: 'snow',
-        br: 'volcano',
+        cr: 'plains',
+        bc: false,
         backgroundChances: [
           {
             id: 'forestBasic',
@@ -85,6 +88,17 @@ export default {
             chance: 1,
             fieldCount: 3,
             foundOn: [1, 2, 3],
+            canBeFound: [
+              { id: 'wood', chance: 0.25 },
+              { id: 'stone', chance: 0.25 }
+            ]
+          },
+          {
+            id: 'forestBasic2',
+            spriteKey: 'background_forest_2',
+            chance: 1,
+            fieldCount: 2,
+            foundOn: [1, 2],
             canBeFound: [
               { id: 'wood', chance: 0.25 },
               { id: 'stone', chance: 0.25 }
@@ -113,162 +127,134 @@ export default {
         ],
         chanceForObstacle: 0.012
       },
-      'snow': {
-        x: 168,
-        y: 167,
-        tl: false,
-        tc: 'forest',
-        tr: false,
-        cl: false,
-        cc: 'home',
-        cr: false,
-        bl: 'plains',
-        bc: false,
-        br: 'mines',
-        backgroundChances: [],
-        obstacles: [],
-        chanceForObstacle: 0.012
-      },
       'plains': {
-        x: 67,
-        y: 243,
-        tl: false,
+        x: 330,
+        y: 170,
         tc: false,
-        tr: 'snow',
-        cl: false,
+        cl: 'forest',
         cc: 'home',
         cr: 'desert',
-        bl: false,
         bc: false,
-        br: false,
         backgroundChances: [],
         obstacles: [],
         chanceForObstacle: 0.012
       },
       'desert': {
-        x: 166,
-        y: 260,
-        tl: false,
+        x: 535,
+        y: 155,
         tc: false,
-        tr: false,
         cl: 'plains',
         cc: 'home',
-        cr: false,
-        bl: false,
+        cr: 'mountain',
         bc: false,
-        br: false,
         backgroundChances: [],
         obstacles: [],
         chanceForObstacle: 0.012
       },
-      'volcano': {
-        x: 277,
-        y: 125,
-        tl: 'forest',
+      'mountain': {
+        x: 715,
+        y: 100,
         tc: false,
-        tr: false,
-        cl: false,
+        cl: 'desert',
         cc: 'home',
-        cr: 'city',
-        bl: false,
+        cr: 'snow',
         bc: false,
-        br: false,
+        backgroundChances: [],
+        obstacles: [],
+        chanceForObstacle: 0.012
+      },
+      'snow': {
+        x: 880,
+        y: 130,
+        tc: false,
+        cl: 'mountain',
+        cc: 'home',
+        cr: 'mines',
+        bc: false,
         backgroundChances: [],
         obstacles: [],
         chanceForObstacle: 0.012
       },
       'mines': {
-        x: 273,
-        y: 217,
-        tl: 'snow',
+        x: 1050,
+        y: 125,
         tc: false,
-        tr: 'city',
+        cl: 'snow',
+        cc: 'home',
+        cr: 'city',
+        bc: 'volcano',
+        backgroundChances: [],
+        obstacles: [],
+        chanceForObstacle: 0.012
+      },
+      'volcano': {
+        x: 975,
+        y: 265,
+        tc: 'mines',
         cl: false,
         cc: 'home',
         cr: false,
-        bl: false,
         bc: false,
-        br: false,
         backgroundChances: [],
         obstacles: [],
         chanceForObstacle: 0.012
       },
       'city': {
-        x: 410,
-        y: 157,
-        tl: false,
+        x: 1290,
+        y: 180,
         tc: 'cemetry',
-        tr: false,
-        cl: 'volcano',
+        cl: 'mines',
         cc: 'home',
-        cr: false,
-        bl: 'mines',
-        bc: false,
-        br: 'spacestation',
+        cr: 'beach',
+        bc: 'spacestation',
         backgroundChances: [],
         obstacles: [],
         chanceForObstacle: 0.012
       },
       'cemetry': {
-        x: 407,
-        y: 56,
-        tl: false,
+        x: 1220,
+        y: 55,
         tc: false,
-        tr: false,
         cl: false,
         cc: 'home',
-        cr: 'underwater',
-        bl: false,
+        cr: false,
         bc: 'city',
-        br: false,
         backgroundChances: [],
         obstacles: [],
         chanceForObstacle: 0.012
       },
       'spacestation': {
-        x: 468,
-        y: 242,
-        tl: 'city',
-        tc: false,
-        tr: false,
+        x: 1390,
+        y: 275,
+        tc: 'city',
         cl: false,
         cc: 'home',
-        cr: 'beach',
-        bl: false,
+        cr: false,
         bc: false,
-        br: false,
         backgroundChances: [],
         obstacles: [],
         chanceForObstacle: 0.012
       },
       'beach': {
-        x: 550,
-        y: 245,
-        tl: false,
-        tc: 'underwater',
-        tr: false,
-        cl: 'spacestation',
+        x: 1500,
+        y: 150,
+        tc: false,
+        cl: 'city',
         cc: 'home',
-        cr: false,
-        bl: false,
+        cr: 'underwater',
         bc: false,
-        br: false,
         backgroundChances: [],
         obstacles: [],
         chanceForObstacle: 0.012
       },
       'underwater': {
-        x: 546,
-        y: 58,
-        tl: false,
+        x: 1750,
+        y: 150,
         tc: false,
-        tr: false,
-        cl: 'cemetry',
+        cl: 'beach',
         cc: 'home',
         cr: false,
-        bl: false,
-        bc: 'beach',
-        br: false,
+        bc: false,
         backgroundChances: [],
         obstacles: [],
         chanceForObstacle: 0.012
@@ -292,6 +278,94 @@ export default {
         events: [],
         itemsOnFloor: false,
         obstacleAhead: false
+      },
+      'plains': {
+        steps: 0,
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
+      },
+      'mountain': {
+        steps: 0,
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
+      },
+      'desert': {
+        steps: 0,
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
+      },
+      'snow': {
+        steps: 0,
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
+      },
+      'mines': {
+        steps: 0,
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
+      },
+      'volcano': {
+        steps: 0,
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
+      },
+      'city': {
+        steps: 0,
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
+      },
+      'cemetry': {
+        steps: 0,
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
+      },
+      'spacestation': {
+        steps: 0,
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
+      },
+      'beach': {
+        steps: 0,
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
+      },
+      'underwater': {
+        steps: 0,
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false
       }
     }
   },
@@ -304,6 +378,9 @@ export default {
     },
     currentMapPoint: (state) => {
       return state.staticLevelData[state.currentLevel]
+    },
+    getMapPath: (state) => (path) => {
+      return JSON.parse(JSON.stringify(state.paths[path] || []))
     },
     getDynamicLevelData: (state) => (level) => {
       return state.dynamicLevelData[level]
@@ -414,6 +491,9 @@ export default {
     },
     setAnimationActive (state, bool) {
       state.animationActive = bool
+    },
+    setMapOffset (state, offset) {
+      state.mapOffset = offset
     },
     addGameState (state, gameState) {
       state.gameStateStash.push(gameState)

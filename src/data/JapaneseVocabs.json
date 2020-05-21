@@ -136,10 +136,25 @@
     { "german": "du, Sie (urspr. zwischen Ehepartnern; heute allgemein, aber selten; nicht zu Älteren oder Höhergestellten)", "english": "you (originally between spouses; today general, but rare; not to elderly or superior)", "romaji": "anata", "kana": "あなた", "difficulty": 1 },
     { "german": "Sie (Mehrzahl)", "english": "they", "romaji": "anata-tachi", "kana": "あなたたち", "difficulty": 1 },
     { "german": "Sie (Mehrzahl, höflich)", "english": "they (polite)", "romaji": "anata-gata", "kana": "あなたがた", "difficulty": 1 },
-    { "german": "Sie (sehr höflich)", "english": "you (really polite)", "romaji": "sochira(-sama)", "kana": "そちら（さま）", "difficulty": 1}
+    { "german": "Sie (sehr höflich)", "english": "you (really polite)", "romaji": "sochira(-sama)", "kana": "そちら（さま）", "difficulty": 1 },
+    { "german": "verehrte Anwesende, Sie alle", "english": "Ladies and gentlemen, all of you", "romaji": "mina-san", "kana": "皆さん", "difficulty": 3 },
+    { "german": "verehrte Anwesende, Sie alle 2", "english": "Ladies and gentlemen, all of you 2", "romaji": "mina-sama", "kana": "皆様", "difficulty": 3 },
+    { "german": "du (vertraut, eher Männersprache)", "english": "you (aquainted, rather Menlanguage)", "romaji": "kimi", "kana": "君", "difficulty": 3 },
+    { "german": "ihr (vertraut)", "english": "you (plural, aquainted)", "romaji": "kimi-tachi", "kana": "君たち", "difficulty": 3 },
+    { "german": "ihr (vertraut) 2", "english": "you (plural, aquainted) 2", "romaji": "kimi-ra", "kana": "君ら", "difficulty": 3 },
+    { "german": "du (vulgär, eher Männersprache)", "english": "you (vulgar, rather Menlanguage)", "romaji": "o-mae", "kana": "お前", "difficulty": 3 },
+    { "german": "ihr (vulgär)", "english": "you (plural, vulgar)", "romaji": "o-mae-tachi", "kana": "お前たち", "difficulty": 3 },
+    { "german": "ihr (vulgär) 2", "english": "you (plural, vulgar) 2", "romaji": "o-mae-ra", "kana": "お前ら", "difficulty": 3 },
+    { "german": "er", "english": "he", "romaji": "kare", "kana": "彼", "difficulty": 3 },
+    { "german": "sie (Mehrzahl, Gruppe enthält Männer)", "english": "they (group contains men)", "romaji": "kare-ra", "kana": "彼ら", "difficulty": 3 },
+    { "german": "sie (Einzahl)", "english": "she", "romaji": "kanojo", "kana": "彼女", "difficulty": 3 },
+    { "german": "sie (Mehrzahl, nur Frauen)", "english": "they (only women)", "romaji": "kanojo-tachi", "kana": "彼女たち", "difficulty": 3 }
   ],
   "japaneseCategory6": [
-    { "german": "das hier", "english": "this here", "romaji": "kore", "kana": "これ", "difficulty": 1 }
+    { "german": "das hier", "english": "this here", "romaji": "kore", "kana": "これ", "difficulty": 1 },
+    { "german": "die hier (Mehrzahl)", "english": "these here", "romaji": "kore-ra", "kana": "これら", "difficulty": 1 },
+    { "german": "das da", "english": "this there", "romaji": "sore", "kana": "それ", "difficulty": 1 },
+    { "german": "die da (Mehrzahl)", "english": "these there", "romaji": "sore-ra", "kana": "それら", "difficulty": 1 }
   ],
   "japaneseCategory7": [
     { "german": "was", "english": "what", "romaji": "nani", "kana": "何", "difficulty": 3 }

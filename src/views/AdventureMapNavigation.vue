@@ -1,24 +1,16 @@
 <template>
   <div class="flexboxContainer">
-    <div class="gridContainer is-10">
-      <ButtonIcon class="top-left" :class="getInvisible(currentMapPoint.tl)" icon="long-arrow-alt-left" color="is-link"
-                  :rotation="45" @click="$emit('click', getClickObject(currentMapPoint.tl))" />
+    <div class="gridContainer is-10 marginBottomBig">
       <ButtonIcon class="top-center" :class="getInvisible(currentMapPoint.tc)" icon="long-arrow-alt-up" color="is-link"
                   @click="$emit('click', getClickObject(currentMapPoint.tc))" />
-      <ButtonIcon class="top-right" :class="getInvisible(currentMapPoint.tr)" icon="long-arrow-alt-up" color="is-link"
-                  :rotation="45" @click="$emit('click', getClickObject(currentMapPoint.tr))" />
       <ButtonIcon class="center-left" :class="getInvisible(currentMapPoint.cl)" icon="long-arrow-alt-left"
                   color="is-link" @click="$emit('click', getClickObject(currentMapPoint.cl))" />
       <ButtonIcon class="center-center" :class="getInvisible(currentMapPoint.cc)" icon="home" color="is-success"
                   @click="$emit('click', getClickObject(currentMapPoint.cc, true))" />
       <ButtonIcon class="center-right" :class="getInvisible(currentMapPoint.cr)" icon="long-arrow-alt-right"
                   color="is-link" @click="$emit('click', getClickObject(currentMapPoint.cr))" />
-      <ButtonIcon class="bottom-left" :class="getInvisible(currentMapPoint.bl)" icon="long-arrow-alt-down"
-                  color="is-link" :rotation="45" @click="$emit('click', getClickObject(currentMapPoint.bl))" />
       <ButtonIcon class="bottom-center" :class="getInvisible(currentMapPoint.bc)" icon="long-arrow-alt-down"
                   color="is-link" @click="$emit('click', getClickObject(currentMapPoint.bc))" />
-      <ButtonIcon class="bottom-right" :class="getInvisible(currentMapPoint.br)" icon="long-arrow-alt-right"
-                  color="is-link" :rotation="45" @click="$emit('click', getClickObject(currentMapPoint.br))" />
     </div>
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" icon="check" text="adventureMapButton1" color="is-success"
@@ -70,7 +62,7 @@ export default {
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   width: 100%;
   height: calc(100% - 71px);
 

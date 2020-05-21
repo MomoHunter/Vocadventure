@@ -163,3 +163,19 @@ export function clipCanvasCircle (centerX, centerY, radius, context) {
   context.beginPath()
   context.arc(centerX, centerY, radius, 0, Math.PI * 2)
 }
+
+/**
+ * Draws a circle onto the used Canvas.
+ * @param {number} centerX x-center of the circle
+ * @param {number} centerY y-center of the circle
+ * @param {number} radius radius of the circle
+ * @param {string} styleKey defines the appearance of the circle
+ * @param {CanvasRenderingContext2D} context context of the used canvas
+ */
+export function drawCanvasCircle (centerX, centerY, radius, styleKey, context) {
+  let design = Styles.rect[styleKey]
+  context.fillStyle = `rgba(${design.backgroundColor})`
+  context.beginPath()
+  context.arc(centerX, centerY, radius, 0, Math.PI * 2)
+  context.fill()
+}

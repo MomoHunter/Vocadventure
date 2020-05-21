@@ -25,6 +25,7 @@ export default {
       loopActivated: false,
       introTexts: [],
       stepWidth: 100,
+      oldMapOffset: null,
       counter: {
         animation: 0,
         increase: 0
@@ -196,12 +197,23 @@ export default {
           break
         case 'navigateToLevel':
           let startPoint = this.currentMapPoint
+          let startLevel = this.currentLevel
 
           this.$store.commit('canvasDict/setMapPoint', object.value)
           if (object.home) {
             this.animationQueue.push(new AnimationObject('teleportHomeMap', startPoint, this.currentMapPoint))
           } else {
-            this.animationQueue.push(new AnimationObject('navigateOnMap', startPoint, this.currentMapPoint))
+            let path = this.$store.getters['canvasDict/getMapPath'](startLevel + this.currentLevel)
+            if (path.length > 0) {
+              let startVector = path.shift()
+              let lastPoint = path.pop()
+              lastPoint.x = this.currentMapPoint.x
+              lastPoint.y = this.currentMapPoint.y
+              path.push(lastPoint)
+              this.animationQueue.push(new AnimationObject('navigateOnMap', path, startPoint, startVector))
+            } else {
+              this.$store.commit('canvasDict/setMapOffset', Math.min(1200, Math.max(0, this.currentMapPoint.x - 300)))
+            }
           }
           break
         case 'backToMap':
@@ -559,23 +571,108 @@ export default {
       }
     },
     navigateOnMapAnimation () {
-      this.currentAnimation.current.x += (this.currentAnimation.goal.x - this.currentAnimation.start.x) / 60
-      this.currentAnimation.current.y += (this.currentAnimation.goal.y - this.currentAnimation.start.y) / 60
+      let cA = this.currentAnimation
+      if (!cA.currentPoint) {
+        cA.currentPoint = cA.path.shift()
+      }
 
-      if (Math.abs(this.currentAnimation.current.x - this.currentAnimation.start.x) >=
-          Math.abs(this.currentAnimation.goal.x - this.currentAnimation.start.x) &&
-          Math.abs(this.currentAnimation.current.y - this.currentAnimation.start.y) >=
-          Math.abs(this.currentAnimation.goal.y - this.currentAnimation.start.y)) {
-        this.currentAnimation = null
+      cA.vectors.toGoal = {
+        x: cA.currentPoint.x - cA.playerPos.x,
+        y: cA.currentPoint.y - cA.playerPos.y
+      }
+
+      let degGoal = Math.atan2(cA.vectors.toGoal.y, cA.vectors.toGoal.x) * (180 / Math.PI)
+      let degPlayer = Math.atan2(cA.vectors.player.y, cA.vectors.player.x) * (180 / Math.PI)
+      let distance = degGoal - degPlayer
+      if (Math.abs(distance) > 180) {
+        if (distance < 0) {
+          distance = 360 + distance
+        } else {
+          distance = 360 - distance
+        }
+      }
+
+      // neg distance is counterclockwise and pos distance is clockwise
+
+      let newX = null
+      let newY = null
+
+      if (degPlayer >= 0 && degPlayer <= 90) { // south-east
+        if (distance > 0) {
+          newX = Math.max(cA.vectors.player.x - cA.currentPoint.force, -1)
+        } else {
+          newY = Math.max(cA.vectors.player.y - cA.currentPoint.force, -1)
+        }
+      } else if (degPlayer >= 90 && degPlayer <= 180) { // south-west
+        if (distance > 0) {
+          newY = Math.max(cA.vectors.player.y - cA.currentPoint.force, -1)
+        } else {
+          newX = Math.min(cA.vectors.player.x + cA.currentPoint.force, 1)
+        }
+      } else if (degPlayer <= 0 && degPlayer >= -90) { // north-east
+        if (distance > 0) {
+          newY = Math.min(cA.vectors.player.y + cA.currentPoint.force, 1)
+        } else {
+          newX = Math.max(cA.vectors.player.x - cA.currentPoint.force, -1)
+        }
+      } else if (degPlayer <= -90 && degPlayer >= -180) { // north-west
+        if (distance > 0) {
+          newX = Math.min(cA.vectors.player.x + cA.currentPoint.force, 1)
+        } else {
+          newY = Math.min(cA.vectors.player.y + cA.currentPoint.force, 1)
+        }
+      }
+      if (newY !== null) {
+        cA.vectors.player = { x: this.getMovementFix(newY, cA.vectors.player.x < 0), y: newY }
+      } else if (newX !== null) {
+        cA.vectors.player = { x: newX, y: this.getMovementFix(newX, cA.vectors.player.y < 0) }
+      }
+
+      let newDegPlayer = Math.atan2(cA.vectors.player.y, cA.vectors.player.x) * (180 / Math.PI)
+      let newDistance = degGoal - newDegPlayer
+      if (Math.abs(newDistance) > 180) {
+        if (newDistance < 0) {
+          newDistance = 360 + newDistance
+        } else {
+          newDistance = 360 - newDistance
+        }
+      }
+      if ((distance < 0 && newDistance > 0) || (distance > 0 && newDistance < 0)) {
+        let goalVectorLength = Math.hypot(cA.vectors.toGoal.x, cA.vectors.toGoal.y)
+        cA.vectors.player = { x: cA.vectors.toGoal.x / goalVectorLength, y: cA.vectors.toGoal.y / goalVectorLength }
+      }
+
+      cA.playerPos.x += cA.vectors.player.x
+      cA.playerPos.y += cA.vectors.player.y
+
+      this.$store.commit('canvasDict/setMapOffset', Math.min(1200, Math.max(0, cA.playerPos.x - 300)))
+      if (Math.hypot(cA.vectors.toGoal.x, cA.vectors.toGoal.y) < 1) {
+        if (cA.path.length === 0) {
+          this.currentAnimation = null
+        } else {
+          cA.currentPoint = null
+        }
       }
     },
     teleportHomeMapAnimation () {
       let { spriteHeight } = Helper.getSpriteData('player_map_standing', this.$store.state.canvasDict)
 
       if (!this.currentAnimation.counter.reverse) {
-        this.currentAnimation.counter.number += 0.8
         if (this.currentAnimation.counter.number > spriteHeight) {
-          this.currentAnimation.counter.reverse = true
+          if (this.oldMapOffset === null) {
+            this.oldMapOffset = this.$store.state.canvasDict.mapOffset
+          }
+          this.$store.commit(
+            'canvasDict/setMapOffset',
+            this.$store.state.canvasDict.mapOffset - (this.oldMapOffset / 30)
+          )
+          if (this.$store.state.canvasDict.mapOffset <= 0) {
+            this.$store.commit('canvasDict/setMapOffset', 0)
+            this.currentAnimation.counter.reverse = true
+            this.oldMapOffset = null
+          }
+        } else {
+          this.currentAnimation.counter.number += 0.8
         }
       } else {
         this.currentAnimation.counter.number -= 0.8
@@ -699,29 +796,29 @@ export default {
     mapDraw (cD) {
       let playerData = Helper.getSpriteData('player_map_standing', cD)
 
-      Helper.drawCanvasImage(0, 0, 'background_world', cD)
+      Helper.drawCanvasImage(0 - cD.mapOffset, 0, 'background_world', cD)
       if (this.currentAnimation && this.currentAnimation.type === 'navigateOnMap') {
         Helper.drawCanvasImage(
-          this.currentAnimation.current.x - Math.floor(playerData.spriteWidth / 2),
-          this.currentAnimation.current.y - playerData.spriteHeight, 'player_map_standing', cD
+          this.currentAnimation.playerPos.x - Math.floor(playerData.spriteWidth / 2) - cD.mapOffset,
+          this.currentAnimation.playerPos.y - playerData.spriteHeight, 'player_map_standing', cD
         )
       } else if (this.currentAnimation && this.currentAnimation.type === 'teleportHomeMap') {
         if (!this.currentAnimation.counter.reverse) {
           Helper.drawCanvasImagePart(
-            this.currentAnimation.start.x - Math.floor(playerData.spriteWidth / 2),
+            this.currentAnimation.start.x - Math.floor(playerData.spriteWidth / 2) - cD.mapOffset,
             this.currentAnimation.start.y - playerData.spriteHeight + this.currentAnimation.counter.number,
             'player_map_standing', cD, 0, this.currentAnimation.counter.number
           )
         } else {
           Helper.drawCanvasImagePart(
-            this.currentAnimation.goal.x - Math.floor(playerData.spriteWidth / 2),
+            this.currentAnimation.goal.x - Math.floor(playerData.spriteWidth / 2) - cD.mapOffset,
             this.currentAnimation.goal.y - playerData.spriteHeight + this.currentAnimation.counter.number,
             'player_map_standing', cD, 0, this.currentAnimation.counter.number
           )
         }
       } else {
         Helper.drawCanvasImage(
-          this.currentMapPoint.x - Math.floor(playerData.spriteWidth / 2),
+          this.currentMapPoint.x - Math.floor(playerData.spriteWidth / 2) - cD.mapOffset,
           this.currentMapPoint.y - playerData.spriteHeight, 'player_map_standing', cD
         )
       }
@@ -822,6 +919,9 @@ export default {
       Helper.drawCanvasText(
         this.canvasWidth / 2, 15, word, 'standard', this.ctx
       )
+    },
+    getMovementFix (value, neg) {
+      return neg ? -Math.sqrt(1 - Math.pow(value, 2)) : Math.sqrt(1 - Math.pow(value, 2))
     }
   },
   watch: {

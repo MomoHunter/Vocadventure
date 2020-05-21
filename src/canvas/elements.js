@@ -16,17 +16,15 @@ export function AnimationObject (type, ...params) {
       }
       break
     case 'navigateOnMap':
-      this.start = {
-        x: params[0].x,
-        y: params[0].y
-      }
-      this.current = {
-        x: params[0].x,
-        y: params[0].y
-      }
-      this.goal = {
+      this.path = params[0]
+      this.currentPoint = null
+      this.playerPos = {
         x: params[1].x,
         y: params[1].y
+      }
+      this.vectors = {
+        player: params[2],
+        toGoal: { x: 0, y: 0 }
       }
       break
     case 'moveFirstSteps':
