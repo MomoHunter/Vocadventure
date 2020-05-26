@@ -1,5 +1,5 @@
 <template>
-  <div class="barChartContainer">
+  <div class="barChartContainer" v-show="values.length > 0">
     <span class="content inlineBlock flexGrow" :class="getSizeClass('content')">
       {{ getText(title) }}
     </span>

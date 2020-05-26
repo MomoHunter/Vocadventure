@@ -4,7 +4,7 @@
       <span class="icon is-1" :class="latinIconColor">
         <font-awesome-icon v-show="resultsVisible" :icon="['fas', latinIcon]" :size="getSizeClass('fas')" />
       </span>
-      <input class="input is-rounded is-10" type="text" :placeholder="getText(words.latinAlphabet)"
+      <input class="input is-rounded is-10" type="text" :placeholder="getText(vocabs.latinAlphabet)"
              :class="[getSizeClass('input'), { 'is-info': solutionVisible}]" v-model="latinInput"
              :readonly="resultsVisible" />
       <span class="icon is-1" :class="latinCoinColor">
@@ -12,7 +12,7 @@
                            :size="getSizeClass('fas')" />
       </span>
     </div>
-    <div class="innerFlexContainerInput" :class="{ marginBottomBig: keyboardVisible }">
+    <div class="innerFlexContainerInput" :class="{ marginBottomBig: keyboardVisible }" v-show="hasForeignAlphabet">
       <span class="icon is-1" :class="foreignIconColor">
         <font-awesome-icon v-show="resultsVisible" :icon="['fas', foreignIcon]" :size="getSizeClass('fas')" />
       </span>
@@ -21,7 +21,7 @@
           <ButtonIcon icon="backspace" color="is-danger" @click="removeLetter()" />
         </div>
         <div class="control fullWidth">
-          <input class="input is-rounded" type="text" :placeholder="getText(words.foreignAlphabet)"
+          <input class="input is-rounded" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
                 :class="[getSizeClass('input'), { 'is-info': solutionVisible}]" v-model="foreignInput"
                 @click="showKeyboard()" readonly />
         </div>
@@ -39,10 +39,10 @@
                    text="adventureButton1" @click="$emit('click', { type: 'abort' })" />
       <ButtonBasic v-show="!resultsVisible" class="is-half marginBottomSmall marginLeftSmall" icon="check"
                    color="is-success" text="adventureButton2" @click="checkInput()" />
-      <ButtonBasic v-show="resultsVisible && currentWordIndex + 1 !== words.words.length"
+      <ButtonBasic v-show="resultsVisible && currentWordIndex + 1 !== vocabs.words.length"
                    class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
                    text="adventureButton3" @click="nextWord()" :disabled="$store.state.canvasDict.animationActive" />
-      <ButtonBasic v-show="resultsVisible && currentWordIndex + 1 === words.words.length"
+      <ButtonBasic v-show="resultsVisible && currentWordIndex + 1 === vocabs.words.length"
                    class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
                    text="adventureButton4" @click="$emit('click', { type: 'finish' })"
                    :disabled="$store.state.canvasDict.animationActive" />
@@ -56,7 +56,7 @@
                    @click="hideSolution()" />
     </div>
     <TheProgressBar v-show="!keyboardVisible" class="is-10" color="is-success" :text="progressText"
-                    :value="progressBarCount" :maxValue="words.words.length" />
+                    :value="progressBarCount" :maxValue="vocabs.words.length" />
     <transition enter-active-class="animated fadeInUp super-fast"
                 leave-active-class="animated fadeOutDown super-fast is-absolute">
       <div v-show="keyboardVisible" class="flexGrow fullWidth keyboard">
@@ -64,7 +64,7 @@
         <div class="bottomKeyboard">
           <div class="keyContainer">
             <ButtonText class="is-radiusless keyboardButton" :text="sign" v-for="(sign, index) in keyboardSigns"
-                          :key="index" @click="addLetter(sign)" />
+                        :key="index" @click="addLetter(sign)" />
           </div>
         </div>
       </div>
@@ -78,8 +78,6 @@ import ButtonIcon from '@/components/ButtonIcon.vue'
 import ButtonText from '@/components/ButtonText.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
 import TabsBasic from '@/components/TabsBasic.vue'
-
-import JapaneseSigns from '@/data/JapaneseSigns.json'
 
 export default {
   name: 'AdventureInputs',
@@ -106,18 +104,21 @@ export default {
     this.currentKeyboardTab = this.keyboardNames[0] || ''
   },
   computed: {
-    words () {
-      return this.$store.state.vueDict.words
+    vocabs () {
+      return this.$store.state.vueDict.vocabs
     },
     currentWordIndex () {
       return this.$store.state.vueDict.currentWordIndex
     },
+    hasForeignAlphabet () {
+      return this.vocabs.foreignAlphabet !== ''
+    },
     isLatinCorrect () {
       if (this.userLatinInput.toLowerCase() ===
-          this.words.words[this.currentWordIndex][this.words.latinAlphabet].toLowerCase()) {
+          this.vocabs.words[this.currentWordIndex][this.vocabs.latinAlphabet].toLowerCase()) {
         return 2
       } else if (this.streamline(this.userLatinInput) ===
-                 this.streamline(this.words.words[this.currentWordIndex][this.words.latinAlphabet])) {
+                 this.streamline(this.vocabs.words[this.currentWordIndex][this.vocabs.latinAlphabet])) {
         return 1
       } else {
         return 0
@@ -150,11 +151,13 @@ export default {
       }
     },
     isForeignCorrect () {
-      if (this.userForeignInput.toLowerCase() ===
-          this.words.words[this.currentWordIndex][this.words.foreignAlphabet].toLowerCase()) {
+      if (this.hasForeignAlphabet) {
+        return 0
+      } else if (this.userForeignInput.toLowerCase() ===
+          this.vocabs.words[this.currentWordIndex][this.vocabs.foreignAlphabet].toLowerCase()) {
         return 2
       } else if (this.streamline(this.userForeignInput) ===
-                 this.streamline(this.words.words[this.currentWordIndex][this.words.foreignAlphabet])) {
+                 this.streamline(this.vocabs.words[this.currentWordIndex][this.vocabs.foreignAlphabet])) {
         return 1
       } else {
         return 0
@@ -193,25 +196,38 @@ export default {
       return this.$store.state.vueDict.currentWordIndex
     },
     progressText () {
-      return this.progressBarCount + ' / ' + this.words.words.length
+      return this.progressBarCount + ' / ' + this.vocabs.words.length
     },
     keyboardNames () {
-      return Object.keys(JapaneseSigns)
+      console.log('wants to know your names')
+      let names = Object.keys(this.vocabs.signs)
+      if (this.vocabs.signs.other) {
+        for (let extra of this.vocabs.signs.other) {
+          names.splice(extra.position, 0, extra.id)
+        }
+        names = names.filter(name => name !== 'other')
+      }
+      return names
     },
     keyboardSigns () {
-      let signs = JapaneseSigns
-      signs.kanji = this.getKanji
-
-      return signs[this.currentKeyboardTab]
+      if (this.vocabs.signs.other) {
+        for (let extra of this.vocabs.signs.other) {
+          if (extra.id === this.currentKeyboardTab && !this.vocabs.signs[extra.id]) {
+            this.$store.commit('vueDict/setKeyboardSigns', { name: extra.id, signs: this[extra.function] })
+            break
+          }
+        }
+      }
+      return this.vocabs.signs[this.currentKeyboardTab]
     },
     getKanji () {
       let kanji = []
-      let kanjiSet = new Set(this.$store.getters['vueDict/getVocabs'].words.flatMap(word =>
-        word[this.words.foreignAlphabet].split('')
+      let kanjiSet = new Set(this.$store.getters['vueDict/getFullVocabs'].words.flatMap(word =>
+        word[this.vocabs.foreignAlphabet].split('')
       ))
 
       this.keyboardNames.filter(name => name !== 'kanji').forEach(name => {
-        JapaneseSigns[name].forEach(sign => {
+        this.vocabs.signs[name].forEach(sign => {
           kanjiSet.delete(sign)
         })
       })
@@ -237,9 +253,11 @@ export default {
       this.resultsVisible = true
       this.keyboardVisible = false
       this.userLatinInput = this.latinInput
-      this.userForeignInput = this.foreignInput
       this.$store.commit('vueDict/addCorrectLatin', this.isLatinCorrect)
-      this.$store.commit('vueDict/addCorrectForeign', this.isForeignCorrect)
+      if (this.hasForeignAlphabet) {
+        this.userForeignInput = this.foreignInput
+        this.$store.commit('vueDict/addCorrectForeign', this.isForeignCorrect)
+      }
 
       if (this.isLatinCorrect > 0) {
         this.$store.commit('vueDict/addStatAddit', { id: 'points', count: this.isLatinCorrect })
@@ -266,21 +284,27 @@ export default {
       this.resultsVisible = false
       this.currentKeyboardTab = this.keyboardNames[0] || ''
       this.userLatinInput = ''
-      this.userForeignInput = ''
       this.latinInput = ''
-      this.foreignInput = ''
+      if (this.hasForeignAlphabet) {
+        this.userForeignInput = ''
+        this.foreignInput = ''
+      }
       this.$store.commit('vueDict/incCurrentWord')
       this.$emit('click', { type: 'nextWord' })
     },
     showSolution () {
       this.solutionVisible = true
-      this.latinInput = this.words.words[this.currentWordIndex][this.words.latinAlphabet]
-      this.foreignInput = this.words.words[this.currentWordIndex][this.words.foreignAlphabet]
+      this.latinInput = this.vocabs.words[this.currentWordIndex][this.vocabs.latinAlphabet]
+      if (this.hasForeignAlphabet) {
+        this.foreignInput = this.vocabs.words[this.currentWordIndex][this.vocabs.foreignAlphabet]
+      }
     },
     hideSolution () {
       this.solutionVisible = false
       this.latinInput = this.userLatinInput
-      this.foreignInput = this.userForeignInput
+      if (this.hasForeignAlphabet) {
+        this.foreignInput = this.userForeignInput
+      }
     },
     showKeyboard () {
       if (!this.resultsVisible) {

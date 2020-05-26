@@ -167,3 +167,77 @@
   -webkit-animation-name: fadeOutC;
   animation-name: fadeOutC;
 }
+
+@-webkit-keyframes fadeOutC2 {
+  from {
+    opacity: .5;
+  }
+
+  25% {
+    opacity: .5;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOutC2 {
+  from {
+    opacity: .5;
+  }
+
+  25% {
+    opacity: .5;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.fadeOutC2 {
+  -webkit-animation-name: fadeOutC2;
+  animation-name: fadeOutC2;
+}
+
+@-webkit-keyframes fadeInC2 {
+  from {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: .5;
+  }
+
+  to {
+    opacity: .5;
+  }
+}
+
+@keyframes fadeInC2 {
+  from {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: .5;
+  }
+
+  to {
+    opacity: .5;
+  }
+}
+
+.fadeInC2 {
+  -webkit-animation-name: fadeInC2;
+  animation-name: fadeInC2;
+}

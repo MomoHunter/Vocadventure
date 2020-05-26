@@ -98,7 +98,7 @@ export default {
       return this.customCount !== ''
     },
     countAllWords () {
-      return this.$store.getters['vueDict/getVocabs'].words.length
+      return this.$store.getters['vueDict/getFullVocabs'].words.length
     }
   },
   methods: {

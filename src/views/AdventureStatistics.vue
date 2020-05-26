@@ -1,8 +1,8 @@
 <template>
   <div class="flexboxContainer">
-    <BarChartBasic class="is-10" :title="$store.state.vueDict.words.latinAlphabet"
+    <BarChartBasic class="is-10" :title="$store.state.vueDict.vocabs.latinAlphabet"
                    :values="$store.state.vueDict.correctLatinWords" />
-    <BarChartBasic class="is-10" :title="$store.state.vueDict.words.foreignAlphabet"
+    <BarChartBasic class="is-10" :title="$store.state.vueDict.vocabs.foreignAlphabet"
                    :values="$store.state.vueDict.correctForeignWords" />
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" icon="arrow-left" color="is-warning" text="adventureStatisticsButton1"

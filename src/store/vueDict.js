@@ -18,7 +18,7 @@ export default {
     items: Items,
     inventory: [],
     unlockedItems: [],
-    words: {},
+    vocabs: {},
     currentWordIndex: 0,
     correctLatinWords: [],
     correctForeignWords: [],
@@ -38,7 +38,7 @@ export default {
         return acc + word.difficulty
       }, 0) / category.length
     },
-    getVocabs: (state, getters, rootState) => {
+    getFullVocabs: (state, getters, rootState) => {
       let wordObjects = []
       let vocabs = Vocabulary[rootState.targetLanguage]
 
@@ -53,6 +53,7 @@ export default {
 
       return {
         words: wordObjects,
+        signs: JSON.parse(JSON.stringify(vocabs.signs)),
         latinAlphabet: vocabs.latinAlphabet,
         foreignAlphabet: vocabs.foreignAlphabet,
         lang: vocabs.lang
@@ -74,7 +75,7 @@ export default {
       }
     },
     getShuffledVocabs: (state, getters) => {
-      let vocabs = getters.getVocabs
+      let vocabs = getters.getFullVocabs
       let wordsShuffled = []
 
       while (vocabs.words.length > 0) {
@@ -87,11 +88,12 @@ export default {
       return vocabs
     },
     getVocabsWithDifficulty: (state, getters) => {
-      let vocabs = getters.getVocabs
+      let vocabs = getters.getFullVocabs
       let words = vocabs.words.filter(vocab => vocab.difficulty <= state.difficulty)
 
       return {
         words: words,
+        signs: vocabs.signs,
         latinAlphabet: vocabs.latinAlphabet,
         foreignAlphabet: vocabs.foreignAlphabet,
         lang: vocabs.lang
@@ -111,7 +113,7 @@ export default {
       return state.inventory.find(item => item.id === id)
     },
     getCurrentWord: (state) => {
-      return state.words.words[state.currentWordIndex]
+      return state.vocabs.words[state.currentWordIndex]
     }
   },
   mutations: {
@@ -168,12 +170,15 @@ export default {
     setWordCount (state, count) {
       state.wordCount = count
     },
-    setWords (state, words) {
-      state.words = words
+    setVocabs (state, vocabs) {
+      state.vocabs = vocabs
     },
-    resetWords (state) {
-      state.words = {}
+    resetVocabs (state) {
+      state.vocabs = {}
       state.currentWordIndex = 0
+    },
+    setKeyboardSigns (state, data) {
+      state.vocabs.signs[data.name] = data.signs
     },
     incCurrentWord (state) {
       state.currentWordIndex++

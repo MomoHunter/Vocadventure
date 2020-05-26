@@ -61,7 +61,7 @@ export default {
     if (this.answer === '') {
       if (!this.loopActivated) {
         this.$store.commit('vueDict/resetAdditional')
-        this.$store.commit('vueDict/resetWords')
+        this.$store.commit('vueDict/resetVocabs')
         this.$store.commit('vueDict/closeModal')
         next()
       } else if (from.name === 'adventureStatistics') {
@@ -70,7 +70,7 @@ export default {
         }
         this.$store.commit('vueDict/transferAdditionalStat')
         window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
-        this.$store.commit('vueDict/resetWords')
+        this.$store.commit('vueDict/resetVocabs')
         next()
       } else {
         this.showMessageModal()
@@ -127,7 +127,7 @@ export default {
         },
         {
           nameId: 'adventureCountTag',
-          valueId: this.$store.state.vueDict.words.words.length,
+          valueId: this.$store.state.vueDict.vocabs.words.length,
           color: 'is-info'
         },
         {
@@ -293,7 +293,7 @@ export default {
           }
           this.$store.commit('vueDict/transferAdditionalStat')
           window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
-          this.$store.commit('vueDict/resetWords')
+          this.$store.commit('vueDict/resetVocabs')
           this.addItemsToInventory()
           if (object.value === 'menu') {
             this.$store.commit('vueDict/setCategories', [])
@@ -323,7 +323,7 @@ export default {
       this.loopActivated = false
     },
     createWords () {
-      let vocabs = JSON.parse(JSON.stringify(this.$store.getters['vueDict/getVocabs']))
+      let vocabs = JSON.parse(JSON.stringify(this.$store.getters['vueDict/getFullVocabs']))
       let length = this.$store.state.vueDict.wordCount
       let wordObjects = []
 
@@ -354,8 +354,8 @@ export default {
         }
       }
       vocabs.words = wordObjects
-
-      this.$store.commit('vueDict/setWords', vocabs)
+      console.log('about to write words')
+      this.$store.commit('vueDict/setVocabs', vocabs)
     },
     createIntroTexts () {
       let intro = this.getText('adventureIntro')
@@ -935,7 +935,7 @@ export default {
         case 'buttonRight':
           this.$router.push({ name: 'selection' })
           this.$store.commit('vueDict/resetAdditional')
-          this.$store.commit('vueDict/resetWords')
+          this.$store.commit('vueDict/resetVocabs')
           this.$store.commit('vueDict/closeModal')
           break
         default:

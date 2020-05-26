@@ -26,11 +26,11 @@
                        @click="$router.push({ name: 'category', params: { destination: 'training' } })"
                        v-show="query === 'training'" />
         </transition>
-        <transition enter-active-class="animated fadeIn customDuration customDelay"
-                    leave-active-class="animated fadeOut customDuration">
+        <transition :enter-active-class="customEnterAnimation"
+                    :leave-active-class="customLeaveAnimation">
           <ButtonBasic class="is-relative marginBottomSmall" color="is-success" icon="pen" text="menuTrainingButton2"
                        @click="$router.push({ name: 'category', params: { destination: 'writeKanji' } })"
-                       v-show="query === 'training'" />
+                       v-show="query === 'training'" :disabled="inactive" />
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"
                     leave-active-class="animated fadeOut customDuration">
@@ -88,6 +88,15 @@ export default {
   computed: {
     query () {
       return this.$route.query.sub
+    },
+    inactive () {
+      return this.$store.state.targetLanguage !== 'japanese'
+    },
+    customEnterAnimation () {
+      return 'animated ' + (this.inactive ? 'fadeInC2' : 'fadeIn') + ' customDuration customDelay'
+    },
+    customLeaveAnimation () {
+      return 'animated ' + (this.inactive ? 'fadeOutC2' : 'fadeOut') + ' customDuration'
     }
   },
   watch: {
