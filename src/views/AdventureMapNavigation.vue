@@ -36,9 +36,6 @@ export default {
     }
   },
   methods: {
-    getText (id) {
-      return this.$store.getters.getText(id)
-    },
     getInvisible (link) {
       if (!link || !this.$store.state.canvasDict.dynamicLevelData[link]) {
         return 'invisible'

@@ -8,9 +8,11 @@ import TheWriteKanji from '@/views/TheWriteKanji.vue'
 import TheAdventure from '@/views/TheAdventure.vue'
 import AdventureIntro from '@/views/AdventureIntro.vue'
 import AdventureMapNavigation from '@/views/AdventureMapNavigation.vue'
+import AdventureHome from '@/views/AdventureHome.vue'
 import AdventureInputs from '@/views/AdventureInputs.vue'
 import AdventureChoose from '@/views/AdventureChoose.vue'
 import AdventureStatistics from '@/views/AdventureStatistics.vue'
+import AdventurePlaceholder from '@/views/AdventurePlaceholder.vue'
 import TheShop from '@/views/TheShop.vue'
 import TheDetails from '@/views/TheDetails.vue'
 import TheInventory from '@/views/TheInventory.vue'
@@ -102,6 +104,14 @@ const routes = [
         }
       },
       {
+        path: 'home',
+        name: 'adventureHome',
+        component: AdventureHome,
+        meta: {
+          forward: []
+        }
+      },
+      {
         path: 'choose',
         name: 'adventureChoose',
         component: AdventureChoose,
@@ -113,6 +123,14 @@ const routes = [
         path: 'statistics',
         name: 'adventureStatistics',
         component: AdventureStatistics,
+        meta: {
+          forward: []
+        }
+      },
+      {
+        path: 'placeholder',
+        name: 'adventurePlaceholder',
+        component: AdventurePlaceholder,
         meta: {
           forward: []
         }

@@ -25,7 +25,8 @@ export default {
     showModals: {
       name: ''
     },
-    currentModalAnswer: ''
+    currentModalAnswer: '',
+    transitionActive: false
   },
   getters: {
     getCategories: (state, getters, rootState) => {
@@ -233,6 +234,9 @@ export default {
         name: ''
       }
       state.currentModalAnswer = ''
+    },
+    changeTransitionActive (state, bool) {
+      state.transitionActive = bool
     }
   },
   actions: {

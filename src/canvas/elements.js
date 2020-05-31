@@ -31,6 +31,18 @@ export function AnimationObject (type, ...params) {
     case 'moveForward':
       this.counter = 0
       break
+    case 'homeEnter':
+      this.playerPos = {
+        x: params[0].x,
+        y: params[0].y + 150
+      }
+      break
+    case 'homeLeave':
+      this.playerPos = {
+        x: params[0].x,
+        y: params[0].y
+      }
+      break
     default:
   }
 }

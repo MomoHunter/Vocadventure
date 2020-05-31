@@ -2,7 +2,8 @@
   <div id="app">
     <TheStatus class="statusMargin" :status="$store.state.vueDict.status"></TheStatus>
     <div class="page">
-      <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition">
+      <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition"
+                  @after-enter="toggleTransitionActive(true)" @before-enter="toggleTransitionActive(false)">
         <router-view></router-view>
       </transition>
     </div>
@@ -39,8 +40,7 @@ export default {
   data () {
     return {
       enterTransition: '',
-      leaveTransition: '',
-      tmp: false
+      leaveTransition: ''
     }
   },
   methods: {
@@ -84,13 +84,16 @@ export default {
           this.$store.commit('canvasDict/setInLevel', data.inLevel)
         }
         if (data.currentLevel) {
-          this.$store.commit('canvasDict/setMapPoint', data.currentLevel)
+          this.$store.commit('canvasDict/setLevel', data.currentLevel)
         }
 
         if (data.version !== this.$store.state.version) {
           window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
         }
       }
+    },
+    toggleTransitionActive (bool) {
+      this.$store.commit('vueDict/changeTransitionActive', bool)
     }
   },
   watch: {

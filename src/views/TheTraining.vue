@@ -30,7 +30,7 @@
       </div>
       <InputReadonly class="is-10 is-marginless" type="text" :value="getForeignWord" />
       <div class="control is-1 is-marginless centerIcon" @click="navTo('writeKanji')">
-        <span class="icon has-text-success">
+        <span class="icon has-text-success" v-show="isJapanese">
           <font-awesome-icon :icon="['fas', 'edit']" :size="getSizeClass('fas')" />
         </span>
       </div>
@@ -118,6 +118,9 @@ export default {
         }
       ]
     },
+    isJapanese () {
+      return this.$store.state.targetLanguage === 'japanese'
+    },
     getLatinWord () {
       return this.words.words[this.currentWord][this.words.latinAlphabet]
     },
@@ -185,7 +188,8 @@ export default {
     navTo (destination) {
       if (destination === 'menu') {
         this.$store.commit('vueDict/setCategories', [])
-      } else {
+        this.$router.push({ name: destination })
+      } else if (this.isJapanese) {
         this.$store.commit('vueDict/setWriteKanji', {
           category: this.words.words[this.currentWord].category,
           index: this.words.words[this.currentWord].index
@@ -194,8 +198,8 @@ export default {
           currentWord: this.currentWord,
           storedWords: this.words
         })
+        this.$router.push({ name: destination })
       }
-      this.$router.push({ name: destination })
     }
   }
 }

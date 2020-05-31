@@ -26,13 +26,14 @@ export default {
       'background_forest_background': [false, 0, 301, 300, 300],
       'background_forest_foreground': [false, 0, 602, 300, 300],
       'background_home': [false, 0, 903, 600, 300],
-      'background_intro': [false, 0, 1204, 600, 300],
-      'background_intro_background': [false, 0, 1505, 600, 300],
-      'background_intro_foreground': [false, 0, 1806, 600, 300],
-      'background_snow': [false, 0, 2107, 300, 300],
-      'background_universe': [false, 0, 2408, 600, 300],
-      'background_world': [false, 0, 2709, 1800, 300],
-      'background_world_old': [false, 0, 3010, 600, 300],
+      'background_home_old': [false, 0, 1204, 600, 300],
+      'background_intro': [false, 0, 1505, 600, 300],
+      'background_intro_background': [false, 0, 1806, 600, 300],
+      'background_intro_foreground': [false, 0, 2107, 600, 300],
+      'background_snow': [false, 0, 2408, 300, 300],
+      'background_universe': [false, 0, 2709, 600, 300],
+      'background_world': [false, 0, 3010, 1800, 300],
+      'background_world_old': [false, 0, 3311, 600, 300],
       'items_stone_onfloor': [false, 1801, 0, 16, 16],
       'items_wood_onfloor': [false, 1801, 17, 18, 16],
       'obstacles_trunk': [false, 1820, 0, 84, 95],
@@ -48,6 +49,8 @@ export default {
     transitions: [
       'intromap',
       'maplevel',
+      'maphome',
+      'homemap',
       'levelmap'
     ],
     animationActive: false,
@@ -55,12 +58,61 @@ export default {
     itemsOnFloor: false,
     questionKey: '',
     currentLevel: 'home',
+    currentBuilding: 'house',
+    unlockedBuildings: ['house'],
+    homePointData: {
+      'greenhouse': {
+        x: 117,
+        y: 239,
+        left: false,
+        right: 'house'
+      },
+      'house': {
+        x: 300,
+        y: 239,
+        left: 'greenhouse',
+        right: 'launchpad'
+      },
+      'launchpad': {
+        x: 493,
+        y: 239,
+        left: 'house',
+        right: false
+      }
+    },
     paths: {
+      'housegreenhouse': [
+        { x: 0, y: 1 },
+        { x: 140, y: 265, force: 0.015 },
+        { x: 0, y: 0, force: 0.02 }
+      ],
+      'greenhousehouse': [
+        { x: 1, y: 0 },
+        { x: 0, y: 0, force: 0.05 }
+      ],
+      'houselaunchpad': [
+        { x: 1, y: 0 },
+        { x: 0, y: 0, force: 0.05 }
+      ],
+      'launchpadhouse': [
+        { x: -1, y: 0 },
+        { x: 0, y: 0, force: 0.05 }
+      ],
+      'homeforest': [
+        { x: 1, y: 0 },
+        { x: 100, y: 100, force: 0.05 },
+        { x: 0, y: 0, force: 0.05 }
+      ],
+      'foresthome': [
+        { x: -0.7071, y: 0.7071 },
+        { x: 75, y: 170, force: 0.03 },
+        { x: 0, y: 0, force: 0.03 }
+      ],
       'forestplains': [
         { x: 1, y: 0 }, // startvector
         { x: 200, y: 80, force: 0.02 },
         { x: 250, y: 250, force: 0.02 },
-        { x: 0, y: 0, force: 0.2 }
+        { x: 0, y: 0, force: 0.2 } // placeholder for goalpoint
       ]
     },
     staticLevelData: {
@@ -278,7 +330,7 @@ export default {
         events: [],
         itemsOnFloor: false,
         obstacleAhead: false
-      },
+      } /* ,
       'plains': {
         steps: 0,
         background: [],
@@ -366,7 +418,7 @@ export default {
         events: [],
         itemsOnFloor: false,
         obstacleAhead: false
-      }
+      } */
     }
   },
   getters: {
@@ -378,6 +430,9 @@ export default {
     },
     currentMapPoint: (state) => {
       return state.staticLevelData[state.currentLevel]
+    },
+    currentHomePoint: (state) => {
+      return state.homePointData[state.currentBuilding]
     },
     getMapPath: (state) => (path) => {
       return JSON.parse(JSON.stringify(state.paths[path] || []))
@@ -508,8 +563,11 @@ export default {
         }
       }
     },
-    setMapPoint (state, point) {
+    setLevel (state, point) {
       state.currentLevel = point
+    },
+    setBuilding (state, point) {
+      state.currentBuilding = point
     },
     unlockLevel (state, level) {
       if (!state.dynamicLevelData[level]) {

@@ -199,7 +199,6 @@ export default {
       return this.progressBarCount + ' / ' + this.vocabs.words.length
     },
     keyboardNames () {
-      console.log('wants to know your names')
       let names = Object.keys(this.vocabs.signs)
       if (this.vocabs.signs.other) {
         for (let extra of this.vocabs.signs.other) {
@@ -318,7 +317,11 @@ export default {
       this.currentKeyboardTab = id
     },
     addLetter (letter) {
-      this.foreignInput += letter
+      if (letter === '␣') {
+        this.foreignInput += ' '
+      } else {
+        this.foreignInput += letter
+      }
     },
     removeLetter () {
       this.foreignInput = this.foreignInput.slice(0, -1)
@@ -402,6 +405,7 @@ export default {
 
       .keyboardButton {
         flex: 1 0 2.5em;
+        text-transform: none;
       }
     }
   }
