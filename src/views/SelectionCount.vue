@@ -39,6 +39,10 @@
         <ButtonText class="is-fullwidth" color="is-primary" text="selectionCountAll"
                     @click="setWordCount(countAllWords)" :selected="wordCountSelected(countAllWords)" />
       </div>
+      <div class="control is-full marginTopBig">
+        <ButtonBasic class="small" color="is-primary" icon="sync-alt" text="selectionCountReverse"
+                    :selected="$store.state.vueDict.reversed" @click="toggleWordsReversed()" />
+      </div>
     </div>
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="selectionButton1"
@@ -148,6 +152,9 @@ export default {
         this.$store.commit('vueDict/setWordCount', 0)
       }
     },
+    toggleWordsReversed () {
+      this.$store.commit('vueDict/setReversed', !this.$store.state.vueDict.reversed)
+    },
     navTo () {
       if (this.$store.state.vueDict.difficulty === 0 || this.$store.state.vueDict.wordCount === 0) {
         this.showNotification = true
@@ -192,6 +199,10 @@ export default {
 
   .is-two-third {
     width: calc(100% / 1.5);
+  }
+
+  .is-full {
+    width: 100%;
   }
 
   .left-row {

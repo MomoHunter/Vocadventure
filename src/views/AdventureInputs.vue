@@ -1,6 +1,6 @@
 <template>
   <div class="flexboxContainer">
-    <div class="innerFlexContainerInput" :class="{ marginBottomBig: keyboardVisible }">
+    <div class="innerFlexContainerInput flexGrow marginBottomBig">
       <span class="icon is-1" :class="latinIconColor">
         <font-awesome-icon v-show="resultsVisible" :icon="['fas', latinIcon]" :size="getSizeClass('fas')" />
       </span>
@@ -12,7 +12,7 @@
                            :size="getSizeClass('fas')" />
       </span>
     </div>
-    <div class="innerFlexContainerInput" :class="{ marginBottomBig: keyboardVisible }" v-show="hasForeignAlphabet">
+    <div class="innerFlexContainerInput flexGrow marginBottomBig" v-show="hasForeignAlphabet">
       <span class="icon is-1" :class="foreignIconColor">
         <font-awesome-icon v-show="resultsVisible" :icon="['fas', foreignIcon]" :size="getSizeClass('fas')" />
       </span>
@@ -34,7 +34,7 @@
                            :size="getSizeClass('fas')" />
       </span>
     </div>
-    <div class="innerFlexContainerButton is-10" v-show="!keyboardVisible">
+    <div class="innerFlexContainerButton is-10 marginBottomBig" v-show="!keyboardVisible">
       <ButtonBasic class="is-half marginBottomSmall marginRightSmall" icon="times" color="is-danger"
                    text="adventureButton1" @click="$emit('click', { type: 'abort' })" />
       <ButtonBasic v-show="!resultsVisible" class="is-half marginBottomSmall marginLeftSmall" icon="check"
@@ -59,7 +59,7 @@
                     :value="progressBarCount" :maxValue="vocabs.words.length" />
     <transition enter-active-class="animated fadeInUp super-fast"
                 leave-active-class="animated fadeOutDown super-fast is-absolute">
-      <div v-show="keyboardVisible" class="flexGrow fullWidth keyboard">
+      <div v-show="keyboardVisible" class="flexGrow2 fullWidth keyboard">
         <TabsBasic :names="keyboardNames" :selected="currentKeyboardTab" @click="setTab($event)" radiusless />
         <div class="bottomKeyboard">
           <div class="keyContainer">
@@ -151,7 +151,7 @@ export default {
       }
     },
     isForeignCorrect () {
-      if (this.hasForeignAlphabet) {
+      if (!this.hasForeignAlphabet) {
         return 0
       } else if (this.userForeignInput.toLowerCase() ===
           this.vocabs.words[this.currentWordIndex][this.vocabs.foreignAlphabet].toLowerCase()) {
@@ -346,6 +346,10 @@ export default {
 
   .flexGrow {
     flex-grow: 1;
+  }
+
+  .flexGrow2 {
+    flex-grow: 8;
   }
 
   .is-10 {

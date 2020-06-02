@@ -12,7 +12,6 @@ import AdventureHome from '@/views/AdventureHome.vue'
 import AdventureInputs from '@/views/AdventureInputs.vue'
 import AdventureChoose from '@/views/AdventureChoose.vue'
 import AdventureStatistics from '@/views/AdventureStatistics.vue'
-import AdventurePlaceholder from '@/views/AdventurePlaceholder.vue'
 import TheShop from '@/views/TheShop.vue'
 import TheDetails from '@/views/TheDetails.vue'
 import TheInventory from '@/views/TheInventory.vue'
@@ -84,7 +83,10 @@ const routes = [
         name: 'adventure',
         component: AdventureInputs,
         meta: {
-          forward: []
+          forward: [],
+          delay: [
+            'adventureMap'
+          ]
         }
       },
       {
@@ -92,7 +94,10 @@ const routes = [
         name: 'adventureIntro',
         component: AdventureIntro,
         meta: {
-          forward: []
+          forward: [],
+          delay: [
+            'adventureMap'
+          ]
         }
       },
       {
@@ -100,7 +105,11 @@ const routes = [
         name: 'adventureMap',
         component: AdventureMapNavigation,
         meta: {
-          forward: []
+          forward: [],
+          delay: [
+            'adventureHome',
+            'adventure'
+          ]
         }
       },
       {
@@ -108,7 +117,10 @@ const routes = [
         name: 'adventureHome',
         component: AdventureHome,
         meta: {
-          forward: []
+          forward: [],
+          delay: [
+            'adventureMap'
+          ]
         }
       },
       {
@@ -116,7 +128,8 @@ const routes = [
         name: 'adventureChoose',
         component: AdventureChoose,
         meta: {
-          forward: []
+          forward: [],
+          delay: []
         }
       },
       {
@@ -124,15 +137,8 @@ const routes = [
         name: 'adventureStatistics',
         component: AdventureStatistics,
         meta: {
-          forward: []
-        }
-      },
-      {
-        path: 'placeholder',
-        name: 'adventurePlaceholder',
-        component: AdventurePlaceholder,
-        meta: {
-          forward: []
+          forward: [],
+          delay: []
         }
       }
     ],

@@ -251,6 +251,7 @@ export default {
         this.$store.commit('vueDict/setCategories', [])
         this.$store.commit('vueDict/setDifficulty', 0)
         this.$store.commit('vueDict/setWordCount', 0)
+        this.$store.commit('vueDict/setReversed', false)
         if (this.destination === 'adventure') {
           this.$router.push({ name: 'menu', query: { sub: 'adventure' } })
         } else {

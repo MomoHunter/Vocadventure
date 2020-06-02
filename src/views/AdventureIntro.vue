@@ -22,8 +22,9 @@ export default {
 .flexboxContainer {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 71px);
+  height: 100%;
   justify-content: flex-end;
+  padding-bottom: 71px;
 
   &.is-10 {
     width: calc(100% / 1.2);

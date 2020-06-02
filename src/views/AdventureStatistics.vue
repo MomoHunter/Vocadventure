@@ -30,10 +30,11 @@ export default {
 .flexboxContainer {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 71px);
+  height: 100%;
   width: 100%;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 71px;
 
   .is-10 {
     width: calc(100% / 1.2);

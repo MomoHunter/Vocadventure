@@ -5,7 +5,7 @@
       <canvas id="adventureCanvas" width="600" height="300"></canvas>
     </div>
     <div class="routerView fullWidth">
-      <transition :enter-active-class="transitionClassEnter" :leave-active-class="transitionClassLeave">
+      <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition" mode="out-in">
         <router-view @click="viewClickHandler($event)"></router-view>
       </transition>
     </div>
@@ -41,7 +41,9 @@ export default {
       currentAnimation: null,
       currentNewStateAnimation: null,
       animationStartFrame: 0,
-      collectedItems: []
+      collectedItems: [],
+      enterTransition: '',
+      leaveTransition: ''
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -202,18 +204,6 @@ export default {
     },
     lastBackground () {
       return this.$store.getters['canvasDict/getLastBackground'](this.currentLevel)
-    },
-    transitionClassEnter () {
-      if (this.$store.state.vueDict.transitionActive) {
-        return 'animated slideInUp'
-      }
-      return ''
-    },
-    transitionClassLeave () {
-      if (this.$store.state.vueDict.transitionActive) {
-        return 'animated slideOutDown'
-      }
-      return ''
     }
   },
   methods: {
@@ -230,16 +220,17 @@ export default {
         case 'skipIntro':
           this.$store.commit('canvasDict/setWatchedIntro')
           this.$store.commit('canvasDict/addGameState', 'map')
-          this.$router.replace({ name: 'adventurePlaceholder' })
+          this.$router.replace({ name: 'adventureMap' })
           break
         case 'selectLevel':
           if (this.currentLevel === 'home') {
             this.$store.commit('canvasDict/addGameState', 'home')
+            this.$router.replace({ name: 'adventureHome' })
             this.currentNewStateAnimation = new AnimationObject('homeEnter', this.currentHomePoint)
           } else {
             this.$store.commit('canvasDict/addGameState', 'level')
+            this.$router.replace({ name: 'adventure' })
           }
-          this.$router.replace({ name: 'adventurePlaceholder' })
           break
         case 'navigateToLevel':
           let startPoint = this.currentMapPoint
@@ -280,7 +271,7 @@ export default {
             this.animationQueue.push(new AnimationObject('homeLeave', this.currentHomePoint))
           }
           this.$store.commit('canvasDict/addGameState', 'map')
-          this.$router.replace({ name: 'adventurePlaceholder' })
+          this.$router.replace({ name: 'adventureMap' })
           break
         case 'correctWord':
           let nextObstacle = this.$store.getters['canvasDict/getNextObstacleEvent'](this.currentLevel)
@@ -362,6 +353,7 @@ export default {
             this.$store.commit('vueDict/setCategories', [])
             this.$store.commit('vueDict/setDifficulty', '')
             this.$store.commit('vueDict/setWordCount', 0)
+            this.$store.commit('vueDict/setReversed', false)
             this.$router.push({ name: 'menu' })
           } else {
             this.$router.push({ name: 'category', params: { destination: 'adventure' } })
@@ -517,7 +509,7 @@ export default {
 
       if (Math.sqrt(Math.pow(this.canvasWidth / 2, 2) + Math.pow(this.canvasHeight / 2, 2)) < this.counter.animation) {
         this.$store.commit('canvasDict/addGameState', newGameState)
-        this.$router.replace({ name: newPath })
+        /* this.$router.replace({ name: newPath }) */
         this.counter.increase = 0
         this.counter.animation = 0
         this.animationQueue = []
@@ -535,8 +527,7 @@ export default {
       }
 
       if (this.introTexts[this.introTexts.length - 1].y < -30) {
-        this.$store.commit('canvasDict/setWatchedIntro')
-        this.$store.commit('canvasDict/addGameState', 'map')
+        this.viewClickHandler({ type: 'skipIntro' })
       }
     },
     levelUpdate () {
@@ -560,9 +551,6 @@ export default {
 
         this.generateNewEvents(Math.random() < this.currentMapPoint.chanceForObstacle)
       }
-    },
-    homeUpdate () {
-
     },
     getNewBackground (x, y) {
       const cD = this.$store.state.canvasDict
@@ -1051,7 +1039,7 @@ export default {
       }
     },
     currentWordDraw () {
-      let word = this.currentWord[this.$store.state.lang]
+      let word = this.currentWord[this.$store.state.vueDict.vocabs.mainAlphabet]
       if (word.length > 68) {
         word = word.substring(0, 65) + '...'
       }
@@ -1097,6 +1085,15 @@ export default {
         this.animationStartFrame = this.$store.state.canvasDict.frameNo
         this.$store.commit('canvasDict/setAnimationActive', true)
       }
+    },
+    '$route' (to, from) {
+      if (this.$store.state.vueDict.transitionActive) {
+        this.leaveTransition = 'animated slideOutDown faster'
+        this.enterTransition = 'animated slideInUp faster' + (from.meta.delay.includes(to.name) ? ' adventure-delay' : '')
+      } else {
+        this.enterTransition = ''
+        this.leaveTransition = ''
+      }
     }
   }
 }
@@ -1120,6 +1117,13 @@ export default {
     flex-direction: column;
     align-items: center;
     flex-grow: 1;
+  }
+}
+
+.animated {
+  &.adventure-delay {
+    -webkit-animation-delay: .8s;
+    animation-delay: .8s;
   }
 }
 </style>

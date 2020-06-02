@@ -8,7 +8,7 @@ import {
   faBook, faGem, faShoppingCart, faCog, faArrowLeft, faArrowRight, faPen, faCheck, faTrash, faTimes, faGlobe, faPalette,
   faExpandArrowsAlt, faUserGraduate, faHome, faSort, faSortUp, faSortDown, faSearch, faCoins, faBriefcase, faEye,
   faEyeSlash, faClipboardCheck, faAngleDown, faAngleUp, faEdit, faBackspace, faLongArrowAltDown, faLongArrowAltLeft,
-  faLongArrowAltRight, faLongArrowAltUp, faMap, faVolumeUp, faVolumeOff, faVolumeMute
+  faLongArrowAltRight, faLongArrowAltUp, faMap, faVolumeUp, faVolumeOff, faVolumeMute, faSyncAlt
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -16,7 +16,7 @@ library.add(
   faBook, faGem, faShoppingCart, faCog, faArrowLeft, faArrowRight, faPen, faCheck, faTrash, faTimes, faGlobe, faPalette,
   faExpandArrowsAlt, faUserGraduate, faHome, faSort, faSortUp, faSortDown, faSearch, faCoins, faBriefcase, faEye,
   faEyeSlash, faClipboardCheck, faAngleDown, faAngleUp, faEdit, faBackspace, faLongArrowAltDown, faLongArrowAltLeft,
-  faLongArrowAltRight, faLongArrowAltUp, faMap, faVolumeUp, faVolumeOff, faVolumeMute
+  faLongArrowAltRight, faLongArrowAltUp, faMap, faVolumeUp, faVolumeOff, faVolumeMute, faSyncAlt
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

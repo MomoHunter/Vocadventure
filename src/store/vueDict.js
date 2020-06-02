@@ -15,6 +15,7 @@ export default {
     trainingStash: null,
     difficulty: 0,
     wordCount: 0,
+    reversed: false,
     items: Items,
     inventory: [],
     unlockedItems: [],
@@ -55,8 +56,9 @@ export default {
       return {
         words: wordObjects,
         signs: JSON.parse(JSON.stringify(vocabs.signs)),
-        latinAlphabet: vocabs.latinAlphabet,
-        foreignAlphabet: vocabs.foreignAlphabet,
+        mainAlphabet: state.reversed ? vocabs.foreignAlphabet : rootState.lang,
+        latinAlphabet: state.reversed ? rootState.lang : vocabs.latinAlphabet,
+        foreignAlphabet: state.reversed ? '' : vocabs.foreignAlphabet,
         lang: vocabs.lang
       }
     },
@@ -170,6 +172,9 @@ export default {
     },
     setWordCount (state, count) {
       state.wordCount = count
+    },
+    setReversed (state, bool) {
+      state.reversed = bool
     },
     setVocabs (state, vocabs) {
       state.vocabs = vocabs

@@ -61,7 +61,8 @@ export default {
   align-items: center;
   justify-content: flex-end;
   width: 100%;
-  height: calc(100% - 71px);
+  height: 100%;
+  padding-bottom: 71px;
 
   .is-10 {
     width: calc(100% / 1.2);

@@ -57,9 +57,10 @@ export default {
   flex-direction: column;
   flex-wrap: nowrap;
   width: 100%;
-  height: calc(100% - 71px);
+  height: 100%;
   justify-content: flex-end;
   align-items: center;
+  padding-bottom: 71px;
 
   .is-10 {
     width: calc(100% / 1.2);
