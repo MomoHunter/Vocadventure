@@ -40,6 +40,9 @@
     },
     "barDanger": {
       "backgroundColor": "255, 0, 0, 1"
+    },
+    "darkness": {
+      "backgroundColor": "0, 0, 0, 1"
     }
   },
   "border": {

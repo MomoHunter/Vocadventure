@@ -28,9 +28,11 @@ export default {
       introTexts: [],
       stepWidth: 100,
       oldMapOffset: null,
-      counter: {
-        animation: 0,
-        increase: 0
+      transition: {
+        reversed: false,
+        progress: 0,
+        increase: 10,
+        delay: 0
       },
       itemPositions: [
         { x: 25, y: 218 },
@@ -39,7 +41,7 @@ export default {
       ],
       animationQueue: [],
       currentAnimation: null,
-      currentNewStateAnimation: null,
+      newAnimations: [],
       animationStartFrame: 0,
       collectedItems: [],
       enterTransition: '',
@@ -93,6 +95,7 @@ export default {
   mounted () {
     this.$store.commit('canvasDict/initCanvas')
     this.createIntroTexts()
+    this.transition.progress = Math.hypot(this.canvasWidth / 2, this.canvasHeight / 2)
     this.loopActivated = true
     this.canvasLoop(0)
   },
@@ -226,7 +229,7 @@ export default {
           if (this.currentLevel === 'home') {
             this.$store.commit('canvasDict/addGameState', 'home')
             this.$router.replace({ name: 'adventureHome' })
-            this.currentNewStateAnimation = new AnimationObject('homeEnter', this.currentHomePoint)
+            this.newAnimations = [new AnimationObject('homeEnter', this.currentHomePoint)]
           } else {
             this.$store.commit('canvasDict/addGameState', 'level')
             this.$router.replace({ name: 'adventure' })
@@ -474,11 +477,7 @@ export default {
     },
     canvasUpdate () {
       if (this.currentAnimation && this[this.currentAnimation.type + 'Animation']) {
-        this[this.currentAnimation.type + 'Animation'](this.currentAnimation)
-      }
-
-      if (this.currentNewStateAnimation && this[this.currentNewStateAnimation.type + 'Animation']) {
-        this[this.currentNewStateAnimation.type + 'Animation'](this.currentNewStateAnimation)
+        this[this.currentAnimation.type + 'Animation']()
       }
 
       if (this[this.gameState + 'TransitionUpdate']) {
@@ -488,36 +487,49 @@ export default {
       }
     },
     intromapTransitionUpdate () {
-      this.transitionUpdate('map', 'adventureMap')
+      this.transitionUpdate('map')
     },
     maplevelTransitionUpdate () {
-      this.transitionUpdate('level', 'adventure')
+      this.transitionUpdate('level')
       this.levelUpdate()
     },
     maphomeTransitionUpdate () {
-      this.transitionUpdate('home', 'adventureHome')
+      this.transitionUpdate('home')
     },
     homemapTransitionUpdate () {
-      this.transitionUpdate('map', 'adventureMap')
+      this.transitionUpdate('map')
     },
     levelmapTransitionUpdate () {
-      this.transitionUpdate('map', 'adventureMap')
+      this.transitionUpdate('map')
     },
-    transitionUpdate (newGameState, newPath) {
-      this.counter.increase += 0.1
-      this.counter.animation += this.counter.increase
+    transitionUpdate (newGameState) {
+      if (!this.transition.reversed) {
+        this.transition.increase -= 0.1
+        this.transition.progress -= this.transition.increase
 
-      if (Math.sqrt(Math.pow(this.canvasWidth / 2, 2) + Math.pow(this.canvasHeight / 2, 2)) < this.counter.animation) {
-        this.$store.commit('canvasDict/addGameState', newGameState)
-        /* this.$router.replace({ name: newPath }) */
-        this.counter.increase = 0
-        this.counter.animation = 0
-        this.animationQueue = []
-        if (this.currentNewStateAnimation) {
-          this.currentAnimation = this.currentNewStateAnimation
-          this.currentNewStateAnimation = null
-        } else {
+        if (this.transition.progress <= 0) {
+          this.transition.progress = 0
+          this.transition.reversed = true
+        }
+      } else if (this.transition.delay < 20) {
+        if (this.transition.delay === 0) {
           this.currentAnimation = null
+          this.animationQueue = this.newAnimations
+        }
+
+        this.transition.delay++
+      } else {
+        this.transition.increase += 0.1
+        this.transition.progress += this.transition.increase
+
+        if (this.transition.progress > Math.hypot(this.canvasWidth / 2, this.canvasHeight / 2)) {
+          this.$store.commit('canvasDict/addGameState', newGameState)
+          this.transition = {
+            reversed: false,
+            increase: 10,
+            progress: Math.hypot(this.canvasWidth / 2, this.canvasHeight / 2),
+            delay: 0
+          }
         }
       }
     },
@@ -753,15 +765,15 @@ export default {
         }
       }
     },
-    homeEnterAnimation (animObj) {
-      animObj.playerPos.y -= 1
+    homeEnterAnimation () {
+      this.currentAnimation.playerPos.y -= 1
 
-      if (animObj.playerPos.y <= this.currentHomePoint.y) {
-        this.resetAnimation(animObj)
+      if (this.currentAnimation.playerPos.y <= this.currentHomePoint.y) {
+        this.currentAnimation = null
       }
     },
-    homeLeaveAnimation (animObj) {
-      animObj.playerPos.y += 1
+    homeLeaveAnimation () {
+      this.currentAnimation.playerPos.y += 1
     },
     moveFirstStepsAnimation () {
       this.currentAnimation.counter++
@@ -787,23 +799,23 @@ export default {
       }
     },
     pickUpItemsAnimation () {
-      this.counter.animation += 0.4
+      this.currentAnimation.counter += 0.4
 
-      if (this.counter.animation >= 40) {
+      if (this.currentAnimation.counter >= 40) {
         this.collectedItems.forEach(item => {
           if (!item.animated) {
             item.animated = true
           }
         })
-        this.counter.animation = 0
+        this.currentAnimation.counter = 0
         this.currentAnimation = null
       }
     },
     attackObstacleAnimation () {
       let nextObstacle = this.$store.getters['canvasDict/getNextObstacleEvent'](this.currentLevel)
-      this.counter.animation += 1
+      this.currentAnimation.counter += 1
 
-      if (this.counter.animation === 90) {
+      if (this.currentAnimation.counter === 90) {
         this.$store.commit('canvasDict/reduceObstacleDurability', {
           field: nextObstacle.field,
           amount: 11
@@ -827,15 +839,8 @@ export default {
           this.$store.commit('canvasDict/setObstacleAhead', false)
         }
 
-        this.counter.animation = 0
+        this.currentAnimation.counter = 0
         this.currentAnimation = null
-      }
-    },
-    resetAnimation (animObj) {
-      if (animObj === this.currentAnimation) {
-        this.currentAnimation = null
-      } else if (animObj === this.currentNewStateAnimation) {
-        this.currentNewStateAnimation = null
       }
     },
     canvasDraw () {
@@ -877,13 +882,22 @@ export default {
         that => { that.mapDraw(cD) }
       )
     },
-    transitionDraw (background, foreground) {
-      background(this)
-      this.ctx.save()
-      Helper.clipCanvasCircle(this.canvasWidth / 2, this.canvasHeight / 2, this.counter.animation, this.ctx)
-      this.ctx.clip()
-      foreground(this)
-      this.ctx.restore()
+    transitionDraw (oldState, newState) {
+      if (!this.transition.reversed) {
+        Helper.drawCanvasRect(0, 0, this.canvasWidth, this.canvasHeight, 'darkness', this.ctx)
+        this.ctx.save()
+        Helper.clipCanvasCircle(this.canvasWidth / 2, this.canvasHeight / 2, this.transition.progress, this.ctx)
+        this.ctx.clip()
+        oldState(this)
+        this.ctx.restore()
+      } else {
+        Helper.drawCanvasRect(0, 0, this.canvasWidth, this.canvasHeight, 'darkness', this.ctx)
+        this.ctx.save()
+        Helper.clipCanvasCircle(this.canvasWidth / 2, this.canvasHeight / 2, this.transition.progress, this.ctx)
+        this.ctx.clip()
+        newState(this)
+        this.ctx.restore()
+      }
     },
     introDraw (cD) {
       Helper.drawCanvasImage(0, 0, 'background_intro_background', cD)
@@ -932,13 +946,7 @@ export default {
     homePlayerDraw (cD) {
       let playerData = Helper.getSpriteData('player_map_standing', cD)
 
-      if (this.gameState === 'maphome' && this.currentNewStateAnimation) {
-        Helper.drawCanvasImage(
-          this.currentNewStateAnimation.playerPos.x - Math.floor(playerData.spriteWidth / 2),
-          this.currentNewStateAnimation.playerPos.y - playerData.spriteHeight,
-          playerData.key, cD
-        )
-      } else if (this.currentAnimation) {
+      if (this.currentAnimation) {
         Helper.drawCanvasImage(
           this.currentAnimation.playerPos.x - Math.floor(playerData.spriteWidth / 2),
           this.currentAnimation.playerPos.y - playerData.spriteHeight,
@@ -1029,12 +1037,12 @@ export default {
         let itemData = Helper.getSpriteData(items[i].spriteKey, cD)
 
         Helper.drawCanvasText(
-          this.stepWidth * 2.5 + Math.floor(playerData.spriteWidth / 2) + 10, 165 + i * 20 - this.counter.animation,
-          '+' + items[i].quantity, 'infoText', this.ctx
+          this.stepWidth * 2.5 + Math.floor(playerData.spriteWidth / 2) + 10,
+          165 + i * 20 - this.currentAnimation.counter, '+' + items[i].quantity, 'infoText', this.ctx
         )
         Helper.drawCanvasImage(
           this.stepWidth * 2.5 + Math.floor(playerData.spriteWidth / 2) + 30,
-          165 + i * 20 - this.counter.animation - Math.floor(itemData.spriteHeight / 2), items[i].spriteKey, cD
+          165 + i * 20 - this.currentAnimation.counter - Math.floor(itemData.spriteHeight / 2), items[i].spriteKey, cD
         )
       }
     },
@@ -1080,10 +1088,12 @@ export default {
       }
     },
     animationQueue () {
-      if (this.animationQueue.length > 0 && this.currentAnimation === null) {
-        this.currentAnimation = this.animationQueue.shift()
-        this.animationStartFrame = this.$store.state.canvasDict.frameNo
-        this.$store.commit('canvasDict/setAnimationActive', true)
+      if (this.animationQueue) {
+        if (this.animationQueue.length > 0 && this.currentAnimation === null) {
+          this.currentAnimation = this.animationQueue.shift()
+          this.animationStartFrame = this.$store.state.canvasDict.frameNo
+          this.$store.commit('canvasDict/setAnimationActive', true)
+        }
       }
     },
     '$route' (to, from) {
