@@ -2,7 +2,7 @@
   <div class="flexContainer">
     <HeroBasic class="marginBottomSmall" :title="item.id" />
     <div class="box is-10 flexGrow">
-      <div class="fullWidth fullHeight backgroundPicture" :style="{ backgroundImage: 'url(' + baseUrl + item.spriteKey + ')' }">
+      <div class="fullWidth fullHeight backgroundPicture" :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }">
       </div>
     </div>
     <table class="table is-10">
@@ -89,11 +89,12 @@ export default {
           item: {
             id: this.item.id,
             quantity: this.item.quantity,
-            spriteKey: this.item.spriteKey,
+            spritePath: this.item.spritePath,
             durability: this.item.durability || null,
             maxDurability: this.item.durability || null
           }
         })
+        this.$store.commit('vueDict/unlockItem', this.item.id)
         this.$store.commit('vueDict/addStat', { id: 'points', quantity: this.item.points })
         window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
       }

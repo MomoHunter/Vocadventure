@@ -24,7 +24,7 @@
         <div class="box customBox" :class="absoluteClass(index)" v-for="(item, index) in visibleItems" :key="item.id">
           <p class="content has-text-centered" :class="getSizeClass('content')">{{ getText(item.id) }}</p>
           <div class="flexGrow fullWidth backgroundPicture"
-              :style="{ backgroundImage: 'url(' + baseUrl + item.spriteKey + ')' }"></div>
+               :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
           <div class="fullWidth infoBar">
             <div class="content noMarginBottom" :class="getSizeClass('content')">
               {{ item.quantity }}

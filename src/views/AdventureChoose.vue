@@ -1,6 +1,6 @@
 <template>
   <div class="flexboxContainer is-10">
-    <div class="content" v-html="getText($store.state.canvasDict.questionKey)"></div>
+    <div class="content marginTopMiddle centerText" v-html="getText($store.state.canvasDict.questionKey)"></div>
     <div>
       <ButtonBasic class="marginBottomSmall" icon="check" text="adventureChooseButton1" color="is-success"
                   @click="$emit('click', { type: 'chooseYes' })" />
@@ -36,6 +36,10 @@ export default {
 
   &.is-10 {
     width: calc(100% / 1.2);
+  }
+
+  &.centerText {
+    text-align: center;
   }
 }
 </style>

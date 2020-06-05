@@ -7,10 +7,24 @@
       "baseline": "middle",
       "borderKey": ""
     },
-    "infoText": {
+    "infoTextLeft": {
       "font": "bold 12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
       "color": "255, 255, 255, 1",
-      "align": "center",
+      "align": "left",
+      "baseline": "middle",
+      "borderKey": "small"
+    },
+    "infoTextRight": {
+      "font": "bold 12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+      "color": "255, 255, 255, 1",
+      "align": "right",
+      "baseline": "middle",
+      "borderKey": "small"
+    },
+    "errorText": {
+      "font": "bold 12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+      "color": "193, 69, 69, 1",
+      "align": "left",
       "baseline": "middle",
       "borderKey": "small"
     },

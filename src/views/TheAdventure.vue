@@ -281,7 +281,7 @@ export default {
           let nextItems = this.$store.getters['canvasDict/getNextItemEvents'](this.currentLevel)
 
           if (dynLevelData.itemsOnFloor) {
-            this.animationQueue.push(new AnimationObject('pickUpItems'))
+            this.animationQueue.push(new AnimationObject('pickUpItems', true))
             for (let item of nextItems) {
               this.collectedItems.push({
                 id: item.id,
@@ -319,6 +319,7 @@ export default {
           break
         case 'wrongWord':
           if (dynLevelData.itemsOnFloor) {
+            this.animationQueue.push(new AnimationObject('pickUpItems', false))
             this.$store.commit('canvasDict/setEventsRegistered', { type: 'item', field: dynLevelData.steps })
             this.$store.commit('canvasDict/setItemsOnFloor', false)
           }
@@ -334,6 +335,7 @@ export default {
           this.$store.commit('canvasDict/setQuestionKey', '')
           break
         case 'chooseNo':
+          this.$store.commit('canvasDict/setEventsRegistered', { type: 'item', field: dynLevelData.steps })
           this.$store.commit('canvasDict/setItemsOnFloor', false)
           this.$router.replace({ name: 'adventure' })
           this.$store.commit('canvasDict/setQuestionKey', '')
@@ -438,13 +440,14 @@ export default {
           id: item.id,
           quantity: item.quantity,
           item: {
-            id: itemData.id,
+            id: item.id,
             quantity: item.quantity,
-            spriteKey: itemData.spriteKey,
+            spritePath: itemData.spritePath,
             durability: itemData.durability || null,
             maxDurability: itemData.durability || null
           }
         })
+        this.$store.commit('vueDict/unlockItem', item.id)
       }
     },
     canvasLoop (timestamp) {
@@ -586,8 +589,7 @@ export default {
     },
     getForeground (background) {
       let names = background.spriteKey.split('_')
-      names.pop()
-      names.push('foreground')
+      names.splice(names.length - 1, 1, 'foreground')
       return {
         id: background.id,
         spriteKey: names.join('_'),
@@ -640,12 +642,16 @@ export default {
                 type: 'item',
                 registered: false,
                 id: item.id,
-                spriteKey: 'items_' + item.id + '_onfloor',
+                spriteKey: itemData.spriteKeySmall,
                 x: this.lastBackground.x + (field - 1) * 100 + itemPos.x,
                 y: itemPos.y,
                 field: fieldNo,
                 points: itemData.points
               })
+
+              if (itemsOnField + 1 === this.itemPositions.length) {
+                break
+              }
             }
           }
         }
@@ -828,13 +834,14 @@ export default {
           })
           this.animationQueue.push(new AnimationObject('pickUpItems'))
           for (let item of nextObstacle.items) {
+            let itemData = this.$store.getters['vueDict/getItemObject'](item.id)
             this.collectedItems.push({
               id: item.id,
-              spriteKey: 'items_' + item.id + '_onfloor',
+              spriteKey: itemData.spriteKeySmall,
               animated: false,
               quantity: item.quantity
             })
-            this.$store.commit('vueDict/addStatAddit', { id: 'points', count: item.points })
+            this.$store.commit('vueDict/addStatAddit', { id: 'points', count: itemData.points * item.quantity })
           }
           this.$store.commit('canvasDict/setObstacleAhead', false)
         }
@@ -1013,7 +1020,6 @@ export default {
     },
     levelPlayerDraw (dynLevelData, cD) {
       let playerData = Helper.getSpriteData('player_level_standing', cD)
-      let items = this.collectedItems.filter(item => !item.animated)
 
       if (dynLevelData.steps < 2) {
         if (this.currentAnimation && this.currentAnimation.type === 'moveFirstSteps') {
@@ -1033,17 +1039,34 @@ export default {
         )
       }
 
-      for (let i = 0; i < items.length; i++) {
-        let itemData = Helper.getSpriteData(items[i].spriteKey, cD)
+      if (this.currentAnimation && this.currentAnimation.type === 'pickUpItems') {
+        this.pickUpItemsDraw(playerData, cD)
+      }
+    },
+    pickUpItemsDraw (playerData, cD) {
+      if (this.currentAnimation.success) {
+        let items = this.collectedItems.filter(item => !item.animated)
 
-        Helper.drawCanvasText(
-          this.stepWidth * 2.5 + Math.floor(playerData.spriteWidth / 2) + 10,
-          165 + i * 20 - this.currentAnimation.counter, '+' + items[i].quantity, 'infoText', this.ctx
-        )
-        Helper.drawCanvasImage(
-          this.stepWidth * 2.5 + Math.floor(playerData.spriteWidth / 2) + 30,
-          165 + i * 20 - this.currentAnimation.counter - Math.floor(itemData.spriteHeight / 2), items[i].spriteKey, cD
-        )
+        for (let i = 0; i < items.length; i++) {
+          let itemData = Helper.getSpriteData(items[i].spriteKey, cD)
+          let referenceX = this.stepWidth * 2.5 + Math.floor(playerData.spriteWidth / 2)
+          let referenceY = 165 + i * 20 - this.currentAnimation.counter
+
+          Helper.drawCanvasText(referenceX + 10, referenceY, '+', 'infoTextLeft', this.ctx)
+          Helper.drawCanvasText(referenceX + 40, referenceY, items[i].quantity, 'infoTextRight', this.ctx)
+          Helper.drawCanvasImage(
+            referenceX + 45, referenceY - Math.floor(itemData.spriteHeight / 2), items[i].spriteKey, cD
+          )
+        }
+      } else {
+        let text = this.getText('adventureFailedPickup').split('\n')
+
+        for (let i = 0; i < text.length; i++) {
+          Helper.drawCanvasText(
+            this.stepWidth * 2.5 + Math.floor(playerData.spriteWidth / 2) + 10,
+            165 + i * 20 - this.currentAnimation.counter, text[i], 'errorText', this.ctx
+          )
+        }
       }
     },
     currentWordDraw () {

@@ -19,6 +19,11 @@ export default {
     items: Items,
     inventory: [],
     unlockedItems: [],
+    itemUnlocks: {
+      'branch': ['wood'],
+      'pebble': ['stone'],
+      'spiderweb': ['string']
+    },
     vocabs: {},
     currentWordIndex: 0,
     correctLatinWords: [],
@@ -207,10 +212,15 @@ export default {
     changeInventory (state, inventory) {
       state.inventory = inventory
     },
-    unlockItem (state, itemId) {
-      if (!state.unlockedItems.includes(itemId)) {
-        state.items.find(item => item.id === itemId).unlocked = true
-        state.unlockedItems.push(itemId)
+    unlockItem (state, keyItemId) {
+      let newRecipes = state.itemUnlocks[keyItemId]
+      if (newRecipes) {
+        for (let newItemId of newRecipes) {
+          if (!state.unlockedItems.includes(newItemId)) {
+            state.items.find(item => item.id === newItemId).unlocked = true
+            state.unlockedItems.push(keyItemId)
+          }
+        }
       }
     },
     addToInventory (state, object) {

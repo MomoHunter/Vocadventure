@@ -34,13 +34,29 @@ export default {
       'background_universe': [false, 0, 2709, 600, 300],
       'background_world': [false, 0, 3010, 1800, 300],
       'background_world_old': [false, 0, 3311, 600, 300],
-      'items_stone_onfloor': [false, 1801, 0, 16, 16],
-      'items_wood_onfloor': [false, 1801, 17, 18, 16],
-      'obstacles_trunk': [false, 1820, 0, 84, 95],
-      'obstacles_wall': [false, 1820, 96, 60, 86],
-      'player_level_standing': [false, 1905, 0, 55, 95],
-      'player_map_standing': [false, 1905, 96, 25, 43],
-      'special_placeholder': [false, 1961, 0, 50, 50]
+      'items_branch': [false, 1801, 0, 50, 50],
+      'items_branch_s': [false, 1801, 51, 20, 20],
+      'items_dirt': [false, 1801, 72, 50, 50],
+      'items_dirt_s': [false, 1801, 123, 20, 20],
+      'items_mushroom': [false, 1801, 144, 50, 50],
+      'items_mushroom_s': [false, 1801, 195, 20, 20],
+      'items_pebble': [false, 1801, 216, 50, 50],
+      'items_pebble_s': [false, 1801, 267, 20, 20],
+      'items_spiderweb': [false, 1801, 288, 50, 50],
+      'items_spiderweb_s': [false, 1801, 339, 20, 20],
+      'items_stone': [false, 1801, 360, 50, 50],
+      'items_stone_s': [false, 1801, 411, 20, 20],
+      'items_string': [false, 1801, 432, 50, 50],
+      'items_string_s': [false, 1801, 483, 20, 20],
+      'items_treeseed': [false, 1801, 504, 50, 50],
+      'items_treeseed_s': [false, 1801, 555, 20, 20],
+      'items_wood': [false, 1801, 576, 50, 50],
+      'items_wood_s': [false, 1801, 627, 20, 20],
+      'obstacles_trunk': [false, 1852, 0, 84, 95],
+      'obstacles_wall': [false, 1852, 96, 60, 86],
+      'player_level_standing': [false, 1937, 0, 55, 95],
+      'player_map_standing': [false, 1937, 96, 25, 43],
+      'special_placeholder': [false, 1993, 0, 50, 50]
     },
     // end spriteDict
     gameState: 'map',
@@ -141,8 +157,12 @@ export default {
             fieldCount: 3,
             foundOn: [1, 2, 3],
             canBeFound: [
-              { id: 'wood', chance: 0.25 },
-              { id: 'stone', chance: 0.25 }
+              { id: 'branch', chance: 0.25 },
+              { id: 'pebble', chance: 0.25 },
+              { id: 'dirt', chance: 0.25 },
+              { id: 'mushroom', chance: 0.25 },
+              { id: 'spiderweb', chance: 0.25 },
+              { id: 'treeseed', chance: 0.25 }
             ]
           },
           {
@@ -152,8 +172,12 @@ export default {
             fieldCount: 2,
             foundOn: [1, 2],
             canBeFound: [
-              { id: 'wood', chance: 0.25 },
-              { id: 'stone', chance: 0.25 }
+              { id: 'branch', chance: 0.25 },
+              { id: 'pebble', chance: 0.25 },
+              { id: 'dirt', chance: 0.25 },
+              { id: 'mushroom', chance: 0.25 },
+              { id: 'spiderweb', chance: 0.25 },
+              { id: 'treeseed', chance: 0.25 }
             ]
           }
         ],
@@ -164,7 +188,7 @@ export default {
             durability: 20,
             chance: 1,
             items: [
-              { id: 'wood', quantity: 3, points: 9 }
+              { id: 'wood', quantity: 3 }
             ]
           },
           {
@@ -173,7 +197,7 @@ export default {
             durability: 30,
             chance: 1,
             items: [
-              { id: 'stone', quantity: 4, points: 16 }
+              { id: 'stone', quantity: 4 }
             ]
           }
         ],
@@ -468,7 +492,7 @@ export default {
     },
     getNextItemEvents: (state) => (level) => {
       let events = state.dynamicLevelData[level].events
-      let nextItemField = events.find(event => event.type === 'item') || null
+      let nextItemField = events.find(event => event.type === 'item' && !event.registered) || null
 
       if (events.length === 0 || !nextItemField) {
         return []
@@ -598,19 +622,19 @@ export default {
     },
     removeItemsOnFloor (state, object) {
       state.dynamicLevelData[state.currentLevel].events = state.dynamicLevelData[state.currentLevel].events.filter(
-        event => event.type !== object.type || event.field !== object.field
+        event => { return event.type !== object.type || event.field !== object.field }
       )
     },
     reduceObstacleDurability (state, object) {
       let event = state.dynamicLevelData[state.currentLevel].events.find(
-        event => event.type === 'obstacle' && event.field === object.field
+        event => { return event.type === 'obstacle' && event.field === object.field }
       )
 
       event.durability = Math.max(event.durability - object.amount, 0)
     },
     setEventsRegistered (state, object) {
       let events = state.dynamicLevelData[state.currentLevel].events.filter(
-        event => event.type === object.type && event.field === object.field
+        event => { return event.type === object.type && event.field === object.field }
       )
 
       for (let event of events) {

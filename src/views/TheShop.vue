@@ -25,7 +25,7 @@
             @click="$router.push({ name: 'details', params: { item: item.id } })">
           <p class="content has-text-centered" :class="getSizeClass('content')">{{ getText(item.id) }}</p>
           <div class="flexGrow fullWidth backgroundPicture"
-              :style="{ backgroundImage: 'url(' + baseUrl + item.spriteKey + ')' }" ></div>
+              :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }" ></div>
           <p v-show="item.quantity > 1" class="content has-text-right" :class="getSizeClass('content')">
             {{ item.quantity }}
           </p>
