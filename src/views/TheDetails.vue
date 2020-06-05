@@ -90,6 +90,8 @@ export default {
             id: this.item.id,
             quantity: this.item.quantity,
             spritePath: this.item.spritePath,
+            power: this.item.power || null,
+            usefulAgainst: this.item.usefulAgainst || null,
             durability: this.item.durability || null,
             maxDurability: this.item.durability || null
           }

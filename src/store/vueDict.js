@@ -13,6 +13,7 @@ export default {
     categoriesPlayed: [],
     writeKanji: null,
     trainingStash: null,
+    currentShopPage: 1,
     difficulty: 0,
     wordCount: 0,
     reversed: false,
@@ -22,7 +23,8 @@ export default {
     itemUnlocks: {
       'branch': ['wood'],
       'pebble': ['stone'],
-      'spiderweb': ['string']
+      'spiderweb': ['string'],
+      'stone': ['stonepickaxe', 'stoneaxe']
     },
     vocabs: {},
     currentWordIndex: 0,
@@ -122,6 +124,13 @@ export default {
     },
     getCurrentWord: (state) => {
       return state.vocabs.words[state.currentWordIndex]
+    },
+    getAdventureCopies: (state) => {
+      return {
+        inventory: JSON.parse(JSON.stringify(state.inventory)),
+        unlockedItems: state.unlockedItems,
+        items: JSON.parse(JSON.stringify(state.items))
+      }
     }
   },
   mutations: {
@@ -172,6 +181,9 @@ export default {
         state.categoriesPlayed.push({ id: id, count: 1 })
       }
     },
+    setCurrentShopPage (state, newPage) {
+      state.currentShopPage = newPage
+    },
     setDifficulty (state, difficulty) {
       state.difficulty = difficulty
     },
@@ -215,8 +227,8 @@ export default {
     unlockItem (state, keyItemId) {
       let newRecipes = state.itemUnlocks[keyItemId]
       if (newRecipes) {
-        for (let newItemId of newRecipes) {
-          if (!state.unlockedItems.includes(newItemId)) {
+        if (!state.unlockedItems.includes(keyItemId)) {
+          for (let newItemId of newRecipes) {
             state.items.find(item => item.id === newItemId).unlocked = true
             state.unlockedItems.push(keyItemId)
           }
@@ -233,6 +245,16 @@ export default {
         }
       } else {
         state.inventory.find(item => item.id === object.id).quantity += object.quantity
+      }
+    },
+    reduceItemDurability (state, itemId) {
+      let itemData = state.inventory.find(item => item.id === itemId)
+
+      itemData.durability -= 1
+
+      if (itemData.durability <= 0) {
+        itemData.quantity -= 1
+        itemData.durability = itemData.maxDurability
       }
     },
     modalAnswer (state, answer) {
@@ -252,6 +274,11 @@ export default {
     },
     changeTransitionActive (state, bool) {
       state.transitionActive = bool
+    },
+    setAdventureCopies (state, copies) {
+      state.inventory = copies.inventory
+      state.unlockedItems = copies.unlockedItems
+      state.items = copies.items
     }
   },
   actions: {

@@ -45,7 +45,9 @@ export default {
       animationStartFrame: 0,
       collectedItems: [],
       enterTransition: '',
-      leaveTransition: ''
+      leaveTransition: '',
+      vueDictCopy: null,
+      canvasDictCopy: null
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -86,11 +88,15 @@ export default {
         next(false)
       }
     } else {
+      this.$store.commit('vueDict/setAdventureCopies', this.vueDictCopy)
+      this.$store.commit('canvasDict/setAdventureCopies', this.canvasDictCopy)
       next()
     }
   },
   created () {
     this.createWords()
+    this.vueDictCopy = this.$store.getters['vueDict/getAdventureCopies']
+    this.canvasDictCopy = this.$store.getters['canvasDict/getAdventureCopies']
   },
   mounted () {
     this.$store.commit('canvasDict/initCanvas')
@@ -207,6 +213,9 @@ export default {
     },
     lastBackground () {
       return this.$store.getters['canvasDict/getLastBackground'](this.currentLevel)
+    },
+    equippedItem () {
+      return this.$store.state.canvasDict.currentEquippedItem
     }
   },
   methods: {
@@ -435,7 +444,7 @@ export default {
     },
     addItemsToInventory () {
       for (let item of this.collectedItems) {
-        let itemData = this.$store.state.vueDict.items.find(object => object.id === item.id)
+        let itemData = this.$store.getters['vueDict/getItemObject'](item.id)
         this.$store.commit('vueDict/addToInventory', {
           id: item.id,
           quantity: item.quantity,
@@ -443,6 +452,8 @@ export default {
             id: item.id,
             quantity: item.quantity,
             spritePath: itemData.spritePath,
+            power: itemData.power || null,
+            usefulAgainst: itemData.usefulAgainst || null,
             durability: itemData.durability || null,
             maxDurability: itemData.durability || null
           }
@@ -821,10 +832,25 @@ export default {
       let nextObstacle = this.$store.getters['canvasDict/getNextObstacleEvent'](this.currentLevel)
       this.currentAnimation.counter += 1
 
-      if (this.currentAnimation.counter === 90) {
+      if (this.currentAnimation.counter === 60) {
+        let itemData = this.$store.getters['vueDict/getItemObject'](this.equippedItem)
+        let damage = 1
+
+        if (itemData.usefulAgainst.includes(nextObstacle.id)) {
+          damage = itemData.power
+        }
+
+        if (this.equippedItem !== 'hand') {
+          this.$store.commit('vueDict/reduceItemDurability', this.equippedItem)
+
+          if (this.$store.getters['vueDict/getInventoryObject'](this.equippedItem).quantity === 0) {
+            this.$store.commit('canvasDict/setEquippedItem', 'hand')
+          }
+        }
+
         this.$store.commit('canvasDict/reduceObstacleDurability', {
           field: nextObstacle.field,
-          amount: 11
+          amount: damage
         })
 
         if (nextObstacle.durability <= 0) {
@@ -832,7 +858,7 @@ export default {
             type: 'obstacle',
             field: nextObstacle.field
           })
-          this.animationQueue.push(new AnimationObject('pickUpItems'))
+          this.animationQueue.push(new AnimationObject('pickUpItems', true))
           for (let item of nextObstacle.items) {
             let itemData = this.$store.getters['vueDict/getItemObject'](item.id)
             this.collectedItems.push({
@@ -1039,17 +1065,27 @@ export default {
         )
       }
 
+      if (this.equippedItem !== 'hand') {
+        let itemData = this.$store.getters['vueDict/getItemObject'](this.equippedItem)
+
+        Helper.drawCanvasImage(
+          Math.min(dynLevelData.steps + 0.5, 2.5) * this.stepWidth - Math.floor(playerData.spriteWidth / 2),
+          195, itemData.spriteKeySmall, cD
+        )
+      }
+
       if (this.currentAnimation && this.currentAnimation.type === 'pickUpItems') {
-        this.pickUpItemsDraw(playerData, cD)
+        this.pickUpItemsDraw(playerData, dynLevelData, cD)
       }
     },
-    pickUpItemsDraw (playerData, cD) {
+    pickUpItemsDraw (playerData, dynLevelData, cD) {
       if (this.currentAnimation.success) {
         let items = this.collectedItems.filter(item => !item.animated)
 
         for (let i = 0; i < items.length; i++) {
           let itemData = Helper.getSpriteData(items[i].spriteKey, cD)
-          let referenceX = this.stepWidth * 2.5 + Math.floor(playerData.spriteWidth / 2)
+          let referenceX = this.stepWidth * Math.min(dynLevelData.steps + 0.5, 2.5) +
+            Math.floor(playerData.spriteWidth / 2)
           let referenceY = 165 + i * 20 - this.currentAnimation.counter
 
           Helper.drawCanvasText(referenceX + 10, referenceY, '+', 'infoTextLeft', this.ctx)
@@ -1063,7 +1099,7 @@ export default {
 
         for (let i = 0; i < text.length; i++) {
           Helper.drawCanvasText(
-            this.stepWidth * 2.5 + Math.floor(playerData.spriteWidth / 2) + 10,
+            this.stepWidth * Math.min(dynLevelData.steps + 0.5, 2.5) + Math.floor(playerData.spriteWidth / 2) + 10,
             165 + i * 20 - this.currentAnimation.counter, text[i], 'errorText', this.ctx
           )
         }

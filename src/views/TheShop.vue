@@ -71,7 +71,6 @@ export default {
       showSort: false,
       searchString: '',
       sortIcon: 'sort',
-      currentPage: 1,
       enterTransition: 'animated fadeInLeft',
       leaveTransition: 'animated fadeOutRight',
       sortFunction (that) {
@@ -102,6 +101,14 @@ export default {
     },
     baseUrl () {
       return process.env.BASE_URL
+    },
+    currentPage: {
+      get: function () {
+        return this.$store.state.vueDict.currentShopPage
+      },
+      set: function (newPage) {
+        this.$store.commit('vueDict/setCurrentShopPage', newPage)
+      }
     }
   },
   methods: {

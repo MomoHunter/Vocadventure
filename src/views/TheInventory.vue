@@ -22,14 +22,14 @@
       <transition-group class="transitionGroup" tag="div" :enter-active-class="enterTransition"
                         :leave-active-class="leaveTransition">
         <div class="box customBox" :class="absoluteClass(index)" v-for="(item, index) in visibleItems" :key="item.id">
-          <p class="content has-text-centered" :class="getSizeClass('content')">{{ getText(item.id) }}</p>
-          <div class="flexGrow fullWidth backgroundPicture"
+          <p class="content has-text-centered"
+             :class="[getSizeClass('content'), { 'inactive': item.quantity === 0 }]">{{ getText(item.id) }}</p>
+          <div class="flexGrow fullWidth backgroundPicture" :class="{ 'inactive': item.quantity === 0 }"
                :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
           <div class="fullWidth infoBar">
-            <div class="content noMarginBottom" :class="getSizeClass('content')">
-              {{ item.quantity }}
-            </div>
-            <progress v-show="item.durability" class="progress flexGrow"
+            <div class="content noMarginBottom"
+                 :class="[getSizeClass('content'), { 'inactive': item.quantity === 0 }]">{{ item.quantity }}</div>
+            <progress v-show="item.durability && item.quantity > 0" class="progress flexGrow customProgress"
                       :class="[getSizeClass('progress'), getProgressColor(item)]" :value="item.durability"
                       :max="item.maxDurability">
             </progress>
@@ -282,6 +282,10 @@ export default {
         background-size: contain;
       }
 
+      .inactive {
+        opacity: 0.2;
+      }
+
       .infoBar {
         display: flex;
         flex-direction: row-reverse;
@@ -289,6 +293,13 @@ export default {
 
         .noMarginBottom {
           margin-bottom: 0px;
+        }
+
+        .customProgress {
+          margin-top: auto;
+          margin-bottom: auto;
+          margin-right: .5rem;
+          height: 12px;
         }
       }
     }

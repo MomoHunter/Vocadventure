@@ -1,5 +1,15 @@
 [
   {
+    "id": "hand",
+    "spriteKey": "items_hand",
+    "spriteKeySmall": "items_hand_s",
+    "spritePath": "img/items/hand.png",
+    "quantity": 1,
+    "points": 0,
+    "power": 1,
+    "usefulAgainst": []
+  },
+  {
     "id": "branch",
     "spriteKey": "items_branch",
     "spriteKeySmall": "items_branch_s",
@@ -84,6 +94,46 @@
     "costs": [
       { "id": "spiderweb", "quantity": 5 },
       { "id": "coins", "quantity": 40 }
+    ]
+  },
+  {
+    "id": "stonepickaxe",
+    "spriteKey": "items_stonepickaxe",
+    "spriteKeySmall": "items_stonepickaxe_s",
+    "spritePath": "img/items/stonepickaxe.png",
+    "quantity": 1,
+    "points": 15,
+    "durability": 16,
+    "power": 3,
+    "usefulAgainst": [
+      "forestWall"
+    ],
+    "unlocked": false,
+    "costs": [
+      { "id": "stone", "quantity": 4 },
+      { "id": "wood", "quantity": 2 },
+      { "id": "string", "quantity": 2 },
+      { "id": "coins", "quantity": 120 }
+    ]
+  },
+  {
+    "id": "stoneaxe",
+    "spriteKey": "items_stoneaxe",
+    "spriteKeySmall": "items_stoneaxe_s",
+    "spritePath": "img/items/stoneaxe.png",
+    "quantity": 1,
+    "points": 15,
+    "durability": 10,
+    "power": 2,
+    "usefulAgainst": [
+      "forestTrunk"
+    ],
+    "unlocked": false,
+    "costs": [
+      { "id": "stone", "quantity": 2 },
+      { "id": "wood", "quantity": 2 },
+      { "id": "string", "quantity": 2 },
+      { "id": "coins", "quantity": 100 }
     ]
   }
 ]

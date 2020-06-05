@@ -1,6 +1,6 @@
 <template>
   <div class="flexboxContainer">
-    <div class="innerFlexContainerInput flexGrow marginBottomBig">
+    <div class="innerFlexContainerInput flexGrow marginBottomBig" v-show="!itemsVisible">
       <span class="icon is-1" :class="latinIconColor">
         <font-awesome-icon v-show="resultsVisible" :icon="['fas', latinIcon]" :size="getSizeClass('fas')" />
       </span>
@@ -12,7 +12,7 @@
                            :size="getSizeClass('fas')" />
       </span>
     </div>
-    <div class="innerFlexContainerInput flexGrow marginBottomBig" v-show="hasForeignAlphabet">
+    <div class="innerFlexContainerInput flexGrow marginBottomBig" v-show="hasForeignAlphabet && !itemsVisible">
       <span class="icon is-1" :class="foreignIconColor">
         <font-awesome-icon v-show="resultsVisible" :icon="['fas', foreignIcon]" :size="getSizeClass('fas')" />
       </span>
@@ -34,11 +34,38 @@
                            :size="getSizeClass('fas')" />
       </span>
     </div>
+    <div class="is-max-10 flexGrow overflowAuto displayFlex" v-show="itemsVisible">
+      <div class="itemBar">
+        <div class="box customBox marginBottomBig" v-for="item in items" :key="item.id"
+             @click="setItemEquipped(item.id)">
+          <span class="activeIcon has-text-success" v-show="itemEquipped(item.id)">
+            <font-awesome-icon :icon="['fas', 'check-square']" :size="getSizeClass('fas')" />
+          </span>
+          <p class="content has-text-centered marginBottomSmall" :class="getSizeClass('content')">{{ getText(item.id) }}</p>
+          <div class="flexGrow fullWidth backgroundPicture"
+                :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
+          <div class="fullWidth infoBar">
+            <div class="content noMarginBottom" :class="getSizeClass('content')">
+              {{ item.quantity }}
+            </div>
+            <progress v-show="item.durability" class="progress flexGrow customProgress"
+                      :class="[getSizeClass('progress'), getProgressColor(item)]" :value="item.durability"
+                      :max="item.maxDurability">
+            </progress>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="innerFlexContainerButton is-10 marginBottomBig" v-show="!keyboardVisible">
-      <ButtonBasic class="is-half marginBottomSmall marginRightSmall" icon="times" color="is-danger"
+      <ButtonBasic v-show="!resultsVisible && !itemsVisible" class="is-half marginBottomSmall marginRightSmall"
+                   icon="map" color="is-warning" text="adventureButton5"
+                   @click="$emit('click', { type: 'backToMap' })" />
+      <ButtonBasic v-show="itemsVisible" class="marginBottomSmall" icon="list" color="is-primary"
+                   text="adventureButton9" @click="hideItems()" />
+      <ButtonBasic v-show="!resultsVisible && !itemsVisible" class="is-half marginBottomSmall marginLeftSmall"
+                   icon="check" color="is-success" text="adventureButton2" @click="checkInput()" />
+      <ButtonBasic v-show="!itemsVisible" class="is-half marginRightSmall" icon="times" color="is-danger"
                    text="adventureButton1" @click="$emit('click', { type: 'abort' })" />
-      <ButtonBasic v-show="!resultsVisible" class="is-half marginBottomSmall marginLeftSmall" icon="check"
-                   color="is-success" text="adventureButton2" @click="checkInput()" />
       <ButtonBasic v-show="resultsVisible && currentWordIndex + 1 !== vocabs.words.length"
                    class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
                    text="adventureButton3" @click="nextWord()" :disabled="$store.state.canvasDict.animationActive" />
@@ -46,10 +73,10 @@
                    class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
                    text="adventureButton4" @click="$emit('click', { type: 'finish' })"
                    :disabled="$store.state.canvasDict.animationActive" />
-      <ButtonBasic v-show="!resultsVisible" class="is-half marginRightSmall" icon="map" color="is-warning"
-                   text="adventureButton5" @click="$emit('click', { type: 'backToMap' })" />
-      <ButtonBasic v-show="!resultsVisible" class="is-half marginLeftSmall" icon="briefcase" color="is-primary"
-                   text="adventureButton6" @click="showItems()" />
+      <ButtonBasic v-show="!resultsVisible && !itemsVisible" class="is-half marginLeftSmall" icon="briefcase"
+                   color="is-primary" text="adventureButton6" @click="showItems()" />
+      <ButtonBasic v-show="itemsVisible" icon="times" color="is-danger" text="adventureButton1"
+                   @click="$emit('click', { type: 'abort' })" />
       <ButtonBasic v-show="resultsVisible && !solutionVisible" icon="eye" color="is-info" text="adventureButton7"
                    @click="showSolution()" />
       <ButtonBasic v-show="resultsVisible && solutionVisible" icon="eye-slash" color="is-info" text="adventureButton8"
@@ -93,6 +120,7 @@ export default {
       keyboardVisible: false,
       solutionVisible: false,
       resultsVisible: false,
+      itemsVisible: false,
       latinInput: '',
       foreignInput: '',
       userLatinInput: '',
@@ -236,6 +264,15 @@ export default {
       })
 
       return kanji
+    },
+    items () {
+      let items = this.$store.state.vueDict.inventory.filter(item => item.power && item.quantity > 0)
+      items.unshift(this.$store.getters['vueDict/getItemObject']('hand'))
+
+      return items
+    },
+    baseUrl () {
+      return process.env.BASE_URL
     }
   },
   methods: {
@@ -305,6 +342,12 @@ export default {
         this.foreignInput = this.userForeignInput
       }
     },
+    showItems () {
+      this.itemsVisible = true
+    },
+    hideItems () {
+      this.itemsVisible = false
+    },
     showKeyboard () {
       if (!this.resultsVisible) {
         this.keyboardVisible = true
@@ -325,6 +368,21 @@ export default {
     },
     removeLetter () {
       this.foreignInput = this.foreignInput.slice(0, -1)
+    },
+    itemEquipped (itemId) {
+      return itemId === this.$store.state.canvasDict.currentEquippedItem
+    },
+    setItemEquipped (itemId) {
+      this.$store.commit('canvasDict/setEquippedItem', itemId)
+    },
+    getProgressColor (item) {
+      if (item.durability < item.maxDurability / 3) {
+        return 'is-danger'
+      } else if (item.durability < item.maxDurability / 1.5) {
+        return 'is-warning'
+      } else {
+        return 'is-success'
+      }
     }
   }
 }
@@ -352,8 +410,16 @@ export default {
     flex-grow: 8;
   }
 
+  .overflowAuto {
+    overflow: auto;
+  }
+
   .is-10 {
     width: calc(100% / 1.2);
+  }
+
+  .is-max-10 {
+    max-width: calc(100% / 1.2);
   }
 
   .is-absolute {
@@ -383,6 +449,66 @@ export default {
 
     .is-half {
       width: calc(50% - .25rem);
+    }
+  }
+
+  .displayFlex {
+    display: flex;
+  }
+
+  .itemBar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 100%;
+
+    .customBox {
+      display: flex;
+      flex-direction: column;
+      height: 75%;
+      width: 175px;
+      position: relative;
+
+      .activeIcon {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 2px;
+        height: 2px;
+        line-height: 0px;
+      }
+
+      &:not(:first-child) {
+        margin-left: .25rem;
+      }
+
+      &:not(:last-child) {
+        margin-right: .25rem;
+      }
+    }
+
+    .backgroundPicture {
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+
+    .infoBar {
+      display: flex;
+      flex-direction: row-reverse;
+      flex-wrap: nowrap;
+
+      .noMarginBottom {
+        margin-bottom: 0px;
+      }
+
+      .customProgress {
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-right: .5rem;
+        height: 12px;
+      }
     }
   }
 }
