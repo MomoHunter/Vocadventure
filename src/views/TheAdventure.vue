@@ -227,6 +227,8 @@ export default {
     },
     viewClickHandler (object) {
       let dynLevelData = this.$store.getters['canvasDict/getDynamicLevelData'](this.currentLevel)
+      let nextObstacle = this.$store.getters['canvasDict/getNextObstacleEvent'](this.currentLevel)
+      let nextItems = this.$store.getters['canvasDict/getNextItemEvents'](this.currentLevel)
 
       switch (object.type) {
         case 'skipIntro':
@@ -286,9 +288,6 @@ export default {
           this.$router.replace({ name: 'adventureMap' })
           break
         case 'correctWord':
-          let nextObstacle = this.$store.getters['canvasDict/getNextObstacleEvent'](this.currentLevel)
-          let nextItems = this.$store.getters['canvasDict/getNextItemEvents'](this.currentLevel)
-
           if (dynLevelData.itemsOnFloor) {
             this.animationQueue.push(new AnimationObject('pickUpItems', true))
             for (let item of nextItems) {
@@ -331,6 +330,8 @@ export default {
             this.animationQueue.push(new AnimationObject('pickUpItems', false))
             this.$store.commit('canvasDict/setEventsRegistered', { type: 'item', field: dynLevelData.steps })
             this.$store.commit('canvasDict/setItemsOnFloor', false)
+          } else if (dynLevelData.obstacleAhead && nextObstacle.power) {
+            this.animationQueue.push(new AnimationObject('enemyAttack'))
           }
           break
         case 'nextWord':
@@ -630,9 +631,10 @@ export default {
               id: obstacle.id,
               spriteKey: obstacle.spriteKey,
               x: this.lastBackground.x + this.stepWidth / 2 + place * this.stepWidth - obstacleData.spriteWidth / 2,
-              y: 270 - obstacleData.spriteHeight,
+              y: obstacle.bottomY - obstacleData.spriteHeight,
               field: this.lastBackground.firstField + place,
               durability: obstacle.durability,
+              power: obstacle.power || null,
               items: obstacle.items
             })
             break
@@ -872,7 +874,16 @@ export default {
           this.$store.commit('canvasDict/setObstacleAhead', false)
         }
 
-        this.currentAnimation.counter = 0
+        this.currentAnimation = null
+      }
+    },
+    enemyAttackAnimation () {
+      this.currentAnimation.counter += 1
+
+      if (this.currentAnimation.counter >= 60) {
+        let nextObstacle = this.$store.getters['canvasDict/getNextObstacleEvent'](this.currentLevel)
+
+        this.$store.commit('canvasDict/changePlayerHealth', -nextObstacle.power)
         this.currentAnimation = null
       }
     },
@@ -1015,6 +1026,7 @@ export default {
         Helper.drawCanvasImage(foreground.x, foreground.y, foreground.spriteKey, cD)
       }
 
+      this.levelHudDraw(cD)
       this.currentWordDraw()
     },
     healthBarDraw (event, cD) {
@@ -1023,23 +1035,23 @@ export default {
       let durabilityPercent = event.durability / maxDurability
 
       Helper.drawCanvasRect(
-        event.x + eventData.spriteWidth * 0.2, event.y + eventData.spriteHeight * 0.2, eventData.spriteWidth * 0.6, 8,
+        event.x + eventData.spriteWidth * 0.2, event.y - 16, eventData.spriteWidth * 0.6, 8,
         'bar', this.ctx
       )
 
       if (durabilityPercent < 0.2) {
         Helper.drawCanvasRect(
-          event.x + eventData.spriteWidth * 0.2, event.y + eventData.spriteHeight * 0.2,
+          event.x + eventData.spriteWidth * 0.2, event.y - 16,
           eventData.spriteWidth * 0.6 * durabilityPercent, 8, 'barDanger', this.ctx
         )
       } else if (durabilityPercent < 0.6) {
         Helper.drawCanvasRect(
-          event.x + eventData.spriteWidth * 0.2, event.y + eventData.spriteHeight * 0.2,
+          event.x + eventData.spriteWidth * 0.2, event.y - 16,
           eventData.spriteWidth * 0.6 * durabilityPercent, 8, 'barWarning', this.ctx
         )
       } else {
         Helper.drawCanvasRect(
-          event.x + eventData.spriteWidth * 0.2, event.y + eventData.spriteHeight * 0.2,
+          event.x + eventData.spriteWidth * 0.2, event.y - 16,
           eventData.spriteWidth * 0.6 * durabilityPercent, 8, 'barSuccess', this.ctx
         )
       }
@@ -1077,6 +1089,12 @@ export default {
       if (this.currentAnimation && this.currentAnimation.type === 'pickUpItems') {
         this.pickUpItemsDraw(playerData, dynLevelData, cD)
       }
+    },
+    levelHudDraw (cD) {
+      Helper.drawCanvasRect(20, this.canvasHeight - 40, 200, 20, 'bar', this.ctx)
+      Helper.drawCanvasRect(
+        20, this.canvasHeight - 40, this.$store.state.canvasDict.playerHealth * 2, 20, 'barSuccess', this.ctx
+      )
     },
     pickUpItemsDraw (playerData, dynLevelData, cD) {
       if (this.currentAnimation.success) {

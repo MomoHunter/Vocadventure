@@ -71,8 +71,17 @@ html, body {
     animation-delay: .1s;
   }
 
+  &.delay-500ms {
+    -webkit-animation-delay: .5s;
+    animation-delay: .5s;
+  }
+
   &.super-fast {
     animation-duration: .1s;
+  }
+
+  &.a-little-bit-faster {
+    animation-duration: .4s;
   }
 }
 

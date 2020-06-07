@@ -135,5 +135,23 @@
       { "id": "string", "quantity": 2 },
       { "id": "coins", "quantity": 100 }
     ]
+  },
+  {
+    "id": "stonesword",
+    "spriteKey": "items_stonesword",
+    "spriteKeySmall": "items_stonesword_s",
+    "spritePath": "img/items/stonesword.png",
+    "quantity": 1,
+    "points": 11,
+    "durability": 12,
+    "power": 2,
+    "usefulAgainst": [],
+    "unlocked": false,
+    "costs": [
+      { "id": "stone", "quantity": 3 },
+      { "id": "wood", "quantity": 1 },
+      { "id": "string", "quantity": 1 },
+      { "id": "coins", "quantity": 110 }
+    ]
   }
 ]

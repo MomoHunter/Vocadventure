@@ -30,6 +30,7 @@ export function AnimationObject (type, ...params) {
     case 'moveFirstSteps':
     case 'moveForward':
     case 'attackObstacle':
+    case 'enemyAttack':
       this.counter = 0
       break
     case 'homeEnter':

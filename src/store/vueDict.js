@@ -14,6 +14,7 @@ export default {
     writeKanji: null,
     trainingStash: null,
     currentShopPage: 1,
+    currentInventoryPage: 1,
     difficulty: 0,
     wordCount: 0,
     reversed: false,
@@ -24,7 +25,7 @@ export default {
       'branch': ['wood'],
       'pebble': ['stone'],
       'spiderweb': ['string'],
-      'stone': ['stonepickaxe', 'stoneaxe']
+      'stone': ['stonepickaxe', 'stoneaxe', 'stonesword']
     },
     vocabs: {},
     currentWordIndex: 0,
@@ -183,6 +184,9 @@ export default {
     },
     setCurrentShopPage (state, newPage) {
       state.currentShopPage = newPage
+    },
+    setCurrentInventoryPage (state, newPage) {
+      state.currentInventoryPage = newPage
     },
     setDifficulty (state, difficulty) {
       state.difficulty = difficulty

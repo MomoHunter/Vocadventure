@@ -1,86 +1,133 @@
 <template>
   <div class="flexboxContainer">
-    <div class="innerFlexContainerInput flexGrow marginBottomBig" v-show="!itemsVisible">
-      <span class="icon is-1" :class="latinIconColor">
-        <font-awesome-icon v-show="resultsVisible" :icon="['fas', latinIcon]" :size="getSizeClass('fas')" />
-      </span>
-      <input class="input is-rounded is-10" type="text" :placeholder="getText(vocabs.latinAlphabet)"
-             :class="[getSizeClass('input'), { 'is-info': solutionVisible}]" v-model="latinInput"
-             :readonly="resultsVisible" />
-      <span class="icon is-1" :class="latinCoinColor">
-        <font-awesome-icon v-show="resultsVisible && isLatinCorrect > 0" :icon="['fas', 'coins']"
-                           :size="getSizeClass('fas')" />
-      </span>
-    </div>
-    <div class="innerFlexContainerInput flexGrow marginBottomBig" v-show="hasForeignAlphabet && !itemsVisible">
-      <span class="icon is-1" :class="foreignIconColor">
-        <font-awesome-icon v-show="resultsVisible" :icon="['fas', foreignIcon]" :size="getSizeClass('fas')" />
-      </span>
-      <div class="field is-10 has-addons noMarginBottom">
-        <div v-if="keyboardVisible" class="control">
-          <ButtonIcon icon="backspace" color="is-danger" @click="removeLetter()" />
-        </div>
-        <div class="control fullWidth">
-          <input class="input is-rounded" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
-                :class="[getSizeClass('input'), { 'is-info': solutionVisible}]" v-model="foreignInput"
-                @click="showKeyboard()" readonly />
-        </div>
-        <div v-if="keyboardVisible" class="control">
-          <ButtonIcon icon="check" color="is-success" @click="hideKeyboard()" />
-        </div>
+    <transition leave-active-class="animated slideOutLeft a-little-bit-faster"
+                enter-active-class="animated slideInLeft a-little-bit-faster" @after-leave="endTrigger()">
+      <div class="innerFlexContainerInput flexGrow marginBottomBig" v-show="itemsVisible.off">
+        <span class="icon is-1" :class="latinIconColor">
+          <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
+            <font-awesome-icon v-show="resultsVisible.on" :icon="['fas', latinIcon]" :size="getSizeClass('fas')" />
+          </transition>
+        </span>
+        <input class="input is-rounded is-10" type="text" :placeholder="getText(vocabs.latinAlphabet)"
+               :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
+               v-model="latinInput" :readonly="resultsVisible.on" />
+        <span class="icon is-1" :class="latinCoinColor">
+          <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
+            <font-awesome-icon v-show="resultsVisible.on && isLatinCorrect > 0" :icon="['fas', 'coins']"
+                               :size="getSizeClass('fas')" />
+          </transition>
+        </span>
       </div>
-      <span class="icon is-1" :class="foreignCoinColor">
-        <font-awesome-icon v-show="resultsVisible && isForeignCorrect > 0" :icon="['fas', 'coins']"
-                           :size="getSizeClass('fas')" />
-      </span>
-    </div>
-    <div class="is-max-10 flexGrow overflowAuto displayFlex" v-show="itemsVisible">
-      <div class="itemBar">
-        <div class="box customBox marginBottomBig" v-for="item in items" :key="item.id"
-             @click="setItemEquipped(item.id)">
-          <span class="activeIcon has-text-success" v-show="itemEquipped(item.id)">
-            <font-awesome-icon :icon="['fas', 'check-square']" :size="getSizeClass('fas')" />
-          </span>
-          <p class="content has-text-centered marginBottomSmall" :class="getSizeClass('content')">{{ getText(item.id) }}</p>
-          <div class="flexGrow fullWidth backgroundPicture"
-                :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
-          <div class="fullWidth infoBar">
-            <div class="content noMarginBottom" :class="getSizeClass('content')">
-              {{ item.quantity }}
+    </transition>
+    <transition leave-active-class="animated slideOutRight a-little-bit-faster"
+                enter-active-class="animated slideInRight a-little-bit-faster">
+      <div class="innerFlexContainerInput flexGrow marginBottomBig" v-show="hasForeignAlphabet && itemsVisible.off">
+        <span class="icon is-1" :class="foreignIconColor">
+          <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
+            <font-awesome-icon v-show="resultsVisible.on" :icon="['fas', foreignIcon]" :size="getSizeClass('fas')" />
+          </transition>
+        </span>
+        <div class="field is-10 has-addons noMarginBottom">
+          <div v-if="keyboardVisible" class="control">
+            <ButtonIcon icon="backspace" color="is-danger" @click="removeLetter()" />
+          </div>
+          <div class="control fullWidth">
+            <input class="input is-rounded" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
+                   :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
+                   v-model="foreignInput" @click="showKeyboard()" readonly />
+          </div>
+          <div v-if="keyboardVisible" class="control">
+            <ButtonIcon icon="check" color="is-success" @click="hideKeyboard()" />
+          </div>
+        </div>
+        <span class="icon is-1" :class="foreignCoinColor">
+          <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
+            <font-awesome-icon v-show="resultsVisible.on && isForeignCorrect > 0" :icon="['fas', 'coins']"
+                               :size="getSizeClass('fas')" />
+          </transition>
+        </span>
+      </div>
+    </transition>
+    <transition leave-active-class="animated zoomOut a-little-bit-faster"
+                enter-active-class="animated zoomIn a-little-bit-faster" @after-leave="endTrigger()">
+      <div class="is-max-10 flexGrow overflowAuto displayFlex" v-show="itemsVisible.on">
+        <div class="itemBar">
+          <div class="box customBox marginBottomBig" v-for="item in items" :key="item.id"
+                @click="setItemEquipped(item.id)">
+            <span class="activeIcon has-text-success" v-show="itemEquipped(item.id)">
+              <font-awesome-icon :icon="['fas', 'check-square']" :size="getSizeClass('fas')" />
+            </span>
+            <p class="content has-text-centered marginBottomSmall" :class="getSizeClass('content')">{{ getText(item.id) }}</p>
+            <div class="flexGrow fullWidth backgroundPicture"
+                  :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
+            <div class="fullWidth infoBar">
+              <div class="content noMarginBottom" :class="getSizeClass('content')">
+                {{ item.quantity }}
+              </div>
+              <progress v-show="item.durability" class="progress flexGrow customProgress"
+                        :class="[getSizeClass('progress'), getProgressColor(item)]" :value="item.durability"
+                        :max="item.maxDurability">
+              </progress>
             </div>
-            <progress v-show="item.durability" class="progress flexGrow customProgress"
-                      :class="[getSizeClass('progress'), getProgressColor(item)]" :value="item.durability"
-                      :max="item.maxDurability">
-            </progress>
           </div>
         </div>
       </div>
-    </div>
+    </transition>
     <div class="innerFlexContainerButton is-10 marginBottomBig" v-show="!keyboardVisible">
-      <ButtonBasic v-show="!resultsVisible && !itemsVisible" class="is-half marginBottomSmall marginRightSmall"
-                   icon="map" color="is-warning" text="adventureButton5"
-                   @click="$emit('click', { type: 'backToMap' })" />
-      <ButtonBasic v-show="itemsVisible" class="marginBottomSmall" icon="list" color="is-primary"
-                   text="adventureButton9" @click="hideItems()" />
-      <ButtonBasic v-show="!resultsVisible && !itemsVisible" class="is-half marginBottomSmall marginLeftSmall"
-                   icon="check" color="is-success" text="adventureButton2" @click="checkInput()" />
-      <ButtonBasic v-show="!itemsVisible" class="is-half marginRightSmall" icon="times" color="is-danger"
-                   text="adventureButton1" @click="$emit('click', { type: 'abort' })" />
-      <ButtonBasic v-show="resultsVisible && currentWordIndex + 1 !== vocabs.words.length"
-                   class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
-                   text="adventureButton3" @click="nextWord()" :disabled="$store.state.canvasDict.animationActive" />
-      <ButtonBasic v-show="resultsVisible && currentWordIndex + 1 === vocabs.words.length"
-                   class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
-                   text="adventureButton4" @click="$emit('click', { type: 'finish' })"
-                   :disabled="$store.state.canvasDict.animationActive" />
-      <ButtonBasic v-show="!resultsVisible && !itemsVisible" class="is-half marginLeftSmall" icon="briefcase"
-                   color="is-primary" text="adventureButton6" @click="showItems()" />
-      <ButtonBasic v-show="itemsVisible" icon="times" color="is-danger" text="adventureButton1"
-                   @click="$emit('click', { type: 'abort' })" />
-      <ButtonBasic v-show="resultsVisible && !solutionVisible" icon="eye" color="is-info" text="adventureButton7"
-                   @click="showSolution()" />
-      <ButtonBasic v-show="resultsVisible && solutionVisible" icon="eye-slash" color="is-info" text="adventureButton8"
-                   @click="hideSolution()" />
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
+        <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginBottomSmall marginRightSmall"
+                    icon="map" color="is-warning" text="adventureButton5"
+                    @click="$emit('click', { type: 'backToMap' })" />
+      </transition>
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster">
+        <ButtonBasic v-show="itemsVisible.on" class="marginBottomSmall" icon="list" color="is-primary"
+                    text="adventureButton9" @click="hideItems()" />
+      </transition>
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster">
+        <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginBottomSmall marginLeftSmall"
+                    icon="check" color="is-success" text="adventureButton2" @click="checkInput()" />
+      </transition>
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster">
+        <ButtonBasic v-show="itemsVisible.off && (resultsVisible.off || resultsVisible.on)" class="is-half marginRightSmall" icon="times" color="is-danger"
+                    text="adventureButton1" @click="$emit('click', { type: 'abort' })" />
+      </transition>
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
+        <ButtonBasic v-show="resultsVisible.on && currentWordIndex + 1 !== vocabs.words.length"
+                    class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
+                    text="adventureButton3" @click="nextWord()" :disabled="$store.state.canvasDict.animationActive" />
+      </transition>
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster">
+        <ButtonBasic v-show="resultsVisible.on && currentWordIndex + 1 === vocabs.words.length"
+                    class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
+                    text="adventureButton4" @click="$emit('click', { type: 'finish' })"
+                    :disabled="$store.state.canvasDict.animationActive" />
+      </transition>
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster">
+        <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginLeftSmall" icon="briefcase"
+                    color="is-primary" text="adventureButton6" @click="showItems()" />
+      </transition>
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster">
+        <ButtonBasic v-show="itemsVisible.on" icon="times" color="is-danger" text="adventureButton1"
+                    @click="$emit('click', { type: 'abort' })" />
+      </transition>
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
+        <ButtonBasic v-show="resultsVisible.on && solutionVisible.off" icon="eye" color="is-info" text="adventureButton7"
+                    @click="showSolution()" />
+      </transition>
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
+        <ButtonBasic v-show="resultsVisible.on && solutionVisible.on" icon="eye-slash" color="is-info" text="adventureButton8"
+                    @click="hideSolution()" />
+      </transition>
     </div>
     <TheProgressBar v-show="!keyboardVisible" class="is-10" color="is-success" :text="progressText"
                     :value="progressBarCount" :maxValue="vocabs.words.length" />
@@ -118,9 +165,20 @@ export default {
   data () {
     return {
       keyboardVisible: false,
-      solutionVisible: false,
-      resultsVisible: false,
-      itemsVisible: false,
+      solutionVisible: {
+        off: true,
+        on: false
+      },
+      resultsVisible: {
+        off: true,
+        on: false
+      },
+      itemsVisible: {
+        off: true,
+        on: false
+      },
+      inputBorderInfo: false,
+      animationQueue: [],
       latinInput: '',
       foreignInput: '',
       userLatinInput: '',
@@ -218,7 +276,7 @@ export default {
       }
     },
     progressBarCount () {
-      if (this.resultsVisible) {
+      if (this.resultsVisible.on) {
         return this.$store.state.vueDict.currentWordIndex + 1
       }
       return this.$store.state.vueDict.currentWordIndex
@@ -286,7 +344,8 @@ export default {
       return word.toLowerCase().replace(/(\(.+\)|（.+）)|[-, .!?/！。・、？]/g, '')
     },
     checkInput () {
-      this.resultsVisible = true
+      this.resultsVisible.off = false
+      this.animationQueue.push(['resultsVisible', 'on'])
       this.keyboardVisible = false
       this.userLatinInput = this.latinInput
       this.$store.commit('vueDict/addCorrectLatin', this.isLatinCorrect)
@@ -317,7 +376,8 @@ export default {
     },
     nextWord () {
       this.hideSolution()
-      this.resultsVisible = false
+      this.resultsVisible.on = false
+      this.animationQueue.push(['resultsVisible', 'off'])
       this.currentKeyboardTab = this.keyboardNames[0] || ''
       this.userLatinInput = ''
       this.latinInput = ''
@@ -329,27 +389,23 @@ export default {
       this.$emit('click', { type: 'nextWord' })
     },
     showSolution () {
-      this.solutionVisible = true
-      this.latinInput = this.vocabs.words[this.currentWordIndex][this.vocabs.latinAlphabet]
-      if (this.hasForeignAlphabet) {
-        this.foreignInput = this.vocabs.words[this.currentWordIndex][this.vocabs.foreignAlphabet]
-      }
+      this.solutionVisible.off = false
+      this.animationQueue.push(['solutionVisible', 'on'])
     },
     hideSolution () {
-      this.solutionVisible = false
-      this.latinInput = this.userLatinInput
-      if (this.hasForeignAlphabet) {
-        this.foreignInput = this.userForeignInput
-      }
+      this.solutionVisible.on = false
+      this.animationQueue.push(['solutionVisible', 'off'])
     },
     showItems () {
-      this.itemsVisible = true
+      this.itemsVisible.off = false
+      this.animationQueue.push(['itemsVisible', 'on'])
     },
     hideItems () {
-      this.itemsVisible = false
+      this.itemsVisible.on = false
+      this.animationQueue.push(['itemsVisible', 'off'])
     },
     showKeyboard () {
-      if (!this.resultsVisible) {
+      if (this.resultsVisible.off) {
         this.keyboardVisible = true
       }
     },
@@ -382,6 +438,26 @@ export default {
         return 'is-warning'
       } else {
         return 'is-success'
+      }
+    },
+    endTrigger () {
+      while (this.animationQueue.length > 0) {
+        let variable = this.animationQueue.shift()
+        this[variable[0]][variable[1]] = true
+
+        if (variable[0] === 'solutionVisible' && variable[1] === 'on') {
+          this.inputBorderInfo = true
+          this.latinInput = this.vocabs.words[this.currentWordIndex][this.vocabs.latinAlphabet]
+          if (this.hasForeignAlphabet) {
+            this.foreignInput = this.vocabs.words[this.currentWordIndex][this.vocabs.foreignAlphabet]
+          }
+        } else if (variable[0] === 'solutionVisible' && variable[1] === 'off') {
+          this.inputBorderInfo = false
+          this.latinInput = this.userLatinInput
+          if (this.hasForeignAlphabet) {
+            this.foreignInput = this.userForeignInput
+          }
+        }
       }
     }
   }

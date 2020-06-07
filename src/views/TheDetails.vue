@@ -1,6 +1,6 @@
 <template>
   <div class="flexContainer">
-    <HeroBasic class="marginBottomSmall" :title="item.id" />
+    <HeroWithTags class="marginBottomSmall" :title="item.id" :tagObjects="tags" />
     <div class="box is-10 flexGrow">
       <div class="fullWidth fullHeight backgroundPicture" :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }">
       </div>
@@ -27,18 +27,34 @@
 </template>
 
 <script>
-import HeroBasic from '@/components/HeroBasic.vue'
+import HeroWithTags from '@/components/HeroWithTags.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 
 export default {
   name: 'TheDetails',
   components: {
-    HeroBasic,
+    HeroWithTags,
     ButtonBasic
   },
   computed: {
     item () {
       return this.$store.getters['vueDict/getItemObject'](this.$route.params.item)
+    },
+    tags () {
+      let quantity = this.$store.getters['vueDict/getInventoryObject'](this.$route.params.item)
+      if (!quantity) {
+        quantity = 0
+      } else {
+        quantity = quantity.quantity
+      }
+      return [
+        {
+          nameId: 'detailsTagOwn',
+          valueId: quantity,
+          color: 'is-info'
+
+        }
+      ]
     },
     baseUrl () {
       return process.env.BASE_URL

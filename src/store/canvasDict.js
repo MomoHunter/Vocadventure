@@ -38,28 +38,33 @@ export default {
       'items_branch_s': [false, 1801, 51, 20, 20],
       'items_dirt': [false, 1801, 72, 50, 50],
       'items_dirt_s': [false, 1801, 123, 20, 20],
-      'items_hand': [false, 1801, 144, 50, 50],
-      'items_hand_s': [false, 1801, 195, 20, 20],
-      'items_mushroom': [false, 1801, 216, 50, 50],
-      'items_mushroom_s': [false, 1801, 267, 20, 20],
-      'items_pebble': [false, 1801, 288, 50, 50],
-      'items_pebble_s': [false, 1801, 339, 20, 20],
-      'items_spiderweb': [false, 1801, 360, 50, 50],
-      'items_spiderweb_s': [false, 1801, 411, 20, 20],
-      'items_stone': [false, 1801, 432, 50, 50],
-      'items_stoneaxe': [false, 1801, 483, 50, 50],
-      'items_stoneaxe_s': [false, 1801, 534, 20, 20],
-      'items_stonepickaxe': [false, 1801, 555, 50, 50],
-      'items_stonepickaxe_s': [false, 1801, 606, 20, 20],
-      'items_stone_s': [false, 1801, 627, 20, 20],
-      'items_string': [false, 1801, 648, 50, 50],
-      'items_string_s': [false, 1801, 699, 20, 20],
-      'items_treeseed': [false, 1801, 720, 50, 50],
-      'items_treeseed_s': [false, 1801, 771, 20, 20],
-      'items_wood': [false, 1801, 792, 50, 50],
-      'items_wood_s': [false, 1801, 843, 20, 20],
-      'obstacles_trunk': [false, 1852, 0, 84, 95],
-      'obstacles_wall': [false, 1852, 96, 60, 86],
+      'items_goblinblood': [false, 1801, 144, 50, 50],
+      'items_goblinblood_s': [false, 1801, 195, 20, 20],
+      'items_hand': [false, 1801, 216, 50, 50],
+      'items_hand_s': [false, 1801, 267, 20, 20],
+      'items_mushroom': [false, 1801, 288, 50, 50],
+      'items_mushroom_s': [false, 1801, 339, 20, 20],
+      'items_pebble': [false, 1801, 360, 50, 50],
+      'items_pebble_s': [false, 1801, 411, 20, 20],
+      'items_spiderweb': [false, 1801, 432, 50, 50],
+      'items_spiderweb_s': [false, 1801, 483, 20, 20],
+      'items_stone': [false, 1801, 504, 50, 50],
+      'items_stoneaxe': [false, 1801, 555, 50, 50],
+      'items_stoneaxe_s': [false, 1801, 606, 20, 20],
+      'items_stonepickaxe': [false, 1801, 627, 50, 50],
+      'items_stonepickaxe_s': [false, 1801, 678, 20, 20],
+      'items_stonesword': [false, 1801, 699, 50, 50],
+      'items_stonesword_s': [false, 1801, 750, 20, 20],
+      'items_stone_s': [false, 1801, 771, 20, 20],
+      'items_string': [false, 1801, 792, 50, 50],
+      'items_string_s': [false, 1801, 843, 20, 20],
+      'items_treeseed': [false, 1801, 864, 50, 50],
+      'items_treeseed_s': [false, 1801, 915, 20, 20],
+      'items_wood': [false, 1801, 936, 50, 50],
+      'items_wood_s': [false, 1801, 987, 20, 20],
+      'obstacles_goblin': [false, 1852, 0, 71, 75],
+      'obstacles_trunk': [false, 1852, 76, 84, 95],
+      'obstacles_wall': [false, 1852, 172, 60, 86],
       'player_level_standing': [false, 1937, 0, 55, 95],
       'player_map_standing': [false, 1937, 96, 25, 43],
       'special_placeholder': [false, 1993, 0, 50, 50]
@@ -79,6 +84,7 @@ export default {
     obstacleAhead: false,
     itemsOnFloor: false,
     questionKey: '',
+    playerHealth: 100,
     currentLevel: 'home',
     currentBuilding: 'house',
     currentEquippedItem: 'hand',
@@ -192,6 +198,7 @@ export default {
           {
             id: 'forestTrunk',
             spriteKey: 'obstacles_trunk',
+            bottomY: 145,
             durability: 20,
             chance: 1,
             items: [
@@ -201,10 +208,21 @@ export default {
           {
             id: 'forestWall',
             spriteKey: 'obstacles_wall',
+            bottomY: 145,
             durability: 30,
             chance: 1,
             items: [
               { id: 'stone', quantity: 4 }
+            ]
+          },
+          {
+            id: 'forestGoblin',
+            spriteKey: 'obstacles_goblin',
+            durability: 12,
+            chance: 10,
+            power: 2,
+            items: [
+              { id: 'goblinblood', quantity: 1 }
             ]
           }
         ],
@@ -551,6 +569,7 @@ export default {
         mapOffset: state.mapOffset,
         obstacleAhead: state.obstacleAhead,
         itemsOnFloor: state.itemsOnFloor,
+        playerHealth: state.playerHealth,
         currentLevel: state.currentLevel,
         currentBuilding: state.currentBuilding,
         currentEquippedItem: state.currentEquippedItem,
@@ -667,6 +686,9 @@ export default {
     setQuestionKey (state, key) {
       state.questionKey = key
     },
+    changePlayerHealth (state, amount) {
+      state.playerHealth += amount
+    },
     moveBackground (state, object) {
       let dynLevelData = state.dynamicLevelData[object.level]
 
@@ -710,6 +732,7 @@ export default {
       state.mapOffset = copies.mapOffset
       state.obstacleAhead = copies.obstacleAhead
       state.itemsOnFloor = copies.itemsOnFloor
+      state.playerHealth = copies.playerHealth
       state.currentLevel = copies.currentLevel
       state.currentBuilding = copies.currentBuilding
       state.currentEquippedItem = copies.currentEquippedItem
