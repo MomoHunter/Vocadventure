@@ -145,7 +145,11 @@
     "points": 11,
     "durability": 12,
     "power": 2,
-    "usefulAgainst": [],
+    "usefulAgainst": [
+      "forestNet",
+      "forestGoblin",
+      "forestGoblinking"
+    ],
     "unlocked": false,
     "costs": [
       { "id": "stone", "quantity": 3 },
@@ -153,5 +157,13 @@
       { "id": "string", "quantity": 1 },
       { "id": "coins", "quantity": 110 }
     ]
+  },
+  {
+    "id": "goblinkingcrown",
+    "spriteKey": "items_goblinkingcrown",
+    "spriteKeySmall": "items_goblinkingcrown_s",
+    "spritePath": "img/items/goblinkingcrown.png",
+    "quantity": 1,
+    "points": 150
   }
 ]

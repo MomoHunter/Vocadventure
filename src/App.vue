@@ -48,12 +48,6 @@ export default {
       let data = JSON.parse(window.localStorage.getItem('globalDict'))
 
       if (data && data.version) {
-        if (data.version === '0.1.0') {
-          data.status.forEach(element => {
-            element.additional = 0
-          }, this)
-        }
-
         if (data.lang) {
           this.$store.commit('changeLanguage', data.lang)
         }
@@ -72,19 +66,40 @@ export default {
         if (data.categoriesPlayed) {
           this.$store.commit('vueDict/changeCategoriesPlayed', data.categoriesPlayed)
         }
+        if (data.inventory) {
+          this.$store.commit('vueDict/changeInventory', data.inventory)
+        }
         if (data.unlockedItems) {
           for (let item of data.unlockedItems) {
             this.$store.commit('vueDict/unlockItem', item)
           }
         }
-        if (data.inventory) {
-          this.$store.commit('vueDict/changeInventory', data.inventory)
+        if (data.watchedIntro) {
+          this.$store.commit('canvasDict/setWatchedIntro')
         }
-        if (data.inLevel) {
-          this.$store.commit('canvasDict/setInLevel', data.inLevel)
+        if (data.gameState) {
+          this.$store.commit('canvasDict/changeGameState', data.gameState)
+        }
+        if (data.mapOffset) {
+          this.$store.commit('canvasDict/setMapOffset', data.mapOffset)
         }
         if (data.currentLevel) {
           this.$store.commit('canvasDict/setLevel', data.currentLevel)
+        }
+        if (data.currentBuilding) {
+          this.$store.commit('canvasDict/setBuilding', data.currentBuilding)
+        }
+        if (data.currentEquippedItem) {
+          this.$store.commit('canvasDict/setEquippedItem', data.currentEquippedItem)
+        }
+        if (data.unlockedBuildings) {
+          this.$store.commit('canvasDict/changeUnlockedBuilding', data.unlockedBuildings)
+        }
+        if (data.collectables) {
+          this.$store.commit('canvasDict/changeCollectables', data.collectables)
+        }
+        if (data.dynamicLevelData) {
+          this.$store.commit('canvasDict/changeDynamicLevelData', data.dynamicLevelData)
         }
 
         if (data.version !== this.$store.state.version) {

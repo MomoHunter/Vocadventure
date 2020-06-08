@@ -234,8 +234,8 @@ export default {
         if (!state.unlockedItems.includes(keyItemId)) {
           for (let newItemId of newRecipes) {
             state.items.find(item => item.id === newItemId).unlocked = true
-            state.unlockedItems.push(keyItemId)
           }
+          state.unlockedItems.push(keyItemId)
         }
       }
     },

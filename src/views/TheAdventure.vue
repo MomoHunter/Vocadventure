@@ -82,6 +82,7 @@ export default {
         this.$store.commit('vueDict/transferAdditionalStat')
         window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
         this.$store.commit('vueDict/resetVocabs')
+        this.addItemsToInventory()
         next()
       } else {
         this.showMessageModal()
@@ -357,13 +358,6 @@ export default {
           this.$router.replace({ name: 'adventureStatistics' })
           break
         case 'navTo':
-          for (let category of this.$store.state.vueDict.categoriesChosen) {
-            this.$store.commit('vueDict/increaseCategoryPlayed', category)
-          }
-          this.$store.commit('vueDict/transferAdditionalStat')
-          window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
-          this.$store.commit('vueDict/resetVocabs')
-          this.addItemsToInventory()
           if (object.value === 'menu') {
             this.$store.commit('vueDict/setCategories', [])
             this.$store.commit('vueDict/setDifficulty', '')
@@ -558,6 +552,8 @@ export default {
       }
     },
     levelUpdate () {
+      let dynLevelData = this.$store.getters['canvasDict/getDynamicLevelData'](this.currentLevel)
+
       if (!this.lastBackground) {
         let newBackground = this.getNewBackground(0, 0)
         this.$store.commit('canvasDict/addBackground', newBackground)
@@ -565,6 +561,28 @@ export default {
         if (newBackground.spriteKey.endsWith('background')) {
           this.$store.commit('canvasDict/addForeground', this.getForeground(newBackground))
         }
+      }
+
+      if ((dynLevelData.steps + 10) % 2000 === 0 && !dynLevelData.bossSpawned) {
+        let boss = this.$store.getters['canvasDict/getBossObject'](this.currentLevel)
+        let bossData = Helper.getSpriteData(boss.spriteKey, this.$store.state.canvasDict)
+        let places = (dynLevelData.steps + 11) - this.lastBackground.firstField
+
+        this.$store.commit('canvasDict/addEvent', {
+          type: 'obstacle',
+          registered: false,
+          id: boss.id,
+          spriteKey: boss.spriteKey,
+          x: this.lastBackground.x + places * this.stepWidth - (boss.centerX - 50),
+          y: boss.bottomY - bossData.spriteHeight,
+          field: dynLevelData.steps + 10,
+          durability: boss.durability,
+          boss: true,
+          power: boss.power,
+          items: boss.items,
+          unlocks: boss.unlocks
+        })
+        this.$store.commit('canvasDict/setBossSpawned', true)
       }
 
       if (this.lastBackground.x + this.lastBackground.width < this.canvasWidth + 100) {
@@ -576,7 +594,9 @@ export default {
           this.$store.commit('canvasDict/addForeground', this.getForeground(newBackground))
         }
 
-        this.generateNewEvents(Math.random() < this.currentMapPoint.chanceForObstacle)
+        if (!dynLevelData.bossSpawned) {
+          this.generateNewEvents(Math.random() < this.currentMapPoint.chanceForObstacle)
+        }
       }
     },
     getNewBackground (x, y) {
@@ -860,8 +880,25 @@ export default {
             type: 'obstacle',
             field: nextObstacle.field
           })
+
+          if (nextObstacle.boss) {
+            for (let unlock of nextObstacle.unlocks) {
+              this.$store.commit('canvasDict/unlockLevel', unlock)
+            }
+            this.$store.commit('canvasDict/setBossSpawned', false)
+          }
+
           this.animationQueue.push(new AnimationObject('pickUpItems', true))
           for (let item of nextObstacle.items) {
+            if (item.collectable) {
+              let alreadyCollected = this.$store.getters['canvasDict/isAlreadyCollected'](item.id)
+
+              if (!alreadyCollected) {
+                this.$store.commit('canvasDict/addCollectable', item.id)
+              }
+              continue
+            }
+
             let itemData = this.$store.getters['vueDict/getItemObject'](item.id)
             this.collectedItems.push({
               id: item.id,

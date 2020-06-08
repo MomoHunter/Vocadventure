@@ -95,13 +95,13 @@
         <ButtonBasic v-show="itemsVisible.off && (resultsVisible.off || resultsVisible.on)" class="is-half marginRightSmall" icon="times" color="is-danger"
                     text="adventureButton1" @click="$emit('click', { type: 'abort' })" />
       </transition>
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+      <transition :enter-active-class="enterActiveClass"
                   leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
         <ButtonBasic v-show="resultsVisible.on && currentWordIndex + 1 !== vocabs.words.length"
                     class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
                     text="adventureButton3" @click="nextWord()" :disabled="$store.state.canvasDict.animationActive" />
       </transition>
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+      <transition :enter-active-class="enterActiveClass"
                   leave-active-class="animated fadeOut a-little-bit-faster">
         <ButtonBasic v-show="resultsVisible.on && currentWordIndex + 1 === vocabs.words.length"
                     class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
@@ -331,6 +331,9 @@ export default {
     },
     baseUrl () {
       return process.env.BASE_URL
+    },
+    enterActiveClass () {
+      return 'animated a-little-bit-faster ' + (this.$store.state.canvasDict.animationActive ? 'fadeInC2' : 'fadeIn')
     }
   },
   methods: {

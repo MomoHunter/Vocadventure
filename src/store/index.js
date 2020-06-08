@@ -10,7 +10,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    version: '0.3.0',
+    version: '0.1.0',
     lang: 'german',
     targetLanguage: 'japanese',
     theme: 'bulma',
@@ -36,9 +36,17 @@ export default new Vuex.Store({
         size: state.size,
         status: state.vueDict.status,
         categoriesPlayed: state.vueDict.categoriesPlayed,
-        unlockedItems: state.vueDict.unlockedItems,
         inventory: state.vueDict.inventory,
-        currentLevel: state.canvasDict.currentLevel
+        unlockedItems: state.vueDict.unlockedItems,
+        watchedIntro: state.canvasDict.watchedIntro,
+        gameState: state.canvasDict.gameState,
+        mapOffset: state.canvasDict.mapOffset,
+        currentLevel: state.canvasDict.currentLevel,
+        currentBuilding: state.canvasDict.currentBuilding,
+        currentEquippedItem: state.canvasDict.currentEquippedItem,
+        unlockedBuildings: state.canvasDict.unlockedBuildings,
+        collectables: state.canvasDict.collectables,
+        dynamicLevelData: state.canvasDict.dynamicLevelData
       }
     }
   },
