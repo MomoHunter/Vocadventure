@@ -179,12 +179,12 @@ export default {
             fieldCount: 3,
             foundOn: [1, 2, 3],
             canBeFound: [
-              { id: 'branch', chance: 0.06 },
-              { id: 'pebble', chance: 0.06 },
-              { id: 'dirt', chance: 0.025 },
-              { id: 'mushroom', chance: 0.035 },
-              { id: 'spiderweb', chance: 0.06 },
-              { id: 'treeseed', chance: 0.01 }
+              { id: 'branch', chance: 0.05 },
+              { id: 'pebble', chance: 0.05 },
+              { id: 'dirt', chance: 0.022 },
+              { id: 'mushroom', chance: 0.033 },
+              { id: 'spiderweb', chance: 0.05 },
+              { id: 'treeseed', chance: 0.009 }
             ]
           },
           {
@@ -194,12 +194,12 @@ export default {
             fieldCount: 2,
             foundOn: [1, 2],
             canBeFound: [
-              { id: 'branch', chance: 0.06 },
-              { id: 'pebble', chance: 0.06 },
-              { id: 'dirt', chance: 0.025 },
-              { id: 'mushroom', chance: 0.035 },
-              { id: 'spiderweb', chance: 0.06 },
-              { id: 'treeseed', chance: 0.01 }
+              { id: 'branch', chance: 0.05 },
+              { id: 'pebble', chance: 0.05 },
+              { id: 'dirt', chance: 0.022 },
+              { id: 'mushroom', chance: 0.033 },
+              { id: 'spiderweb', chance: 0.05 },
+              { id: 'treeseed', chance: 0.009 }
             ]
           }
         ],
