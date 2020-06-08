@@ -80,9 +80,9 @@ export default {
           this.$store.commit('vueDict/increaseCategoryPlayed', category)
         }
         this.$store.commit('vueDict/transferAdditionalStat')
+        this.addItemsToInventory()
         window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
         this.$store.commit('vueDict/resetVocabs')
-        this.addItemsToInventory()
         next()
       } else {
         this.showMessageModal()

@@ -52,7 +52,6 @@ export default {
           nameId: 'detailsTagOwn',
           valueId: quantity,
           color: 'is-info'
-
         }
       ]
     },
@@ -91,6 +90,8 @@ export default {
       }, this)
 
       if (buyable) {
+        let itemData = this.$store.getters['vueDict/getItemObject'](this.item.id)
+
         this.item.costs.forEach(entry => {
           if (entry.id === 'coins') {
             this.$store.commit('vueDict/addStat', { id: entry.id, quantity: -entry.quantity })
@@ -99,21 +100,34 @@ export default {
           }
         }, this)
 
+        if (this.item.output) {
+          let max = this.item.output.reduce((acc, value) => { return acc + value.chance }, 0)
+          let random = max * Math.random()
+
+          for (let output of this.item.output) {
+            random -= output.chance
+            if (random <= 0) {
+              itemData = this.$store.getters['vueDict/getItemObject'](output.id)
+              break
+            }
+          }
+        }
+
         this.$store.commit('vueDict/addToInventory', {
-          id: this.item.id,
-          quantity: this.item.quantity,
+          id: itemData.id,
+          quantity: itemData.quantity,
           item: {
-            id: this.item.id,
-            quantity: this.item.quantity,
-            spritePath: this.item.spritePath,
-            power: this.item.power || null,
-            usefulAgainst: this.item.usefulAgainst || null,
-            durability: this.item.durability || null,
-            maxDurability: this.item.durability || null
+            id: itemData.id,
+            quantity: itemData.quantity,
+            spritePath: itemData.spritePath,
+            power: itemData.power || null,
+            usefulAgainst: itemData.usefulAgainst || null,
+            durability: itemData.durability || null,
+            maxDurability: itemData.durability || null
           }
         })
-        this.$store.commit('vueDict/unlockItem', this.item.id)
-        this.$store.commit('vueDict/addStat', { id: 'points', quantity: this.item.points })
+        this.$store.commit('vueDict/unlockItem', itemData.id)
+        this.$store.commit('vueDict/addStat', { id: 'points', quantity: itemData.points })
         window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
       }
     }

@@ -25,6 +25,7 @@ export default {
       'branch': ['wood'],
       'pebble': ['stone'],
       'spiderweb': ['string'],
+      'treeseed': ['randomtree'],
       'stone': ['stonepickaxe', 'stoneaxe', 'stonesword']
     },
     vocabs: {},

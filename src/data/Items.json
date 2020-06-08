@@ -97,6 +97,34 @@
     ]
   },
   {
+    "id": "randomtree",
+    "spriteKey": "items_treeseed_random",
+    "spritePath": "img/items/treeseed_random.png",
+    "unlocked": false,
+    "output": [
+      { "id": "treebasic", "chance": 1 },
+      { "id": "treesakura", "chance": 0.05}
+    ],
+    "costs": [
+      { "id": "treeseed", "quantity": 1 },
+      { "id": "coins", "quantity": 55 }
+    ]
+  },
+  {
+    "id": "treebasic",
+    "spriteKey": "items_tree_basic",
+    "spritePath": "img/items/tree_basic.png",
+    "quantity": 1,
+    "points": 6
+  },
+  {
+    "id": "treesakura",
+    "spriteKey": "items_tree_sakura",
+    "spritePath": "img/items/tree_sakura.png",
+    "quantity": 1,
+    "points": 30
+  },
+  {
     "id": "stonepickaxe",
     "spriteKey": "items_stonepickaxe",
     "spriteKeySmall": "items_stonepickaxe_s",
