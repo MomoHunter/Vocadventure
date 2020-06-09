@@ -288,6 +288,7 @@ export default {
       let names = Object.keys(this.vocabs.signs)
       if (this.vocabs.signs.other) {
         for (let extra of this.vocabs.signs.other) {
+          names = names.filter(name => name !== extra.id)
           names.splice(extra.position, 0, extra.id)
         }
         names = names.filter(name => name !== 'other')
