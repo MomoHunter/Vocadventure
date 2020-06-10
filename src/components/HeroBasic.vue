@@ -4,7 +4,7 @@
       <div class="container">
         <h1 class="title has-text-centered" :class="getSizeClass('title')">{{ getText(title) }}</h1>
         <h2 class="subtitle has-text-centered" :class="getSizeClass('subtitle')" v-if="showSubtitle">
-          {{ getText(subtitle) }}
+          {{ getText(subtitle) + language }}
         </h2>
       </div>
     </div>
@@ -16,11 +16,18 @@ export default {
   name: 'TheHero',
   props: {
     title: String,
-    subtitle: String
+    subtitle: String,
+    lang: Boolean
   },
   computed: {
     showSubtitle () {
       return this.getText(this.subtitle)
+    },
+    language () {
+      if (this.lang) {
+        return this.getText(this.$store.state.targetLanguage)
+      }
+      return ''
     }
   },
   methods: {

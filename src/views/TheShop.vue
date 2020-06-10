@@ -44,6 +44,11 @@
       <ButtonBasic color="is-danger" icon="arrow-left" text="shopButton5"
                    @click="$router.push({ name: 'menu', query: { sub: 'adventure' } })" />
     </div>
+    <transition enter-active-class="animated bounceInDown delay-500ms" leave-active-class="animated bounceOutUp"
+                @after-enter="setTimer()" @after-leave="clearBoughtItems()">
+      <MessageItems v-show="messageVisible" title="shopNewItems" class="fullWidth"
+                    color="is-success" :items="$store.state.vueDict.boughtItems" @click="closeMessage()" />
+    </transition>
   </div>
 </template>
 
@@ -54,6 +59,7 @@ import DropdownRounded from '@/components/DropdownRounded.vue'
 import ButtonIcon from '@/components/ButtonIcon.vue'
 import InputWithButton from '@/components/InputWithButton.vue'
 import PaginationBasic from '@/components/PaginationBasic.vue'
+import MessageItems from '@/components/MessageItems.vue'
 
 export default {
   name: 'TheShop',
@@ -63,12 +69,14 @@ export default {
     DropdownRounded,
     ButtonIcon,
     InputWithButton,
-    PaginationBasic
+    PaginationBasic,
+    MessageItems
   },
   data () {
     return {
       showSearch: false,
       showSort: false,
+      messageVisible: false,
       searchString: '',
       sortIcon: 'sort',
       enterTransition: 'animated fadeInLeft',
@@ -77,6 +85,14 @@ export default {
         return (a, b) => { return 0 }
       }
     }
+  },
+  mounted () {
+    if (this.$store.state.vueDict.boughtItems.length > 0) {
+      this.messageVisible = true
+    }
+  },
+  beforeDestroy () {
+    this.clearBoughtItems()
   },
   computed: {
     sorters () {
@@ -189,6 +205,15 @@ export default {
         default:
           return 'alignTop alignLeft'
       }
+    },
+    setTimer () {
+      setTimeout(this.closeMessage, 10000)
+    },
+    closeMessage () {
+      this.messageVisible = false
+    },
+    clearBoughtItems () {
+      this.$store.commit('vueDict/setBoughtItems', [])
     }
   },
   watch: {

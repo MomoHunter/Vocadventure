@@ -4,9 +4,9 @@
       <div>
         <p class="heading">{{ getText(state.id) }}</p>
         <p class="title">
-          {{ state.count }}
+          {{ state.count.toLocaleString() }}
           <span v-show="inAdventure" class="has-text-success">
-            +{{ state.additional }}
+            +{{ state.additional.toLocaleString() }}
           </span>
         </p>
       </div>

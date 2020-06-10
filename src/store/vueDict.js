@@ -13,6 +13,7 @@ export default {
     categoriesPlayed: [],
     writeKanji: null,
     trainingStash: null,
+    boughtItems: [],
     currentShopPage: 1,
     currentInventoryPage: 1,
     difficulty: 0,
@@ -182,6 +183,9 @@ export default {
       } else {
         state.categoriesPlayed.push({ id: id, count: 1 })
       }
+    },
+    setBoughtItems (state, boughtItems) {
+      state.boughtItems = boughtItems
     },
     setCurrentShopPage (state, newPage) {
       state.currentShopPage = newPage

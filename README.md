@@ -1,4 +1,4 @@
-# vokabeln
+# Vocadventure
 
 ## Project setup
 ```

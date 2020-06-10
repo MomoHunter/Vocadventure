@@ -1119,7 +1119,7 @@ export default {
 
         Helper.drawCanvasImage(
           Math.min(dynLevelData.steps + 0.5, 2.5) * this.stepWidth - Math.floor(playerData.spriteWidth / 2),
-          195, itemData.spriteKeySmall, cD
+          195, itemData.spriteKey, cD
         )
       }
 

@@ -28,7 +28,9 @@
                :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
           <div class="fullWidth infoBar">
             <div class="content noMarginBottom"
-                 :class="[getSizeClass('content'), { 'inactive': item.quantity === 0 }]">{{ item.quantity }}</div>
+                 :class="[getSizeClass('content'), { 'inactive': item.quantity === 0 }]">
+              {{ item.quantity.toLocaleString() }}
+            </div>
             <progress v-show="item.durability && item.quantity > 0" class="progress flexGrow customProgress"
                       :class="[getSizeClass('progress'), getProgressColor(item)]" :value="item.durability"
                       :max="item.maxDurability">

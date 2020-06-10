@@ -79,12 +79,28 @@ $content-blockquote-border-left: 5px solid $grey-dark;
   border-color: $grey-dark;
 }
 
-.message-header .delete::before {
-  background-color: $grey-light;
+.message.is-success {
+  background-color: darken($grey-darker, 2);
 }
 
-.message-header .delete::after {
-  background-color: $grey-light;
+.message-header {
+  .delete::before {
+    background-color: $grey-light;
+  }
+
+  .delete::after {
+    background-color: $grey-light;
+  }
+
+  &.is-success {
+    .delete::before {
+      background-color: #ffffff;
+    }
+
+    .delete::after {
+      background-color: #ffffff;
+    }
+  }
 }
 
 .select:not(.is-multiple) {

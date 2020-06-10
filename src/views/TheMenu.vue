@@ -1,6 +1,6 @@
 <template>
   <div class="flexContainer justifyEvenly">
-    <HeroBasic title="menuTitle" subtitle="menuSubtitle"/>
+    <HeroBasic title="menuTitle" subtitle="menuSubtitle" lang />
     <div class="is-10 is-relative">
       <div class="is-absolute">
         <transition :enter-active-class="trainingAnimation.enter"
