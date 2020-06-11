@@ -208,7 +208,8 @@
     "costs": [
       { "id": "honey", "quantity": 1 },
       { "id": "mushroom", "quantity": 5 },
-      { "id": "wood", "quantity": 1 }
+      { "id": "wood", "quantity": 1 },
+      { "id": "coins", "quantity": 65 }
     ]
   },
   {
