@@ -391,7 +391,9 @@ export default {
       let length = this.$store.state.vueDict.wordCount
       let wordObjects = []
 
-      if (vocabs.words.length === length) {
+      if (vocabs.words.length === 0) {
+        this.$router.push({ name: 'category', params: { destination: 'adventure' } })
+      } else if (vocabs.words.length === length) {
         while (vocabs.words.length > 0) {
           let random = Math.floor(Math.random() * vocabs.words.length)
 
@@ -450,7 +452,8 @@ export default {
             power: itemData.power || null,
             usefulAgainst: itemData.usefulAgainst || null,
             durability: itemData.durability || null,
-            maxDurability: itemData.durability || null
+            maxDurability: itemData.durability || null,
+            healing: itemData.healing || null
           }
         })
         this.$store.commit('vueDict/unlockItem', item.id)
@@ -1119,7 +1122,7 @@ export default {
 
         Helper.drawCanvasImage(
           Math.min(dynLevelData.steps + 0.5, 2.5) * this.stepWidth - Math.floor(playerData.spriteWidth / 2),
-          195, itemData.spriteKey, cD
+          165, itemData.spriteKey, cD
         )
       }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="box customBox noMarginBottom" @click="$emit('click', item.id)">
+  <div class="box itemBox noMarginBottom" @click="$emit('click', item.id)">
     <span class="activeIcon has-text-success" v-show="equipped">
       <font-awesome-icon :icon="['fas', 'check-square']" :size="getSizeClass('fas')" />
     </span>
@@ -14,6 +14,10 @@
                 :class="[getSizeClass('progress'), getProgressColor(item)]" :value="item.durability"
                 :max="item.maxDurability">
       </progress>
+      <div v-show="item.healing && !item.durability" class="flexGrow"></div>
+      <div v-show="item.healing" class="content noMarginBottom has-text-success" :class="getSizeClass('content')">
+        {{ item.healing }}
+      </div>
     </div>
   </div>
 </template>
@@ -60,7 +64,7 @@ export default {
   margin-bottom: 0px;
 }
 
-.customBox {
+.itemBox {
   display: flex;
   flex-direction: column;
   height: 100%;

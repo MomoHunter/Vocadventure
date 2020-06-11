@@ -71,6 +71,11 @@ html, body {
     animation-delay: .1s;
   }
 
+  &.delay-400ms {
+    -webkit-animation-delay: .4s;
+    animation-delay: .4s;
+  }
+
   &.delay-500ms {
     -webkit-animation-delay: .5s;
     animation-delay: .5s;

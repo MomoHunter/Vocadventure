@@ -46,34 +46,39 @@ export default {
       'items_goblinkingcrown_s': [false, 1801, 267, 20, 20],
       'items_hand': [false, 1801, 288, 50, 50],
       'items_hand_s': [false, 1801, 339, 20, 20],
-      'items_mushroom': [false, 1801, 360, 50, 50],
-      'items_mushroom_s': [false, 1801, 411, 20, 20],
-      'items_pebble': [false, 1801, 432, 50, 50],
-      'items_pebble_s': [false, 1801, 483, 20, 20],
-      'items_spiderweb': [false, 1801, 504, 50, 50],
-      'items_spiderweb_s': [false, 1801, 555, 20, 20],
-      'items_stone': [false, 1801, 576, 50, 50],
-      'items_stoneaxe': [false, 1801, 627, 50, 50],
-      'items_stoneaxe_s': [false, 1801, 678, 20, 20],
-      'items_stonepickaxe': [false, 1801, 699, 50, 50],
-      'items_stonepickaxe_s': [false, 1801, 750, 20, 20],
-      'items_stonesword': [false, 1801, 771, 50, 50],
-      'items_stonesword_s': [false, 1801, 822, 20, 20],
-      'items_stone_s': [false, 1801, 843, 20, 20],
-      'items_string': [false, 1801, 864, 50, 50],
-      'items_string_s': [false, 1801, 915, 20, 20],
-      'items_treeseed': [false, 1801, 936, 50, 50],
-      'items_treeseed_random': [false, 1801, 987, 50, 50],
-      'items_treeseed_s': [false, 1801, 1038, 20, 20],
-      'items_tree_basic': [false, 1801, 1059, 50, 50],
-      'items_tree_sakura': [false, 1801, 1110, 50, 50],
-      'items_wood': [false, 1801, 1161, 50, 50],
-      'items_wood_s': [false, 1801, 1212, 20, 20],
-      'obstacles_goblin': [false, 1852, 0, 71, 75],
-      'obstacles_goblinking': [false, 1852, 76, 232, 182],
-      'obstacles_net': [false, 1852, 259, 36, 79],
-      'obstacles_trunk': [false, 1852, 339, 84, 95],
-      'obstacles_wall': [false, 1852, 435, 60, 86],
+      'items_honey': [false, 1801, 360, 50, 50],
+      'items_honey_s': [false, 1801, 411, 20, 20],
+      'items_mushroom': [false, 1801, 432, 50, 50],
+      'items_mushroom_s': [false, 1801, 483, 20, 20],
+      'items_pebble': [false, 1801, 504, 50, 50],
+      'items_pebble_s': [false, 1801, 555, 20, 20],
+      'items_pickledmushrooms': [false, 1801, 576, 50, 50],
+      'items_pickledmushrooms_s': [false, 1801, 627, 20, 20],
+      'items_spiderweb': [false, 1801, 648, 50, 50],
+      'items_spiderweb_s': [false, 1801, 699, 20, 20],
+      'items_stone': [false, 1801, 720, 50, 50],
+      'items_stoneaxe': [false, 1801, 771, 50, 50],
+      'items_stoneaxe_s': [false, 1801, 822, 20, 20],
+      'items_stonepickaxe': [false, 1801, 843, 50, 50],
+      'items_stonepickaxe_s': [false, 1801, 894, 20, 20],
+      'items_stonesword': [false, 1801, 915, 50, 50],
+      'items_stonesword_s': [false, 1801, 966, 20, 20],
+      'items_stone_s': [false, 1801, 987, 20, 20],
+      'items_string': [false, 1801, 1008, 50, 50],
+      'items_string_s': [false, 1801, 1059, 20, 20],
+      'items_treeseed': [false, 1801, 1080, 50, 50],
+      'items_treeseed_random': [false, 1801, 1131, 50, 50],
+      'items_treeseed_s': [false, 1801, 1182, 20, 20],
+      'items_tree_basic': [false, 1801, 1203, 50, 50],
+      'items_tree_sakura': [false, 1801, 1254, 50, 50],
+      'items_wood': [false, 1801, 1305, 50, 50],
+      'items_wood_s': [false, 1801, 1356, 20, 20],
+      'obstacles_beenest': [false, 1852, 0, 44, 76],
+      'obstacles_goblin': [false, 1852, 77, 71, 75],
+      'obstacles_goblinking': [false, 1852, 153, 232, 182],
+      'obstacles_net': [false, 1852, 336, 36, 79],
+      'obstacles_trunk': [false, 1852, 416, 84, 95],
+      'obstacles_wall': [false, 1852, 512, 60, 86],
       'player_level_standing': [false, 2085, 0, 55, 95],
       'player_map_standing': [false, 2085, 96, 25, 43],
       'special_placeholder': [false, 2141, 0, 50, 50]
@@ -91,7 +96,7 @@ export default {
     ],
     animationActive: false, // blocks navigation animation at init on adventure
     questionKey: '',
-    playerHealth: 100,
+    playerHealth: 99,
     currentLevel: 'home',
     currentBuilding: 'house',
     currentEquippedItem: 'hand',
@@ -182,12 +187,12 @@ export default {
             fieldCount: 3,
             foundOn: [1, 2, 3],
             canBeFound: [
-              { id: 'branch', chance: 0.05 },
-              { id: 'pebble', chance: 0.05 },
-              { id: 'dirt', chance: 0.022 },
-              { id: 'mushroom', chance: 0.033 },
-              { id: 'spiderweb', chance: 0.05 },
-              { id: 'treeseed', chance: 0.009 }
+              { id: 'branch', chance: 0.07 },
+              { id: 'pebble', chance: 0.07 },
+              { id: 'dirt', chance: 0.03 },
+              { id: 'mushroom', chance: 0.055 },
+              { id: 'spiderweb', chance: 0.07 },
+              { id: 'treeseed', chance: 0.01 }
             ]
           },
           {
@@ -197,12 +202,12 @@ export default {
             fieldCount: 2,
             foundOn: [1, 2],
             canBeFound: [
-              { id: 'branch', chance: 0.05 },
-              { id: 'pebble', chance: 0.05 },
-              { id: 'dirt', chance: 0.022 },
-              { id: 'mushroom', chance: 0.033 },
-              { id: 'spiderweb', chance: 0.05 },
-              { id: 'treeseed', chance: 0.009 }
+              { id: 'branch', chance: 0.07 },
+              { id: 'pebble', chance: 0.07 },
+              { id: 'dirt', chance: 0.03 },
+              { id: 'mushroom', chance: 0.055 },
+              { id: 'spiderweb', chance: 0.07 },
+              { id: 'treeseed', chance: 0.01 }
             ]
           }
         ],
@@ -235,6 +240,16 @@ export default {
             chance: 1,
             items: [
               { id: 'string', quantity: 2 }
+            ]
+          },
+          {
+            id: 'forestBeeNest',
+            spriteKey: 'obstacles_beenest',
+            bottomY: 225,
+            durability: 7,
+            chance: 1,
+            items: [
+              { id: 'honey', quantity: 2 }
             ]
           },
           {
@@ -668,8 +683,11 @@ export default {
     setQuestionKey (state, key) {
       state.questionKey = key
     },
+    setPlayerHealth (state, amount) {
+      state.playerHealth = amount
+    },
     changePlayerHealth (state, amount) {
-      state.playerHealth += amount
+      state.playerHealth = Math.min(state.playerHealth + amount, 100)
     },
     moveBackground (state, object) {
       let dynLevelData = state.dynamicLevelData[object.level]

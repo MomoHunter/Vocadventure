@@ -46,6 +46,7 @@ export default new Vuex.Store({
         currentEquippedItem: state.canvasDict.currentEquippedItem,
         unlockedBuildings: state.canvasDict.unlockedBuildings,
         collectables: state.canvasDict.collectables,
+        playerHealth: state.canvasDict.playerHealth,
         dynamicLevelData: state.canvasDict.dynamicLevelData
       }
     }

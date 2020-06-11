@@ -186,7 +186,8 @@ export default {
                 power: itemData.power || null,
                 usefulAgainst: itemData.usefulAgainst || null,
                 durability: itemData.durability || null,
-                maxDurability: itemData.durability || null
+                maxDurability: itemData.durability || null,
+                healing: itemData.healing || null
               }
             }
 
@@ -206,7 +207,8 @@ export default {
               power: this.item.power || null,
               usefulAgainst: this.item.usefulAgainst || null,
               durability: this.item.durability || null,
-              maxDurability: this.item.durability || null
+              maxDurability: this.item.durability || null,
+              healing: this.item.healing || null
             }
           }
           this.$store.commit('vueDict/addToInventory', newItem)

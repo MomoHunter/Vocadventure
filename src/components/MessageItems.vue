@@ -49,7 +49,6 @@ export default {
   flex-direction: row;
   flex-wrap: nowrap;
   height: 200px;
-  padding: 0px auto;
 
   .customBox {
     min-width: 150px;
@@ -60,7 +59,7 @@ export default {
     }
 
     &:not(:last-child) {
-      margin-right: .25rem;
+      margin-right: .5rem;
     }
 
     &:last-child {

@@ -98,6 +98,9 @@ export default {
         if (data.collectables) {
           this.$store.commit('canvasDict/changeCollectables', data.collectables)
         }
+        if (data.playerHealth) {
+          this.$store.commit('canvasDict/setPlayerHealth', data.playerHealth)
+        }
         if (data.dynamicLevelData) {
           this.$store.commit('canvasDict/changeDynamicLevelData', data.dynamicLevelData)
         }

@@ -97,6 +97,14 @@
     ]
   },
   {
+    "id": "honey",
+    "spriteKey": "items_honey",
+    "spriteKeySmall": "items_honey_s",
+    "spritePath": "img/items/honey.png",
+    "quantity": 1,
+    "points": 8
+  },
+  {
     "id": "randomtree",
     "spriteKey": "items_treeseed_random",
     "spritePath": "img/items/treeseed_random.png",
@@ -154,7 +162,8 @@
     "durability": 10,
     "power": 2,
     "usefulAgainst": [
-      "forestTrunk"
+      "forestTrunk",
+      "forestBeeNest"
     ],
     "unlocked": false,
     "costs": [
@@ -175,6 +184,7 @@
     "power": 2,
     "usefulAgainst": [
       "forestNet",
+      "forestBeeNest",
       "forestGoblin",
       "forestGoblinking"
     ],
@@ -185,6 +195,29 @@
       { "id": "string", "quantity": 1 },
       { "id": "coins", "quantity": 110 }
     ]
+  },
+  {
+    "id": "pickledmushrooms",
+    "spriteKey": "items_pickledmushrooms",
+    "spriteKeySmall": "items_pickledmushrooms_s",
+    "spritePath": "img/items/pickledmushrooms.png",
+    "quantity": 1, 
+    "points": 13,
+    "healing": 5,
+    "unlocked": false,
+    "costs": [
+      { "id": "honey", "quantity": 1 },
+      { "id": "mushroom", "quantity": 5 },
+      { "id": "wood", "quantity": 1 }
+    ]
+  },
+  {
+    "id": "goblinblood",
+    "spriteKey": "items_goblinblood",
+    "spriteKeySmall": "items_goblinblood_s",
+    "spritePath": "img/items/goblinblood.png",
+    "quantity": 1,
+    "points": 11
   },
   {
     "id": "goblinkingcrown",

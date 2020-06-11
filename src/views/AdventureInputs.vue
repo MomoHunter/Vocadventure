@@ -50,27 +50,13 @@
     </transition>
     <transition leave-active-class="animated zoomOut a-little-bit-faster"
                 enter-active-class="animated zoomIn a-little-bit-faster" @after-leave="endTrigger()">
-      <div class="is-max-10 flexGrow overflowAuto displayFlex" v-show="itemsVisible.on">
-        <div class="itemBar">
-          <div class="box customBox marginBottomBig" v-for="item in items" :key="item.id"
-                @click="setItemEquipped(item.id)">
-            <span class="activeIcon has-text-success" v-show="itemEquipped(item.id)">
-              <font-awesome-icon :icon="['fas', 'check-square']" :size="getSizeClass('fas')" />
-            </span>
-            <p class="content has-text-centered marginBottomSmall" :class="getSizeClass('content')">{{ getText(item.id) }}</p>
-            <div class="flexGrow fullWidth backgroundPicture"
-                  :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
-            <div class="fullWidth infoBar">
-              <div class="content noMarginBottom" :class="getSizeClass('content')">
-                {{ item.quantity }}
-              </div>
-              <progress v-show="item.durability" class="progress flexGrow customProgress"
-                        :class="[getSizeClass('progress'), getProgressColor(item)]" :value="item.durability"
-                        :max="item.maxDurability">
-              </progress>
-            </div>
-          </div>
-        </div>
+      <div class="is-10 itemBar flexGrow overflowAuto" v-show="itemsVisible.on">
+        <transition-group class="transitionGroup" leave-active-class="animated zoomOut a-little-bit-faster"
+                          enter-active-class="animated zoomIn a-little-bit-faster" tag="div"
+                          @after-leave="setItemCategory()">
+          <TheItemBox class="customBox" v-for="item in items" :key="item.id" :item="item"
+                      :equipped="itemEquipped(item.id)" hasInfoBar @click="itemBoxAction(item)" />
+        </transition-group>
       </div>
     </transition>
     <div class="innerFlexContainerButton is-10 marginBottomBig" v-show="!keyboardVisible">
@@ -82,18 +68,39 @@
       </transition>
       <transition enter-active-class="animated fadeIn a-little-bit-faster"
                   leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonBasic v-show="itemsVisible.on" class="marginBottomSmall" icon="list" color="is-primary"
-                    text="adventureButton9" @click="hideItems()" />
-      </transition>
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
-                  leave-active-class="animated fadeOut a-little-bit-faster">
         <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginBottomSmall marginLeftSmall"
                     icon="check" color="is-success" text="adventureButton2" @click="checkInput()" />
       </transition>
       <transition enter-active-class="animated fadeIn a-little-bit-faster"
                   leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonBasic v-show="itemsVisible.off && (resultsVisible.off || resultsVisible.on)" class="is-half marginRightSmall" icon="times" color="is-danger"
-                    text="adventureButton1" @click="$emit('click', { type: 'abort' })" />
+        <ButtonMDI v-show="itemsVisible.on" class="is-half marginBottomSmall marginRightSmall" color="is-link"
+                   :text="leftItemButton.text" @click="rotateItemsLeft()">
+          <BottleTonicOutline v-if="leftItemButton.id === 'consumables'"
+                              :class="getSizeClass('mdi')" />
+          <Sword v-if="leftItemButton.id === 'weapons'" :class="getSizeClass('mdi')" />
+          <ShieldOutline v-if="leftItemButton.id === 'armor'" :class="getSizeClass('mdi')" />
+        </ButtonMDI>
+      </transition>
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster">
+        <ButtonMDI v-show="itemsVisible.on" class="is-half marginBottomSmall marginLeftSmall" color="is-link"
+                   :text="rightItemButton.text" @click="rotateItemsRight()">
+          <BottleTonicOutline v-if="rightItemButton.id === 'consumables'"
+                              :class="getSizeClass('mdi')" />
+          <Sword v-if="rightItemButton.id === 'weapons'" :class="getSizeClass('mdi')" />
+          <ShieldOutline v-if="rightItemButton.id === 'armor'" :class="getSizeClass('mdi')" />
+        </ButtonMDI>
+      </transition>
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster">
+        <ButtonBasic v-show="(itemsVisible.off || itemsVisible.on) && (resultsVisible.off || resultsVisible.on)"
+                     class="is-half marginRightSmall" icon="times" color="is-danger" text="adventureButton1"
+                     @click="$emit('click', { type: 'abort' })" />
+      </transition>
+      <transition enter-active-class="animated fadeIn a-little-bit-faster"
+                  leave-active-class="animated fadeOut a-little-bit-faster">
+        <ButtonBasic v-show="itemsVisible.on" class="is-half marginLeftSmall" icon="list" color="is-primary"
+                    text="adventureButton9" @click="hideItems()" />
       </transition>
       <transition :enter-active-class="enterActiveClass"
                   leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
@@ -112,11 +119,6 @@
                   leave-active-class="animated fadeOut a-little-bit-faster">
         <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginLeftSmall" icon="briefcase"
                     color="is-primary" text="adventureButton6" @click="showItems()" />
-      </transition>
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
-                  leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonBasic v-show="itemsVisible.on" icon="times" color="is-danger" text="adventureButton1"
-                    @click="$emit('click', { type: 'abort' })" />
       </transition>
       <transition enter-active-class="animated fadeIn a-little-bit-faster"
                   leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
@@ -150,8 +152,14 @@
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import ButtonIcon from '@/components/ButtonIcon.vue'
 import ButtonText from '@/components/ButtonText.vue'
+import ButtonMDI from '@/components/ButtonMDI.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
 import TabsBasic from '@/components/TabsBasic.vue'
+import TheItemBox from '@/components/TheItemBox.vue'
+
+import BottleTonicOutline from 'vue-material-design-icons/BottleTonicOutline.vue'
+import Sword from 'vue-material-design-icons/Sword.vue'
+import ShieldOutline from 'vue-material-design-icons/ShieldOutline.vue'
 
 export default {
   name: 'AdventureInputs',
@@ -159,8 +167,13 @@ export default {
     ButtonBasic,
     ButtonIcon,
     ButtonText,
+    ButtonMDI,
     TheProgressBar,
-    TabsBasic
+    TabsBasic,
+    TheItemBox,
+    BottleTonicOutline,
+    Sword,
+    ShieldOutline
   },
   data () {
     return {
@@ -179,6 +192,14 @@ export default {
       },
       inputBorderInfo: false,
       animationQueue: [],
+      itemCategories: [
+        { id: 'armor', text: 'adventureItemArmor' },
+        { id: 'weapons', text: 'adventureItemWeapons' },
+        { id: 'consumables', text: 'adventureItemConsumables' }
+      ],
+      noItems: false,
+      nextItemCategory: 2,
+      currentItemCategory: 2,
       latinInput: '',
       foreignInput: '',
       userLatinInput: '',
@@ -325,10 +346,33 @@ export default {
       return kanji
     },
     items () {
-      let items = this.$store.state.vueDict.inventory.filter(item => item.power && item.quantity > 0)
-      items.unshift(this.$store.getters['vueDict/getItemObject']('hand'))
+      let items = []
+      if (!this.noItems) {
+        switch (this.itemCategories[this.currentItemCategory].id) {
+          case 'weapons':
+            items = this.$store.state.vueDict.inventory.filter(item => item.power && item.quantity > 0)
+            items.unshift(this.$store.getters['vueDict/getItemObject']('hand'))
+            break
+          case 'consumables':
+            items = this.$store.state.vueDict.inventory.filter(item => item.healing && item.quantity > 0)
+            break
+          case 'armor':
+            items = this.$store.state.vueDict.inventory.filter(item => item.defense && item.quantity > 0)
+            // items.unshift(this.$store.getters['vueDict/getItemObject']('noarmor'))
+            break
+          default:
+        }
+      }
 
       return items
+    },
+    leftItemButton () {
+      let index = this.currentItemCategory === 0 ? this.itemCategories.length - 1 : this.currentItemCategory - 1
+      return this.itemCategories[index]
+    },
+    rightItemButton () {
+      let index = this.currentItemCategory === this.itemCategories.length - 1 ? 0 : this.currentItemCategory + 1
+      return this.itemCategories[index]
     },
     baseUrl () {
       return process.env.BASE_URL
@@ -428,6 +472,54 @@ export default {
     },
     removeLetter () {
       this.foreignInput = this.foreignInput.slice(0, -1)
+    },
+    rotateItemsLeft () {
+      if (this.currentItemCategory === 0) {
+        this.nextItemCategory = this.itemCategories.length - 1
+      } else {
+        this.nextItemCategory = this.currentItemCategory - 1
+      }
+
+      if (this.items.length === 0) {
+        this.setItemCategory()
+      } else {
+        this.noItems = true
+      }
+    },
+    rotateItemsRight () {
+      if (this.currentItemCategory === this.itemCategories.length - 1) {
+        this.nextItemCategory = 0
+      } else {
+        this.nextItemCategory = this.currentItemCategory + 1
+      }
+
+      if (this.items.length === 0) {
+        this.setItemCategory()
+      } else {
+        this.noItems = true
+      }
+    },
+    setItemCategory () {
+      this.currentItemCategory = this.nextItemCategory
+      this.noItems = false
+    },
+    itemBoxAction (item) {
+      switch (this.itemCategories[this.currentItemCategory].id) {
+        case 'weapons':
+          this.setItemEquipped(item.id)
+          break
+        case 'armor':
+          break
+        case 'consumables':
+          if (item.healing) {
+            if (this.$store.state.canvasDict.playerHealth < 100) {
+              this.$store.commit('canvasDict/changePlayerHealth', item.healing)
+              this.$store.commit('vueDict/addToInventory', { id: item.id, quantity: -1 })
+            }
+          }
+          break
+        default:
+      }
     },
     itemEquipped (itemId) {
       return itemId === this.$store.state.canvasDict.currentEquippedItem
@@ -532,10 +624,6 @@ export default {
     }
   }
 
-  .displayFlex {
-    display: flex;
-  }
-
   .itemBar {
     display: flex;
     flex-direction: row;
@@ -543,52 +631,55 @@ export default {
     align-items: center;
     height: 100%;
 
-    .customBox {
-      display: flex;
-      flex-direction: column;
-      height: 75%;
-      width: 175px;
-      position: relative;
+    .transitionGroup {
+      width: 100%;
+      height: 100%;
+      display: contents;
 
-      .activeIcon {
-        position: absolute;
-        top: 2px;
-        left: 2px;
-        width: 2px;
-        height: 2px;
-        line-height: 0px;
+      .customBox {
+        height: 75%;
+        min-width: 150px;
+        position: relative;
+
+        &:not(:first-child) {
+          margin-left: .25rem;
+        }
+
+        &:not(:last-child) {
+          margin-right: .25rem;
+        }
+
+        &:first-child {
+          margin-left: auto;
+        }
+
+        &:last-child {
+          margin-right: auto;
+        }
       }
 
-      &:not(:first-child) {
-        margin-left: .25rem;
+      .backgroundPicture {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
       }
 
-      &:not(:last-child) {
-        margin-right: .25rem;
-      }
+      .infoBar {
+        display: flex;
+        flex-direction: row-reverse;
+        flex-wrap: nowrap;
+
+        .noMarginBottom {
+          margin-bottom: 0px;
+        }
+
+        .customProgress {
+          margin-top: auto;
+          margin-bottom: auto;
+          margin-right: .5rem;
+          height: 12px;
+        }
     }
-
-    .backgroundPicture {
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: contain;
-    }
-
-    .infoBar {
-      display: flex;
-      flex-direction: row-reverse;
-      flex-wrap: nowrap;
-
-      .noMarginBottom {
-        margin-bottom: 0px;
-      }
-
-      .customProgress {
-        margin-top: auto;
-        margin-bottom: auto;
-        margin-right: .5rem;
-        height: 12px;
-      }
     }
   }
 }
