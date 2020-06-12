@@ -212,6 +212,9 @@ export default {
     gameState () {
       return this.$store.state.canvasDict.gameState
     },
+    firstBackground () {
+      return this.$store.getters['canvasDict/getFirstBackground'](this.currentLevel)
+    },
     lastBackground () {
       return this.$store.getters['canvasDict/getLastBackground'](this.currentLevel)
     },
@@ -601,6 +604,9 @@ export default {
           this.generateNewEvents(Math.random() < this.currentMapPoint.chanceForObstacle)
         }
       }
+      if (this.firstBackground.x + this.firstBackground.width < -100) {
+        this.$store.commit('canvasDict/removeBackgrounds', this.currentLevel)
+      }
     },
     getNewBackground (x, y) {
       const cD = this.$store.state.canvasDict
@@ -924,6 +930,10 @@ export default {
         let nextObstacle = this.$store.getters['canvasDict/getNextObstacleEvent'](this.currentLevel)
 
         this.$store.commit('canvasDict/changePlayerHealth', -nextObstacle.power)
+        if (this.$store.state.canvasDict.playerHealth <= 0) {
+          this.$store.commit('canvasDict/resetLevel', this.currentLevel)
+          this.$store.commit('canvasDict/addGameState', 'map')
+        }
         this.currentAnimation = null
       }
     },

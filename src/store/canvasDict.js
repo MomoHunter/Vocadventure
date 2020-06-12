@@ -466,6 +466,14 @@ export default {
     getDynamicLevelData: (state) => (level) => {
       return state.dynamicLevelData[level]
     },
+    getFirstBackground: (state) => (level) => {
+      let bg = state.dynamicLevelData[level].background
+
+      if (bg.length === 0) {
+        return null
+      }
+      return bg[0]
+    },
     getLastBackground: (state) => (level) => {
       let bg = state.dynamicLevelData[level].background
 
@@ -624,6 +632,17 @@ export default {
     },
     unlockBuilding (state, building) {
       state.unlockedBuildings.push(building)
+    },
+    resetLevel (state, level) {
+      state.dynamicLevelData[level] = {
+        steps: 0,
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false,
+        bossSpawned: false
+      }
     },
     unlockLevel (state, level) {
       if (!state.dynamicLevelData[level]) {
