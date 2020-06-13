@@ -2,8 +2,13 @@
   <div class="flexContainer">
     <HeroWithTags class="marginBottomSmall" :title="item.id" :tagObjects="tags" />
     <div class="box is-10 flexGrow">
-      <div class="fullWidth fullHeight backgroundPicture" :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }">
-      </div>
+      <div class="fullWidth fullHeight backgroundPicture"
+           :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
+    </div>
+    <div class="is-10 content" :class="getSizeClass('content')">
+      <blockquote>
+        {{ getText(item.id + 'Desc') }}
+      </blockquote>
     </div>
     <table class="table is-10">
       <thead>
@@ -95,6 +100,9 @@ export default {
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)
+    },
+    getSizeClass (type) {
+      return this.$store.getters.getSizeClass(type)
     },
     redAmount () {
       if (this.amount === 1) {

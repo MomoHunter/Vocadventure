@@ -96,7 +96,7 @@ export default {
     ],
     animationActive: false, // blocks navigation animation at init on adventure
     questionKey: '',
-    playerHealth: 99,
+    playerHealth: 100,
     currentLevel: 'home',
     currentBuilding: 'house',
     currentEquippedItem: 'hand',
@@ -257,7 +257,7 @@ export default {
             spriteKey: 'obstacles_goblin',
             bottomY: 240,
             durability: 12,
-            chance: 2,
+            chance: 200,
             power: 2,
             items: [
               { id: 'goblinblood', quantity: 1 }
@@ -280,7 +280,7 @@ export default {
             ]
           }
         ],
-        chanceForObstacle: 0.09
+        chanceForObstacle: 0.9
       },
       'plains': {
         x: 330,
@@ -706,7 +706,7 @@ export default {
       state.playerHealth = amount
     },
     changePlayerHealth (state, amount) {
-      state.playerHealth = Math.min(state.playerHealth + amount, 100)
+      state.playerHealth = Math.max(Math.min(state.playerHealth + amount, 100), 0)
     },
     moveBackground (state, object) {
       let dynLevelData = state.dynamicLevelData[object.level]

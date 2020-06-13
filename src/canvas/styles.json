@@ -34,6 +34,13 @@
       "align": "center",
       "baseline": "middle",
       "borderKey": ""
+    },
+    "deathScreen": {
+      "font": "17pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+      "color": "220, 220, 220, 1",
+      "align": "center",
+      "baseline": "middle",
+      "borderKey": ""
     }
   },
   "rect": {
@@ -46,14 +53,20 @@
     "bar": {
       "backgroundColor": "155, 155, 155, .7"
     },
+    "deathBackground": {
+      "backgroundColor": "100, 100, 100, .5"
+    },
+    "deathBand": {
+      "backgroundColor": "40, 40, 40, .8"
+    },
     "barSuccess": {
-      "backgroundColor": "0, 255, 0, 1"
+      "backgroundColor": "18, 122, 32, 1"
     },
     "barWarning": {
-      "backgroundColor": "255, 255, 0, 1"
+      "backgroundColor": "178, 167, 14, 1"
     },
     "barDanger": {
-      "backgroundColor": "255, 0, 0, 1"
+      "backgroundColor": "158, 39, 23, 1"
     },
     "darkness": {
       "backgroundColor": "0, 0, 0, 1"

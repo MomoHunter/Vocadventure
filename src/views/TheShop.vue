@@ -21,15 +21,8 @@
     <div v-if="visibleItems.length > 0" class="is-10 flexGrow itemContainer">
       <transition-group class="transitionGroup" tag="div" :enter-active-class="enterTransition"
                         :leave-active-class="leaveTransition">
-        <div class="box customBox" :class="absoluteClass(index)" v-for="(item, index) in visibleItems" :key="item.id"
-            @click="$router.push({ name: 'details', params: { item: item.id } })">
-          <p class="content has-text-centered" :class="getSizeClass('content')">{{ getText(item.id) }}</p>
-          <div class="flexGrow fullWidth backgroundPicture"
-              :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }" ></div>
-          <p v-show="item.quantity > 1" class="content has-text-right" :class="getSizeClass('content')">
-            {{ item.quantity }}
-          </p>
-        </div>
+        <TheItemBox class="customBox" :class="absoluteClass(index)" v-for="(item, index) in visibleItems" :key="item.id"
+                    :item="item" @click="$router.push({ name: 'details', params: { item: item.id } })" />
       </transition-group>
     </div>
     <div v-else class="is-10 flexGrow emptyPage">
@@ -60,6 +53,7 @@ import ButtonIcon from '@/components/ButtonIcon.vue'
 import InputWithButton from '@/components/InputWithButton.vue'
 import PaginationBasic from '@/components/PaginationBasic.vue'
 import MessageItems from '@/components/MessageItems.vue'
+import TheItemBox from '@/components/TheItemBox.vue'
 
 export default {
   name: 'TheShop',
@@ -70,7 +64,8 @@ export default {
     ButtonIcon,
     InputWithButton,
     PaginationBasic,
-    MessageItems
+    MessageItems,
+    TheItemBox
   },
   data () {
     return {
@@ -272,8 +267,6 @@ export default {
 
     .customBox {
       position: absolute;
-      display: flex;
-      flex-direction: column;
       width: calc(50% - .5rem);
       margin-bottom: 1rem;
       height: calc(50% - 1rem);
@@ -294,12 +287,6 @@ export default {
 
       &.alignBottom {
         bottom: 0px;
-      }
-
-      .backgroundPicture {
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
       }
     }
   }

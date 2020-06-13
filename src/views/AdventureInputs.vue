@@ -49,8 +49,14 @@
       </div>
     </transition>
     <transition leave-active-class="animated zoomOut a-little-bit-faster"
+                enter-active-class="animated zoomIn a-little-bit-faster">
+      <div v-show="itemsVisible.on" class="content has-text-centered" :class="getSizeClass('content')">
+        {{ getText(itemCategories[currentItemCategory].text) }}
+      </div>
+    </transition>
+    <transition leave-active-class="animated zoomOut a-little-bit-faster"
                 enter-active-class="animated zoomIn a-little-bit-faster" @after-leave="endTrigger()">
-      <div class="is-10 itemBar flexGrow overflowAuto" v-show="itemsVisible.on">
+      <div class="is-10 itemBar flexGrow overflowAuto marginBottomBig" v-show="itemsVisible.on">
         <transition-group class="transitionGroup" leave-active-class="animated zoomOut a-little-bit-faster"
                           enter-active-class="animated zoomIn a-little-bit-faster" tag="div"
                           @after-leave="setItemCategory()">
@@ -637,7 +643,6 @@ export default {
       display: contents;
 
       .customBox {
-        height: 75%;
         min-width: 150px;
         position: relative;
 

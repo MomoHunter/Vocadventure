@@ -147,10 +147,12 @@ export default {
     addStatAddit (state, object) {
       state.status.find(entry => entry.id === object.id).additional += object.count
     },
-    transferAdditionalStat (state) {
+    transferAdditionalStat (state, reset = true) {
       state.status.forEach(entry => {
         entry.count += entry.additional
-        entry.additional = 0
+        if (reset) {
+          entry.additional = 0
+        }
       })
     },
     resetAdditional (state) {
@@ -254,7 +256,14 @@ export default {
           state.inventory.push(object.item)
         }
       } else {
-        state.inventory.find(item => item.id === object.id).quantity += object.quantity
+        let itemObject = state.inventory.find(item => item.id === object.id)
+        if (itemObject.quantity + object.quantity < 0) {
+          console.error('Too less items in inventory:', itemObject.quantity, itemObject.id)
+        } else if (itemObject.quantity + object.quantity === 0) {
+          state.inventory = state.inventory.filter(item => item.id !== itemObject.id)
+        } else {
+          itemObject.quantity += object.quantity
+        }
       }
     },
     reduceItemDurability (state, itemId) {

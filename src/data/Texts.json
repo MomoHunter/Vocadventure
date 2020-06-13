@@ -25,6 +25,8 @@
     "sortDiffDesc": "Schwierigkeit absteigend",
     "sortPlayedAsc": "Anzahl gespielt aufsteigend",
     "sortPlayedDesc": "Anzahl gespielt absteigend",
+    "sortCountAsc": "Anzahl aufsteigend",
+    "sortCountDesc": "Anzahl absteigend",
     "japaneseCategory1": "Ja und Nein",
     "japaneseCategory2": "Bitten und danken",
     "japaneseCategory3": "Um Entschuldigung bitten",
@@ -151,6 +153,7 @@
     "adventureFailedPickup": "Die Items wurden\nnicht aufgehoben",
     "adventureStatisticsButton1": "Auswahl",
     "adventureStatisticsButton2": "Menü",
+    "adventureDeathScreen": "Dann handelt es sich um Tod",
     "adventureModalTitle": "Abenteuer abbrechen",
     "adventureModalText": "Bist du sicher, dass du das Abenteuer abbrechen möchtest?<br>Du verlierst den Fortschritt dieser Runde.",
     "adventureModalButtonLeft": "Nein",
@@ -236,7 +239,15 @@
     "glass": "Glas",
     "coal": "Kohle",
     "cobwebs": "Spinnweben",
-    "sand": "Sand"
+    "sand": "Sand",
+    "woodDesc": "Normales Holz aus dem Wald. Kann zu Werkzeug verarbeitet werden.",
+    "stoneDesc": "Ein Stein. Was erwartest du? Kann zu einfachem Werkzeug verarbeitet werden.",
+    "stringDesc": "Ein Faden aus Spinnweben. Extrem haltbar und klebrig.",
+    "randomtreeDesc": "Lässt einen Baumsamen wachsen und gibt einen Baum zurück. Welcher Baum wird es sein?",
+    "stonepickaxeDesc": "Eine Spitzhacke aus Stein, nicht sehr haltbar, aber besser als mit der Hand.",
+    "stoneaxeDesc": "Eine Axt aus Stein zum zerhacken von Holz.",
+    "stoneswordDesc": "Ein Steinschwert zum zerhacken von schwachen Gegnern. Sollte nur am Griff gehalten werden.",
+    "pickledmushroomsDesc": "In Honig eingelegte Pilze zur Heilung von Wunden."
   },
   "english": {
     "points": "Points",
@@ -264,6 +275,8 @@
     "sortDiffDesc": "Difficulty descending",
     "sortPlayedAsc": "Times played ascending",
     "sortPlayedDesc": "Times played descending",
+    "sortCountAsc": "Count ascending",
+    "sortCountDesc": "Count descending",
     "japaneseCategory1": "Yes and no",
     "japaneseCategory2": "Pleading and thanking",
     "japaneseCategory3": "Ask for apology",
@@ -390,6 +403,7 @@
     "adventureFailedPickup": "The items weren't\npicked up",
     "adventureStatisticsButton1": "Selection",
     "adventureStatisticsButton2": "Menu",
+    "adventureDeathScreen": "Guess you died then",
     "adventureModalTitle": "Abort adventure",
     "adventureModalText": "Are you sure, that you want to abort the adventure?<br>You will lose the progress from this session.",
     "adventureModalButtonLeft": "No",
@@ -477,6 +491,14 @@
     "glass": "Glass",
     "coal": "Coal",
     "cobwebs": "Cobwebs",
-    "sand": "Sand"
+    "sand": "Sand",
+    "woodDesc": "Normal wood from the forest. Can be processed into tools.",
+    "stoneDesc": "A rock. What do you expect? Can be made into a simple tool.",
+    "stringDesc": "A thread of cobwebs. Extremely durable and sticky.",
+    "randomtreeDesc": "Makes a tree seed grow and returns a tree. Which tree will it be?",
+    "stonepickaxeDesc": "A pickaxe out of stone, not durable but better than your hands.",
+    "stoneaxeDesc": "A stone axe for chopping wood.",
+    "stoneswordDesc": "A stone sword for chopping up weak opponents. Should only be held by the hilt.",
+    "pickledmushroomsDesc": "Mushrooms pickled in honey to heal wounds."
   }
 }

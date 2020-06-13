@@ -47,21 +47,25 @@ export default {
       enterTransition: '',
       leaveTransition: '',
       vueDictCopy: null,
-      canvasDictCopy: null
+      canvasDictCopy: null,
+      dead: false,
+      noRouting: false
     }
   },
   beforeRouteEnter (to, from, next) {
     next(component => {
-      if (!component.$store.state.canvasDict.watchedIntro) {
-        component.$store.commit('canvasDict/addGameState', 'intro')
-        component.$router.replace({ name: 'adventureIntro' })
-      } else if (component.$store.state.canvasDict.gameState === 'map') {
-        component.$router.replace({ name: 'adventureMap' })
-      } else if (component.$store.state.canvasDict.gameState === 'home') {
-        component.$router.replace({ name: 'adventureHome' })
-      } else if (component.$store.getters['canvasDict/getDynamicLevelData'](component.currentLevel).itemsOnFloor) {
-        component.$router.replace({ name: 'adventureChoose' })
-        component.$store.commit('canvasDict/setQuestionKey', 'adventureChooseQuestion1')
+      if (!component.noRouting) {
+        if (!component.$store.state.canvasDict.watchedIntro) {
+          component.$store.commit('canvasDict/addGameState', 'intro')
+          component.$router.replace({ name: 'adventureIntro' })
+        } else if (component.$store.state.canvasDict.gameState === 'map') {
+          component.$router.replace({ name: 'adventureMap' })
+        } else if (component.$store.state.canvasDict.gameState === 'home') {
+          component.$router.replace({ name: 'adventureHome' })
+        } else if (component.$store.getters['canvasDict/getDynamicLevelData'](component.currentLevel).itemsOnFloor) {
+          component.$router.replace({ name: 'adventureChoose' })
+          component.$store.commit('canvasDict/setQuestionKey', 'adventureChooseQuestion1')
+        }
       }
     })
   },
@@ -74,6 +78,12 @@ export default {
         this.$store.commit('vueDict/resetAdditional')
         this.$store.commit('vueDict/resetVocabs')
         this.$store.commit('vueDict/closeModal')
+        next()
+      } else if (this.dead) {
+        this.$store.commit('canvasDict/changeGameState', 'map')
+        this.$store.commit('canvasDict/resetLevel', this.currentLevel)
+        this.$store.commit('vueDict/resetAdditional')
+        this.$store.commit('vueDict/resetVocabs')
         next()
       } else if (from.name === 'adventureStatistics') {
         for (let category of this.$store.state.vueDict.categoriesChosen) {
@@ -395,6 +405,7 @@ export default {
       let wordObjects = []
 
       if (vocabs.words.length === 0) {
+        this.noRouting = true
         this.$router.push({ name: 'category', params: { destination: 'adventure' } })
       } else if (vocabs.words.length === length) {
         while (vocabs.words.length > 0) {
@@ -931,9 +942,38 @@ export default {
 
         this.$store.commit('canvasDict/changePlayerHealth', -nextObstacle.power)
         if (this.$store.state.canvasDict.playerHealth <= 0) {
-          this.$store.commit('canvasDict/resetLevel', this.currentLevel)
-          this.$store.commit('canvasDict/addGameState', 'map')
+          for (let category of this.$store.state.vueDict.categoriesChosen) {
+            this.$store.commit('vueDict/increaseCategoryPlayed', category)
+          }
+          this.$store.commit('vueDict/transferAdditionalStat', false)
+          this.addItemsToInventory()
+          let saveData = JSON.parse(JSON.stringify(this.$store.getters['getSaveData']))
+          saveData.gameState = 'map'
+          saveData.playerHealth = 100
+          for (let status of saveData.status) {
+            status.additional = 0
+          }
+          saveData.dynamicLevelData[this.currentLevel] = {
+            steps: 0,
+            background: [],
+            foreground: [],
+            events: [],
+            itemsOnFloor: false,
+            obstacleAhead: false,
+            bossSpawned: false
+          }
+          window.localStorage.setItem('globalDict', JSON.stringify(saveData))
+          this.animationQueue.push(new AnimationObject('youDied'))
+          this.$router.replace({ name: 'adventureStatistics' })
+          this.dead = true
         }
+        this.currentAnimation = null
+      }
+    },
+    youDiedAnimation () {
+      this.currentAnimation.counter += 1
+
+      if (this.counter === 60) {
         this.currentAnimation = null
       }
     },
@@ -1065,7 +1105,7 @@ export default {
           Helper.drawCanvasImage(event.x, event.y, event.spriteKey, cD)
         }
         if (!dynLevelData.itemsOnFloor && dynLevelData.obstacleAhead && event.type === 'obstacle' &&
-             event.field === dynLevelData.steps + 1) {
+             event.field === dynLevelData.steps + 1 && !event.registered) {
           this.healthBarDraw(event, cD)
         }
       }
@@ -1078,6 +1118,9 @@ export default {
 
       this.levelHudDraw(cD)
       this.currentWordDraw()
+      if (this.dead) {
+        this.deathScreenDraw(cD)
+      }
     },
     healthBarDraw (event, cD) {
       let eventData = Helper.getSpriteData(event.spriteKey, cD)
@@ -1145,6 +1188,12 @@ export default {
       Helper.drawCanvasRect(
         20, this.canvasHeight - 40, this.$store.state.canvasDict.playerHealth * 2, 20, 'barSuccess', this.ctx
       )
+    },
+    deathScreenDraw (cD) {
+      Helper.drawCanvasRect(0, 0, this.canvasWidth, this.canvasHeight, 'deathBackground', this.ctx)
+      Helper.drawCanvasRect(0, 110, this.canvasWidth, 80, 'deathBand', this.ctx)
+      Helper.drawCanvasText(this.canvasWidth / 2, 140, this.getText('adventureDeathScreen'), 'deathScreen', this.ctx)
+      Helper.drawCanvasText(this.canvasWidth / 2, 170, '¯\\_(ツ)_/¯', 'deathScreen', this.ctx)
     },
     pickUpItemsDraw (playerData, dynLevelData, cD) {
       if (this.currentAnimation.success) {

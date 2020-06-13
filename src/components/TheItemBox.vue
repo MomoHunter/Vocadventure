@@ -3,9 +3,10 @@
     <span class="activeIcon has-text-success" v-show="equipped">
       <font-awesome-icon :icon="['fas', 'check-square']" :size="getSizeClass('fas')" />
     </span>
-    <p class="content has-text-centered marginBottomSmall" :class="getSizeClass('content')">{{ getText(item.id) }}</p>
+    <p class="content has-text-centered marginBottomSmall"
+       :class="getSizeClass('content')">{{ getText(item.id) }}</p>
     <div class="flexGrow fullWidth backgroundPicture"
-          :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
+         :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
     <div class="fullWidth infoBar" v-if="hasInfoBar">
       <div class="content noMarginBottom" :class="getSizeClass('content')">
         {{ item.quantity }}
@@ -16,7 +17,7 @@
       </progress>
       <div v-show="item.healing && !item.durability" class="flexGrow"></div>
       <div v-show="item.healing" class="content noMarginBottom has-text-success" :class="getSizeClass('content')">
-        {{ item.healing }}
+        +{{ item.healing }}HP
       </div>
     </div>
   </div>
