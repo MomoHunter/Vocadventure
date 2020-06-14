@@ -916,14 +916,16 @@ export default {
               continue
             }
 
-            let itemData = this.$store.getters['vueDict/getItemObject'](item.id)
-            this.collectedItems.push({
-              id: item.id,
-              spriteKey: itemData.spriteKeySmall,
-              animated: false,
-              quantity: item.quantity
-            })
-            this.$store.commit('vueDict/addStatAddit', { id: 'points', count: itemData.points * item.quantity })
+            if (!item.chance || (item.chance && Math.random() < item.chance)) {
+              let itemData = this.$store.getters['vueDict/getItemObject'](item.id)
+              this.collectedItems.push({
+                id: item.id,
+                spriteKey: itemData.spriteKeySmall,
+                animated: false,
+                quantity: item.quantity
+              })
+              this.$store.commit('vueDict/addStatAddit', { id: 'points', count: itemData.points * item.quantity })
+            }
           }
           this.$store.commit('canvasDict/setObstacleAhead', false)
         }

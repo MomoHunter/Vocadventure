@@ -27,8 +27,9 @@ export default {
       'pebble': ['stone'],
       'cobwebs': ['string'],
       'treeseed': ['randomtree'],
-      'stone': ['stonepickaxe', 'stoneaxe', 'stonesword'],
-      'honey': ['pickledmushrooms']
+      'stone': ['stonepickaxe', 'stoneaxe', 'stonesword', 'stoneshovel'],
+      'honey': ['pickledmushrooms'],
+      'rubbish': ['randomrubbish']
     },
     vocabs: {},
     currentWordIndex: 0,
