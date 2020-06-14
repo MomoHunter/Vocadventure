@@ -612,7 +612,7 @@ export default {
         }
 
         if (!dynLevelData.bossSpawned) {
-          this.generateNewEvents(Math.random() < this.currentMapPoint.chanceForObstacle)
+          this.generateNewEvents()
         }
       }
       if (this.firstBackground.x + this.firstBackground.width < -100) {
@@ -650,42 +650,39 @@ export default {
         width: background.width
       }
     },
-    generateNewEvents (hasObstacle) {
+    generateNewEvents () {
       const cD = this.$store.state.canvasDict
       let bgItemData = this.$store.getters['canvasDict/getBackgroundItemData'](
         this.currentLevel, this.lastBackground.id
       )
 
-      if (hasObstacle) {
-        let place = Math.floor(Math.random() * this.lastBackground.fieldCount)
-        let max = this.currentMapPoint.obstacles.reduce((acc, bg) => { return acc + bg.chance }, 0)
-        let random = Math.random() * max
-
-        for (let obstacle of this.currentMapPoint.obstacles) {
-          random -= obstacle.chance
-          if (random <= 0) {
-            let obstacleData = Helper.getSpriteData(obstacle.spriteKey, cD)
+      for (let field of bgItemData.foundOn.obstacles) {
+        let fieldNo = this.lastBackground.firstField + field - 1
+        for (let obstacle of bgItemData.canBeFound.obstacles) {
+          if (Math.random() < obstacle.chance) {
+            let obstacleObject = this.$store.getters['canvasDict/getObstacleObject'](this.currentLevel, obstacle.id)
+            let obstacleData = Helper.getSpriteData(obstacleObject.spriteKey, cD)
             this.$store.commit('canvasDict/addEvent', {
               type: 'obstacle',
               registered: false,
               id: obstacle.id,
-              spriteKey: obstacle.spriteKey,
-              x: this.lastBackground.x + this.stepWidth / 2 + place * this.stepWidth - obstacleData.spriteWidth / 2,
-              y: obstacle.bottomY - obstacleData.spriteHeight,
-              field: this.lastBackground.firstField + place,
-              durability: obstacle.durability,
-              power: obstacle.power || null,
-              items: obstacle.items
+              spriteKey: obstacleObject.spriteKey,
+              x: this.lastBackground.x + (field - 1) * this.stepWidth + (this.stepWidth - obstacleData.spriteWidth) / 2,
+              y: obstacleObject.bottomY - obstacleData.spriteHeight,
+              field: fieldNo,
+              durability: obstacleObject.durability,
+              power: obstacleObject.power || null,
+              items: obstacleObject.items
             })
             break
           }
         }
       }
 
-      for (let field of bgItemData.foundOn) {
+      for (let field of bgItemData.foundOn.items) {
         let fieldNo = this.lastBackground.firstField + field - 1
         if (!this.$store.getters['canvasDict/hasFieldObstacle'](this.currentLevel, fieldNo)) {
-          for (let item of bgItemData.canBeFound) {
+          for (let item of bgItemData.canBeFound.items) {
             if (Math.random() < item.chance) {
               let itemData = this.$store.getters['vueDict/getItemObject'](item.id)
               let itemsOnField = this.$store.getters['canvasDict/getItemNoOnField'](this.currentLevel, fieldNo)
@@ -696,7 +693,7 @@ export default {
                 registered: false,
                 id: item.id,
                 spriteKey: itemData.spriteKeySmall,
-                x: this.lastBackground.x + (field - 1) * 100 + itemPos.x,
+                x: this.lastBackground.x + (field - 1) * this.stepWidth + itemPos.x,
                 y: itemPos.y,
                 field: fieldNo,
                 points: itemData.points

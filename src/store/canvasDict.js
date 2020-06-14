@@ -24,38 +24,39 @@ export default {
     spriteDict: {
       'background_forest_2': [false, 0, 0, 200, 300],
       'background_forest_background': [false, 0, 301, 300, 300],
-      'background_forest_foreground': [false, 0, 602, 300, 300],
-      'background_home': [false, 0, 903, 600, 300],
-      'background_home_old': [false, 0, 1204, 600, 300],
-      'background_intro': [false, 0, 1505, 600, 300],
-      'background_intro_background': [false, 0, 1806, 600, 300],
-      'background_intro_foreground': [false, 0, 2107, 600, 300],
-      'background_plains_background': [false, 0, 2408, 300, 300],
-      'background_plains_foreground': [false, 0, 2709, 300, 300],
-      'background_snow': [false, 0, 3010, 300, 300],
-      'background_universe': [false, 0, 3311, 600, 300],
-      'background_world': [false, 0, 3612, 1800, 300],
-      'background_world_old': [false, 0, 3913, 600, 300],
+      'background_forest_cobwebs': [false, 0, 602, 600, 300],
+      'background_forest_foreground': [false, 0, 903, 300, 300],
+      'background_home': [false, 0, 1204, 600, 300],
+      'background_home_old': [false, 0, 1505, 600, 300],
+      'background_intro': [false, 0, 1806, 600, 300],
+      'background_intro_background': [false, 0, 2107, 600, 300],
+      'background_intro_foreground': [false, 0, 2408, 600, 300],
+      'background_plains_background': [false, 0, 2709, 300, 300],
+      'background_plains_foreground': [false, 0, 3010, 300, 300],
+      'background_snow': [false, 0, 3311, 300, 300],
+      'background_universe': [false, 0, 3612, 600, 300],
+      'background_world': [false, 0, 3913, 1800, 300],
+      'background_world_old': [false, 0, 4214, 600, 300],
       'items_branch': [false, 1801, 0, 50, 50],
       'items_branch_s': [false, 1801, 51, 20, 20],
-      'items_dirt': [false, 1801, 72, 50, 50],
-      'items_dirt_s': [false, 1801, 123, 20, 20],
-      'items_goblinblood': [false, 1801, 144, 50, 50],
-      'items_goblinblood_s': [false, 1801, 195, 20, 20],
-      'items_goblinkingcrown': [false, 1801, 216, 50, 50],
-      'items_goblinkingcrown_s': [false, 1801, 267, 20, 20],
-      'items_hand': [false, 1801, 288, 50, 50],
-      'items_hand_s': [false, 1801, 339, 20, 20],
-      'items_honey': [false, 1801, 360, 50, 50],
-      'items_honey_s': [false, 1801, 411, 20, 20],
-      'items_mushroom': [false, 1801, 432, 50, 50],
-      'items_mushroom_s': [false, 1801, 483, 20, 20],
-      'items_pebble': [false, 1801, 504, 50, 50],
-      'items_pebble_s': [false, 1801, 555, 20, 20],
-      'items_pickledmushrooms': [false, 1801, 576, 50, 50],
-      'items_pickledmushrooms_s': [false, 1801, 627, 20, 20],
-      'items_spiderweb': [false, 1801, 648, 50, 50],
-      'items_spiderweb_s': [false, 1801, 699, 20, 20],
+      'items_cobwebs': [false, 1801, 72, 50, 50],
+      'items_cobwebs_s': [false, 1801, 123, 20, 20],
+      'items_dirt': [false, 1801, 144, 50, 50],
+      'items_dirt_s': [false, 1801, 195, 20, 20],
+      'items_goblinblood': [false, 1801, 216, 50, 50],
+      'items_goblinblood_s': [false, 1801, 267, 20, 20],
+      'items_goblinkingcrown': [false, 1801, 288, 50, 50],
+      'items_goblinkingcrown_s': [false, 1801, 339, 20, 20],
+      'items_hand': [false, 1801, 360, 50, 50],
+      'items_hand_s': [false, 1801, 411, 20, 20],
+      'items_honey': [false, 1801, 432, 50, 50],
+      'items_honey_s': [false, 1801, 483, 20, 20],
+      'items_mushroom': [false, 1801, 504, 50, 50],
+      'items_mushroom_s': [false, 1801, 555, 20, 20],
+      'items_pebble': [false, 1801, 576, 50, 50],
+      'items_pebble_s': [false, 1801, 627, 20, 20],
+      'items_pickledmushrooms': [false, 1801, 648, 50, 50],
+      'items_pickledmushrooms_s': [false, 1801, 699, 20, 20],
       'items_stone': [false, 1801, 720, 50, 50],
       'items_stoneaxe': [false, 1801, 771, 50, 50],
       'items_stoneaxe_s': [false, 1801, 822, 20, 20],
@@ -185,30 +186,81 @@ export default {
             spriteKey: 'background_forest_background',
             chance: 1,
             fieldCount: 3,
-            foundOn: [1, 2, 3],
-            canBeFound: [
-              { id: 'branch', chance: 0.07 },
-              { id: 'pebble', chance: 0.07 },
-              { id: 'dirt', chance: 0.03 },
-              { id: 'mushroom', chance: 0.055 },
-              { id: 'spiderweb', chance: 0.07 },
-              { id: 'treeseed', chance: 0.01 }
-            ]
+            foundOn: {
+              items: [1, 2, 3],
+              obstacles: [1, 2, 3]
+            },
+            canBeFound: {
+              items: [
+                { id: 'branch', chance: 0.07 },
+                { id: 'pebble', chance: 0.07 },
+                { id: 'dirt', chance: 0.03 },
+                { id: 'mushroom', chance: 0.055 },
+                { id: 'cobwebs', chance: 0.07 },
+                { id: 'treeseed', chance: 0.01 }
+              ],
+              obstacles: [
+                { id: 'forestTrunk', chance: 0.03 },
+                { id: 'forestWall', chance: 0.03 },
+                { id: 'forestNet', chance: 0.03 },
+                { id: 'forestBeeNest', chance: 0.03 },
+                { id: 'forestGoblin', chance: 0.03 }
+              ]
+            }
           },
           {
             id: 'forestBasic2',
             spriteKey: 'background_forest_2',
             chance: 1,
             fieldCount: 2,
-            foundOn: [1, 2],
-            canBeFound: [
-              { id: 'branch', chance: 0.07 },
-              { id: 'pebble', chance: 0.07 },
-              { id: 'dirt', chance: 0.03 },
-              { id: 'mushroom', chance: 0.055 },
-              { id: 'spiderweb', chance: 0.07 },
-              { id: 'treeseed', chance: 0.01 }
-            ]
+            foundOn: {
+              items: [1, 2],
+              obstacles: [1, 2]
+            },
+            canBeFound: {
+              items: [
+                { id: 'branch', chance: 0.07 },
+                { id: 'pebble', chance: 0.07 },
+                { id: 'dirt', chance: 0.03 },
+                { id: 'mushroom', chance: 0.055 },
+                { id: 'cobwebs', chance: 0.07 },
+                { id: 'treeseed', chance: 0.01 }
+              ],
+              obstacles: [
+                { id: 'forestTrunk', chance: 0.03 },
+                { id: 'forestWall', chance: 0.03 },
+                { id: 'forestNet', chance: 0.03 },
+                { id: 'forestBeeNest', chance: 0.03 },
+                { id: 'forestGoblin', chance: 0.03 }
+              ]
+            }
+          },
+          {
+            id: 'forestCobwebs',
+            spriteKey: 'background_forest_cobwebs',
+            chance: 0.3,
+            fieldCount: 6,
+            foundOn: {
+              items: [1, 2, 3, 4, 5, 6],
+              obstacles: [1, 2, 3, 4, 5, 6]
+            },
+            canBeFound: {
+              items: [
+                { id: 'branch', chance: 0.05 },
+                { id: 'pebble', chance: 0.05 },
+                { id: 'dirt', chance: 0.02 },
+                { id: 'mushroom', chance: 0.05 },
+                { id: 'cobwebs', chance: 0.2 },
+                { id: 'treeseed', chance: 0.01 }
+              ],
+              obstacles: [
+                { id: 'forestTrunk', chance: 0.02 },
+                { id: 'forestWall', chance: 0.02 },
+                { id: 'forestNet', chance: 0.08 },
+                { id: 'forestBeeNest', chance: 0.02 },
+                { id: 'forestGoblin', chance: 0.02 }
+              ]
+            }
           }
         ],
         obstacles: [
@@ -217,7 +269,6 @@ export default {
             spriteKey: 'obstacles_trunk',
             bottomY: 265,
             durability: 8,
-            chance: 1,
             items: [
               { id: 'wood', quantity: 3 }
             ]
@@ -227,7 +278,6 @@ export default {
             spriteKey: 'obstacles_wall',
             bottomY: 265,
             durability: 13,
-            chance: 1,
             items: [
               { id: 'stone', quantity: 4 }
             ]
@@ -237,7 +287,6 @@ export default {
             spriteKey: 'obstacles_net',
             bottomY: 265,
             durability: 6,
-            chance: 1,
             items: [
               { id: 'string', quantity: 2 }
             ]
@@ -247,7 +296,6 @@ export default {
             spriteKey: 'obstacles_beenest',
             bottomY: 225,
             durability: 7,
-            chance: 1,
             items: [
               { id: 'honey', quantity: 2 }
             ]
@@ -257,7 +305,6 @@ export default {
             spriteKey: 'obstacles_goblin',
             bottomY: 240,
             durability: 12,
-            chance: 200,
             power: 2,
             items: [
               { id: 'goblinblood', quantity: 1 }
@@ -269,7 +316,6 @@ export default {
             centerX: 140,
             bottomY: 240,
             durability: 36,
-            chance: 0,
             boss: true,
             unlocks: [
               'plains'
@@ -279,8 +325,7 @@ export default {
               { id: 'goblinkingcrown', quantity: 1, collectable: true }
             ]
           }
-        ],
-        chanceForObstacle: 0.9
+        ]
       },
       'plains': {
         x: 330,
@@ -296,7 +341,10 @@ export default {
             spriteKey: 'background_plains_background',
             chance: 1,
             fieldCount: 3,
-            foundOn: [1, 2, 3],
+            foundOn: {
+              items: [1, 2, 3],
+              obstacles: [1, 2, 3]
+            },
             canBeFound: []
           }
         ],
@@ -547,6 +595,9 @@ export default {
       }
 
       return count
+    },
+    getObstacleObject: (state) => (level, id) => {
+      return state.staticLevelData[level].obstacles.find(obstacle => obstacle.id === id)
     },
     getBossObject: (state) => (level) => {
       return state.staticLevelData[level].obstacles.find(obstacle => obstacle.boss)

@@ -25,7 +25,7 @@ export default {
     itemUnlocks: {
       'branch': ['wood'],
       'pebble': ['stone'],
-      'spiderweb': ['string'],
+      'cobwebs': ['string'],
       'treeseed': ['randomtree'],
       'stone': ['stonepickaxe', 'stoneaxe', 'stonesword'],
       'honey': ['pickledmushrooms']

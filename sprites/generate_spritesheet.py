@@ -96,7 +96,6 @@ for _, category in sprite_img_data_per_category.items():
     x += max_width + 1
 
 sprite_sheet_img.save('../src/assets/Spritesheet.png', 'PNG')
-sprite_sheet_img.save('../public/img/Spritesheet.png', 'PNG')
 # endregion
 
 # region Update Sprite-Dict

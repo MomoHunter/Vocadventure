@@ -42,10 +42,10 @@
     "points": 2
   },
   {
-    "id": "spiderweb",
-    "spriteKey": "items_spiderweb",
-    "spriteKeySmall": "items_spiderweb_s",
-    "spritePath": "img/items/spiderweb.png",
+    "id": "cobwebs",
+    "spriteKey": "items_cobwebs",
+    "spriteKeySmall": "items_cobwebs_s",
+    "spritePath": "img/items/cobwebs.png",
     "quantity": 1,
     "points": 2
   },
@@ -92,7 +92,7 @@
     "points": 5,
     "unlocked": false,
     "costs": [
-      { "id": "spiderweb", "quantity": 5 },
+      { "id": "cobwebs", "quantity": 5 },
       { "id": "coins", "quantity": 40 }
     ]
   },
