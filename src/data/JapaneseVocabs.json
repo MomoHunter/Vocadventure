@@ -154,7 +154,16 @@
     { "german": "das hier", "english": "this here", "romaji": "kore", "kana": "これ", "difficulty": 1 },
     { "german": "die hier (Mehrzahl)", "english": "these here", "romaji": "kore-ra", "kana": "これら", "difficulty": 1 },
     { "german": "das da", "english": "this there", "romaji": "sore", "kana": "それ", "difficulty": 1 },
-    { "german": "die da (Mehrzahl)", "english": "these there", "romaji": "sore-ra", "kana": "それら", "difficulty": 1 }
+    { "german": "die da (Mehrzahl)", "english": "these there", "romaji": "sore-ra", "kana": "それら", "difficulty": 1 },
+    { "german": "das dort drüben", "english": "this over there", "romaji": "are", "kana": "あれ", "difficulty": 1 },
+    { "german": "die da drüben (Mehrzahl)", "english": "these over there", "romaji": "are-ra", "kana": "あれら", "difficulty": 1 },
+    { "german": "welches (von mehreren)", "english": "which (from multiple)", "romaji": "dore", "kana": "どれ", "difficulty": 1 },
+    { "german": "er / sie, der / die da (informell bis abwertend)", "english": "he / she, that one (informal to derogatory)", "romaji": "koitsu, soitsu, aitsu", "kana": "こいつ、そいつ、あいつ", "difficulty": 2 },
+    { "german": "dieser/diese/dieses (beim Sprecher)", "english": "this / these (at the speaker's)", "romaji": "kono", "kana": "この", "difficulty": 1 },
+    { "german": "dieser/diese/dieses (beim Zuhörer)", "english": "this / these (at the listener's)", "romaji": "sono", "kana": "その", "difficulty": 1 },
+    { "german": "dieser/diese/dieses (weder beim Sprecher, noch beim Zuhörer)", "english": "this / these (neither at the speaker's nor at the listener's)", "romaji": "ano", "kana": "あの", "difficulty": 1 },
+    { "german": "welches ... (Substantiv folgt)", "english": "which ... (noun follows)", "romaji": "dono", "kana": "どの", "difficulty": 1 },
+    { "german": "(der Ort) hier", "english": "(the place) here", "romaji": "koko", "kana": "ここ", "difficulty": 1 }
   ],
   "japaneseCategory7": [
     { "german": "was", "english": "what", "romaji": "nani", "kana": "何", "difficulty": 3 }
