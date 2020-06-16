@@ -16,7 +16,7 @@
     { "german": "Alles klar. Einverstanden. (höflich)", "english": "Alright! Agreed! (polite)", "romaji": "Wakarimashita.", "kana": "分かりました。", "difficulty": 3 },
     { "german": "Ich habe verstanden. Sofort. (sehr höflich)", "english": "I have understood. Immediately. (really polite)", "romaji": "Kashikomarimashita.", "kana": "かしこまりました。", "difficulty": 2 },
     { "german": "Da kann man nichts machen.", "english": "There is nothing you can do.", "romaji": "shikata ga nai", "kana": "仕方がない", "difficulty": 3 },
-    { "german": "Da kann man nichts machen. 2", "english": "There is nothing you can do. 2", "romaji": "shou ga nai", "kana": "しょうがない", "difficulty": 3 }
+    { "german": "Da kann man nichts machen. 2", "english": "There is nothing you can do. 2", "romaji": "shou ga nai", "kana": "しょうがない", "difficulty": 2 }
   ],
   "japaneseCategory2": [
     { "german": "Dankbarkeit, Dank", "english": "Gratitude", "romaji": "kansha", "kana": "感謝", "difficulty": 3 },

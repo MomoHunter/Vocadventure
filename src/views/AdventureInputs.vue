@@ -415,11 +415,11 @@ export default {
       if (this.isForeignCorrect > 0) {
         this.$store.commit('vueDict/addStatAddit', {
           id: 'points',
-          count: this.isForeignCorrect * this.$store.state.vueDict.difficulty
+          count: this.isForeignCorrect * this.vocabs.words[this.currentWordIndex].difficulty
         })
         this.$store.commit('vueDict/addStatAddit', {
           id: 'coins',
-          count: this.isForeignCorrect * this.$store.state.vueDict.difficulty
+          count: this.isForeignCorrect * this.vocabs.words[this.currentWordIndex].difficulty
         })
       }
       if (this.isLatinCorrect > 0 || this.isForeignCorrect > 0) {
