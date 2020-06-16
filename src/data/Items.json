@@ -179,7 +179,7 @@
     "quantity": 1,
     "points": 15,
     "durability": 16,
-    "power": 3,
+    "power": 2,
     "usefulAgainst": [
       "forestWall"
     ],

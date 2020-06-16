@@ -204,8 +204,8 @@ export default {
         { id: 'consumables', text: 'adventureItemConsumables' }
       ],
       noItems: false,
-      nextItemCategory: 2,
-      currentItemCategory: 2,
+      nextItemCategory: 1,
+      currentItemCategory: 1,
       latinInput: '',
       foreignInput: '',
       userLatinInput: '',

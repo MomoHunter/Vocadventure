@@ -213,6 +213,7 @@ export default {
                 { id: 'forestTrunk', chance: 0.03 },
                 { id: 'forestWall', chance: 0.03 },
                 { id: 'forestNet', chance: 0.03 },
+                { id: 'forestRubbishHeap', chance: 0.03 },
                 { id: 'forestBeeNest', chance: 0.03 },
                 { id: 'forestGoblin', chance: 0.03 }
               ]
@@ -240,6 +241,7 @@ export default {
                 { id: 'forestTrunk', chance: 0.03 },
                 { id: 'forestWall', chance: 0.03 },
                 { id: 'forestNet', chance: 0.03 },
+                { id: 'forestRubbishHeap', chance: 0.03 },
                 { id: 'forestBeeNest', chance: 0.03 },
                 { id: 'forestGoblin', chance: 0.03 }
               ]
@@ -261,12 +263,15 @@ export default {
                 { id: 'dirt', chance: 0.02 },
                 { id: 'mushroom', chance: 0.05 },
                 { id: 'cobwebs', chance: 0.2 },
+                { id: 'cobwebs', chance: 0.1 },
+                { id: 'cobwebs', chance: 0.04 },
                 { id: 'treeseed', chance: 0.01 }
               ],
               obstacles: [
                 { id: 'forestTrunk', chance: 0.02 },
                 { id: 'forestWall', chance: 0.02 },
                 { id: 'forestNet', chance: 0.08 },
+                { id: 'forestRubbishHeap', chance: 0.02 },
                 { id: 'forestBeeNest', chance: 0.02 },
                 { id: 'forestGoblin', chance: 0.02 }
               ]
