@@ -17,9 +17,20 @@ export default new Vuex.Store({
     size: 'normal'
   },
   getters: {
-    getText: (state) => (id) => {
+    getText: (state) => (id, ...params) => {
       if (isNaN(id)) {
-        return Texts[state.lang][id] || id
+        let text = Texts[state.lang][id]
+        if (text) {
+          if (params.length > 0) {
+            for (let i = 0; i < params.length; i++) {
+              let regex = new RegExp('&' + (i + 1), 'g')
+              text = text.replace(regex, params[i])
+            }
+          }
+          return text
+        } else {
+          return id
+        }
       } else {
         return id.toString()
       }

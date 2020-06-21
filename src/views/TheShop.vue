@@ -18,10 +18,10 @@
     </div>
     <InputWithButton v-if="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
                      iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
-    <div v-if="visibleItems.length > 0" class="is-10 flexGrow itemContainer">
+    <div v-if="visibleItems.length > 0" class="is-10 flexGrow itemContainer marginBottomBig">
       <transition-group class="transitionGroup" tag="div" :enter-active-class="enterTransition"
                         :leave-active-class="leaveTransition">
-        <TheItemBox class="customBox" :class="absoluteClass(index)" v-for="(item, index) in visibleItems" :key="item.id"
+        <ItemBoxBasic class="customBox" :class="absoluteClass(index)" v-for="(item, index) in visibleItems" :key="item.id"
                     :item="item" @click="$router.push({ name: 'details', params: { item: item.id } })" />
       </transition-group>
     </div>
@@ -53,7 +53,7 @@ import ButtonIcon from '@/components/ButtonIcon.vue'
 import InputWithButton from '@/components/InputWithButton.vue'
 import PaginationBasic from '@/components/PaginationBasic.vue'
 import MessageItems from '@/components/MessageItems.vue'
-import TheItemBox from '@/components/TheItemBox.vue'
+import ItemBoxBasic from '@/components/ItemBoxBasic.vue'
 
 export default {
   name: 'TheShop',
@@ -65,7 +65,7 @@ export default {
     InputWithButton,
     PaginationBasic,
     MessageItems,
-    TheItemBox
+    ItemBoxBasic
   },
   data () {
     return {
@@ -268,8 +268,7 @@ export default {
     .customBox {
       position: absolute;
       width: calc(50% - .5rem);
-      margin-bottom: 1rem;
-      height: calc(50% - 1rem);
+      height: calc(50% - .5rem);
 
       &.alignLeft {
         margin-right: .5rem;

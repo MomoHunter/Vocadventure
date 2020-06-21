@@ -149,7 +149,9 @@ export default {
         }
         this.$store.commit('vueDict/setWordCount', parseInt(this.customCount))
       } else {
-        this.$store.commit('vueDict/setWordCount', 0)
+        if (!this.availableOptions.includes(this.$store.state.vueDict.wordCount)) {
+          this.$store.commit('vueDict/setWordCount', 0)
+        }
       }
     },
     toggleWordsReversed () {

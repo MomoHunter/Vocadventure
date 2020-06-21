@@ -1,9 +1,9 @@
 <template>
-  <div class="barChartContainer" v-show="values.length > 0">
-    <span class="content inlineBlock flexGrow" :class="getSizeClass('content')">
+  <div class="box barChartContainer noMarginBottom" :class="color" v-show="values.length > 0">
+    <span class="content inlineBlock flexGrow marginBottomSmall" :class="getSizeClass('content')">
       {{ getText(title) }}
     </span>
-    <span class="content inlineBlock" :class="getSizeClass('content')">
+    <span class="content inlineBlock marginBottomSmall" :class="getSizeClass('content')">
       {{ percentage }}%
     </span>
     <div class="barContainer" :class="getSizeClass('barContainer')">
@@ -17,6 +17,7 @@ export default {
   name: 'BarChartBasic',
   props: {
     title: String,
+    color: String,
     values: Array
   },
   computed: {
@@ -59,6 +60,8 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  border-radius: 6px;
+  padding: .5rem;
 
   .inlineBlock {
     display: inline-block;

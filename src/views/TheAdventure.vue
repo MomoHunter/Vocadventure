@@ -84,15 +84,12 @@ export default {
         this.$store.commit('canvasDict/resetLevel', this.currentLevel)
         this.$store.commit('vueDict/resetAdditional')
         this.$store.commit('vueDict/resetVocabs')
+        this.$store.commit('canvasDict/setCollectedItems', [])
         next()
       } else if (from.name === 'adventureStatistics') {
-        for (let category of this.$store.state.vueDict.categoriesChosen) {
-          this.$store.commit('vueDict/increaseCategoryPlayed', category)
-        }
-        this.$store.commit('vueDict/transferAdditionalStat')
-        this.addItemsToInventory()
-        window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
+        this.$store.commit('vueDict/resetAdditional')
         this.$store.commit('vueDict/resetVocabs')
+        this.$store.commit('canvasDict/setCollectedItems', [])
         next()
       } else {
         this.showMessageModal()
@@ -312,6 +309,7 @@ export default {
                 quantity: 1
               })
               this.$store.commit('vueDict/addStatAddit', { id: 'points', count: item.points })
+              this.$store.commit('canvasDict/addFoundItem', { id: item.id, quantity: 1 })
             }
             this.$store.commit('canvasDict/removeItemsOnFloor', { type: 'item', field: dynLevelData.steps })
             this.$store.commit('canvasDict/setItemsOnFloor', false)
@@ -369,6 +367,7 @@ export default {
           break
         case 'finish':
           this.$router.replace({ name: 'adventureStatistics' })
+          this.saveGame()
           break
         case 'navTo':
           if (object.value === 'menu') {
@@ -459,19 +458,21 @@ export default {
         this.$store.commit('vueDict/addToInventory', {
           id: item.id,
           quantity: item.quantity,
-          item: {
-            id: item.id,
-            quantity: item.quantity,
-            spritePath: itemData.spritePath,
-            power: itemData.power || null,
-            usefulAgainst: itemData.usefulAgainst || null,
-            durability: itemData.durability || null,
-            maxDurability: itemData.durability || null,
-            healing: itemData.healing || null
-          }
+          category: itemData.category || null,
+          durability: itemData.durability || null
         })
         this.$store.commit('vueDict/unlockItem', item.id)
       }
+
+      this.$store.commit('canvasDict/setCollectedItems', this.collectedItems.reduce((array, item) => {
+        let foundItem = array.find(itemData => itemData.id === item.id)
+        if (foundItem) {
+          foundItem.quantity += item.quantity
+        } else {
+          array.push(item)
+        }
+        return array
+      }, []))
     },
     canvasLoop (timestamp) {
       if (this.loopActivated) {
@@ -1233,6 +1234,18 @@ export default {
     },
     getMovementFix (value, neg) {
       return neg ? -Math.sqrt(1 - Math.pow(value, 2)) : Math.sqrt(1 - Math.pow(value, 2))
+    },
+    saveGame () {
+      for (let category of this.$store.state.vueDict.categoriesChosen) {
+        this.$store.commit('vueDict/increaseCategoryPlayed', category)
+      }
+      this.$store.commit('vueDict/transferAdditionalStat', false)
+      this.addItemsToInventory()
+      let saveData = JSON.parse(JSON.stringify(this.$store.getters['getSaveData']))
+      for (let status of saveData.status) {
+        status.additional = 0
+      }
+      window.localStorage.setItem('globalDict', JSON.stringify(saveData))
     }
   },
   watch: {

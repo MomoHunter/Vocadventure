@@ -6,19 +6,19 @@
     </div>
     <div class="message-body">
       <div class="boxContainer">
-        <TheItemBox class="customBox fullHeight" :item="item" v-for="item in items" :key="item.id" hasInfoBar />
+        <ItemBoxBasic class="customBox fullHeight" :item="item" v-for="item in items" :key="item.id" hasInfoBar />
       </div>
     </div>
   </article>
 </template>
 
 <script>
-import TheItemBox from '@/components/TheItemBox.vue'
+import ItemBoxBasic from '@/components/ItemBoxBasic.vue'
 
 export default {
   name: 'NotificationItems',
   components: {
-    TheItemBox
+    ItemBoxBasic
   },
   props: {
     title: String,

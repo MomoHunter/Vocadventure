@@ -112,6 +112,7 @@ export default {
     currentBuilding: 'house',
     currentEquippedItem: 'hand',
     unlockedBuildings: ['house'],
+    collectedItems: [],
     collectables: [],
     homePointData: {
       'greenhouse': {
@@ -500,6 +501,7 @@ export default {
     dynamicLevelData: {
       'home': {
         steps: 0,
+        itemsFound: [],
         background: [
           { x: 0, y: 0, spriteKey: 'background_home' }
         ],
@@ -511,6 +513,7 @@ export default {
       },
       'forest': {
         steps: 0,
+        itemsFound: [],
         background: [],
         foreground: [],
         events: [],
@@ -712,6 +715,7 @@ export default {
     resetLevel (state, level) {
       state.dynamicLevelData[level] = {
         steps: 0,
+        itemsFound: [],
         background: [],
         foreground: [],
         events: [],
@@ -724,6 +728,7 @@ export default {
       if (!state.dynamicLevelData[level]) {
         state.dynamicLevelData[level] = {
           steps: 0,
+          itemsFound: [],
           background: [],
           foreground: [],
           events: [],
@@ -735,6 +740,14 @@ export default {
     },
     setEquippedItem (state, itemId) {
       state.currentEquippedItem = itemId
+    },
+    addFoundItem (state, item) {
+      let itemObj = state.dynamicLevelData[state.currentLevel].itemsFound.find(obj => obj.id === item.id)
+      if (itemObj) {
+        itemObj.quantity += item.quantity
+      } else {
+        state.dynamicLevelData[state.currentLevel].itemsFound.push(item)
+      }
     },
     addBackground (state, background) {
       state.dynamicLevelData[state.currentLevel].background.push(background)
@@ -827,6 +840,9 @@ export default {
     },
     addCollectable (state, itemId) {
       state.collectables.push(itemId)
+    },
+    setCollectedItems (state, items) {
+      state.collectedItems = items
     },
     setAdventureCopies (state, copies) {
       state.gameState = copies.gameState

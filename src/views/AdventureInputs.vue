@@ -60,7 +60,7 @@
         <transition-group class="transitionGroup" leave-active-class="animated zoomOut a-little-bit-faster"
                           enter-active-class="animated zoomIn a-little-bit-faster" tag="div"
                           @after-leave="setItemCategory()">
-          <TheItemBox class="customBox" v-for="item in items" :key="item.id" :item="item"
+          <ItemBoxBasic class="customBox" v-for="item in items" :key="item.id" :item="item"
                       :equipped="itemEquipped(item.id)" hasInfoBar @click="itemBoxAction(item)" />
         </transition-group>
       </div>
@@ -161,7 +161,7 @@ import ButtonText from '@/components/ButtonText.vue'
 import ButtonMDI from '@/components/ButtonMDI.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
 import TabsBasic from '@/components/TabsBasic.vue'
-import TheItemBox from '@/components/TheItemBox.vue'
+import ItemBoxBasic from '@/components/ItemBoxBasic.vue'
 
 import BottleTonicOutline from 'vue-material-design-icons/BottleTonicOutline.vue'
 import Sword from 'vue-material-design-icons/Sword.vue'
@@ -176,7 +176,7 @@ export default {
     ButtonMDI,
     TheProgressBar,
     TabsBasic,
-    TheItemBox,
+    ItemBoxBasic,
     BottleTonicOutline,
     Sword,
     ShieldOutline
@@ -356,14 +356,14 @@ export default {
       if (!this.noItems) {
         switch (this.itemCategories[this.currentItemCategory].id) {
           case 'weapons':
-            items = this.$store.state.vueDict.inventory.filter(item => item.power && item.quantity > 0)
-            items.unshift(this.$store.getters['vueDict/getItemObject']('hand'))
+            items = this.$store.state.vueDict.inventory.filter(item => item.category === 'weapon' && item.quantity > 0)
+            items.unshift({ id: 'hand', quantity: 1 })
             break
           case 'consumables':
-            items = this.$store.state.vueDict.inventory.filter(item => item.healing && item.quantity > 0)
+            items = this.$store.state.vueDict.inventory.filter(item => item.category === 'consumable' && item.quantity > 0)
             break
           case 'armor':
-            items = this.$store.state.vueDict.inventory.filter(item => item.defense && item.quantity > 0)
+            items = this.$store.state.vueDict.inventory.filter(item => item.category === 'armor' && item.quantity > 0)
             // items.unshift(this.$store.getters['vueDict/getItemObject']('noarmor'))
             break
           default:
@@ -576,10 +576,6 @@ export default {
   justify-content: space-between;
   align-items: center;
 
-  .noMarginBottom {
-    margin-bottom: 0;
-  }
-
   .flexGrow {
     flex-grow: 1;
   }
@@ -673,10 +669,6 @@ export default {
         display: flex;
         flex-direction: row-reverse;
         flex-wrap: nowrap;
-
-        .noMarginBottom {
-          margin-bottom: 0px;
-        }
 
         .customProgress {
           margin-top: auto;

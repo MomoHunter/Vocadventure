@@ -185,22 +185,14 @@ export default {
             }
 
             let newItem = {
-              id: itemData.id,
-              quantity: itemData.quantity,
-              item: {
-                id: itemData.id,
-                quantity: itemData.quantity,
-                spritePath: itemData.spritePath,
-                power: itemData.power || null,
-                usefulAgainst: itemData.usefulAgainst || null,
-                durability: itemData.durability || null,
-                maxDurability: itemData.durability || null,
-                healing: itemData.healing || null
-              }
+              id: this.item.id,
+              quantity: this.item.quantity * this.amount,
+              category: this.item.category || null,
+              durability: this.item.durability || null
             }
 
             this.$store.commit('vueDict/addToInventory', newItem)
-            this.addBoughtItem(newItem.item)
+            this.addBoughtItem(newItem)
             this.$store.commit('vueDict/unlockItem', itemData.id)
             this.$store.commit('vueDict/addStat', { id: 'points', quantity: itemData.points })
           }
@@ -208,19 +200,11 @@ export default {
           let newItem = {
             id: this.item.id,
             quantity: this.item.quantity * this.amount,
-            item: {
-              id: this.item.id,
-              quantity: this.item.quantity * this.amount,
-              spritePath: this.item.spritePath,
-              power: this.item.power || null,
-              usefulAgainst: this.item.usefulAgainst || null,
-              durability: this.item.durability || null,
-              maxDurability: this.item.durability || null,
-              healing: this.item.healing || null
-            }
+            category: this.item.category || null,
+            durability: this.item.durability || null
           }
           this.$store.commit('vueDict/addToInventory', newItem)
-          this.addBoughtItem(newItem.item)
+          this.addBoughtItem(newItem)
           this.$store.commit('vueDict/unlockItem', this.item.id)
           this.$store.commit('vueDict/addStat', { id: 'points', quantity: this.item.points })
         }
@@ -240,8 +224,8 @@ export default {
       } else {
         this.boughtItems.push({
           id: item.id,
-          spritePath: item.spritePath,
-          quantity: item.quantity
+          quantity: item.quantity,
+          durability: item.durability || null
         })
       }
     },

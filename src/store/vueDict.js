@@ -254,7 +254,7 @@ export default {
         if (item) {
           item.quantity += object.quantity
         } else {
-          state.inventory.push(object.item)
+          state.inventory.push(object)
         }
       } else {
         let itemObject = state.inventory.find(item => item.id === object.id)
@@ -274,7 +274,7 @@ export default {
 
       if (itemData.durability <= 0) {
         itemData.quantity -= 1
-        itemData.durability = itemData.maxDurability
+        itemData.durability = state.items.find(item => item.id === itemId).durability
       }
     },
     modalAnswer (state, answer) {

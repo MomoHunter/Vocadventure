@@ -65,6 +65,10 @@ html, body {
   margin-left: .25rem;
 }
 
+.noMarginBottom {
+  margin-bottom: 0 !important;
+}
+
 .animated {
   &.delay-100ms {
     -webkit-animation-delay: .1s;

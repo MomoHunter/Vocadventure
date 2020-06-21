@@ -1,23 +1,25 @@
 <template>
-  <div class="box itemBox noMarginBottom" @click="$emit('click', item.id)">
+  <div class="box itemBox noMarginBottom" :class="color" @click="$emit('click', item.id)">
     <span class="activeIcon has-text-success" v-show="equipped">
       <font-awesome-icon :icon="['fas', 'check-square']" :size="getSizeClass('fas')" />
     </span>
     <p class="content has-text-centered marginBottomSmall"
        :class="getSizeClass('content')">{{ getText(item.id) }}</p>
-    <div class="flexGrow fullWidth backgroundPicture"
-         :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
+    <div class="box pictureBox flexGrow marginBottomSmall">
+      <div class="fullHeight fullWidth backgroundPicture"
+           :style="{ backgroundImage: 'url(' + baseUrl + itemData.spritePath + ')' }"></div>
+    </div>
     <div class="fullWidth infoBar" v-if="hasInfoBar">
       <div class="content noMarginBottom" :class="getSizeClass('content')">
-        {{ item.quantity }}
+        x{{ item.quantity.toLocaleString() }}
       </div>
-      <progress v-show="item.durability" class="progress flexGrow customProgress"
-                :class="[getSizeClass('progress'), getProgressColor(item)]" :value="item.durability"
-                :max="item.maxDurability">
+      <progress v-show="itemData.durability" class="progress flexGrow customProgress"
+                :class="[getSizeClass('progress'), getProgressColor()]" :value="item.durability"
+                :max="itemData.durability">
       </progress>
-      <div v-show="item.healing && !item.durability" class="flexGrow"></div>
-      <div v-show="item.healing" class="content noMarginBottom has-text-success" :class="getSizeClass('content')">
-        +{{ item.healing }}HP
+      <div v-show="itemData.healing && !itemData.durability" class="flexGrow"></div>
+      <div v-show="itemData.healing" class="content noMarginBottom" :class="getSizeClass('content')">
+        +{{ itemData.healing }}HP
       </div>
     </div>
   </div>
@@ -25,7 +27,7 @@
 
 <script>
 export default {
-  name: 'TheItemBox',
+  name: 'ItemBoxBasic',
   props: {
     item: Object,
     equipped: Boolean,
@@ -34,6 +36,21 @@ export default {
   computed: {
     baseUrl () {
       return process.env.BASE_URL
+    },
+    itemData () {
+      return this.$store.getters['vueDict/getItemObject'](this.item.id)
+    },
+    color () {
+      switch (this.itemData.category) {
+        case 'weapon':
+          return 'is-primary'
+        case 'consumable':
+          return 'is-success'
+        case 'armor':
+          return 'is-warning'
+        default:
+          return 'is-basic'
+      }
     }
   },
   methods: {
@@ -43,10 +60,10 @@ export default {
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
     },
-    getProgressColor (item) {
-      if (item.durability < item.maxDurability / 3) {
+    getProgressColor () {
+      if (this.item.durability < this.itemData.durability / 3) {
         return 'is-danger'
-      } else if (item.durability < item.maxDurability / 1.5) {
+      } else if (this.item.durability < this.itemData.durability / 1.5) {
         return 'is-warning'
       } else {
         return 'is-success'
@@ -61,15 +78,16 @@ export default {
   flex-grow: 1;
 }
 
-.noMarginBottom {
-  margin-bottom: 0px;
-}
-
 .itemBox {
   display: flex;
   flex-direction: column;
   height: 100%;
   position: relative;
+  padding: 1rem;
+
+  .pictureBox {
+    padding: .5rem;
+  }
 
   .activeIcon {
     position: absolute;
