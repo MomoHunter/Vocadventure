@@ -183,7 +183,7 @@
     { "german": "überall", "english": "everywhere", "romaji": "achikochi", "kana": "あちこち", "difficulty": 1 },
     { "german": "so ein/e...", "english": "such a...", "romaji": "kou/sou/aa iu...,", "kana": "こう・そう・ああいう・・・", "difficulty": 2 },
     { "german": "so ein/e..., ein/e so sehr...", "english": "such a..., so much of a...", "romaji": "konna, sonna, anna...", "kana": "こんあ・そんあ・あんあ・・・", "difficulty": 2 },
-    { "german": "so ein/e... (Vergleich)", "english": "such a... (comparison)", "romaji": "kono/sono/ano you na...", "kana": "この・その・あのような", "difficulty": 2 }
+    { "german": "so ein/e... (Vergleich)", "english": "such a... (comparison)", "romaji": "kono/sono/ano you na...", "kana": "この・その・あのような・・・", "difficulty": 2 }
   ],
   "japaneseCategory7": [
     { "german": "was", "english": "what", "romaji": "nani", "kana": "何", "difficulty": 3 }
