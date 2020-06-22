@@ -926,6 +926,7 @@ export default {
                 quantity: item.quantity
               })
               this.$store.commit('vueDict/addStatAddit', { id: 'points', count: itemData.points * item.quantity })
+              this.$store.commit('canvasDict/addFoundItem', { id: item.id, quantity: item.quantity })
             }
           }
           this.$store.commit('canvasDict/setObstacleAhead', false)
