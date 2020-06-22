@@ -2,8 +2,8 @@
   <div class="flexboxContainer">
     <transition enter-active-class="animated zoomIn a-little-bit-faster"
                 leave-active-class="animated zoomOut a-little-bit-faster">
-      <div class="itemContainer marginBottomBig" v-show="items.length > 0">
-        <ItemBoxSmall :item="item" v-for="item in items" :key="item.id" />
+      <div class="itemContainer marginBottomBig flexGrow" v-show="items.length > 0">
+        <ItemBoxSmall class="fullHeight" :item="item" v-for="item in items" :key="item.id" />
       </div>
     </transition>
     <transition enter-active-class="animated zoomIn a-little-bit-faster"
@@ -85,7 +85,7 @@ export default {
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   width: 100%;
   height: 100%;
   padding-bottom: 71px;
@@ -100,7 +100,7 @@ export default {
 
   .itemContainer {
     display: flex;
-    height: 90px;
+    max-height: 90px;
     width: calc(100% / 1.2);
     max-width: calc(100% / 1.2);
     overflow: auto;
