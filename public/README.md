@@ -4,7 +4,7 @@ Vocadventure is a vocabulary trainer for japanese and a little bit greek. It has
 
 ## Start
 
-You can try it out [here](https://momohunter.github.io/Vocadventure). If you start it on a smartphone, you can install it to the startscreen to play it without the browser.
+You can try it out [here](https://momohunter.github.io/Vocadventure). If you start it on a smartphone, you can install it to the startscreen to play it without the browser. (It looks better, trust me)
 
 ## Compatibility
 

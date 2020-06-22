@@ -159,9 +159,9 @@
     { "german": "die da drüben (Mehrzahl)", "english": "these over there", "romaji": "are-ra", "kana": "あれら", "difficulty": 1 },
     { "german": "welches (von mehreren)", "english": "which (from multiple)", "romaji": "dore", "kana": "どれ", "difficulty": 1 },
     { "german": "er / sie, der / die da (informell bis abwertend)", "english": "he / she, that one (informal to derogatory)", "romaji": "koitsu, soitsu, aitsu", "kana": "こいつ、そいつ、あいつ", "difficulty": 2 },
-    { "german": "dieser/diese/dieses (beim Sprecher)", "english": "this / these (at the speaker's)", "romaji": "kono", "kana": "この", "difficulty": 1 },
-    { "german": "dieser/diese/dieses (beim Zuhörer)", "english": "this / these (at the listener's)", "romaji": "sono", "kana": "その", "difficulty": 1 },
-    { "german": "dieser/diese/dieses (weder beim Sprecher, noch beim Zuhörer)", "english": "this / these (neither at the speaker's nor at the listener's)", "romaji": "ano", "kana": "あの", "difficulty": 1 },
+    { "german": "dieser / diese / dieses (beim Sprecher)", "english": "this / these (at the speaker's)", "romaji": "kono", "kana": "この", "difficulty": 1 },
+    { "german": "dieser / diese / dieses (beim Zuhörer)", "english": "this / these (at the listener's)", "romaji": "sono", "kana": "その", "difficulty": 1 },
+    { "german": "dieser / diese / dieses (weder beim Sprecher, noch beim Zuhörer)", "english": "this / these (neither at the speaker's nor at the listener's)", "romaji": "ano", "kana": "あの", "difficulty": 1 },
     { "german": "welches ... (Substantiv folgt)", "english": "which ... (noun follows)", "romaji": "dono", "kana": "どの", "difficulty": 1 },
     { "german": "(der Ort) hier", "english": "(the place) here", "romaji": "koko", "kana": "ここ", "difficulty": 1 },
     { "german": "(der Ort) da, dort", "english": "(the place) there", "romaji": "soko", "kana": "そこ", "difficulty": 1 },
@@ -192,13 +192,39 @@
     { "german": "so", "english": "so", "romaji": "kou, sou, aa", "kana": "こう、そう、ああ", "difficulty": 2 },
     { "german": "wie", "english": "how", "romaji": "dou", "kana": "どう", "difficulty": 1 },
     { "german": "so, auf diese Weise", "english": "like this", "romaji": "kou/sou/aa yatte", "kana": "こう・そう・ああやって", "difficulty": 2 },
-    { "german": "wie, auf welche Weise", "english": "how to do this", "romaji": "dou yatte", "kana": "どうやって", "difficulty": 1 }
+    { "german": "wie, auf welche Weise", "english": "how to do this", "romaji": "dou yatte", "kana": "どうやって", "difficulty": 1 },
+    { "german": "so sehr / viel / lange", "english": "so much / long", "romaji": "kono/sono/ano gurai", "kana": "この・その・あのぐらい", "difficulty": 2 },
+    { "german": "so sehr / viel / lange 2", "english": "so much / long 2", "romaji": "kore/sore/are gurai", "kana": "これ・それ・あれぐらい", "difficulty": 2 },
+    { "german": "wie viel (Menge) / wie lange", "english": "how much (amount) / how long", "romaji": "dono gurai", "kana": "どのぐらい", "difficulty": 1 },
+    { "german": "wie viel (Menge) / wie lange 2", "english": "how much (amount) / how long 2", "romaji": "dore gurai", "kana": "どれぐらい", "difficulty": 1 }
   ],
   "japaneseCategory7": [
-    { "german": "was", "english": "what", "romaji": "nani", "kana": "何", "difficulty": 3 }
+    { "german": "was", "english": "what", "romaji": "nani", "kana": "何", "difficulty": 3 },
+    { "german": "wofür, für welchen Zweck", "english": "for what, for what reason", "romaji": "nan no tame ni", "kana": "何のために", "difficulty": 3 },
+    { "german": "wer", "english": "who", "romaji": "dare", "kana": "だれ・誰", "difficulty": 3 },
+    { "german": "wer (höflich)", "english": "who (polite)", "romaji": "donata", "kana": "どなた", "difficulty": 1 },
+    { "german": "wie (höflich)", "english": "how (polite)", "romaji": "ikaga", "kana": "いかが", "difficulty": 1 },
+    { "german": "warum, weshalb", "english": "why", "romaji": "doushite", "kana": "どうして", "difficulty": 1 },
+    { "german": "warum, weshalb 2", "english": "why 2", "romaji": "naze", "kana": "なぜ", "difficulty": 1 },
+    { "german": "warum, weshalb (ugs.)", "english": "why (coll.)", "romaji": "nande", "kana": "なんで", "difficulty": 1 },
+    { "german": "wann", "english": "when", "romaji": "itsu", "kana": "いつ", "difficulty": 1 },
+    { "german": "wie teuer / wie viel (Menge)", "english": "how much (price / amount)", "romaji": "ikura", "kana": "いくら", "difficulty": 1 },
+    { "german": "wie viele (Anzahl von Dingen, die man mit 'hitotsu, futatsu,...' zählt)", "english": "how many (only things countable with 'hitotsu, futatsu,...')", "romaji": "ikutsu", "kana": "いくつ", "difficulty": 1 },
+    { "german": "wie alt (Personen)", "english": "how old (people)", "romaji": "ikutsu 2", "kana": "いくつ２", "difficulty": 1 },
+    { "german": "wie viele...", "english": "how many...", "romaji": "nan+ZEW", "kana": "何２", "difficulty": 3 },
+    { "german": "welche Sprache", "english": "which language", "romaji": "nani-go", "kana": "何語", "difficulty": 3 },
+    { "german": "Person welcher Nationalität (ugs.)", "english": "person of what nationality (coll.)", "romaji": "nani-jin", "kana": "何人", "difficulty": 3 },
+    { "german": "welche Farbe", "english": "which color", "romaji": "nani-iro", "kana": "何色", "difficulty": 3 }
   ],
   "japaneseCategory8": [
-    { "german": "Ort, Stelle, bei/zu jdm.", "english": "Place, position, at/to somebody", "romaji": "tokoro", "kana": "所", "difficulty": 3 }
+    { "german": "Ort, Stelle, bei/zu jdm.", "english": "Place, position, at/to somebody", "romaji": "tokoro", "kana": "所・ところ", "difficulty": 3 },
+    { "german": "Ort, Platz", "english": "place, location", "romaji": "basho", "kana": "場所", "difficulty": 3 },
+    { "german": "oben, auf", "english": "above, on", "romaji": "ue", "kana": "上", "difficulty": 3 },
+    { "german": "unten, unter", "english": "below, under", "romaji": "shita", "kana": "下", "difficulty": 3 },
+    { "german": "vorne, vor", "english": "in front", "romaji": "mae", "kana": "前", "difficulty": 3 },
+    { "german": "vor (vom eigenen Standpunkt aus)", "english": "in front (from own position)", "romaji": "te-mae", "kana": "手前", "difficulty": 3 },
+    { "german": "hinten, hinter", "english": "behind", "romaji": "ushiro", "kana": "後ろ", "difficulty": 3 },
+    { "german": "Spitze; Zukunft; weiter vorne", "english": "tip (end); future; further ahead", "romaji": "saki", "kana": "先", "difficulty": 3 }
   ],
   "japaneseCategory9": [
     { "german": "Person, Mensch, Leute", "english": "Person, human, people", "romaji": "hito", "kana": "人", "difficulty": 3 }

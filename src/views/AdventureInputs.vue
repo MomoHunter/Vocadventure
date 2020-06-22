@@ -395,7 +395,7 @@ export default {
       return this.$store.getters.getSizeClass(type)
     },
     streamline (word) {
-      return word.toLowerCase().replace(/(\(.+\)|（.+）)|[-, .!?/！。・、？1-9１-９]/g, '')
+      return word.toLowerCase().replace(/(\(.+\)|（.+）)|[-, ;.!?/！。・、？1-9１-９]/g, '')
     },
     checkInput () {
       this.resultsVisible.off = false
