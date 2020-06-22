@@ -36,7 +36,7 @@
     { "german": "Um Himmels Willen, nein! (Starke Erwiderung auf Dank/Lob)", "english": "No problem! (strong reaction to thanks/praise", "romaji": "Tonde mo nai (desu).", "kana": "とんでもない（です）。", "difficulty": 2 },
     { "german": "Danke für ihre Mühe./Es war anstrengend für Sie.", "english": "Thanks for your Effort./It was exhausting for you.", "romaji": "O-tsukare-sama (deshita).", "kana": "お疲れ様（でした）。", "difficulty": 3 },
     { "german": "Wie 'o-tsukare-sama', aber gegenüber Rangniedrigeren", "english": "Like 'o-tsukare-sama', but to lower ranked people", "romaji": "Go-kurou-sama (deshita).", "kana": "ご苦労様（でした）。", "difficulty": 3 },
-    { "german": "Ich bin so frei. (vor dem Essen od. wenn man etw. entgegennimmt)", "english": "I take the liberty (before dinner or if you accept sth)", "romaji": "Itadakimasu.", "kana": "いただきます。", "difficulty": 2 },
+    { "german": "Ich bin so frei. (vor dem Essen od. wenn man etw. entgegennimmt)", "english": "I take the liberty (before dinner or if you accept sth)", "romaji": "Itadakimasu.2", "kana": "いただきます。２", "difficulty": 2 },
     { "german": "Danke, es war gut. (höflich; nach dem Essen)", "english": "Thanks for the meal. It was delicious. (polite; after a meal)", "romaji": "Go-chisou-sama deshita.", "kana": "ご馳走様でした。", "difficulty": 3 }
   ],
   "japaneseCategory3": [
@@ -183,7 +183,16 @@
     { "german": "überall", "english": "everywhere", "romaji": "achikochi", "kana": "あちこち", "difficulty": 1 },
     { "german": "so ein/e...", "english": "such a...", "romaji": "kou/sou/aa iu...,", "kana": "こう・そう・ああいう・・・", "difficulty": 2 },
     { "german": "so ein/e..., ein/e so sehr...", "english": "such a..., so much of a...", "romaji": "konna, sonna, anna...", "kana": "こんあ・そんあ・あんあ・・・", "difficulty": 2 },
-    { "german": "so ein/e... (Vergleich)", "english": "such a... (comparison)", "romaji": "kono/sono/ano you na...", "kana": "この・その・あのような・・・", "difficulty": 2 }
+    { "german": "so ein/e... (Vergleich)", "english": "such a... (comparison)", "romaji": "kono/sono/ano you na...", "kana": "この・その・あのような・・・", "difficulty": 2 },
+    { "german": "was für ein/e...", "english": "what a...", "romaji": "dou iu", "kana": "どういう", "difficulty": 1 },
+    { "german": "was für ein/e...2", "english": "what a...2", "romaji": "donna", "kana": "どんあ", "difficulty": 1 },
+    { "german": "was für ein/e...3", "english": "what a...3", "romaji": "dono you na", "kana": "どのような", "difficulty": 1 },
+    { "german": "so sehr", "english": "so much", "romaji": "konna/sonna/anna ni", "kana": "こんあ・そんあ・あんなに", "difficulty": 3 },
+    { "german": "wie sehr (selten in Fragen)", "english": "how much (rarely in questions)", "romaji": "donna ni", "kana": "どんあに", "difficulty": 1 },
+    { "german": "so", "english": "so", "romaji": "kou, sou, aa", "kana": "こう、そう、ああ", "difficulty": 2 },
+    { "german": "wie", "english": "how", "romaji": "dou", "kana": "どう", "difficulty": 1 },
+    { "german": "so, auf diese Weise", "english": "like this", "romaji": "kou/sou/aa yatte", "kana": "こう・そう・ああやって", "difficulty": 2 },
+    { "german": "wie, auf welche Weise", "english": "how to do this", "romaji": "dou yatte", "kana": "どうやって", "difficulty": 1 }
   ],
   "japaneseCategory7": [
     { "german": "was", "english": "what", "romaji": "nani", "kana": "何", "difficulty": 3 }
