@@ -1,26 +1,17 @@
 <template>
   <div class="flexboxContainer">
-    <div class="itemFoundContainer is-10">
-      <transition enter-active-class="animated zoomIn a-little-bit-faster"
-                  leave-active-class="animated zoomOut a-little-bit-faster">
-        <div class="content marginBottomMiddle has-text-weight-bold" :class="getSizeClass('content')"
-            v-show="currentLevel !== 'home'">
-          {{ getText('adventureMapItemsFound', getText(currentLevel)) }}
-        </div>
-      </transition>
-      <transition enter-active-class="animated zoomIn a-little-bit-faster"
-                  leave-active-class="animated zoomOut a-little-bit-faster">
-        <div class="itemContainer marginBottomBig" v-show="items.length > 0">
-          <ItemBoxSmall :item="item" v-for="item in items" :key="item.id" />
-        </div>
-      </transition>
-      <transition enter-active-class="animated zoomIn a-little-bit-faster"
-                  leave-active-class="animated zoomOut a-little-bit-faster">
-        <div class="content" :class="getSizeClass('content')" v-show="items.length === 0 && currentLevel !== 'home'">
-          {{ getText('adventureMapNoItems') }}
-        </div>
-      </transition>
-    </div>
+    <transition enter-active-class="animated zoomIn a-little-bit-faster"
+                leave-active-class="animated zoomOut a-little-bit-faster">
+      <div class="itemContainer marginBottomBig" v-show="items.length > 0">
+        <ItemBoxSmall :item="item" v-for="item in items" :key="item.id" />
+      </div>
+    </transition>
+    <transition enter-active-class="animated zoomIn a-little-bit-faster"
+                leave-active-class="animated zoomOut a-little-bit-faster">
+      <div class="content" :class="getSizeClass('content')" v-show="items.length === 0 && currentLevel !== 'home'">
+        {{ getText('adventureMapNoItems') }}
+      </div>
+    </transition>
     <div class="gridContainer is-10 marginBottomBig">
       <ButtonIcon class="top-center" :class="getInvisible(currentMapPoint.tc)" icon="long-arrow-alt-up" color="is-link"
                   @click="$emit('click', getClickObject(currentMapPoint.tc))" />
@@ -107,21 +98,15 @@ export default {
     flex-grow: 1;
   }
 
-  .itemFoundContainer {
+  .itemContainer {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    height: 40%;
+    height: 90px;
+    width: calc(100% / 1.2);
+    max-width: calc(100% / 1.2);
+    overflow: auto;
 
-    .itemContainer {
-      display: flex;
-      height: 90px;
-      max-width: 100%;
-      overflow: auto;
-
-      > :not(:last-child) {
-        margin-right: .5rem;
-      }
+    > :not(:last-child) {
+      margin-right: .5rem;
     }
   }
 
