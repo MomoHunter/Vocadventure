@@ -234,12 +234,12 @@ export default {
                 { id: 'treeseed', chance: 0.01 }
               ],
               obstacles: [
-                /* { id: 'forestTrunk', chance: 0.03 },
+                { id: 'forestTrunk', chance: 0.03 },
                 { id: 'forestWall', chance: 0.03 },
                 { id: 'forestNet', chance: 0.03 },
                 { id: 'forestRubbishHeap', chance: 0.03 },
                 { id: 'forestBeeNest', chance: 0.03 },
-                { id: 'forestDeer', chance: 0.03 }, */
+                { id: 'forestDeer', chance: 0.03 },
                 { id: 'forestBear', chance: 0.3 },
                 { id: 'forestGoblin', chance: 0.03 }
               ]
@@ -264,12 +264,12 @@ export default {
                 { id: 'treeseed', chance: 0.01 }
               ],
               obstacles: [
-                /* { id: 'forestTrunk', chance: 0.03 },
+                { id: 'forestTrunk', chance: 0.03 },
                 { id: 'forestWall', chance: 0.03 },
                 { id: 'forestNet', chance: 0.03 },
                 { id: 'forestRubbishHeap', chance: 0.03 },
                 { id: 'forestBeeNest', chance: 0.03 },
-                { id: 'forestDeer', chance: 0.03 }, */
+                { id: 'forestDeer', chance: 0.03 },
                 { id: 'forestBear', chance: 0.3 },
                 { id: 'forestGoblin', chance: 0.03 }
               ]
@@ -296,12 +296,12 @@ export default {
                 { id: 'treeseed', chance: 0.01 }
               ],
               obstacles: [
-                /* { id: 'forestTrunk', chance: 0.02 },
+                { id: 'forestTrunk', chance: 0.02 },
                 { id: 'forestWall', chance: 0.02 },
                 { id: 'forestNet', chance: 0.08 },
                 { id: 'forestRubbishHeap', chance: 0.02 },
                 { id: 'forestBeeNest', chance: 0.02 },
-                { id: 'forestDeer', chance: 0.02 }, */
+                { id: 'forestDeer', chance: 0.02 },
                 { id: 'forestBear', chance: 0.2 },
                 { id: 'forestGoblin', chance: 0.02 }
               ]
