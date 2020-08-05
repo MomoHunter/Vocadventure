@@ -45,54 +45,65 @@ export default {
       'items_cobwebs_s': [false, 1801, 195, 20, 20],
       'items_dirt': [false, 1801, 216, 50, 50],
       'items_dirt_s': [false, 1801, 267, 20, 20],
-      'items_goblinblood': [false, 1801, 288, 50, 50],
-      'items_goblinblood_s': [false, 1801, 339, 20, 20],
-      'items_goblinkingcrown': [false, 1801, 360, 50, 50],
-      'items_goblinkingcrown_s': [false, 1801, 411, 20, 20],
-      'items_hand': [false, 1801, 432, 50, 50],
-      'items_hand_s': [false, 1801, 483, 20, 20],
-      'items_honey': [false, 1801, 504, 50, 50],
-      'items_honey_s': [false, 1801, 555, 20, 20],
-      'items_mushroom': [false, 1801, 576, 50, 50],
-      'items_mushroom_s': [false, 1801, 627, 20, 20],
-      'items_pebble': [false, 1801, 648, 50, 50],
-      'items_pebble_s': [false, 1801, 699, 20, 20],
-      'items_pickledmushrooms': [false, 1801, 720, 50, 50],
-      'items_pickledmushrooms_s': [false, 1801, 771, 20, 20],
-      'items_plastic': [false, 1801, 792, 50, 50],
-      'items_plastic_s': [false, 1801, 843, 20, 20],
-      'items_rubbish': [false, 1801, 864, 50, 50],
-      'items_rubbish_random': [false, 1801, 915, 50, 50],
-      'items_rubbish_s': [false, 1801, 966, 20, 20],
-      'items_stone': [false, 1801, 987, 50, 50],
-      'items_stoneaxe': [false, 1801, 1038, 50, 50],
-      'items_stoneaxe_s': [false, 1801, 1089, 20, 20],
-      'items_stonepickaxe': [false, 1801, 1110, 50, 50],
-      'items_stonepickaxe_s': [false, 1801, 1161, 20, 20],
-      'items_stoneshovel': [false, 1801, 1182, 50, 50],
-      'items_stoneshovel_s': [false, 1801, 1233, 20, 20],
-      'items_stonesword': [false, 1801, 1254, 50, 50],
-      'items_stonesword_s': [false, 1801, 1305, 20, 20],
-      'items_stone_s': [false, 1801, 1326, 20, 20],
-      'items_string': [false, 1801, 1347, 50, 50],
-      'items_string_s': [false, 1801, 1398, 20, 20],
-      'items_treeseed': [false, 1801, 1419, 50, 50],
-      'items_treeseed_random': [false, 1801, 1470, 50, 50],
-      'items_treeseed_s': [false, 1801, 1521, 20, 20],
-      'items_tree_basic': [false, 1801, 1542, 50, 50],
-      'items_tree_sakura': [false, 1801, 1593, 50, 50],
-      'items_wood': [false, 1801, 1644, 50, 50],
-      'items_wood_s': [false, 1801, 1695, 20, 20],
-      'obstacles_beenest': [false, 1852, 0, 44, 76],
-      'obstacles_goblin': [false, 1852, 77, 71, 75],
-      'obstacles_goblinking': [false, 1852, 153, 232, 182],
-      'obstacles_net': [false, 1852, 336, 36, 79],
-      'obstacles_rubbishheap': [false, 1852, 416, 88, 70],
-      'obstacles_trunk': [false, 1852, 487, 84, 95],
-      'obstacles_wall': [false, 1852, 583, 60, 86],
-      'player_level_standing': [false, 2085, 0, 55, 95],
-      'player_map_standing': [false, 2085, 96, 25, 43],
-      'special_placeholder': [false, 2141, 0, 50, 50]
+      'items_glassbottle': [false, 1801, 288, 39, 61],
+      'items_glassbottle_s': [false, 1801, 350, 13, 20],
+      'items_goblinblood': [false, 1801, 371, 29, 71],
+      'items_goblinblood_s': [false, 1801, 443, 9, 21],
+      'items_goblinkingcrown': [false, 1801, 465, 50, 50],
+      'items_goblinkingcrown_s': [false, 1801, 516, 20, 20],
+      'items_hand': [false, 1801, 537, 50, 50],
+      'items_hand_s': [false, 1801, 588, 20, 20],
+      'items_honey': [false, 1801, 609, 50, 50],
+      'items_honey_s': [false, 1801, 660, 20, 20],
+      'items_leather': [false, 1801, 681, 50, 50],
+      'items_leatherarmor': [false, 1801, 732, 55, 95],
+      'items_leather_s': [false, 1801, 828, 20, 20],
+      'items_mushroom': [false, 1801, 849, 50, 50],
+      'items_mushroom_s': [false, 1801, 900, 20, 20],
+      'items_noarmor': [false, 1801, 921, 76, 60],
+      'items_pebble': [false, 1801, 982, 50, 50],
+      'items_pebble_s': [false, 1801, 1033, 20, 20],
+      'items_pelt': [false, 1801, 1054, 50, 50],
+      'items_pelt_s': [false, 1801, 1105, 20, 19],
+      'items_pickledmushrooms': [false, 1801, 1125, 50, 50],
+      'items_pickledmushrooms_s': [false, 1801, 1176, 20, 20],
+      'items_plastic': [false, 1801, 1197, 50, 50],
+      'items_plastic_s': [false, 1801, 1248, 20, 20],
+      'items_rubbish': [false, 1801, 1269, 50, 50],
+      'items_rubbish_random': [false, 1801, 1320, 50, 50],
+      'items_rubbish_s': [false, 1801, 1371, 20, 20],
+      'items_stone': [false, 1801, 1392, 50, 50],
+      'items_stoneaxe': [false, 1801, 1443, 50, 50],
+      'items_stoneaxe_s': [false, 1801, 1494, 20, 20],
+      'items_stonepickaxe': [false, 1801, 1515, 37, 37],
+      'items_stonepickaxe_s': [false, 1801, 1553, 20, 20],
+      'items_stoneshovel': [false, 1801, 1574, 35, 35],
+      'items_stoneshovel_s': [false, 1801, 1610, 20, 20],
+      'items_stonesword': [false, 1801, 1631, 25, 26],
+      'items_stonesword_s': [false, 1801, 1658, 20, 20],
+      'items_stone_s': [false, 1801, 1679, 20, 20],
+      'items_string': [false, 1801, 1700, 50, 50],
+      'items_string_s': [false, 1801, 1751, 20, 20],
+      'items_treeseed': [false, 1801, 1772, 50, 50],
+      'items_treeseed_random': [false, 1801, 1823, 50, 50],
+      'items_treeseed_s': [false, 1801, 1874, 20, 20],
+      'items_tree_basic': [false, 1801, 1895, 50, 50],
+      'items_tree_sakura': [false, 1801, 1946, 50, 50],
+      'items_wood': [false, 1801, 1997, 50, 50],
+      'items_wood_s': [false, 1801, 2048, 20, 20],
+      'obstacles_bear': [false, 1878, 0, 90, 54],
+      'obstacles_beenest': [false, 1878, 55, 44, 76],
+      'obstacles_deer': [false, 1878, 132, 81, 87],
+      'obstacles_goblin': [false, 1878, 220, 71, 75],
+      'obstacles_goblinking': [false, 1878, 296, 232, 182],
+      'obstacles_goblin_d': [false, 1878, 479, 87, 80],
+      'obstacles_net': [false, 1878, 560, 36, 79],
+      'obstacles_rubbishheap': [false, 1878, 640, 88, 70],
+      'obstacles_trunk': [false, 1878, 711, 84, 95],
+      'obstacles_wall': [false, 1878, 807, 60, 86],
+      'player_level_standing': [false, 2111, 0, 55, 95],
+      'player_map_standing': [false, 2111, 96, 25, 43],
+      'special_placeholder': [false, 2167, 0, 50, 50]
     },
     // end spriteDict
     gameState: 'map',
@@ -106,11 +117,23 @@ export default {
       'levelmap'
     ],
     animationActive: false, // blocks navigation animation at init on adventure
+    collectableItems: [],
     questionKey: '',
     playerHealth: 100,
     currentLevel: 'home',
     currentBuilding: 'house',
-    currentEquippedItem: 'hand',
+    character: {
+      main: {
+        map: 'player_map_standing',
+        level: 'player_level_standing'
+      },
+      hand: 'hand',
+      armor: 'noarmor',
+      pos: {
+        map: { x: 45, y: 100 },
+        level: { x: 50, y: 145 }
+      }
+    },
     unlockedBuildings: ['house'],
     collectedItems: [],
     collectables: [],
@@ -211,11 +234,13 @@ export default {
                 { id: 'treeseed', chance: 0.01 }
               ],
               obstacles: [
-                { id: 'forestTrunk', chance: 0.03 },
+                /* { id: 'forestTrunk', chance: 0.03 },
                 { id: 'forestWall', chance: 0.03 },
                 { id: 'forestNet', chance: 0.03 },
                 { id: 'forestRubbishHeap', chance: 0.03 },
                 { id: 'forestBeeNest', chance: 0.03 },
+                { id: 'forestDeer', chance: 0.03 }, */
+                { id: 'forestBear', chance: 0.3 },
                 { id: 'forestGoblin', chance: 0.03 }
               ]
             }
@@ -239,11 +264,13 @@ export default {
                 { id: 'treeseed', chance: 0.01 }
               ],
               obstacles: [
-                { id: 'forestTrunk', chance: 0.03 },
+                /* { id: 'forestTrunk', chance: 0.03 },
                 { id: 'forestWall', chance: 0.03 },
                 { id: 'forestNet', chance: 0.03 },
                 { id: 'forestRubbishHeap', chance: 0.03 },
                 { id: 'forestBeeNest', chance: 0.03 },
+                { id: 'forestDeer', chance: 0.03 }, */
+                { id: 'forestBear', chance: 0.3 },
                 { id: 'forestGoblin', chance: 0.03 }
               ]
             }
@@ -269,11 +296,13 @@ export default {
                 { id: 'treeseed', chance: 0.01 }
               ],
               obstacles: [
-                { id: 'forestTrunk', chance: 0.02 },
+                /* { id: 'forestTrunk', chance: 0.02 },
                 { id: 'forestWall', chance: 0.02 },
                 { id: 'forestNet', chance: 0.08 },
                 { id: 'forestRubbishHeap', chance: 0.02 },
                 { id: 'forestBeeNest', chance: 0.02 },
+                { id: 'forestDeer', chance: 0.02 }, */
+                { id: 'forestBear', chance: 0.2 },
                 { id: 'forestGoblin', chance: 0.02 }
               ]
             }
@@ -327,9 +356,31 @@ export default {
             ]
           },
           {
+            id: 'forestDeer',
+            spriteKey: 'obstacles_deer',
+            bottomY: 240,
+            durability: 9,
+            power: 1,
+            items: [
+              { id: 'leather', quantity: 1 }
+            ]
+          },
+          {
+            id: 'forestBear',
+            spriteKey: 'obstacles_bear',
+            bottomY: 240,
+            durability: 16,
+            power: 3,
+            approaches: true,
+            items: [
+              { id: 'pelt', quantity: 1 }
+            ]
+          },
+          {
             id: 'forestGoblin',
             spriteKey: 'obstacles_goblin',
             bottomY: 240,
+            destroyedBottomY: 265,
             durability: 12,
             power: 2,
             items: [
@@ -509,6 +560,7 @@ export default {
         events: [],
         itemsOnFloor: false,
         obstacleAhead: false,
+        lootableObstacle: false,
         bossSpawned: false
       },
       'forest': {
@@ -519,6 +571,7 @@ export default {
         events: [],
         itemsOnFloor: false,
         obstacleAhead: false,
+        lootableObstacle: false,
         bossSpawned: false
       }
     }
@@ -529,6 +582,18 @@ export default {
     },
     canvasHeight: (state) => {
       return state.canvas.height
+    },
+    getSpriteData: (state) => (spriteKey, checkExists = false) => {
+      if (checkExists) {
+        return !!(state.spriteDict[spriteKey])
+      } else {
+        let spriteData = state.spriteDict[spriteKey]
+        if (!spriteData) {
+          console.error('Wrong key: ', spriteKey)
+          spriteData = state.spriteDict['special_placeholder']
+        }
+        return { spriteWidth: spriteData[3], spriteHeight: spriteData[4], full: spriteData, key: spriteKey }
+      }
     },
     currentMapPoint: (state) => {
       return state.staticLevelData[state.currentLevel]
@@ -624,6 +689,15 @@ export default {
 
       return count
     },
+    getObstacleOnField: (state) => (field) => {
+      let events = state.dynamicLevelData[state.currentLevel].events.filter(event => event.field === field)
+
+      if (events.length > 0) {
+        return events[0]
+      }
+
+      return false
+    },
     getObstacleObject: (state) => (level, id) => {
       return state.staticLevelData[level].obstacles.find(obstacle => obstacle.id === id)
     },
@@ -640,7 +714,7 @@ export default {
         playerHealth: state.playerHealth,
         currentLevel: state.currentLevel,
         currentBuilding: state.currentBuilding,
-        currentEquippedItem: state.currentEquippedItem,
+        character: state.character,
         unlockedBuildings: state.unlockedBuildings,
         dynamicLevelData: JSON.parse(JSON.stringify(state.dynamicLevelData))
       }
@@ -721,6 +795,7 @@ export default {
         events: [],
         itemsOnFloor: false,
         obstacleAhead: false,
+        lootableObstacle: false,
         bossSpawned: false
       }
     },
@@ -734,12 +809,27 @@ export default {
           events: [],
           itemsOnFloor: false,
           obstacleAhead: false,
+          lootableObstacle: false,
           bossSpawned: false
         }
       }
     },
+    setCharacter (state, character) {
+      state.character = character
+    },
     setEquippedItem (state, itemId) {
-      state.currentEquippedItem = itemId
+      state.character.hand = itemId
+    },
+    setEquippedArmor (state, itemId) {
+      state.character.armor = itemId
+    },
+    setCharacterPosition (state, object) {
+      if (object.x) {
+        state.character.pos[object.type].x = object.x
+      }
+      if (object.y) {
+        state.character.pos[object.type].y = object.y
+      }
     },
     addFoundItem (state, item) {
       let itemObj = state.dynamicLevelData[state.currentLevel].itemsFound.find(obj => obj.id === item.id)
@@ -758,11 +848,35 @@ export default {
     addEvent (state, event) {
       state.dynamicLevelData[state.currentLevel].events.push(event)
     },
+    setEventY (state, object) {
+      let event = state.dynamicLevelData[state.currentLevel].events.find(event =>
+        event.type === object.event.type && event.id === object.event.id && event.field === object.event.field
+      )
+
+      event.y = object.newY
+    },
+    setEventX (state, object) {
+      let event = state.dynamicLevelData[state.currentLevel].events.find(event =>
+        event.type === object.event.type && event.id === object.event.id && event.field === object.event.field
+      )
+
+      event.x = object.newX
+    },
+    setEventField (state, object) {
+      let event = state.dynamicLevelData[state.currentLevel].events.find(event =>
+        event.type === object.event.type && event.id === object.event.id && event.field === object.event.field
+      )
+
+      event.field = object.newField
+    },
     setObstacleAhead (state, bool) {
       state.dynamicLevelData[state.currentLevel].obstacleAhead = bool
     },
     setItemsOnFloor (state, bool) {
       state.dynamicLevelData[state.currentLevel].itemsOnFloor = bool
+    },
+    setLootableObstacle (state, bool) {
+      state.dynamicLevelData[state.currentLevel].lootableObstacle = bool
     },
     setBossSpawned (state, bool) {
       state.dynamicLevelData[state.currentLevel].bossSpawned = bool
@@ -770,6 +884,14 @@ export default {
     removeItemsOnFloor (state, object) {
       state.dynamicLevelData[state.currentLevel].events = state.dynamicLevelData[state.currentLevel].events.filter(
         event => { return event.type !== object.type || event.field !== object.field }
+      )
+    },
+    removeFirstEvent (state) {
+      state.dynamicLevelData[state.currentLevel].events.shift()
+    },
+    removeEvents (state) {
+      state.dynamicLevelData[state.currentLevel].events = state.dynamicLevelData[state.currentLevel].events.filter(
+        event => event.x > -200
       )
     },
     reduceObstacleDurability (state, object) {
@@ -787,6 +909,9 @@ export default {
       for (let event of events) {
         event.registered = true
       }
+    },
+    setCollectableItems (state, key) {
+      state.collectableItems = key
     },
     setQuestionKey (state, key) {
       state.questionKey = key
@@ -850,7 +975,7 @@ export default {
       state.playerHealth = copies.playerHealth
       state.currentLevel = copies.currentLevel
       state.currentBuilding = copies.currentBuilding
-      state.currentEquippedItem = copies.currentEquippedItem
+      state.character = copies.character
       state.unlockedBuildings = copies.unlockedBuildings
       state.dynamicLevelData = copies.dynamicLevelData
     }

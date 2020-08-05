@@ -4,7 +4,7 @@
       <ItemBoxSmall :item="item" v-for="item in items" :key="item.id" />
     </div>
     <div class="noItemsContainer" v-else>
-      {{ 'noItemsForYou:(' }}
+      {{ getText('adventureStatisticsNoItems') }}
     </div>
     <BarChartBasic class="is-10" :title="$store.state.vueDict.vocabs.latinAlphabet" color="has-background-grey-lighter"
                    :values="$store.state.vueDict.correctLatinWords" />
@@ -34,6 +34,11 @@ export default {
   computed: {
     items () {
       return this.$store.state.canvasDict.collectedItems
+    }
+  },
+  methods: {
+    getText (id) {
+      return this.$store.getters.getText(id)
     }
   }
 }

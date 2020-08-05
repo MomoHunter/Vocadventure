@@ -2,16 +2,12 @@ export function AnimationObject (type, ...params) {
   this.type = type
   switch (type) {
     case 'teleportHomeMap':
-      this.start = {
-        x: params[0].x,
-        y: params[0].y
-      }
       this.goal = {
         x: params[1].x,
         y: params[1].y
       }
       this.counter = {
-        number: 0,
+        height: 0,
         reverse: false
       }
       break
@@ -28,6 +24,8 @@ export function AnimationObject (type, ...params) {
       }
       break
     case 'moveFirstSteps':
+      this.goalX = params[0]
+      break
     case 'moveForward':
     case 'attackObstacle':
     case 'enemyAttack':
@@ -35,10 +33,7 @@ export function AnimationObject (type, ...params) {
       this.counter = 0
       break
     case 'homeEnter':
-      this.playerPos = {
-        x: params[0].x,
-        y: params[0].y + 150
-      }
+      this.first = true
       break
     case 'homeLeave':
       this.playerPos = {

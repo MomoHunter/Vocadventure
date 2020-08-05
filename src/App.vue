@@ -89,8 +89,8 @@ export default {
         if (data.currentBuilding) {
           this.$store.commit('canvasDict/setBuilding', data.currentBuilding)
         }
-        if (data.currentEquippedItem) {
-          this.$store.commit('canvasDict/setEquippedItem', data.currentEquippedItem)
+        if (data.character) {
+          this.$store.commit('canvasDict/setCharacter', data.character)
         }
         if (data.unlockedBuildings) {
           this.$store.commit('canvasDict/changeUnlockedBuilding', data.unlockedBuildings)

@@ -5,7 +5,7 @@
            :style="{ backgroundImage: 'url(' + baseUrl + itemData.spritePath + ')' }"></div>
     </div>
     <div class="content has-text-right" :class="getSizeClass('content')">
-      x{{ item.quantity.toLocaleString() }}
+      {{ quantityText }}
     </div>
   </div>
 </template>
@@ -14,7 +14,8 @@
 export default {
   name: 'ItemBoxSmall',
   props: {
-    item: Object
+    item: Object,
+    hasInventoryCount: Boolean
   },
   computed: {
     baseUrl () {
@@ -24,16 +25,22 @@ export default {
       return this.$store.getters['vueDict/getItemObject'](this.item.id)
     },
     color () {
-      switch (this.itemData.category) {
-        case 'weapon':
-          return 'is-primary'
-        case 'consumable':
-          return 'is-success'
-        case 'armor':
-          return 'is-warning'
-        default:
-          return 'is-basic'
+      if (this.itemData.categories.includes('weapon')) {
+        return 'is-primary'
+      } else if (this.itemData.categories.includes('consumable')) {
+        return 'is-success'
+      } else if (this.itemData.categories.includes('armor')) {
+        return 'is-warning'
+      } else {
+        return 'is-basic'
       }
+    },
+    quantityText () {
+      if (this.hasInventoryCount) {
+        let inventoryData = this.$store.getters['vueDict/getInventoryObject'](this.item.id)
+        return `x${inventoryData.quantity.toLocaleString()} / x${this.item.quantity.toLocaleString()}`
+      }
+      return `x${this.item.quantity.toLocaleString()}`
     }
   },
   methods: {

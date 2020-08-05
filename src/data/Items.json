@@ -1,295 +1,576 @@
 [
   {
-    "id": "hand",
-    "spriteKey": "items_hand",
-    "spriteKeySmall": "items_hand_s",
-    "spritePath": "img/items/hand.png",
-    "quantity": 1,
-    "points": 0,
-    "power": 1,
-    "usefulAgainst": []
-  },
-  {
-    "id": "branch",
-    "spriteKey": "items_branch",
-    "spriteKeySmall": "items_branch_s",
-    "spritePath": "img/items/branch.png",
-    "quantity": 1,
-    "points": 2
-  },
-  {
     "id": "pebble",
-    "spriteKey": "items_pebble",
-    "spriteKeySmall": "items_pebble_s",
-    "spritePath": "img/items/pebble.png",
+    "categories": [
+      "material",
+      "forest"
+    ],
     "quantity": 1,
+    "spritePath": "img/items/pebble.png",
+    "spriteKeySmall": "items_pebble_s",
     "points": 2
   },
   {
     "id": "dirt",
-    "spriteKey": "items_dirt",
-    "spriteKeySmall": "items_dirt_s",
-    "spritePath": "img/items/dirt.png",
+    "categories": [
+      "material",
+      "forest"
+    ],
     "quantity": 1,
+    "spritePath": "img/items/dirt.png",
+    "spriteKeySmall": "items_dirt_s",
     "points": 2
   },
   {
     "id": "mushroom",
-    "spriteKey": "items_mushroom",
-    "spriteKeySmall": "items_mushroom_s",
-    "spritePath": "img/items/mushroom.png",
+    "categories": [
+      "material",
+      "forest"
+    ],
     "quantity": 1,
+    "spritePath": "img/items/mushroom.png",
+    "spriteKeySmall": "items_mushroom_s",
     "points": 2
   },
   {
     "id": "cobwebs",
-    "spriteKey": "items_cobwebs",
-    "spriteKeySmall": "items_cobwebs_s",
-    "spritePath": "img/items/cobwebs.png",
+    "categories": [
+      "material",
+      "forest"
+    ],
     "quantity": 1,
+    "spritePath": "img/items/cobwebs.png",
+    "spriteKeySmall": "items_cobwebs_s",
     "points": 2
   },
   {
     "id": "treeseed",
-    "spriteKey": "items_treeseed",
-    "spriteKeySmall": "items_treeseed_s",
-    "spritePath": "img/items/treeseed.png",
+    "categories": [
+      "material",
+      "forest"
+    ],
     "quantity": 1,
+    "spritePath": "img/items/treeseed.png",
+    "spriteKeySmall": "items_treeseed_s",
     "points": 2
   },
   {
     "id": "wood",
-    "spriteKey": "items_wood",
-    "spriteKeySmall": "items_wood_s",
-    "spritePath": "img/items/wood.png",
+    "categories": [
+      "material",
+      "forest",
+      "shop"
+    ],
     "quantity": 1,
-    "points": 3,
+    "spritePath": "img/items/wood.png",
+    "spriteKeySmall": "items_wood_s",
     "unlocked": false,
+    "points": 3,
     "costs": [
-      { "id": "branch", "quantity": 5 },
-      { "id": "coins", "quantity": 20 }
+      {
+        "id": "coins",
+        "quantity": 20
+      },
+      {
+        "id": "branch",
+        "quantity": 5
+      }
     ]
   },
   {
     "id": "stone",
-    "spriteKey": "items_stone",
-    "spriteKeySmall": "items_stone_s",
-    "spritePath": "img/items/stone.png",
+    "categories": [
+      "material",
+      "forest",
+      "shop"
+    ],
     "quantity": 1,
-    "points": 4,
+    "spritePath": "img/items/stone.png",
+    "spriteKeySmall": "items_stone_s",
     "unlocked": false,
+    "points": 4,
     "costs": [
-      { "id": "pebble", "quantity": 5 },
-      { "id": "coins", "quantity": 25 }
+      {
+        "id": "pebble",
+        "quantity": 5
+      },
+      {
+        "id": "coins",
+        "quantity": 25
+      }
     ]
   },
   {
     "id": "string",
-    "spriteKey": "items_string",
-    "spriteKeySmall": "items_string_s",
-    "spritePath": "img/items/string.png",
+    "categories": [
+      "material",
+      "forest",
+      "shop"
+    ],
     "quantity": 1,
-    "points": 5,
+    "spritePath": "img/items/string.png",
+    "spriteKeySmall": "items_string_s",
     "unlocked": false,
+    "points": 5,
     "costs": [
-      { "id": "cobwebs", "quantity": 5 },
-      { "id": "coins", "quantity": 40 }
+      {
+        "id": "cobwebs",
+        "quantity": 5
+      },
+      {
+        "id": "coins",
+        "quantity": 40
+      }
+    ]
+  },
+  {
+    "id": "coins",
+    "categories": [
+      "special"
     ]
   },
   {
     "id": "rubbish",
-    "spriteKey": "items_rubbish",
-    "spriteKeySmall": "items_rubbish_s",
-    "spritePath": "img/items/rubbish.png",
+    "categories": [
+      "material",
+      "forest"
+    ],
     "quantity": 1,
+    "spritePath": "img/items/rubbish.png",
+    "spriteKeySmall": "items_rubbish_s",
+    "unlocked": false,
     "points": 2
   },
   {
-    "id": "randomrubbish",
-    "spriteKey": "items_rubbish_random",
-    "spritePath": "img/items/rubbish_random.png",
-    "unlocked": false,
-    "output": [
-      { "id": "plastic", "chance": 1 },
-      { "id": "branch", "chance": 1 },
-      { "id": "string", "chance": 0.2 }
-    ],
-    "costs": [
-      { "id": "rubbish", "quantity": 1 },
-      { "id": "coins", "quantity": 62 }
-    ]
-  },
-  {
-    "id": "plastic",
-    "spriteKey": "items_plastic",
-    "spriteKeySmall": "items_plastic_s",
-    "spritePath": "img/items/plastic.png",
-    "quantity": 1,
-    "points": 4
-  },
-  {
-    "id": "honey",
-    "spriteKey": "items_honey",
-    "spriteKeySmall": "items_honey_s",
-    "spritePath": "img/items/honey.png",
-    "quantity": 1,
-    "points": 8
-  },
-  {
-    "id": "beequeen",
-    "spriteKey": "items_beequeen",
-    "spriteKeySmall": "items_beequeen_s",
-    "spritePath": "img/items/beequeen.png",
-    "quantity": 1,
-    "points": 35
-  },
-  {
     "id": "randomtree",
-    "spriteKey": "items_treeseed_random",
-    "spritePath": "img/items/treeseed_random.png",
-    "unlocked": false,
-    "output": [
-      { "id": "treebasic", "chance": 1 },
-      { "id": "treesakura", "chance": 0.05}
+    "categories": [
+      "shop",
+      "random"
     ],
+    "unlocked": false,
+    "spritePath": "img/items/treeseed_random.png",
     "costs": [
-      { "id": "treeseed", "quantity": 1 },
-      { "id": "coins", "quantity": 55 }
+      {
+        "id": "treeseed",
+        "quantity": 1
+      },
+      {
+        "id": "coins",
+        "quantity": 55
+      }
+    ],
+    "output": [
+      {
+        "id": "treesakura",
+        "chance": 0.05
+      },
+      {
+        "id": "treebasic",
+        "chance": 1
+      }
     ]
   },
   {
     "id": "treebasic",
-    "spriteKey": "items_tree_basic",
-    "spritePath": "img/items/tree_basic.png",
+    "categories": [
+      "item"
+    ],
     "quantity": 1,
+    "spritePath": "img/items/tree_basic.png",
+    "spriteKey": "items_tree_basic",
     "points": 6
   },
   {
     "id": "treesakura",
-    "spriteKey": "items_tree_sakura",
-    "spritePath": "img/items/tree_sakura.png",
+    "categories": [
+      "item"
+    ],
     "quantity": 1,
+    "spritePath": "img/items/tree_sakura.png",
+    "spriteKey": "items_tree_sakura",
     "points": 30
   },
   {
-    "id": "stonepickaxe",
-    "spriteKey": "items_stonepickaxe",
-    "spriteKeySmall": "items_stonepickaxe_s",
-    "spritePath": "img/items/stonepickaxe.png",
-    "category": "weapon",
+    "id": "randomrubbish",
+    "categories": [
+      "shop",
+      "random"
+    ],
+    "unlocked": false,
+    "spritePath": "img/items/rubbish_random.png",
+    "costs": [
+      {
+        "id": "coins",
+        "quantity": 62
+      },
+      {
+        "id": "rubbish",
+        "quantity": 1
+      }
+    ],
+    "output": [
+      {
+        "id": "string",
+        "chance": 0.2
+      },
+      {
+        "id": "branch",
+        "chance": 1
+      },
+      {
+        "id": "plastic",
+        "chance": 1
+      }
+    ]
+  },
+  {
+    "id": "plastic",
+    "categories": [
+      "material"
+    ],
     "quantity": 1,
-    "points": 15,
+    "spritePath": "img/items/plastic.png",
+    "spriteKeySmall": "items_plastic_s",
+    "points": 4
+  },
+  {
+    "id": "honey",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/honey.png",
+    "spriteKeySmall": "items_honey_s",
+    "points": 8
+  },
+  {
+    "id": "beequeen",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/beequeen.png",
+    "spriteKeySmall": "items_beequeen_s",
+    "points": 35
+  },
+  {
+    "id": "leather",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/leather.png",
+    "spriteKeySmall": "items_leather_s",
+    "points": 14
+  },
+  {
+    "id": "leatherarmor",
+    "categories": [
+      "item",
+      "armor",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/leatherarmor.png",
+    "defense": 1,
+    "durability": 25,
+    "spriteKey": "items_leatherarmor",
+    "unlocked": false,
+    "points": 23,
+    "costs": [
+      {
+        "id": "string",
+        "quantity": 4
+      },
+      {
+        "id": "coins",
+        "quantity": 60
+      },
+      {
+        "id": "leather",
+        "quantity": 8
+      }
+    ]
+  },
+  {
+    "id": "pelt",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/pelt.png",
+    "spriteKeySmall": "items_pelt_s",
+    "points": 19
+  },
+  {
+    "id": "stonepickaxe",
+    "categories": [
+      "tool",
+      "item",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/stonepickaxe.png",
     "durability": 16,
-    "power": 2,
     "usefulAgainst": [
       "forestWall"
     ],
+    "power": 2,
+    "spriteKey": "items_stonepickaxe",
+    "spriteKeySmall": "items_stonepickaxe_s",
     "unlocked": false,
+    "points": 15,
     "costs": [
-      { "id": "stone", "quantity": 4 },
-      { "id": "wood", "quantity": 2 },
-      { "id": "string", "quantity": 2 },
-      { "id": "coins", "quantity": 120 }
+      {
+        "id": "wood",
+        "quantity": 2
+      },
+      {
+        "id": "stone",
+        "quantity": 4
+      },
+      {
+        "id": "string",
+        "quantity": 2
+      },
+      {
+        "id": "coins",
+        "quantity": 120
+      }
     ]
   },
   {
     "id": "stoneaxe",
-    "spriteKey": "items_stoneaxe",
-    "spriteKeySmall": "items_stoneaxe_s",
-    "spritePath": "img/items/stoneaxe.png",
-    "category": "weapon",
+    "categories": [
+      "tool",
+      "item",
+      "weapon",
+      "shop"
+    ],
     "quantity": 1,
-    "points": 15,
+    "spritePath": "img/items_stoneaxe.png",
     "durability": 10,
-    "power": 2,
     "usefulAgainst": [
       "forestTrunk",
       "forestBeeNest"
     ],
+    "power": 2,
+    "spriteKey": "items_stoneaxe",
+    "spriteKeySmall": "items_stoneaxe_s",
     "unlocked": false,
+    "points": 15,
     "costs": [
-      { "id": "stone", "quantity": 2 },
-      { "id": "wood", "quantity": 2 },
-      { "id": "string", "quantity": 2 },
-      { "id": "coins", "quantity": 100 }
+      {
+        "id": "wood",
+        "quantity": 2
+      },
+      {
+        "id": "stone",
+        "quantity": 2
+      },
+      {
+        "id": "string",
+        "quantity": 2
+      },
+      {
+        "id": "coins",
+        "quantity": 100
+      }
     ]
   },
   {
     "id": "stonesword",
-    "spriteKey": "items_stonesword",
-    "spriteKeySmall": "items_stonesword_s",
-    "spritePath": "img/items/stonesword.png",
-    "category": "weapon",
+    "categories": [
+      "item",
+      "weapon",
+      "shop"
+    ],
     "quantity": 1,
-    "points": 11,
+    "spritePath": "img/items/stonesword.png",
     "durability": 12,
-    "power": 2,
     "usefulAgainst": [
       "forestNet",
       "forestBeeNest",
+      "forestDeer",
       "forestGoblin",
       "forestGoblinking"
     ],
+    "power": 2,
+    "spriteKey": "items_stonesword",
+    "spriteKeySmall": "items_stonesword_s",
     "unlocked": false,
+    "points": 11,
     "costs": [
-      { "id": "stone", "quantity": 3 },
-      { "id": "wood", "quantity": 1 },
-      { "id": "string", "quantity": 1 },
-      { "id": "coins", "quantity": 110 }
+      {
+        "id": "wood",
+        "quantity": 1
+      },
+      {
+        "id": "stone",
+        "quantity": 3
+      },
+      {
+        "id": "string",
+        "quantity": 1
+      },
+      {
+        "id": "coins",
+        "quantity": 110
+      }
     ]
   },
   {
     "id": "stoneshovel",
-    "spriteKey": "items_stoneshovel",
-    "spriteKeySmall": "items_stoneshovel_s",
-    "spritePath": "img/items/stoneshovel.png",
-    "category": "weapon",
+    "categories": [
+      "tool",
+      "item",
+      "shop"
+    ],
     "quantity": 1,
-    "points": 11,
+    "spritePath": "img/items/stoneshovel.png",
     "durability": 12,
-    "power": 2,
     "usefulAgainst": [
       "forestRubbishHeap"
     ],
+    "power": 2,
+    "spriteKey": "items_stoneshovel",
+    "spriteKeySmall": "items_stoneshovel_s",
     "unlocked": false,
+    "points": 11,
     "costs": [
-      { "id": "stone", "quantity": 1 },
-      { "id": "wood", "quantity": 3 },
-      { "id": "string", "quantity": 2 },
-      { "id": "coins", "quantity": 95 }
+      {
+        "id": "wood",
+        "quantity": 3
+      },
+      {
+        "id": "stone",
+        "quantity": 1
+      },
+      {
+        "id": "string",
+        "quantity": 2
+      },
+      {
+        "id": "coins",
+        "quantity": 95
+      }
     ]
   },
   {
     "id": "pickledmushrooms",
+    "categories": [
+      "item",
+      "shop",
+      "consumable"
+    ],
+    "healing": 5,
+    "quantity": 1,
+    "spritePath": "img/items/pickledmushrooms.png",
     "spriteKey": "items_pickledmushrooms",
     "spriteKeySmall": "items_pickledmushrooms_s",
-    "spritePath": "img/items/pickledmushrooms.png",
-    "category": "consumable",
-    "quantity": 1, 
-    "points": 13,
-    "healing": 5,
     "unlocked": false,
+    "points": 13,
     "costs": [
-      { "id": "honey", "quantity": 1 },
-      { "id": "mushroom", "quantity": 5 },
-      { "id": "wood", "quantity": 1 },
-      { "id": "coins", "quantity": 65 }
+      {
+        "id": "mushroom",
+        "quantity": 5
+      },
+      {
+        "id": "wood",
+        "quantity": 1
+      },
+      {
+        "id": "coins",
+        "quantity": 65
+      },
+      {
+        "id": "honey",
+        "quantity": 1
+      }
     ]
   },
   {
     "id": "goblinblood",
-    "spriteKey": "items_goblinblood",
-    "spriteKeySmall": "items_goblinblood_s",
-    "spritePath": "img/items/goblinblood.png",
+    "categories": [
+      "material",
+      "forest"
+    ],
     "quantity": 1,
-    "points": 11
+    "spritePath": "img/items/goblinblood.png",
+    "spriteKeySmall": "items_goblinblood_s",
+    "points": 11,
+    "required": [
+      {
+        "id": "glassbottle",
+        "quantity": 1
+      }
+    ]
   },
   {
     "id": "goblinkingcrown",
+    "categories": [
+      "material",
+      "forest",
+      "collectable"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/goblinkingcrown.png",
     "spriteKey": "items_goblinkingcrown",
     "spriteKeySmall": "items_goblinkingcrown_s",
-    "spritePath": "img/items/goblinkingcrown.png",
-    "quantity": 1,
     "points": 150
+  },
+  {
+    "id": "glassbottle",
+    "categories": [
+      "material",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/glassbottle.png",
+    "spriteKeySmall": "items_glassbottle_s",
+    "unlocked": false,
+    "points": 24
+  },
+  {
+    "id": "hand",
+    "categories": [
+      "item",
+      "weapon"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/hand.png",
+    "usefulAgainst": [],
+    "power": 1,
+    "spriteKey": "items_hand",
+    "spriteKeySmall": "items_pebble",
+    "points": 0
+  },
+  {
+    "id": "noarmor",
+    "categories": [
+      "item",
+      "armor"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/noarmor.png",
+    "defense": 0,
+    "durability": 0,
+    "spriteKey": "items_noarmor",
+    "points": 0
+  },
+  {
+    "id": "branch",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/branch.png",
+    "spriteKeySmall": "items_branch_s",
+    "points": 2
   }
 ]

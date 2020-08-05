@@ -41,15 +41,14 @@ export default {
       return this.$store.getters['vueDict/getItemObject'](this.item.id)
     },
     color () {
-      switch (this.itemData.category) {
-        case 'weapon':
-          return 'is-primary'
-        case 'consumable':
-          return 'is-success'
-        case 'armor':
-          return 'is-warning'
-        default:
-          return 'is-basic'
+      if (this.itemData.categories.includes('weapon')) {
+        return 'is-primary'
+      } else if (this.itemData.categories.includes('consumable')) {
+        return 'is-success'
+      } else if (this.itemData.categories.includes('armor')) {
+        return 'is-warning'
+      } else {
+        return 'is-basic'
       }
     }
   },

@@ -6,7 +6,7 @@
         <transition :enter-active-class="trainingAnimation.enter"
                     :leave-active-class="trainingAnimation.leave">
           <ButtonBasic class="is-relative marginBottomSmall" color="is-link" icon="book" text="menuButton1"
-                       @click="$router.push({ name: 'menu', query: { sub: 'training' } })" v-show="!query" />
+                       @click="navToTraining()" v-show="!query" />
         </transition>
         <transition :enter-active-class="adventureAnimation.enter"
                     :leave-active-class="adventureAnimation.leave">
@@ -26,11 +26,11 @@
                        @click="$router.push({ name: 'category', params: { destination: 'training' } })"
                        v-show="query === 'training'" />
         </transition>
-        <transition :enter-active-class="customEnterAnimation"
-                    :leave-active-class="customLeaveAnimation">
+        <transition enter-active-class="animated fadeIn customDuration customDelay"
+                    leave-active-class="animated fadeOut customDuration">
           <ButtonBasic class="is-relative marginBottomSmall" color="is-success" icon="pen" text="menuTrainingButton2"
                        @click="$router.push({ name: 'category', params: { destination: 'writeKanji' } })"
-                       v-show="query === 'training'" :disabled="inactive" />
+                       v-show="query === 'training'" />
         </transition>
         <transition enter-active-class="animated fadeIn customDuration customDelay"
                     leave-active-class="animated fadeOut customDuration">
@@ -88,15 +88,15 @@ export default {
   computed: {
     query () {
       return this.$route.query.sub
-    },
-    inactive () {
-      return this.$store.state.targetLanguage !== 'japanese'
-    },
-    customEnterAnimation () {
-      return 'animated ' + (this.inactive ? 'fadeInC2' : 'fadeIn') + ' customDuration customDelay'
-    },
-    customLeaveAnimation () {
-      return 'animated ' + (this.inactive ? 'fadeOutC2' : 'fadeOut') + ' customDuration'
+    }
+  },
+  methods: {
+    navToTraining () {
+      if (this.$store.state.targetLanguage !== 'japanese') {
+        this.$router.push({ name: 'category', params: { destination: 'training' } })
+      } else {
+        this.$router.push({ name: 'menu', query: { sub: 'training' } })
+      }
     }
   },
   watch: {

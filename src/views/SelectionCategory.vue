@@ -255,7 +255,11 @@ export default {
         if (this.destination === 'adventure') {
           this.$router.push({ name: 'menu', query: { sub: 'adventure' } })
         } else {
-          this.$router.push({ name: 'menu', query: { sub: 'training' } })
+          if (this.$store.state.targetLanguage === 'japanese') {
+            this.$router.push({ name: 'menu', query: { sub: 'training' } })
+          } else {
+            this.$router.push({ name: 'menu' })
+          }
         }
       } else {
         if (this.$store.state.vueDict.categoriesChosen.length !== 0) {

@@ -29,7 +29,9 @@ export default {
       'treeseed': ['randomtree'],
       'stone': ['stonepickaxe', 'stoneaxe', 'stonesword', 'stoneshovel'],
       'honey': ['pickledmushrooms'],
-      'rubbish': ['randomrubbish']
+      'leather': ['leatherarmor'],
+      'rubbish': ['randomrubbish'],
+      'glass': ['glassbottle']
     },
     vocabs: {},
     currentWordIndex: 0,

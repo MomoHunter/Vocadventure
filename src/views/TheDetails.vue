@@ -187,7 +187,7 @@ export default {
             let newItem = {
               id: this.item.id,
               quantity: this.item.quantity * this.amount,
-              category: this.item.category || null,
+              categories: this.item.categories,
               durability: this.item.durability || null
             }
 
@@ -200,7 +200,7 @@ export default {
           let newItem = {
             id: this.item.id,
             quantity: this.item.quantity * this.amount,
-            category: this.item.category || null,
+            categories: this.item.categories,
             durability: this.item.durability || null
           }
           this.$store.commit('vueDict/addToInventory', newItem)

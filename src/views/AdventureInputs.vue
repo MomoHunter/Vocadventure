@@ -50,7 +50,7 @@
     </transition>
     <transition leave-active-class="animated zoomOut a-little-bit-faster"
                 enter-active-class="animated zoomIn a-little-bit-faster">
-      <div v-show="itemsVisible.on" class="content has-text-centered" :class="getSizeClass('content')">
+      <div v-show="itemsVisible.on" class="subtitle has-text-centered" :class="getSizeClass('subtitle')">
         {{ getText(itemCategories[currentItemCategory].text) }}
       </div>
     </transition>
@@ -356,15 +356,21 @@ export default {
       if (!this.noItems) {
         switch (this.itemCategories[this.currentItemCategory].id) {
           case 'weapons':
-            items = this.$store.state.vueDict.inventory.filter(item => item.category === 'weapon' && item.quantity > 0)
+            items = this.$store.state.vueDict.inventory.filter(item =>
+              item.categories.includes('weapon') && item.quantity > 0
+            )
             items.unshift({ id: 'hand', quantity: 1 })
             break
           case 'consumables':
-            items = this.$store.state.vueDict.inventory.filter(item => item.category === 'consumable' && item.quantity > 0)
+            items = this.$store.state.vueDict.inventory.filter(item =>
+              item.categories.includes('consumable') && item.quantity > 0
+            )
             break
           case 'armor':
-            items = this.$store.state.vueDict.inventory.filter(item => item.category === 'armor' && item.quantity > 0)
-            // items.unshift(this.$store.getters['vueDict/getItemObject']('noarmor'))
+            items = this.$store.state.vueDict.inventory.filter(item =>
+              item.categories.includes('armor') && item.quantity > 0
+            )
+            items.unshift(this.$store.getters['vueDict/getItemObject']('noarmor'))
             break
           default:
         }
@@ -512,9 +518,10 @@ export default {
     itemBoxAction (item) {
       switch (this.itemCategories[this.currentItemCategory].id) {
         case 'weapons':
-          this.setItemEquipped(item.id)
+          this.$store.commit('canvasDict/setEquippedItem', item.id)
           break
         case 'armor':
+          this.$store.commit('canvasDict/setEquippedArmor', item.id)
           break
         case 'consumables':
           if (item.healing) {
@@ -528,10 +535,14 @@ export default {
       }
     },
     itemEquipped (itemId) {
-      return itemId === this.$store.state.canvasDict.currentEquippedItem
-    },
-    setItemEquipped (itemId) {
-      this.$store.commit('canvasDict/setEquippedItem', itemId)
+      switch (this.itemCategories[this.currentItemCategory].id) {
+        case 'weapons':
+          return itemId === this.$store.state.canvasDict.character.hand
+        case 'armor':
+          return itemId === this.$store.state.canvasDict.character.armor
+        default:
+          return false
+      }
     },
     getProgressColor (item) {
       if (item.durability < item.maxDurability / 3) {
@@ -658,25 +669,6 @@ export default {
           margin-right: auto;
         }
       }
-
-      .backgroundPicture {
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
-      }
-
-      .infoBar {
-        display: flex;
-        flex-direction: row-reverse;
-        flex-wrap: nowrap;
-
-        .customProgress {
-          margin-top: auto;
-          margin-bottom: auto;
-          margin-right: .5rem;
-          height: 12px;
-        }
-    }
     }
   }
 }

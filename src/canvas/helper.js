@@ -63,10 +63,9 @@ export function getSpriteData (spriteKey, cD) {
   let spriteData = cD.spriteDict[spriteKey]
   if (!spriteData) {
     console.error('Wrong key: ', spriteKey)
-    return getSpriteData('special_placeholder', cD)
-  } else {
-    return { spriteWidth: spriteData[3], spriteHeight: spriteData[4], full: spriteData, key: spriteKey }
+    spriteData = cD.spriteDict['special_placeholder']
   }
+  return { spriteWidth: spriteData[3], spriteHeight: spriteData[4], full: spriteData, key: spriteKey }
 }
 
 /**

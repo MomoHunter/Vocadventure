@@ -1,4 +1,5 @@
 {
+  "darkLumen": "css/darkLumen.min.css",
   "bulma": "css/bulma.min.css",
   "darkly": "css/darkly.bw.min.css",
   "cerulean": "css/cerulean.bw.min.css",
@@ -6,7 +7,6 @@
   "cyborg": "css/cyborg.bw.min.css",
   "flatly": "css/flatly.bw.min.css",
   "lumen": "css/lumen.bw.min.css",
-  "darkLumen": "css/darkLumen.min.css",
   "lux": "css/lux.bw.min.css",
   "materia": "css/materia.bw.min.css",
   "nuclear": "css/nuclear.bw.min.css",

@@ -13,7 +13,7 @@ export default new Vuex.Store({
     version: '0.1.0',
     lang: 'german',
     targetLanguage: 'japanese',
-    theme: 'bulma',
+    theme: 'darkLumen',
     size: 'normal'
   },
   getters: {
@@ -54,7 +54,7 @@ export default new Vuex.Store({
         mapOffset: state.canvasDict.mapOffset,
         currentLevel: state.canvasDict.currentLevel,
         currentBuilding: state.canvasDict.currentBuilding,
-        currentEquippedItem: state.canvasDict.currentEquippedItem,
+        character: state.canvasDict.character,
         unlockedBuildings: state.canvasDict.unlockedBuildings,
         collectables: state.canvasDict.collectables,
         playerHealth: state.canvasDict.playerHealth,
