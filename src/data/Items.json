@@ -536,6 +536,28 @@
     "points": 24
   },
   {
+    "id": "grassbundle",
+    "categories": [
+      "material",
+      "plains"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/grassbundle.png",
+    "spriteKeySmall": "items_grassbundle_s",
+    "points": 3
+  },
+  {
+    "id": "crystalchip",
+    "categories": [
+      "material",
+      "plains"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/crystalchip.png",
+    "spriteKeySmall": "items_crystalchip_s",
+    "points": 4
+  },
+  {
     "id": "hand",
     "categories": [
       "item",

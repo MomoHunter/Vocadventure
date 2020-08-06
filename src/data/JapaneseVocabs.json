@@ -224,7 +224,9 @@
     { "german": "vorne, vor", "english": "in front", "romaji": "mae", "kana": "前", "difficulty": 3 },
     { "german": "vor (vom eigenen Standpunkt aus)", "english": "in front (from own position)", "romaji": "te-mae", "kana": "手前", "difficulty": 3 },
     { "german": "hinten, hinter", "english": "behind", "romaji": "ushiro", "kana": "後ろ", "difficulty": 3 },
-    { "german": "Spitze; Zukunft; weiter vorne", "english": "tip (end); future; further ahead", "romaji": "saki", "kana": "先", "difficulty": 3 }
+    { "german": "Spitze; Zukunft; weiter vorne", "english": "tip (end); future; further ahead", "romaji": "saki", "kana": "先", "difficulty": 3 },
+    { "german": "Vorderseite, Oberseite", "english": "Front, Top", "romaji": "omote", "kana": "表", "difficulty": 3 },
+    { "german": "Rückseite", "english": "Back", "romaji": "ura", "kana": "裏", "difficulty": 3 }
   ],
   "japaneseCategory9": [
     { "german": "Person, Mensch, Leute", "english": "Person, human, people", "romaji": "hito", "kana": "人", "difficulty": 3 }

@@ -8,6 +8,7 @@ $grey-darker:  darken($grey, 31);
 $grey-lighter: darken($grey-darker, 3);
 $dark:         $grey;
 $orange:     #c1722c;
+$silver:     #c0c0c0;
 
 $body-background-color: darken($grey-darker, 7);
 $body-color: $grey-light;
@@ -59,6 +60,10 @@ $content-blockquote-border-left: 5px solid $grey-dark;
 
 @import "./../node_modules/bulma/bulma.sass";
 @import "./../node_modules/bulmaswatch/lumen/overrides";
+
+.has-text-silver {
+  color: $silver;
+}
 
 .hero {
   background-color: lighten($grey-darker, 3);

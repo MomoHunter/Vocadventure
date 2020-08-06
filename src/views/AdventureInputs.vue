@@ -260,7 +260,7 @@ export default {
         case 2:
           return 'has-text-warning'
         default:
-          return 'has-text-grey-lighter'
+          return 'has-text-silver'
       }
     },
     isForeignCorrect () {
@@ -299,7 +299,7 @@ export default {
         case 2:
           return 'has-text-warning'
         default:
-          return 'has-text-grey-lighter'
+          return 'has-text-silver'
       }
     },
     progressBarCount () {

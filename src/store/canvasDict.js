@@ -43,64 +43,72 @@ export default {
       'items_branch_s': [false, 1801, 123, 20, 20],
       'items_cobwebs': [false, 1801, 144, 50, 50],
       'items_cobwebs_s': [false, 1801, 195, 20, 20],
-      'items_dirt': [false, 1801, 216, 50, 50],
-      'items_dirt_s': [false, 1801, 267, 20, 20],
-      'items_glassbottle': [false, 1801, 288, 39, 61],
-      'items_glassbottle_s': [false, 1801, 350, 13, 20],
-      'items_goblinblood': [false, 1801, 371, 29, 71],
-      'items_goblinblood_s': [false, 1801, 443, 9, 21],
-      'items_goblinkingcrown': [false, 1801, 465, 50, 50],
-      'items_goblinkingcrown_s': [false, 1801, 516, 20, 20],
-      'items_hand': [false, 1801, 537, 50, 50],
-      'items_hand_s': [false, 1801, 588, 20, 20],
-      'items_honey': [false, 1801, 609, 50, 50],
-      'items_honey_s': [false, 1801, 660, 20, 20],
-      'items_leather': [false, 1801, 681, 50, 50],
-      'items_leatherarmor': [false, 1801, 732, 55, 95],
-      'items_leather_s': [false, 1801, 828, 20, 20],
-      'items_mushroom': [false, 1801, 849, 50, 50],
-      'items_mushroom_s': [false, 1801, 900, 20, 20],
-      'items_noarmor': [false, 1801, 921, 76, 60],
-      'items_pebble': [false, 1801, 982, 50, 50],
-      'items_pebble_s': [false, 1801, 1033, 20, 20],
-      'items_pelt': [false, 1801, 1054, 50, 50],
-      'items_pelt_s': [false, 1801, 1105, 20, 19],
-      'items_pickledmushrooms': [false, 1801, 1125, 50, 50],
-      'items_pickledmushrooms_s': [false, 1801, 1176, 20, 20],
-      'items_plastic': [false, 1801, 1197, 50, 50],
-      'items_plastic_s': [false, 1801, 1248, 20, 20],
-      'items_rubbish': [false, 1801, 1269, 50, 50],
-      'items_rubbish_random': [false, 1801, 1320, 50, 50],
-      'items_rubbish_s': [false, 1801, 1371, 20, 20],
-      'items_stone': [false, 1801, 1392, 50, 50],
-      'items_stoneaxe': [false, 1801, 1443, 50, 50],
-      'items_stoneaxe_s': [false, 1801, 1494, 20, 20],
-      'items_stonepickaxe': [false, 1801, 1515, 37, 37],
-      'items_stonepickaxe_s': [false, 1801, 1553, 20, 20],
-      'items_stoneshovel': [false, 1801, 1574, 35, 35],
-      'items_stoneshovel_s': [false, 1801, 1610, 20, 20],
-      'items_stonesword': [false, 1801, 1631, 25, 26],
-      'items_stonesword_s': [false, 1801, 1658, 20, 20],
-      'items_stone_s': [false, 1801, 1679, 20, 20],
-      'items_string': [false, 1801, 1700, 50, 50],
-      'items_string_s': [false, 1801, 1751, 20, 20],
-      'items_treeseed': [false, 1801, 1772, 50, 50],
-      'items_treeseed_random': [false, 1801, 1823, 50, 50],
-      'items_treeseed_s': [false, 1801, 1874, 20, 20],
-      'items_tree_basic': [false, 1801, 1895, 50, 50],
-      'items_tree_sakura': [false, 1801, 1946, 50, 50],
-      'items_wood': [false, 1801, 1997, 50, 50],
-      'items_wood_s': [false, 1801, 2048, 20, 20],
+      'items_crystal': [false, 1801, 216, 50, 50],
+      'items_crystalchip': [false, 1801, 267, 50, 50],
+      'items_crystalchip_s': [false, 1801, 318, 20, 20],
+      'items_crystal_s': [false, 1801, 339, 20, 20],
+      'items_dirt': [false, 1801, 360, 50, 50],
+      'items_dirt_s': [false, 1801, 411, 20, 20],
+      'items_glassbottle': [false, 1801, 432, 39, 61],
+      'items_glassbottle_s': [false, 1801, 494, 13, 20],
+      'items_goblinblood': [false, 1801, 515, 29, 71],
+      'items_goblinblood_s': [false, 1801, 587, 9, 21],
+      'items_goblinkingcrown': [false, 1801, 609, 50, 50],
+      'items_goblinkingcrown_s': [false, 1801, 660, 20, 20],
+      'items_grassbundle': [false, 1801, 681, 50, 50],
+      'items_grassbundle_s': [false, 1801, 732, 20, 20],
+      'items_hand': [false, 1801, 753, 50, 50],
+      'items_hand_s': [false, 1801, 804, 20, 20],
+      'items_honey': [false, 1801, 825, 50, 50],
+      'items_honey_s': [false, 1801, 876, 20, 20],
+      'items_leather': [false, 1801, 897, 50, 50],
+      'items_leatherarmor': [false, 1801, 948, 55, 95],
+      'items_leather_s': [false, 1801, 1044, 20, 20],
+      'items_mushroom': [false, 1801, 1065, 50, 50],
+      'items_mushroom_s': [false, 1801, 1116, 20, 20],
+      'items_noarmor': [false, 1801, 1137, 76, 60],
+      'items_pebble': [false, 1801, 1198, 50, 50],
+      'items_pebble_s': [false, 1801, 1249, 20, 20],
+      'items_pelt': [false, 1801, 1270, 50, 50],
+      'items_pelt_s': [false, 1801, 1321, 20, 19],
+      'items_pickledmushrooms': [false, 1801, 1341, 50, 50],
+      'items_pickledmushrooms_s': [false, 1801, 1392, 20, 20],
+      'items_plastic': [false, 1801, 1413, 50, 50],
+      'items_plastic_s': [false, 1801, 1464, 20, 20],
+      'items_rubbish': [false, 1801, 1485, 50, 50],
+      'items_rubbish_random': [false, 1801, 1536, 50, 50],
+      'items_rubbish_s': [false, 1801, 1587, 20, 20],
+      'items_stone': [false, 1801, 1608, 50, 50],
+      'items_stoneaxe': [false, 1801, 1659, 50, 50],
+      'items_stoneaxe_s': [false, 1801, 1710, 20, 20],
+      'items_stonepickaxe': [false, 1801, 1731, 37, 37],
+      'items_stonepickaxe_s': [false, 1801, 1769, 20, 20],
+      'items_stoneshovel': [false, 1801, 1790, 35, 35],
+      'items_stoneshovel_s': [false, 1801, 1826, 20, 20],
+      'items_stonesword': [false, 1801, 1847, 25, 26],
+      'items_stonesword_s': [false, 1801, 1874, 20, 20],
+      'items_stone_s': [false, 1801, 1895, 20, 20],
+      'items_string': [false, 1801, 1916, 50, 50],
+      'items_string_s': [false, 1801, 1967, 20, 20],
+      'items_treeseed': [false, 1801, 1988, 50, 50],
+      'items_treeseed_random': [false, 1801, 2039, 50, 50],
+      'items_treeseed_s': [false, 1801, 2090, 20, 20],
+      'items_tree_basic': [false, 1801, 2111, 50, 50],
+      'items_tree_sakura': [false, 1801, 2162, 50, 50],
+      'items_wood': [false, 1801, 2213, 50, 50],
+      'items_wood_s': [false, 1801, 2264, 20, 20],
       'obstacles_bear': [false, 1878, 0, 90, 54],
       'obstacles_beenest': [false, 1878, 55, 44, 76],
-      'obstacles_deer': [false, 1878, 132, 81, 87],
-      'obstacles_goblin': [false, 1878, 220, 71, 75],
-      'obstacles_goblinking': [false, 1878, 296, 232, 182],
-      'obstacles_goblin_d': [false, 1878, 479, 87, 80],
-      'obstacles_net': [false, 1878, 560, 36, 79],
-      'obstacles_rubbishheap': [false, 1878, 640, 88, 70],
-      'obstacles_trunk': [false, 1878, 711, 84, 95],
-      'obstacles_wall': [false, 1878, 807, 60, 86],
+      'obstacles_crystalpillar': [false, 1878, 132, 40, 93],
+      'obstacles_crystals': [false, 1878, 226, 83, 77],
+      'obstacles_deer': [false, 1878, 304, 81, 87],
+      'obstacles_goblin': [false, 1878, 392, 71, 75],
+      'obstacles_goblinking': [false, 1878, 468, 232, 182],
+      'obstacles_goblin_d': [false, 1878, 651, 87, 80],
+      'obstacles_net': [false, 1878, 732, 36, 79],
+      'obstacles_rubbishheap': [false, 1878, 812, 88, 70],
+      'obstacles_trunk': [false, 1878, 883, 84, 95],
+      'obstacles_wall': [false, 1878, 979, 60, 86],
       'player_level_standing': [false, 2111, 0, 55, 95],
       'player_map_standing': [false, 2111, 96, 25, 43],
       'special_placeholder': [false, 2167, 0, 50, 50]
@@ -240,7 +248,7 @@ export default {
                 { id: 'forestRubbishHeap', chance: 0.03 },
                 { id: 'forestBeeNest', chance: 0.03 },
                 { id: 'forestDeer', chance: 0.03 },
-                { id: 'forestBear', chance: 0.3 },
+                { id: 'forestBear', chance: 0.03 },
                 { id: 'forestGoblin', chance: 0.03 }
               ]
             }
@@ -270,7 +278,7 @@ export default {
                 { id: 'forestRubbishHeap', chance: 0.03 },
                 { id: 'forestBeeNest', chance: 0.03 },
                 { id: 'forestDeer', chance: 0.03 },
-                { id: 'forestBear', chance: 0.3 },
+                { id: 'forestBear', chance: 0.03 },
                 { id: 'forestGoblin', chance: 0.03 }
               ]
             }
@@ -302,7 +310,7 @@ export default {
                 { id: 'forestRubbishHeap', chance: 0.02 },
                 { id: 'forestBeeNest', chance: 0.02 },
                 { id: 'forestDeer', chance: 0.02 },
-                { id: 'forestBear', chance: 0.2 },
+                { id: 'forestBear', chance: 0.02 },
                 { id: 'forestGoblin', chance: 0.02 }
               ]
             }
@@ -422,11 +430,38 @@ export default {
               items: [1, 2, 3],
               obstacles: [1, 2, 3]
             },
-            canBeFound: []
+            canBeFound: {
+              items: [
+                { id: 'grassbundle', chance: 0.02 },
+                { id: 'crystalchip', chance: 0.02 }
+              ],
+              obstacles: [
+                { id: 'crystals', chance: 0.02 },
+                { id: 'crystalpillar', chance: 0.016 }
+              ]
+            }
           }
         ],
-        obstacles: [],
-        chanceForObstacle: 0.012
+        obstacles: [
+          {
+            id: 'crystals',
+            spriteKey: 'obstacles_crystals',
+            bottomY: 265,
+            durability: 25,
+            items: [
+              { id: 'crystal', quantity: 3 }
+            ]
+          },
+          {
+            id: 'crystalpillar',
+            spriteKey: 'obstacles_crystalpillar',
+            bottomY: 265,
+            durability: 34,
+            items: [
+              { id: 'crystal', quantity: 4 }
+            ]
+          }
+        ]
       },
       'desert': {
         x: 535,
@@ -437,8 +472,7 @@ export default {
         cr: 'mountain',
         bc: false,
         backgroundChances: [],
-        obstacles: [],
-        chanceForObstacle: 0.012
+        obstacles: []
       },
       'mountain': {
         x: 715,
@@ -449,8 +483,7 @@ export default {
         cr: 'snow',
         bc: false,
         backgroundChances: [],
-        obstacles: [],
-        chanceForObstacle: 0.012
+        obstacles: []
       },
       'snow': {
         x: 880,
@@ -461,8 +494,7 @@ export default {
         cr: 'mines',
         bc: false,
         backgroundChances: [],
-        obstacles: [],
-        chanceForObstacle: 0.012
+        obstacles: []
       },
       'mines': {
         x: 1050,
@@ -473,8 +505,7 @@ export default {
         cr: 'city',
         bc: 'volcano',
         backgroundChances: [],
-        obstacles: [],
-        chanceForObstacle: 0.012
+        obstacles: []
       },
       'volcano': {
         x: 975,
@@ -485,8 +516,7 @@ export default {
         cr: false,
         bc: false,
         backgroundChances: [],
-        obstacles: [],
-        chanceForObstacle: 0.012
+        obstacles: []
       },
       'city': {
         x: 1290,
@@ -497,8 +527,7 @@ export default {
         cr: 'beach',
         bc: 'spacestation',
         backgroundChances: [],
-        obstacles: [],
-        chanceForObstacle: 0.012
+        obstacles: []
       },
       'cemetry': {
         x: 1220,
@@ -509,8 +538,7 @@ export default {
         cr: false,
         bc: 'city',
         backgroundChances: [],
-        obstacles: [],
-        chanceForObstacle: 0.012
+        obstacles: []
       },
       'spacestation': {
         x: 1390,
@@ -521,8 +549,7 @@ export default {
         cr: false,
         bc: false,
         backgroundChances: [],
-        obstacles: [],
-        chanceForObstacle: 0.012
+        obstacles: []
       },
       'beach': {
         x: 1500,
@@ -533,8 +560,7 @@ export default {
         cr: 'underwater',
         bc: false,
         backgroundChances: [],
-        obstacles: [],
-        chanceForObstacle: 0.012
+        obstacles: []
       },
       'underwater': {
         x: 1750,
@@ -545,8 +571,7 @@ export default {
         cr: false,
         bc: false,
         backgroundChances: [],
-        obstacles: [],
-        chanceForObstacle: 0.012
+        obstacles: []
       }
     },
     dynamicLevelData: {
@@ -564,6 +589,17 @@ export default {
         bossSpawned: false
       },
       'forest': {
+        steps: 0,
+        itemsFound: [],
+        background: [],
+        foreground: [],
+        events: [],
+        itemsOnFloor: false,
+        obstacleAhead: false,
+        lootableObstacle: false,
+        bossSpawned: false
+      },
+      'plains': {
         steps: 0,
         itemsFound: [],
         background: [],
