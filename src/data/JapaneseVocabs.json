@@ -226,7 +226,15 @@
     { "german": "hinten, hinter", "english": "behind", "romaji": "ushiro", "kana": "後ろ", "difficulty": 3 },
     { "german": "Spitze; Zukunft; weiter vorne", "english": "tip (end); future; further ahead", "romaji": "saki", "kana": "先", "difficulty": 3 },
     { "german": "Vorderseite, Oberseite", "english": "Front, Top", "romaji": "omote", "kana": "表", "difficulty": 3 },
-    { "german": "Rückseite", "english": "Back", "romaji": "ura", "kana": "裏", "difficulty": 3 }
+    { "german": "Rückseite", "english": "Back", "romaji": "ura", "kana": "裏", "difficulty": 3 },
+    { "german": "Seite, Aspekt", "english": "Side, Aspect", "romaji": "men", "kana": "面", "difficulty": 3 },
+    { "german": "Oberfläche", "english": "Surface", "romaji": "hyoumen", "kana": "表面", "difficulty": 3 },
+    { "german": "innen, drinnen, in", "english": "inside, in", "romaji": "naka", "kana": "中", "difficulty": 3 },
+    { "german": "Mitte", "english": "Middle", "romaji": "mannaka", "kana": "真ん中", "difficulty": 3 },
+    { "german": "Zentrum", "english": "Center", "romaji": "chuushin", "kana": "中心", "difficulty": 3 },
+    { "german": "Zentrum 2", "english": "Center 2", "romaji": "chuuou", "kana": "中央", "difficulty": 3 },
+    { "german": "innen (=naka)", "english": "inside (=naka)", "romaji": "uchi", "kana": "内・うち", "difficulty": 3 },
+    { "german": "solange, im Laufe von", "english": "as long, as...goes along", "romaji": "uchi 2", "kana": "内・うち２", "difficulty": 3 }
   ],
   "japaneseCategory9": [
     { "german": "Person, Mensch, Leute", "english": "Person, human, people", "romaji": "hito", "kana": "人", "difficulty": 3 }
