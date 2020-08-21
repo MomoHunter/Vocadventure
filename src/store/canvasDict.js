@@ -654,7 +654,7 @@ export default {
       return count
     },
     getObstacleOnField: (state) => (field) => {
-      let events = state.dynamicLevelData[state.currentLevel].events.filter(event => 
+      let events = state.dynamicLevelData[state.currentLevel].events.filter(event =>
         event.field === field && event.type === 'obstacle'
       )
 
