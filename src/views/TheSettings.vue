@@ -11,6 +11,7 @@
                      :selected="$store.state.theme" @change="changeValue('newTheme', $event)" />
       <DropdownBasic class="marginBottomSmall" icon="expand-arrows-alt" :options="sizes"
                      :selected="$store.state.size" @change="changeValue('newSize', $event)" />
+      <TheSlider class="marginBottomSmall" :min="0.5" :max="1.2" :step="0.05" v-model="newViewport" icon="glasses" />
       <ButtonBasic class="marginBottomSmall" color="is-danger" icon="trash" text="settingsButtonDelete"
                    @click="$store.commit('vueDict/showModal', { name: 'areYouSure' })" />
     </div>
@@ -27,23 +28,27 @@
 import Texts from '@/data/Texts.json'
 import Themes from '@/data/Themes.json'
 import Vocabulary from '@/data/Vocabulary.js'
+
 import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import DropdownBasic from '@/components/DropdownBasic.vue'
+import TheSlider from '@/components/TheSlider.vue'
 
 export default {
   name: 'TheSettings',
   components: {
     HeroBasic,
     ButtonBasic,
-    DropdownBasic
+    DropdownBasic,
+    TheSlider
   },
   data () {
     return {
       newLanguage: this.$store.state.lang,
       newTargetLanguage: this.$store.state.targetLanguage,
       newTheme: this.$store.state.theme,
-      newSize: this.$store.state.size
+      newSize: this.$store.state.size,
+      newViewport: this.$store.state.viewport
     }
   },
   computed: {
@@ -69,6 +74,7 @@ export default {
       this.$store.commit('changeTargetLanguage', this.newTargetLanguage)
       this.$store.commit('changeTheme', this.newTheme)
       this.$store.commit('changeSize', this.newSize)
+      this.$store.commit('changeViewport', this.newViewport)
       window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
       this.$router.push({ name: 'menu' })
     }

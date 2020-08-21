@@ -1,4 +1,5 @@
 import Spritesheet from '@/assets/Spritesheet.png'
+import GameObjects from '@/data/GameObjects.json'
 
 export default {
   namespaced: true,
@@ -28,104 +29,138 @@ export default {
       'background_forest_foreground': [false, 0, 903, 300, 300],
       'background_home': [false, 0, 1204, 600, 300],
       'background_home_old': [false, 0, 1505, 600, 300],
-      'background_intro': [false, 0, 1806, 600, 300],
-      'background_intro_background': [false, 0, 2107, 600, 300],
-      'background_intro_foreground': [false, 0, 2408, 600, 300],
-      'background_plains_background': [false, 0, 2709, 300, 300],
-      'background_plains_foreground': [false, 0, 3010, 300, 300],
-      'background_snow': [false, 0, 3311, 300, 300],
-      'background_universe': [false, 0, 3612, 600, 300],
-      'background_world': [false, 0, 3913, 1800, 300],
-      'background_world_old': [false, 0, 4214, 600, 300],
-      'items_beequeen': [false, 1801, 0, 50, 50],
-      'items_beequeen_s': [false, 1801, 51, 20, 20],
-      'items_branch': [false, 1801, 72, 50, 50],
-      'items_branch_s': [false, 1801, 123, 20, 20],
-      'items_cobwebs': [false, 1801, 144, 50, 50],
-      'items_cobwebs_s': [false, 1801, 195, 20, 20],
-      'items_crystal': [false, 1801, 216, 50, 50],
-      'items_crystalchip': [false, 1801, 267, 50, 50],
-      'items_crystalchip_s': [false, 1801, 318, 20, 20],
-      'items_crystal_s': [false, 1801, 339, 20, 20],
-      'items_dirt': [false, 1801, 360, 50, 50],
-      'items_dirt_s': [false, 1801, 411, 20, 20],
-      'items_glassbottle': [false, 1801, 432, 39, 61],
-      'items_glassbottle_s': [false, 1801, 494, 13, 20],
-      'items_goblinblood': [false, 1801, 515, 29, 71],
-      'items_goblinblood_s': [false, 1801, 587, 9, 21],
-      'items_goblinkingcrown': [false, 1801, 609, 50, 50],
-      'items_goblinkingcrown_s': [false, 1801, 660, 20, 20],
-      'items_grassbundle': [false, 1801, 681, 50, 50],
-      'items_grassbundle_s': [false, 1801, 732, 20, 20],
-      'items_hand': [false, 1801, 753, 50, 50],
-      'items_hand_s': [false, 1801, 804, 20, 20],
-      'items_honey': [false, 1801, 825, 50, 50],
-      'items_honey_s': [false, 1801, 876, 20, 20],
-      'items_leather': [false, 1801, 897, 50, 50],
-      'items_leatherarmor': [false, 1801, 948, 55, 95],
-      'items_leather_s': [false, 1801, 1044, 20, 20],
-      'items_mushroom': [false, 1801, 1065, 50, 50],
-      'items_mushroom_s': [false, 1801, 1116, 20, 20],
-      'items_noarmor': [false, 1801, 1137, 76, 60],
-      'items_pebble': [false, 1801, 1198, 50, 50],
-      'items_pebble_s': [false, 1801, 1249, 20, 20],
-      'items_pelt': [false, 1801, 1270, 50, 50],
-      'items_pelt_s': [false, 1801, 1321, 20, 19],
-      'items_pickledmushrooms': [false, 1801, 1341, 50, 50],
-      'items_pickledmushrooms_s': [false, 1801, 1392, 20, 20],
-      'items_plastic': [false, 1801, 1413, 50, 50],
-      'items_plastic_s': [false, 1801, 1464, 20, 20],
-      'items_rubbish': [false, 1801, 1485, 50, 50],
-      'items_rubbish_random': [false, 1801, 1536, 50, 50],
-      'items_rubbish_s': [false, 1801, 1587, 20, 20],
-      'items_stone': [false, 1801, 1608, 50, 50],
-      'items_stoneaxe': [false, 1801, 1659, 50, 50],
-      'items_stoneaxe_s': [false, 1801, 1710, 20, 20],
-      'items_stonepickaxe': [false, 1801, 1731, 37, 37],
-      'items_stonepickaxe_s': [false, 1801, 1769, 20, 20],
-      'items_stoneshovel': [false, 1801, 1790, 35, 35],
-      'items_stoneshovel_s': [false, 1801, 1826, 20, 20],
-      'items_stonesword': [false, 1801, 1847, 25, 26],
-      'items_stonesword_s': [false, 1801, 1874, 20, 20],
-      'items_stone_s': [false, 1801, 1895, 20, 20],
-      'items_string': [false, 1801, 1916, 50, 50],
-      'items_string_s': [false, 1801, 1967, 20, 20],
-      'items_treeseed': [false, 1801, 1988, 50, 50],
-      'items_treeseed_random': [false, 1801, 2039, 50, 50],
-      'items_treeseed_s': [false, 1801, 2090, 20, 20],
-      'items_tree_basic': [false, 1801, 2111, 50, 50],
-      'items_tree_sakura': [false, 1801, 2162, 50, 50],
-      'items_wood': [false, 1801, 2213, 50, 50],
-      'items_wood_s': [false, 1801, 2264, 20, 20],
-      'obstacles_bear': [false, 1878, 0, 90, 54],
-      'obstacles_beenest': [false, 1878, 55, 44, 76],
-      'obstacles_crystalpillar': [false, 1878, 132, 40, 93],
-      'obstacles_crystals': [false, 1878, 226, 83, 77],
-      'obstacles_deer': [false, 1878, 304, 81, 87],
-      'obstacles_goblin': [false, 1878, 392, 71, 75],
-      'obstacles_goblinking': [false, 1878, 468, 232, 182],
-      'obstacles_goblin_d': [false, 1878, 651, 87, 80],
-      'obstacles_net': [false, 1878, 732, 36, 79],
-      'obstacles_rubbishheap': [false, 1878, 812, 88, 70],
-      'obstacles_trunk': [false, 1878, 883, 84, 95],
-      'obstacles_wall': [false, 1878, 979, 60, 86],
-      'player_level_standing': [false, 2111, 0, 55, 95],
-      'player_map_standing': [false, 2111, 96, 25, 43],
-      'special_placeholder': [false, 2167, 0, 50, 50]
+      'background_home_old_2': [false, 0, 1806, 600, 300],
+      'background_intro': [false, 0, 2107, 600, 300],
+      'background_intro_1': [false, 0, 2408, 600, 300],
+      'background_intro_2': [false, 0, 2709, 600, 300],
+      'background_intro_3': [false, 0, 3010, 600, 300],
+      'background_intro_4': [false, 0, 3311, 600, 300],
+      'background_intro_5': [false, 0, 3612, 600, 300],
+      'background_intro_6': [false, 0, 3913, 600, 300],
+      'background_intro_7': [false, 0, 4214, 600, 300],
+      'background_intro_8': [false, 0, 4515, 600, 300],
+      'background_intro_background': [false, 0, 4816, 600, 300],
+      'background_intro_foreground': [false, 0, 5117, 600, 300],
+      'background_plains_background': [false, 0, 5418, 300, 300],
+      'background_plains_foreground': [false, 0, 5719, 300, 300],
+      'background_snow': [false, 0, 6020, 300, 300],
+      'background_universe': [false, 0, 6321, 600, 300],
+      'background_world': [false, 0, 6622, 1800, 300],
+      'background_world_old': [false, 0, 6923, 600, 300],
+      'buildings_tent': [false, 1801, 0, 64, 60],
+      'buildings_woodenhouse1': [false, 1801, 61, 61, 91],
+      'items_beequeen': [false, 1866, 0, 50, 50],
+      'items_beequeen_s': [false, 1866, 51, 20, 20],
+      'items_bonfire': [false, 1866, 72, 50, 50],
+      'items_branch': [false, 1866, 123, 50, 50],
+      'items_branch_s': [false, 1866, 174, 20, 20],
+      'items_clay': [false, 1866, 195, 50, 50],
+      'items_claybowl': [false, 1866, 246, 50, 50],
+      'items_clay_s': [false, 1866, 297, 20, 20],
+      'items_cobwebs': [false, 1866, 318, 50, 50],
+      'items_cobwebs_s': [false, 1866, 369, 20, 20],
+      'items_crystal': [false, 1866, 390, 50, 50],
+      'items_crystalaxe': [false, 1866, 441, 50, 50],
+      'items_crystalchip': [false, 1866, 492, 50, 50],
+      'items_crystalchip_s': [false, 1866, 543, 20, 20],
+      'items_crystalpickaxe': [false, 1866, 564, 50, 50],
+      'items_crystalshovel': [false, 1866, 615, 50, 50],
+      'items_crystalsword': [false, 1866, 666, 50, 50],
+      'items_crystal_s': [false, 1866, 717, 20, 20],
+      'items_dirt': [false, 1866, 738, 50, 50],
+      'items_dirt_s': [false, 1866, 789, 20, 20],
+      'items_flower_1': [false, 1866, 810, 50, 50],
+      'items_flower_1_s': [false, 1866, 861, 20, 20],
+      'items_flower_2': [false, 1866, 882, 50, 50],
+      'items_flower_2_s': [false, 1866, 933, 20, 20],
+      'items_flower_3': [false, 1866, 954, 50, 50],
+      'items_flower_3_s': [false, 1866, 1005, 20, 20],
+      'items_flower_4': [false, 1866, 1026, 50, 50],
+      'items_flower_4_s': [false, 1866, 1077, 20, 20],
+      'items_flower_5': [false, 1866, 1098, 50, 50],
+      'items_flower_5_s': [false, 1866, 1149, 20, 20],
+      'items_flower_6': [false, 1866, 1170, 50, 50],
+      'items_flower_6_s': [false, 1866, 1221, 20, 20],
+      'items_glassbottle': [false, 1866, 1242, 39, 61],
+      'items_glassbottle_s': [false, 1866, 1304, 13, 20],
+      'items_goblinblood': [false, 1866, 1325, 29, 71],
+      'items_goblinblood_s': [false, 1866, 1397, 9, 21],
+      'items_goblinkingcrown': [false, 1866, 1419, 50, 50],
+      'items_goblinkingcrown_s': [false, 1866, 1470, 20, 20],
+      'items_grassbundle': [false, 1866, 1491, 50, 50],
+      'items_grassbundle_s': [false, 1866, 1542, 20, 20],
+      'items_hand': [false, 1866, 1563, 50, 50],
+      'items_hand_s': [false, 1866, 1614, 20, 20],
+      'items_honey': [false, 1866, 1635, 50, 50],
+      'items_honey_s': [false, 1866, 1686, 20, 20],
+      'items_leather': [false, 1866, 1707, 50, 50],
+      'items_leatherarmor': [false, 1866, 1758, 55, 95],
+      'items_leather_s': [false, 1866, 1854, 20, 20],
+      'items_mushroom': [false, 1866, 1875, 50, 50],
+      'items_mushroom_s': [false, 1866, 1926, 20, 20],
+      'items_noarmor': [false, 1866, 1947, 76, 60],
+      'items_pebble': [false, 1866, 2008, 50, 50],
+      'items_pebble_s': [false, 1866, 2059, 20, 20],
+      'items_pelt': [false, 1866, 2080, 50, 50],
+      'items_pelt_s': [false, 1866, 2131, 20, 19],
+      'items_pickledmushrooms': [false, 1866, 2151, 50, 50],
+      'items_pickledmushrooms_s': [false, 1866, 2202, 20, 20],
+      'items_plastic': [false, 1866, 2223, 50, 50],
+      'items_plastic_s': [false, 1866, 2274, 20, 20],
+      'items_rubbish': [false, 1866, 2295, 50, 50],
+      'items_rubbish_random': [false, 1866, 2346, 50, 50],
+      'items_rubbish_s': [false, 1866, 2397, 20, 20],
+      'items_stone': [false, 1866, 2418, 50, 50],
+      'items_stoneaxe': [false, 1866, 2469, 50, 50],
+      'items_stoneaxe_s': [false, 1866, 2520, 20, 20],
+      'items_stonepickaxe': [false, 1866, 2541, 37, 37],
+      'items_stonepickaxe_s': [false, 1866, 2579, 20, 20],
+      'items_stoneshovel': [false, 1866, 2600, 35, 35],
+      'items_stoneshovel_s': [false, 1866, 2636, 20, 20],
+      'items_stonesword': [false, 1866, 2657, 25, 26],
+      'items_stonesword_s': [false, 1866, 2684, 20, 20],
+      'items_stone_s': [false, 1866, 2705, 20, 20],
+      'items_string': [false, 1866, 2726, 50, 50],
+      'items_string_s': [false, 1866, 2777, 20, 20],
+      'items_treeseed': [false, 1866, 2798, 50, 50],
+      'items_treeseed_random': [false, 1866, 2849, 50, 50],
+      'items_treeseed_s': [false, 1866, 2900, 20, 20],
+      'items_tree_basic': [false, 1866, 2921, 50, 50],
+      'items_tree_sakura': [false, 1866, 2972, 50, 50],
+      'items_wood': [false, 1866, 3023, 50, 50],
+      'items_woodenbucket': [false, 1866, 3074, 50, 50],
+      'items_wood_s': [false, 1866, 3125, 20, 20],
+      'obstacles_bear': [false, 1943, 0, 90, 54],
+      'obstacles_beenest': [false, 1943, 55, 44, 76],
+      'obstacles_claypit': [false, 1943, 132, 86, 86],
+      'obstacles_crystalpillar': [false, 1943, 219, 40, 93],
+      'obstacles_crystals': [false, 1943, 313, 83, 77],
+      'obstacles_deer': [false, 1943, 391, 81, 87],
+      'obstacles_goblin': [false, 1943, 479, 71, 75],
+      'obstacles_goblinking': [false, 1943, 555, 232, 182],
+      'obstacles_goblin_d': [false, 1943, 738, 87, 80],
+      'obstacles_net': [false, 1943, 819, 36, 79],
+      'obstacles_rubbishheap': [false, 1943, 899, 88, 70],
+      'obstacles_trunk': [false, 1943, 970, 84, 95],
+      'obstacles_wall': [false, 1943, 1066, 60, 86],
+      'player_level_standing': [false, 2176, 0, 55, 95],
+      'player_map_standing': [false, 2176, 96, 25, 43],
+      'special_placeholder': [false, 2232, 0, 50, 50],
+      'UI_HUD_bottom': [false, 2283, 0, 600, 50],
+      'UI_word': [false, 2283, 51, 600, 50]
     },
     // end spriteDict
     gameState: 'map',
     gameStateStash: [],
     mapOffset: 0,
     transitions: [
-      'intromap',
+      'introhome',
       'maplevel',
       'maphome',
       'homemap',
       'levelmap'
     ],
     animationActive: false, // blocks navigation animation at init on adventure
-    collectableItems: [],
     questionKey: '',
     playerHealth: 100,
     currentLevel: 'home',
@@ -138,7 +173,7 @@ export default {
       hand: 'hand',
       armor: 'noarmor',
       pos: {
-        map: { x: 45, y: 100 },
+        map: { x: 291, y: 243 },
         level: { x: 50, y: 145 }
       }
     },
@@ -153,8 +188,8 @@ export default {
         right: 'house'
       },
       'house': {
-        x: 300,
-        y: 239,
+        x: 291,
+        y: 243,
         left: 'greenhouse',
         right: 'launchpad'
       },
@@ -316,101 +351,7 @@ export default {
             }
           }
         ],
-        obstacles: [
-          {
-            id: 'forestTrunk',
-            spriteKey: 'obstacles_trunk',
-            bottomY: 265,
-            durability: 8,
-            items: [
-              { id: 'wood', quantity: 3 }
-            ]
-          },
-          {
-            id: 'forestWall',
-            spriteKey: 'obstacles_wall',
-            bottomY: 265,
-            durability: 13,
-            items: [
-              { id: 'stone', quantity: 4 }
-            ]
-          },
-          {
-            id: 'forestNet',
-            spriteKey: 'obstacles_net',
-            bottomY: 265,
-            durability: 6,
-            items: [
-              { id: 'string', quantity: 2 }
-            ]
-          },
-          {
-            id: 'forestRubbishHeap',
-            spriteKey: 'obstacles_rubbishheap',
-            bottomY: 255,
-            durability: 7,
-            items: [
-              { id: 'rubbish', quantity: 3 }
-            ]
-          },
-          {
-            id: 'forestBeeNest',
-            spriteKey: 'obstacles_beenest',
-            bottomY: 225,
-            durability: 7,
-            items: [
-              { id: 'honey', quantity: 2 },
-              { id: 'beequeen', quantity: 1, chance: 0.03 }
-            ]
-          },
-          {
-            id: 'forestDeer',
-            spriteKey: 'obstacles_deer',
-            bottomY: 240,
-            durability: 9,
-            power: 1,
-            items: [
-              { id: 'leather', quantity: 1 }
-            ]
-          },
-          {
-            id: 'forestBear',
-            spriteKey: 'obstacles_bear',
-            bottomY: 240,
-            durability: 16,
-            power: 3,
-            approaches: true,
-            items: [
-              { id: 'pelt', quantity: 1 }
-            ]
-          },
-          {
-            id: 'forestGoblin',
-            spriteKey: 'obstacles_goblin',
-            bottomY: 240,
-            destroyedBottomY: 265,
-            durability: 12,
-            power: 2,
-            items: [
-              { id: 'goblinblood', quantity: 1 }
-            ]
-          },
-          {
-            id: 'forestGoblinking',
-            spriteKey: 'obstacles_goblinking',
-            centerX: 140,
-            bottomY: 240,
-            durability: 36,
-            boss: true,
-            unlocks: [
-              'plains'
-            ],
-            power: 6,
-            items: [
-              { id: 'goblinkingcrown', quantity: 1, collectable: true }
-            ]
-          }
-        ]
+        obstacles: GameObjects.filter(obj => obj.categories.includes('obstacle') && obj.categories.includes('forest'))
       },
       'plains': {
         x: 330,
@@ -433,35 +374,19 @@ export default {
             canBeFound: {
               items: [
                 { id: 'grassbundle', chance: 0.02 },
-                { id: 'crystalchip', chance: 0.02 }
+                { id: 'crystalchip', chance: 0.02 },
+                { id: 'flower', chance: 0.2 }
               ],
               obstacles: [
-                { id: 'crystals', chance: 0.02 },
-                { id: 'crystalpillar', chance: 0.016 }
+                { id: 'plainsCrystals', chance: 0.02 },
+                { id: 'plainsCrystalPillar', chance: 0.016 },
+                { id: 'plainsClayPit', chance: 0.02 },
+                { id: 'plainsCow', chance: 0.3 }
               ]
             }
           }
         ],
-        obstacles: [
-          {
-            id: 'crystals',
-            spriteKey: 'obstacles_crystals',
-            bottomY: 265,
-            durability: 25,
-            items: [
-              { id: 'crystal', quantity: 3 }
-            ]
-          },
-          {
-            id: 'crystalpillar',
-            spriteKey: 'obstacles_crystalpillar',
-            bottomY: 265,
-            durability: 34,
-            items: [
-              { id: 'crystal', quantity: 4 }
-            ]
-          }
-        ]
+        obstacles: GameObjects.filter(obj => obj.categories.includes('obstacle') && obj.categories.includes('plains'))
       },
       'desert': {
         x: 535,
@@ -579,13 +504,14 @@ export default {
         steps: 0,
         itemsFound: [],
         background: [
-          { x: 0, y: 0, spriteKey: 'background_home' }
+          { x: 200, y: 0, spriteKey: 'buildings_tent' }
         ],
         foreground: [],
         events: [],
         itemsOnFloor: false,
         obstacleAhead: false,
         lootableObstacle: false,
+        collectableObstacle: false,
         bossSpawned: false
       },
       'forest': {
@@ -597,6 +523,7 @@ export default {
         itemsOnFloor: false,
         obstacleAhead: false,
         lootableObstacle: false,
+        collectableObstacle: false,
         bossSpawned: false
       },
       'plains': {
@@ -608,6 +535,7 @@ export default {
         itemsOnFloor: false,
         obstacleAhead: false,
         lootableObstacle: false,
+        collectableObstacle: false,
         bossSpawned: false
       }
     }
@@ -726,7 +654,9 @@ export default {
       return count
     },
     getObstacleOnField: (state) => (field) => {
-      let events = state.dynamicLevelData[state.currentLevel].events.filter(event => event.field === field)
+      let events = state.dynamicLevelData[state.currentLevel].events.filter(event => 
+        event.field === field && event.type === 'obstacle'
+      )
 
       if (events.length > 0) {
         return events[0]
@@ -736,6 +666,13 @@ export default {
     },
     getObstacleObject: (state) => (level, id) => {
       return state.staticLevelData[level].obstacles.find(obstacle => obstacle.id === id)
+    },
+    getLootableObstacleObject: (state, getters) => {
+      const lootableObstacle = getters.getObstacleOnField(state.dynamicLevelData[state.currentLevel].steps)
+      if (lootableObstacle) {
+        return getters.getObstacleObject(state.currentLevel, lootableObstacle.id)
+      }
+      return null
     },
     getBossObject: (state) => (level) => {
       return state.staticLevelData[level].obstacles.find(obstacle => obstacle.boss)
@@ -750,8 +687,10 @@ export default {
         playerHealth: state.playerHealth,
         currentLevel: state.currentLevel,
         currentBuilding: state.currentBuilding,
-        character: state.character,
+        character: JSON.parse(JSON.stringify(state.character)),
         unlockedBuildings: state.unlockedBuildings,
+        collectedItems: JSON.parse(JSON.stringify(state.collectedItems)),
+        collectables: JSON.parse(JSON.stringify(state.collectables)),
         dynamicLevelData: JSON.parse(JSON.stringify(state.dynamicLevelData))
       }
     }
@@ -832,6 +771,7 @@ export default {
         itemsOnFloor: false,
         obstacleAhead: false,
         lootableObstacle: false,
+        collectableObstacle: false,
         bossSpawned: false
       }
     },
@@ -846,6 +786,7 @@ export default {
           itemsOnFloor: false,
           obstacleAhead: false,
           lootableObstacle: false,
+          collectableObstacle: false,
           bossSpawned: false
         }
       }
@@ -914,6 +855,9 @@ export default {
     setLootableObstacle (state, bool) {
       state.dynamicLevelData[state.currentLevel].lootableObstacle = bool
     },
+    setCollectableObstacle (state, bool) {
+      state.dynamicLevelData[state.currentLevel].collectableObstacle = bool
+    },
     setBossSpawned (state, bool) {
       state.dynamicLevelData[state.currentLevel].bossSpawned = bool
     },
@@ -945,9 +889,6 @@ export default {
       for (let event of events) {
         event.registered = true
       }
-    },
-    setCollectableItems (state, key) {
-      state.collectableItems = key
     },
     setQuestionKey (state, key) {
       state.questionKey = key
@@ -1002,6 +943,14 @@ export default {
     addCollectable (state, itemId) {
       state.collectables.push(itemId)
     },
+    addCollectedItem (state, item) {
+      let foundItem = state.collectedItems.find(collectedItem => collectedItem.id === item.id)
+      if (foundItem) {
+        foundItem.quantity += item.quantity
+      } else {
+        state.collectedItems.push(item)
+      }
+    },
     setCollectedItems (state, items) {
       state.collectedItems = items
     },
@@ -1013,6 +962,8 @@ export default {
       state.currentBuilding = copies.currentBuilding
       state.character = copies.character
       state.unlockedBuildings = copies.unlockedBuildings
+      state.collectedItems = copies.collectedItems
+      state.collectables = copies.collectables
       state.dynamicLevelData = copies.dynamicLevelData
     }
   },

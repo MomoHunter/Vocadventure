@@ -73,6 +73,9 @@
     "deathBand": {
       "backgroundColor": "40, 40, 40, .8"
     },
+    "barNothing": {
+      "backgroundColor": "30, 33, 38, 1"
+    },
     "barSuccess": {
       "backgroundColor": "18, 122, 32, 1"
     },
@@ -81,6 +84,12 @@
     },
     "barDanger": {
       "backgroundColor": "158, 39, 23, 1"
+    },
+    "barArmor": {
+      "backgroundColor": "52, 191, 201, 1"
+    },
+    "barEnemy": {
+      "backgroundColor": "153, 13, 43, 1"
     },
     "darkness": {
       "backgroundColor": "0, 0, 0, 1"

@@ -104,7 +104,8 @@ export default {
     },
     items () {
       return this.$store.state.vueDict.items.filter(entry => {
-        return entry.unlocked && this.getText(entry.id).toLowerCase().includes(this.searchString.toLowerCase())
+        return entry.unlocked && entry.categories.includes('shop') &&
+          this.getText(entry.id).toLowerCase().includes(this.searchString.toLowerCase())
       }, this).sort(this.sortFunction(this))
     },
     pages () {
@@ -114,10 +115,10 @@ export default {
       return process.env.BASE_URL
     },
     currentPage: {
-      get: function () {
+      get () {
         return this.$store.state.vueDict.currentShopPage
       },
-      set: function (newPage) {
+      set (newPage) {
         this.$store.commit('vueDict/setCurrentShopPage', newPage)
       }
     }

@@ -29,26 +29,29 @@ export default {
   },
   computed: {
     hasItems () {
-      return this.$store.state.canvasDict.collectableItems.length > 0
+      return !!this.lootableObstacleObject.lootableItems
     },
-    collectableItems () {
-      return this.$store.state.canvasDict.collectableItems
+    lootableObstacleObject () {
+      return this.$store.getters['canvasDict/getLootableObstacleObject']
     },
     items () {
-      return this.collectableItems.reduce((newArray, collectableItem) => {
-        for (let requiredItem of this.$store.getters['vueDict/getItemObject'](collectableItem.id).required) {
-          let foundItem = newArray.find(item => item.id === requiredItem.id)
-          if (foundItem) {
-            foundItem.quantity += requiredItem.quantity
-          } else {
-            newArray.push({
-              id: requiredItem.id,
-              quantity: requiredItem.quantity
-            })
+      if (this.lootableObstacleObject) {
+        return this.lootableObstacleObject.lootableItems.reduce((newArray, lootableItem) => {
+          for (let requiredItem of this.$store.getters['vueDict/getItemObject'](lootableItem.id).required) {
+            let foundItem = newArray.find(item => item.id === requiredItem.id)
+            if (foundItem) {
+              foundItem.quantity += requiredItem.quantity
+            } else {
+              newArray.push({
+                id: requiredItem.id,
+                quantity: requiredItem.quantity
+              })
+            }
           }
-        }
-        return newArray
-      }, [])
+          return newArray
+        }, [])
+      }
+      return []
     },
     questionText () {
       if (this.$store.state.canvasDict.questionKey === 'adventureChooseQuestion2') {
@@ -56,17 +59,19 @@ export default {
           const requiredItemTexts = this.items.map(({ id, quantity }) =>
             `${quantity} ${this.getText(quantity === 1 ? id : `${id}_m`)}`
           )
-          const collectableItemTexts = this.collectableItems.map(({ id, quantity }) =>
+          const lootableItemTexts = this.lootableObstacleObject.lootableItems.map(({ id, quantity }) =>
             `${quantity} ${this.getText(quantity === 1 ? id : `${id}_m`)}`
           )
 
           return this.getText(
             'adventureChooseQuestion2',
             this.printList(requiredItemTexts),
-            this.printList(collectableItemTexts)
+            this.printList(lootableItemTexts)
           )
         }
         return this.getText('adventureChooseQuestion2', '', '')
+      } else if (this.$store.state.canvasDict.questionKey === 'adventureChooseQuestion3') {
+
       }
       return this.getText(this.$store.state.canvasDict.questionKey)
     },

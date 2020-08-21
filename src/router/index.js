@@ -96,7 +96,7 @@ const routes = [
         meta: {
           forward: [],
           delay: [
-            'adventureMap'
+            'adventureHome'
           ]
         }
       },

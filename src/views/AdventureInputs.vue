@@ -206,6 +206,7 @@ export default {
       noItems: false,
       nextItemCategory: 1,
       currentItemCategory: 1,
+      consumableUsed: false,
       latinInput: '',
       foreignInput: '',
       userLatinInput: '',
@@ -438,6 +439,7 @@ export default {
       this.hideSolution()
       this.resultsVisible.on = false
       this.animationQueue.push(['resultsVisible', 'off'])
+      this.consumableUsed = false
       this.currentKeyboardTab = this.keyboardNames[0] || ''
       this.userLatinInput = ''
       this.latinInput = ''
@@ -524,11 +526,17 @@ export default {
           this.$store.commit('canvasDict/setEquippedArmor', item.id)
           break
         case 'consumables':
-          if (item.healing) {
-            if (this.$store.state.canvasDict.playerHealth < 100) {
-              this.$store.commit('canvasDict/changePlayerHealth', item.healing)
-              this.$store.commit('vueDict/addToInventory', { id: item.id, quantity: -1 })
+          if (!this.consumableUsed) {
+            let itemData = this.$store.getters['vueDict/getItemObject'](item.id)
+
+            if (itemData.healing) {
+              if (this.$store.state.canvasDict.playerHealth < 100) {
+                this.$store.commit('canvasDict/changePlayerHealth', itemData.healing)
+                this.$store.commit('vueDict/addToInventory', { id: item.id, quantity: -1 })
+              }
             }
+
+            this.consumableUsed = true
           }
           break
         default:

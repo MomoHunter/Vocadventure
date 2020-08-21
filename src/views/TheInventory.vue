@@ -96,10 +96,10 @@ export default {
       return process.env.BASE_URL
     },
     currentPage: {
-      get: function () {
+      get () {
         return this.$store.state.vueDict.currentInventoryPage
       },
-      set: function (newPage) {
+      set (newPage) {
         this.$store.commit('vueDict/setCurrentInventoryPage', newPage)
       }
     }

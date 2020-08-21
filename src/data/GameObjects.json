@@ -1,0 +1,1216 @@
+[
+  {
+    "id": "beequeen",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/beequeen.png",
+    "spriteKeySmall": "items_beequeen_s",
+    "points": 35
+  },
+  {
+    "id": "bonfire",
+    "categories": [
+      "material",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/bonfire.png",
+    "unlocked": false,
+    "points": 20,
+    "costs": [
+      {
+        "id": "wood",
+        "quantity": 5
+      },
+      {
+        "id": "grassbundle",
+        "quantity": 4
+      },
+      {
+        "id": "branch",
+        "quantity": 3
+      }
+    ]
+  },
+  {
+    "id": "branch",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/branch.png",
+    "spriteKeySmall": "items_branch_s",
+    "points": 2
+  },
+  {
+    "id": "clay",
+    "categories": [
+      "material",
+      "plains"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/clay.png",
+    "spriteKeySmall": "items_clay_s",
+    "unlocked": false,
+    "points": 5
+  },
+  {
+    "id": "claybowl",
+    "categories": [
+      "material",
+      "shop"
+    ],
+    "quantity": 4,
+    "spritePath": "img/items/claybowl.png",
+    "spriteKeySmall": "",
+    "unlocked": false,
+    "points": 13,
+    "costs": [
+      {
+        "id": "coins",
+        "quantity": 85
+      },
+      {
+        "id": "bonfire",
+        "quantity": 1
+      },
+      {
+        "id": "clay",
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "id": "cobwebs",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/cobwebs.png",
+    "spriteKeySmall": "items_cobwebs_s",
+    "points": 2
+  },
+  {
+    "id": "coins",
+    "categories": [
+      "special"
+    ]
+  },
+  {
+    "id": "crystal",
+    "categories": [
+      "material",
+      "shop",
+      "plains"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/crystal.png",
+    "spriteKeySmall": "items_crystal_s",
+    "unlocked": false,
+    "points": 5,
+    "costs": [
+      {
+        "id": "crystalchip",
+        "quantity": 5
+      }
+    ]
+  },
+  {
+    "id": "crystalaxe",
+    "categories": [
+      "tool",
+      "item",
+      "weapon",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/crystalaxe.png",
+    "durability": 16,
+    "power": 3,
+    "spriteKey": "items_crystalaxe",
+    "unlocked": false,
+    "points": 23,
+    "costs": [
+      {
+        "id": "wood",
+        "quantity": 2
+      },
+      {
+        "id": "string",
+        "quantity": 2
+      },
+      {
+        "id": "coins",
+        "quantity": 120
+      },
+      {
+        "id": "crystal",
+        "quantity": 2
+      }
+    ],
+    "usefulAgainst": [
+      "forestGoblinking",
+      "forestGoblin",
+      "forestBear",
+      "forestDeer",
+      "forestBeeNest"
+    ]
+  },
+  {
+    "id": "crystalchip",
+    "categories": [
+      "material",
+      "plains"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/crystalchip.png",
+    "spriteKeySmall": "items_crystalchip_s",
+    "points": 4
+  },
+  {
+    "id": "crystalpickaxe",
+    "categories": [
+      "tool",
+      "item",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/crystalpickaxe.png",
+    "durability": 22,
+    "power": 3,
+    "spriteKey": "items_crystalpickaxe",
+    "unlocked": false,
+    "points": 23,
+    "costs": [
+      {
+        "id": "wood",
+        "quantity": 2
+      },
+      {
+        "id": "string",
+        "quantity": 2
+      },
+      {
+        "id": "coins",
+        "quantity": 145
+      },
+      {
+        "id": "crystal",
+        "quantity": 4
+      }
+    ],
+    "usefulAgainst": [
+      "plainsCrystalPillar",
+      "plainsCrystals",
+      "forestWall"
+    ]
+  },
+  {
+    "id": "crystalshovel",
+    "categories": [
+      "tool",
+      "item",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/crystalshovel.png",
+    "durability": 18,
+    "power": 3,
+    "spriteKey": "items_crystalshovel",
+    "unlocked": false,
+    "points": 14,
+    "costs": [
+      {
+        "id": "wood",
+        "quantity": 3
+      },
+      {
+        "id": "string",
+        "quantity": 2
+      },
+      {
+        "id": "coins",
+        "quantity": 115
+      },
+      {
+        "id": "crystal",
+        "quantity": 1
+      }
+    ],
+    "usefulAgainst": [
+      "plainsClayPit",
+      "forestTrunk",
+      "forestRubbishHeap"
+    ]
+  },
+  {
+    "id": "crystalsword",
+    "categories": [
+      "item",
+      "weapon",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/crystalsword.png",
+    "durability": 21,
+    "power": 4,
+    "spriteKey": "items_crystalsword",
+    "unlocked": false,
+    "points": 15,
+    "costs": [
+      {
+        "id": "wood",
+        "quantity": 1
+      },
+      {
+        "id": "string",
+        "quantity": 1
+      },
+      {
+        "id": "coins",
+        "quantity": 140
+      },
+      {
+        "id": "crystal",
+        "quantity": 3
+      }
+    ],
+    "usefulAgainst": [
+      "forestGoblinking",
+      "forestGoblin",
+      "forestBear",
+      "forestDeer",
+      "forestBeeNest",
+      "forestNet"
+    ]
+  },
+  {
+    "id": "dirt",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/dirt.png",
+    "spriteKeySmall": "items_dirt_s",
+    "points": 2
+  },
+  {
+    "id": "flower",
+    "categories": [
+      "plains",
+      "material2"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/flower.gif",
+    "spriteKeySmall": [
+      "items_flower_1_s",
+      "items_flower_2_s",
+      "items_flower_3_s",
+      "items_flower_4_s",
+      "items_flower_5_s",
+      "items_flower_6_s"
+    ],
+    "points": 4
+  },
+  {
+    "id": "forestBear",
+    "categories": [
+      "forest",
+      "obstacle"
+    ],
+    "power": 3,
+    "bottomY": 240,
+    "approaches": true,
+    "spriteKey": "obstacles_bear",
+    "durability": 16,
+    "items": [
+      {
+        "id": "pelt",
+        "collectable": false,
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "id": "forestBeeNest",
+    "categories": [
+      "forest",
+      "obstacle"
+    ],
+    "bottomY": 225,
+    "spriteKey": "obstacles_beenest",
+    "durability": 7,
+    "items": [
+      {
+        "id": "beequeen",
+        "collectable": false,
+        "quantity": 1,
+        "chance": 0.03
+      },
+      {
+        "id": "honey",
+        "collectable": false,
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "id": "forestDeer",
+    "categories": [
+      "forest",
+      "obstacle"
+    ],
+    "power": 1,
+    "bottomY": 240,
+    "approaches": false,
+    "spriteKey": "obstacles_deer",
+    "durability": 9,
+    "items": [
+      {
+        "id": "leather",
+        "collectable": false,
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "id": "forestGoblin",
+    "categories": [
+      "forest",
+      "obstacle"
+    ],
+    "durability": 12,
+    "bottomY": 240,
+    "power": 2,
+    "approaches": false,
+    "spriteKey": "obstacles_goblin",
+    "destroyedBottomY": 265,
+    "lootable": [
+      {
+        "id": "goblinblood",
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "id": "forestGoblinking",
+    "categories": [
+      "forest",
+      "obstacle",
+      "boss"
+    ],
+    "boss": true,
+    "centerX": 140,
+    "durability": 36,
+    "bottomY": 240,
+    "power": 6,
+    "unlocks": [
+      "plains"
+    ],
+    "approaches": false,
+    "spriteKey": "obstacles_goblinking",
+    "items": [
+      {
+        "id": "goblinkingcrown",
+        "collectable": true,
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "id": "forestNet",
+    "categories": [
+      "forest",
+      "obstacle"
+    ],
+    "bottomY": 265,
+    "spriteKey": "obstacles_net",
+    "durability": 6,
+    "items": [
+      {
+        "id": "string",
+        "collectable": false,
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "id": "forestRubbishHeap",
+    "categories": [
+      "forest",
+      "obstacle"
+    ],
+    "bottomY": 255,
+    "spriteKey": "obstacles_rubbishheap",
+    "durability": 7,
+    "items": [
+      {
+        "id": "rubbish",
+        "collectable": false,
+        "quantity": 3
+      }
+    ]
+  },
+  {
+    "id": "forestTrunk",
+    "categories": [
+      "forest",
+      "obstacle"
+    ],
+    "bottomY": 265,
+    "spriteKey": "obstacles_trunk",
+    "durability": 8,
+    "items": [
+      {
+        "id": "wood",
+        "collectable": false,
+        "quantity": 3
+      }
+    ]
+  },
+  {
+    "id": "forestWall",
+    "categories": [
+      "forest",
+      "obstacle"
+    ],
+    "bottomY": 265,
+    "spriteKey": "obstacles_wall",
+    "durability": 13,
+    "items": [
+      {
+        "id": "stone",
+        "collectable": false,
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "id": "glassbottle",
+    "categories": [
+      "material",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/glassbottle.png",
+    "spriteKeySmall": "items_glassbottle_s",
+    "unlocked": false,
+    "points": 24
+  },
+  {
+    "id": "goblinblood",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/goblinblood.png",
+    "spriteKeySmall": "items_goblinblood_s",
+    "points": 11,
+    "required": [
+      {
+        "id": "glassbottle",
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "id": "goblinkingcrown",
+    "categories": [
+      "material",
+      "forest",
+      "collectable"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/goblinkingcrown.png",
+    "spriteKey": "items_goblinkingcrown",
+    "spriteKeySmall": "items_goblinkingcrown_s",
+    "points": 150
+  },
+  {
+    "id": "grassbundle",
+    "categories": [
+      "material",
+      "plains"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/grassbundle.png",
+    "spriteKeySmall": "items_grassbundle_s",
+    "points": 3
+  },
+  {
+    "id": "hand",
+    "categories": [
+      "item",
+      "weapon"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/hand.png",
+    "usefulAgainst": [],
+    "power": 1,
+    "spriteKey": "items_hand",
+    "points": 0
+  },
+  {
+    "id": "honey",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/honey.png",
+    "spriteKeySmall": "items_honey_s",
+    "points": 8
+  },
+  {
+    "id": "leather",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/leather.png",
+    "spriteKeySmall": "items_leather_s",
+    "points": 14
+  },
+  {
+    "id": "leatherarmor",
+    "categories": [
+      "item",
+      "armor",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/leatherarmor.png",
+    "defense": 1,
+    "durability": 25,
+    "spriteKey": "items_leatherarmor",
+    "unlocked": false,
+    "points": 23,
+    "costs": [
+      {
+        "id": "string",
+        "quantity": 4
+      },
+      {
+        "id": "coins",
+        "quantity": 60
+      },
+      {
+        "id": "leather",
+        "quantity": 8
+      }
+    ]
+  },
+  {
+    "id": "milk",
+    "categories": [
+      "material",
+      "shop",
+      "plains"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/milk.png",
+    "spriteKeySmall": "items_milk_s",
+    "unlocked": false,
+    "points": 13
+  },
+  {
+    "id": "mushroom",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/mushroom.png",
+    "spriteKeySmall": "items_mushroom_s",
+    "points": 2
+  },
+  {
+    "id": "noarmor",
+    "categories": [
+      "item",
+      "armor"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/noarmor.png",
+    "defense": 0,
+    "durability": 0,
+    "spriteKey": "items_noarmor",
+    "points": 0
+  },
+  {
+    "id": "nohouse",
+    "categories": [
+      "upgrade",
+      "house"
+    ],
+    "nextUpgrade": "tent"
+  },
+  {
+    "id": "pebble",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/pebble.png",
+    "spriteKeySmall": "items_pebble_s",
+    "points": 2
+  },
+  {
+    "id": "pelt",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/pelt.png",
+    "spriteKeySmall": "items_pelt_s",
+    "points": 19
+  },
+  {
+    "id": "pickledmushrooms",
+    "categories": [
+      "item",
+      "shop",
+      "consumable"
+    ],
+    "healing": 5,
+    "quantity": 1,
+    "spritePath": "img/items/pickledmushrooms.png",
+    "spriteKey": "items_pickledmushrooms",
+    "spriteKeySmall": "items_pickledmushrooms_s",
+    "unlocked": false,
+    "points": 13,
+    "costs": [
+      {
+        "id": "mushroom",
+        "quantity": 5
+      },
+      {
+        "id": "wood",
+        "quantity": 1
+      },
+      {
+        "id": "coins",
+        "quantity": 65
+      },
+      {
+        "id": "honey",
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "id": "plainsClayPit",
+    "categories": [
+      "plains",
+      "obstacle"
+    ],
+    "bottomY": 265,
+    "approaches": false,
+    "spriteKey": "obstacles_claypit",
+    "durability": 14,
+    "items": [
+      {
+        "id": "clay",
+        "collectable": false,
+        "quantity": 3
+      }
+    ]
+  },
+  {
+    "id": "plainsCow",
+    "categories": [
+      "plains",
+      "obstacle"
+    ],
+    "power": 3,
+    "bottomY": 240,
+    "approaches": false,
+    "spriteKey": "obstacles_cow",
+    "durability": 13,
+    "collectable": [
+      {
+        "id": "milk",
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "id": "plainsCrystalPillar",
+    "categories": [
+      "plains",
+      "obstacle"
+    ],
+    "bottomY": 265,
+    "approaches": false,
+    "spriteKey": "obstacles_crystalpillar",
+    "durability": 34,
+    "items": [
+      {
+        "id": "crystal",
+        "collectable": false,
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "id": "plainsCrystals",
+    "categories": [
+      "plains",
+      "obstacle"
+    ],
+    "bottomY": 265,
+    "approaches": false,
+    "spriteKey": "obstacles_crystals",
+    "durability": 25,
+    "items": [
+      {
+        "id": "crystal",
+        "collectable": false,
+        "quantity": 3
+      }
+    ]
+  },
+  {
+    "id": "plastic",
+    "categories": [
+      "material"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/plastic.png",
+    "spriteKeySmall": "items_plastic_s",
+    "points": 4
+  },
+  {
+    "id": "randomrubbish",
+    "categories": [
+      "shop",
+      "random"
+    ],
+    "unlocked": false,
+    "spritePath": "img/items/rubbish_random.png",
+    "costs": [
+      {
+        "id": "coins",
+        "quantity": 62
+      },
+      {
+        "id": "rubbish",
+        "quantity": 1
+      }
+    ],
+    "output": [
+      {
+        "id": "string",
+        "chance": 0.2
+      },
+      {
+        "id": "branch",
+        "chance": 1
+      },
+      {
+        "id": "plastic",
+        "chance": 1
+      }
+    ]
+  },
+  {
+    "id": "randomtree",
+    "categories": [
+      "shop",
+      "random"
+    ],
+    "unlocked": false,
+    "spritePath": "img/items/treeseed_random.png",
+    "costs": [
+      {
+        "id": "treeseed",
+        "quantity": 1
+      },
+      {
+        "id": "coins",
+        "quantity": 55
+      }
+    ],
+    "output": [
+      {
+        "id": "treesakura",
+        "chance": 0.05
+      },
+      {
+        "id": "treebasic",
+        "chance": 1
+      }
+    ]
+  },
+  {
+    "id": "rubbish",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/rubbish.png",
+    "spriteKeySmall": "items_rubbish_s",
+    "unlocked": false,
+    "points": 2
+  },
+  {
+    "id": "stone",
+    "categories": [
+      "material",
+      "forest",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/stone.png",
+    "spriteKeySmall": "items_stone_s",
+    "unlocked": false,
+    "points": 4,
+    "costs": [
+      {
+        "id": "pebble",
+        "quantity": 5
+      },
+      {
+        "id": "coins",
+        "quantity": 25
+      }
+    ]
+  },
+  {
+    "id": "stoneaxe",
+    "categories": [
+      "tool",
+      "item",
+      "weapon",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items_stoneaxe.png",
+    "durability": 10,
+    "power": 2,
+    "spriteKey": "items_stoneaxe",
+    "spriteKeySmall": "items_stoneaxe_s",
+    "unlocked": false,
+    "points": 15,
+    "costs": [
+      {
+        "id": "wood",
+        "quantity": 2
+      },
+      {
+        "id": "stone",
+        "quantity": 2
+      },
+      {
+        "id": "string",
+        "quantity": 2
+      },
+      {
+        "id": "coins",
+        "quantity": 100
+      }
+    ],
+    "usefulAgainst": [
+      "forestGoblinking",
+      "forestGoblin",
+      "forestBear",
+      "forestDeer",
+      "forestBeeNest",
+      "forestTrunk"
+    ]
+  },
+  {
+    "id": "stonepickaxe",
+    "categories": [
+      "tool",
+      "item",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/stonepickaxe.png",
+    "durability": 16,
+    "power": 2,
+    "spriteKey": "items_stonepickaxe",
+    "spriteKeySmall": "items_stonepickaxe_s",
+    "unlocked": false,
+    "points": 15,
+    "costs": [
+      {
+        "id": "wood",
+        "quantity": 2
+      },
+      {
+        "id": "stone",
+        "quantity": 4
+      },
+      {
+        "id": "string",
+        "quantity": 2
+      },
+      {
+        "id": "coins",
+        "quantity": 120
+      }
+    ],
+    "usefulAgainst": [
+      "plainsCrystalPillar",
+      "plainsCrystals",
+      "forestWall"
+    ]
+  },
+  {
+    "id": "stoneshovel",
+    "categories": [
+      "tool",
+      "item",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/stoneshovel.png",
+    "durability": 12,
+    "power": 2,
+    "spriteKey": "items_stoneshovel",
+    "spriteKeySmall": "items_stoneshovel_s",
+    "unlocked": false,
+    "points": 11,
+    "costs": [
+      {
+        "id": "wood",
+        "quantity": 3
+      },
+      {
+        "id": "stone",
+        "quantity": 1
+      },
+      {
+        "id": "string",
+        "quantity": 2
+      },
+      {
+        "id": "coins",
+        "quantity": 95
+      }
+    ],
+    "usefulAgainst": [
+      "plainsClayPit",
+      "forestRubbishHeap"
+    ]
+  },
+  {
+    "id": "stonesword",
+    "categories": [
+      "item",
+      "weapon",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/stonesword.png",
+    "durability": 12,
+    "power": 2,
+    "spriteKey": "items_stonesword",
+    "spriteKeySmall": "items_stonesword_s",
+    "unlocked": false,
+    "points": 11,
+    "costs": [
+      {
+        "id": "wood",
+        "quantity": 1
+      },
+      {
+        "id": "stone",
+        "quantity": 3
+      },
+      {
+        "id": "string",
+        "quantity": 1
+      },
+      {
+        "id": "coins",
+        "quantity": 110
+      }
+    ],
+    "usefulAgainst": [
+      "forestGoblinking",
+      "forestGoblin",
+      "forestBear",
+      "forestDeer",
+      "forestBeeNest",
+      "forestNet"
+    ]
+  },
+  {
+    "id": "string",
+    "categories": [
+      "material",
+      "forest",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/string.png",
+    "spriteKeySmall": "items_string_s",
+    "unlocked": false,
+    "points": 5,
+    "costs": [
+      {
+        "id": "cobwebs",
+        "quantity": 5
+      },
+      {
+        "id": "coins",
+        "quantity": 40
+      }
+    ]
+  },
+  {
+    "id": "tent",
+    "categories": [
+      "upgrade",
+      "house"
+    ],
+    "nextUpgrade": "woodenhouse1",
+    "spritePath": "img/buildings/tent.png",
+    "spriteKey": "buildings_tent",
+    "costs": [
+      {
+        "id": "string",
+        "quantity": 14
+      },
+      {
+        "id": "coins",
+        "quantity": 1000
+      },
+      {
+        "id": "leather",
+        "quantity": 10
+      },
+      {
+        "id": "branch",
+        "quantity": 8
+      }
+    ]
+  },
+  {
+    "id": "treebasic",
+    "categories": [
+      "item"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/tree_basic.png",
+    "spriteKey": "items_tree_basic",
+    "points": 6
+  },
+  {
+    "id": "treesakura",
+    "categories": [
+      "item"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/tree_sakura.png",
+    "spriteKey": "items_tree_sakura",
+    "points": 30
+  },
+  {
+    "id": "treeseed",
+    "categories": [
+      "material",
+      "forest"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/treeseed.png",
+    "spriteKeySmall": "items_treeseed_s",
+    "points": 2
+  },
+  {
+    "id": "wood",
+    "categories": [
+      "material",
+      "forest",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/wood.png",
+    "spriteKeySmall": "items_wood_s",
+    "unlocked": false,
+    "points": 3,
+    "costs": [
+      {
+        "id": "coins",
+        "quantity": 20
+      },
+      {
+        "id": "branch",
+        "quantity": 5
+      }
+    ]
+  },
+  {
+    "id": "woodenbucket",
+    "categories": [
+      "material",
+      "shop"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/woodenbucket.png",
+    "unlocked": false,
+    "points": 7,
+    "costs": [
+      {
+        "id": "wood",
+        "quantity": 5
+      },
+      {
+        "id": "string",
+        "quantity": 2
+      },
+      {
+        "id": "coins",
+        "quantity": 89
+      }
+    ],
+    "required": [
+      {
+        "id": "milk",
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "id": "woodenhouse1",
+    "categories": [
+      "upgrade",
+      "house"
+    ],
+    "nextUpgrade": "grindstone",
+    "spritePath": "img/buildings/woodenhouse1.png",
+    "spriteKey": "buildings_woodenhouse1",
+    "costs": [
+      {
+        "id": "wood",
+        "quantity": 25
+      },
+      {
+        "id": "stone",
+        "quantity": 8
+      },
+      {
+        "id": "coins",
+        "quantity": 250
+      },
+      {
+        "id": "flower",
+        "quantity": 6
+      }
+    ]
+  }
+]

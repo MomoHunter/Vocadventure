@@ -103,6 +103,10 @@ $content-blockquote-border-left: 5px solid $grey-dark;
     background-color: darken($turquoise, 20);
     border-color: darken($turquoise, 15);
   }
+
+  &.is-dark {
+    background-color: $grey-lighter;
+  }
 }
 
 .dropdown-content {
@@ -199,4 +203,21 @@ $content-blockquote-border-left: 5px solid $grey-dark;
 .input.is-large {
   height: 2.648em;
   border-bottom-width: 4px;
+}
+
+.slider {
+  appearance: none;
+  background-color: $grey-lighter;
+  border-radius: 290486px;
+  border-bottom-width: 4px;
+  height: 6px;
+  box-shadow: 0px 1px 0 1px $grey-dark;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background-color: $link;
+    border-radius: 290486px;
+  }
 }

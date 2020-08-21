@@ -14,7 +14,8 @@ export default new Vuex.Store({
     lang: 'german',
     targetLanguage: 'japanese',
     theme: 'darkLumen',
-    size: 'normal'
+    size: 'normal',
+    viewport: 1
   },
   getters: {
     getText: (state) => (id, ...params) => {
@@ -45,6 +46,7 @@ export default new Vuex.Store({
         targetLanguage: state.targetLanguage,
         theme: state.theme,
         size: state.size,
+        viewport: state.viewport,
         status: state.vueDict.status,
         categoriesPlayed: state.vueDict.categoriesPlayed,
         inventory: state.vueDict.inventory,
@@ -75,6 +77,12 @@ export default new Vuex.Store({
     },
     changeSize (state, size) {
       state.size = size
+    },
+    changeViewport (state, viewport) {
+      let viewportTag = document.querySelector('[name~=viewport][content]')
+
+      state.viewport = viewport
+      viewportTag.content = 'width=device-width, initial-scale=' + viewport
     }
   },
   modules: {

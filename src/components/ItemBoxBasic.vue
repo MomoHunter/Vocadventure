@@ -5,7 +5,7 @@
     </span>
     <p class="content has-text-centered marginBottomSmall"
        :class="getSizeClass('content')">{{ getText(item.id) }}</p>
-    <div class="box pictureBox flexGrow marginBottomSmall">
+    <div class="box pictureBox flexGrow noMarginBottom">
       <div class="fullHeight fullWidth backgroundPicture"
            :style="{ backgroundImage: 'url(' + baseUrl + itemData.spritePath + ')' }"></div>
     </div>
@@ -82,7 +82,7 @@ export default {
   flex-direction: column;
   height: 100%;
   position: relative;
-  padding: 1rem;
+  padding: .5rem;
 
   .pictureBox {
     padding: .5rem;

@@ -28,10 +28,8 @@ export default {
     ModalMessage
   },
   mounted () {
-    let viewport = document.querySelector('[name~=viewport][content]')
-
     if (window.screen.width * window.devicePixelRatio < 1150) {
-      viewport.content = 'width=device-width, initial-scale=0.75'
+      this.$store.commit('changeViewport', 0.75)
     }
 
     this.loadData()
@@ -59,6 +57,9 @@ export default {
         }
         if (data.size) {
           this.$store.commit('changeSize', data.size)
+        }
+        if (data.viewport) {
+          this.$store.commit('changeViewport', data.viewport)
         }
         if (data.status) {
           this.$store.commit('vueDict/changeStatus', data.status)

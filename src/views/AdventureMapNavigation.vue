@@ -8,7 +8,8 @@
     </transition>
     <transition enter-active-class="animated zoomIn a-little-bit-faster"
                 leave-active-class="animated zoomOut a-little-bit-faster">
-      <div class="content" :class="getSizeClass('content')" v-show="items.length === 0 && currentLevel !== 'home'">
+      <div class="content flexGrow centerContent" :class="getSizeClass('content')"
+           v-show="items.length === 0 && currentLevel !== 'home'">
         {{ getText('adventureMapNoItems') }}
       </div>
     </transition>
@@ -96,6 +97,11 @@ export default {
 
   .flexGrow {
     flex-grow: 1;
+  }
+
+  .centerContent {
+    display: flex;
+    align-items: center;
   }
 
   .itemContainer {

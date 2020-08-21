@@ -1,5 +1,5 @@
 import Vocabulary from '@/data/Vocabulary.js'
-import Items from '@/data/Items.json'
+import GameObjects from '@/data/GameObjects.json'
 
 export default {
   namespaced: true,
@@ -19,7 +19,12 @@ export default {
     difficulty: 0,
     wordCount: 0,
     reversed: false,
-    items: Items,
+    items: GameObjects.filter(
+      obj => obj.categories.includes('item') ||
+             obj.categories.includes('material') ||
+             obj.categories.includes('material2')
+    ),
+    upgrades: GameObjects.filter(obj => obj.categories.includes('upgrade')),
     inventory: [],
     unlockedItems: [],
     itemUnlocks: {
@@ -27,11 +32,21 @@ export default {
       'pebble': ['stone'],
       'cobwebs': ['string'],
       'treeseed': ['randomtree'],
+      'wood': ['woodenbucket'],
       'stone': ['stonepickaxe', 'stoneaxe', 'stonesword', 'stoneshovel'],
       'honey': ['pickledmushrooms'],
       'leather': ['leatherarmor'],
       'rubbish': ['randomrubbish'],
-      'glass': ['glassbottle']
+      'glass': ['glassbottle'],
+      'crystalchip': ['crystal'],
+      'crystal': ['crystalsword', 'crystalshovel', 'crystalpickaxe', 'crystalaxe'],
+      'grassbundle': ['bonfire'],
+      'clay': ['claybowl']
+    },
+    currentUpgradeLevels: {
+      'house': 'nohouse',
+      'launchpad': 'foundation',
+      'greenhouse': 'greenhouse'
     },
     vocabs: {},
     currentWordIndex: 0,
@@ -136,8 +151,19 @@ export default {
       return {
         inventory: JSON.parse(JSON.stringify(state.inventory)),
         unlockedItems: state.unlockedItems,
-        items: JSON.parse(JSON.stringify(state.items))
+        currentUpgradeLevels: JSON.parse(JSON.stringify(state.currentUpgradeLevels))
       }
+    },
+    getUpgradeObject: (state) => (id) => {
+      return state.upgrades.find(upgrade => upgrade.id === id) || null
+    },
+    getNextUpgradeObject: (state, getters) => (id) => {
+      let upgradeObject = getters.getUpgradeObject(id)
+
+      if (upgradeObject.nextUpgrade) {
+        return getters.getUpgradeObject(upgradeObject.nextUpgrade)
+      }
+      return null
     }
   },
   mutations: {
@@ -261,13 +287,16 @@ export default {
       } else {
         let itemObject = state.inventory.find(item => item.id === object.id)
         if (itemObject.quantity + object.quantity < 0) {
-          console.error('Too less items in inventory:', itemObject.quantity, itemObject.id)
+          itemObject.quantity += object.quantity
         } else if (itemObject.quantity + object.quantity === 0) {
           state.inventory = state.inventory.filter(item => item.id !== itemObject.id)
         } else {
           itemObject.quantity += object.quantity
         }
       }
+    },
+    setCurrentUpgradeLevel (state, object) {
+      state.currentUpgradeLevels[object.currentBuilding] = object.newValue
     },
     reduceItemDurability (state, itemId) {
       let itemData = state.inventory.find(item => item.id === itemId)
@@ -300,7 +329,7 @@ export default {
     setAdventureCopies (state, copies) {
       state.inventory = copies.inventory
       state.unlockedItems = copies.unlockedItems
-      state.items = copies.items
+      state.currentUpgradeLevels = copies.currentUpgradeLevels
     }
   },
   actions: {
