@@ -5,7 +5,9 @@
            :style="{ backgroundImage: 'url(' + baseUrl + itemData.spritePath + ')' }"></div>
     </div>
     <div class="content has-text-right" :class="getSizeClass('content')">
-      {{ quantityText }}
+      <span :class="inventoryCountClass" v-if="hasInventoryCount">{{ quantityText.own }}</span>
+      <span v-if="hasInventoryCount"> / </span>
+      <span>{{ quantityText.needed }}</span>
     </div>
   </div>
 </template>
@@ -35,12 +37,32 @@ export default {
         return 'is-basic'
       }
     },
-    quantityText () {
-      if (this.hasInventoryCount) {
-        let inventoryData = this.$store.getters['vueDict/getInventoryObject'](this.item.id)
-        return `x${inventoryData.quantity.toLocaleString()} / x${this.item.quantity.toLocaleString()}`
+    inventoryCount () {
+      if (!this.hasInventoryCount) {
+        return 0
       }
-      return `x${this.item.quantity.toLocaleString()}`
+      let inventoryObject = this.$store.getters['vueDict/getInventoryObject'](this.item.id)
+      let collectedItem = this.$store.state.canvasDict.collectedItems.find(item => item.id === this.item.id)
+      return (collectedItem ? collectedItem.quantity : 0) + (inventoryObject ? inventoryObject.quantity : 0)
+    },
+    quantityText () {
+      if (!this.hasInventoryCount) {
+        return {
+          needed: `x${this.item.quantity.toLocaleString()}`
+        }
+      }
+      return {
+        own: `x${this.inventoryCount.toLocaleString()}`,
+        needed: `x${this.item.quantity.toLocaleString()}`
+      }
+    },
+    inventoryCountClass () {
+      if (!this.hasInventoryCount) {
+        return ''
+      } else if (this.item.quantity > this.inventoryCount) {
+        return 'has-text-danger'
+      }
+      return 'has-text-success'
     }
   },
   methods: {

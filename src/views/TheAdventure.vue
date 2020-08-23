@@ -86,12 +86,12 @@ export default {
       } else if (this.dead) {
         this.$store.commit('canvasDict/changeGameState', 'map')
         this.$store.commit('canvasDict/resetLevel', this.currentLevel)
-        this.$store.commit('vueDict/resetAdditional')
+        this.$store.commit('vueDict/transferAdditionalStat')
         this.$store.commit('vueDict/resetVocabs')
         this.$store.commit('canvasDict/setCollectedItems', [])
         next()
       } else if (from.name === 'adventureStatistics') {
-        this.$store.commit('vueDict/resetAdditional')
+        this.$store.commit('vueDict/transferAdditionalStat')
         this.$store.commit('vueDict/resetVocabs')
         this.$store.commit('canvasDict/setCollectedItems', [])
         next()
@@ -234,13 +234,8 @@ export default {
     character () {
       return this.$store.state.canvasDict.character
     },
-    collectedItems: {
-      get () {
-        return this.$store.state.canvasDict.collectedItems
-      },
-      set (newItem) {
-        this.$store.commit('canvasDict/addCollectedItem', newItem)
-      }
+    collectedItems () {
+      return this.$store.state.canvasDict.collectedItems
     }
   },
   methods: {
@@ -336,19 +331,38 @@ export default {
           this.$router.replace({ name: 'adventureMap' })
           break
         case 'correctWord':
-          let lootableObstacle = this.$store.getters['canvasDict/getObstacleOnField'](dynLevelData.steps + 1)
-          let lootableObstacleObject = null
+          let obstacleOnField = this.$store.getters['canvasDict/getObstacleOnField'](dynLevelData.steps)
+          let obstacleOnFieldObject = null
 
-          if (lootableObstacle) {
-            lootableObstacleObject = this.$store.getters['canvasDict/getObstacleObject'](
-              this.currentLevel, lootableObstacle.id
+          if (obstacleOnField) {
+            obstacleOnFieldObject = this.$store.getters['canvasDict/getObstacleObject'](
+              this.currentLevel, obstacleOnField.id
             )
           }
 
-          if (dynLevelData.itemsOnFloor) {
+          if (dynLevelData.lootableObstacle) {
+            this.takeItemsFromObstacle(obstacleOnFieldObject.lootableItems)
+            this.$store.commit('canvasDict/setLootableObstacle', false)
+          } else if (dynLevelData.collectableObstacle) {
+            this.takeItemsFromObstacle(obstacleOnFieldObject.collectableItems)
+            this.$store.commit('canvasDict/setCollectableObstacle', false)
+            if (nextItems.length > 0 && dynLevelData.steps === nextItems[0].field) {
+              this.$store.commit('canvasDict/setItemsOnFloor', true)
+            }
+            if (nextObstacle && dynLevelData.steps + 1 === nextObstacle.field) {
+              this.$store.commit('canvasDict/setObstacleAhead', true)
+              if (nextObstacleObject.collectableItems) {
+                this.$store.commit('canvasDict/setCollectableObstacle', true)
+              }
+            }
+            if (nextObstacleObject && nextObstacleObject.approaches && nextObstacle.field > dynLevelData.steps + 1 &&
+                nextObstacle.field <= dynLevelData.steps + 3) {
+              this.animationQueue.push(new AnimationObject('obstacleApproaches'))
+            }
+          } else if (dynLevelData.itemsOnFloor) {
             this.animationQueue.push(new AnimationObject('pickUpItems', true))
             for (let item of nextItems) {
-              this.collectedItems.push({
+              this.$store.commit('canvasDict/addCollectedItem', {
                 id: item.id,
                 spriteKey: item.spriteKey,
                 animated: false,
@@ -359,10 +373,6 @@ export default {
             }
             this.$store.commit('canvasDict/removeItemsOnFloor', { type: 'item', field: dynLevelData.steps })
             this.$store.commit('canvasDict/setItemsOnFloor', false)
-          } else if (dynLevelData.collectableObstacle) {
-            this.takeItemsFromObstacle(nextObstacleObject.collectableItems)
-          } else if (dynLevelData.lootableObstacle) {
-            this.takeItemsFromObstacle(lootableObstacleObject.lootableItems)
           } else if (dynLevelData.obstacleAhead) {
             this.animationQueue.push(new AnimationObject('attackObstacle'))
           } else {
@@ -393,7 +403,7 @@ export default {
                 this.$store.commit('canvasDict/setCollectableObstacle', true)
               }
             }
-            if (lootableObstacle && lootableObstacleObject.lootableItems) {
+            if (nextObstacle && nextObstacleObject.lootableItems) {
               this.$store.commit('canvasDict/setLootableObstacle', true)
             }
           }
@@ -401,25 +411,38 @@ export default {
         case 'wrongWord':
           if (dynLevelData.collectableObstacle) {
             this.animationQueue.push(new AnimationObject('obstacleRunAway'))
-            this.$store.commit('canvasDict/setEventsRegistered', { type: 'obstacle', field: dynLevelData.steps })
+            this.$store.commit('canvasDict/setCollectableObstacle', false)
+            if (nextItems.length > 0 && dynLevelData.steps === nextItems[0].field) {
+              this.$store.commit('canvasDict/setItemsOnFloor', true)
+            }
+            if (nextObstacle && dynLevelData.steps + 1 === nextObstacle.field) {
+              this.$store.commit('canvasDict/setObstacleAhead', true)
+              if (nextObstacleObject.collectableItems) {
+                this.$store.commit('canvasDict/setCollectableObstacle', true)
+              }
+            }
+            if (nextObstacleObject && nextObstacleObject.approaches && nextObstacle.field > dynLevelData.steps + 1 &&
+                nextObstacle.field <= dynLevelData.steps + 3) {
+              this.animationQueue.push(new AnimationObject('obstacleApproaches'))
+            }
+          } else if (dynLevelData.lootableObstacle) {
+            this.animationQueue.push(new AnimationObject('pickUpItems', false))
+            this.$store.commit('canvasDict/setLootableObstacle', false)
           } else if (dynLevelData.itemsOnFloor) {
             this.animationQueue.push(new AnimationObject('pickUpItems', false))
             this.$store.commit('canvasDict/setEventsRegistered', { type: 'item', field: dynLevelData.steps })
             this.$store.commit('canvasDict/setItemsOnFloor', false)
-          } else if (dynLevelData.lootableObstacle) {
-            this.animationQueue.push(new AnimationObject('pickUpItems', false))
-            this.$store.commit('canvasDict/setLootableObstacle', false)
           } else if (dynLevelData.obstacleAhead && nextObstacle.power) {
             this.animationQueue.push(new AnimationObject('enemyAttack'))
           }
           break
         case 'nextWord':
-          if (dynLevelData.itemsOnFloor) {
-            this.$router.replace({ name: 'adventureChoose' })
-            this.$store.commit('canvasDict/setQuestionKey', 'adventureChooseQuestion1')
-          } else if (dynLevelData.lootableObstacle) {
+          if (dynLevelData.lootableObstacle) {
             this.$router.replace({ name: 'adventureChoose' })
             this.$store.commit('canvasDict/setQuestionKey', 'adventureChooseQuestion2')
+          } else if (dynLevelData.itemsOnFloor) {
+            this.$router.replace({ name: 'adventureChoose' })
+            this.$store.commit('canvasDict/setQuestionKey', 'adventureChooseQuestion1')
           } else if (dynLevelData.collectableObstacle) {
             this.$router.replace({ name: 'adventureChoose' })
             this.$store.commit('canvasDict/setQuestionKey', 'adventureChooseQuestion3')
@@ -434,6 +457,7 @@ export default {
             } else {
               this.animationQueue.push(new AnimationObject('moveForward'))
             }
+            this.$store.commit('canvasDict/setObstacleAhead', false)
           }
           this.$router.replace({ name: 'adventure' })
           this.$store.commit('canvasDict/setQuestionKey', '')
@@ -463,6 +487,7 @@ export default {
           this.saveGame()
           break
         case 'navTo':
+          this.$store.commit('vueDict/transferAdditionalStat')
           if (object.value === 'menu') {
             this.$store.commit('vueDict/setCategories', [])
             this.$store.commit('vueDict/setDifficulty', '')
@@ -540,16 +565,6 @@ export default {
         })
         this.$store.commit('vueDict/unlockItem', item.id)
       }
-
-      /* this.$store.commit('canvasDict/setCollectedItems', this.collectedItems.reduce((array, item) => {
-        let foundItem = array.find(itemData => itemData.id === item.id)
-        if (foundItem) {
-          foundItem.quantity += item.quantity
-        } else {
-          array.push(item)
-        }
-        return array
-      }, [])) */
     },
     takeItemsFromObstacle (items) {
       for (let item of items) {
@@ -562,7 +577,7 @@ export default {
           if (alreadyReady) {
             alreadyReady.quantity -= requiredItem.quantity
           } else {
-            this.collectedItems.push({
+            this.$store.commit('canvasDict/addCollectedItem', {
               id: requiredItem.id,
               spriteKey: requiredItemData.spriteKeySmall,
               animated: false,
@@ -571,7 +586,7 @@ export default {
           }
           this.$store.commit('canvasDict/addFoundItem', { id: requiredItem.id, quantity: -requiredItem.quantity })
         }
-        this.collectedItems.push({
+        this.$store.commit('canvasDict/addCollectedItem', {
           id: item.id,
           spriteKey: itemData.spriteKeySmall,
           animated: false,
@@ -581,7 +596,6 @@ export default {
         this.$store.commit('canvasDict/addFoundItem', { id: item.id, quantity: item.quantity })
       }
 
-      this.$store.commit('canvasDict/setLootableObstacle', false)
       this.animationQueue.push(new AnimationObject('pickUpItems', true))
     },
     canvasLoop (timestamp) {
@@ -997,7 +1011,7 @@ export default {
     obstacleRunAwayAnimation () {
       let dynLevelData = this.$store.getters['canvasDict/getDynamicLevelData'](this.currentLevel)
       let obstacleEvent = this.$store.getters['canvasDict/getObstacleOnField'](dynLevelData.steps)
-      let obstacleData = this.$store.getters['canvasDict/getSpriteData'](obstacleEvent.id)
+      let obstacleData = this.$store.getters['canvasDict/getSpriteData'](obstacleEvent.spriteKey)
 
       this.$store.commit('canvasDict/setEventX', {
         event: {
@@ -1008,8 +1022,8 @@ export default {
         newX: obstacleEvent.x - 2
       })
 
-      if (obstacleEvent.x - 2 + obstacleData.spriteWidth < 30) {
-        this.$store.commit('canvasDict/setCollectableObstacle', false)
+      if (obstacleEvent.x - 2 + obstacleData.spriteWidth < -30) {
+        this.$store.commit('canvasDict/setEventsRegistered', { type: 'obstacle', field: dynLevelData.steps })
         this.currentAnimation = null
       }
     },
@@ -1017,11 +1031,7 @@ export default {
       this.currentAnimation.counter += 0.4
 
       if (this.currentAnimation.counter >= 40) {
-        this.collectedItems.forEach(item => {
-          if (!item.animated) {
-            item.animated = true
-          }
-        })
+        this.$store.commit('canvasDict/setCollectedItemsAnimated')
         this.currentAnimation.counter = 0
         this.currentAnimation = null
       }
@@ -1092,7 +1102,7 @@ export default {
             }
 
             if (!item.chance || (item.chance && Math.random() < item.chance)) {
-              this.collectedItems.push({
+              this.$store.commit('canvasDict/addCollectedItem', {
                 id: item.id,
                 spriteKey: itemObject.spriteKeySmall,
                 animated: false,
@@ -1100,18 +1110,6 @@ export default {
               })
               this.$store.commit('vueDict/addStatAddit', { id: 'points', count: itemObject.points * item.quantity })
               this.$store.commit('canvasDict/addFoundItem', { id: item.id, quantity: item.quantity })
-              /* this.collectableItems.push({
-                id: item.id,
-                spriteKey: itemObject.spriteKeySmall,
-                animated: false,
-                quantity: item.quantity,
-                correctedQuantity: this.collectedItems.reduce((quantity, collectedItem) => {
-                  if (collectedItem.id === item.id) {
-                    return quantity + collectedItem.quantity
-                  }
-                  return quantity
-                }, 0)
-              }) */
             }
           }
 
@@ -1144,28 +1142,7 @@ export default {
           this.$store.commit('canvasDict/changePlayerHealth', -nextObstacle.power)
         }
         if (this.$store.state.canvasDict.playerHealth <= 0) {
-          for (let category of this.$store.state.vueDict.categoriesChosen) {
-            this.$store.commit('vueDict/increaseCategoryPlayed', category)
-          }
-          this.$store.commit('vueDict/transferAdditionalStat', false)
-          this.addItemsToInventory()
-          let saveData = JSON.parse(JSON.stringify(this.$store.getters['getSaveData']))
-          saveData.gameState = 'map'
-          saveData.playerHealth = 100
-          for (let status of saveData.status) {
-            status.additional = 0
-          }
-          saveData.dynamicLevelData[this.currentLevel] = {
-            steps: 0,
-            background: [],
-            foreground: [],
-            events: [],
-            itemsOnFloor: false,
-            obstacleAhead: false,
-            lootableObstacle: false,
-            bossSpawned: false
-          }
-          window.localStorage.setItem('globalDict', JSON.stringify(saveData))
+          this.saveGame(true)
           this.animationQueue.push(new AnimationObject('youDied'))
           this.$router.replace({ name: 'adventureStatistics' })
           this.dead = true
@@ -1477,17 +1454,41 @@ export default {
     getMovementFix (value, neg) {
       return neg ? -Math.sqrt(1 - Math.pow(value, 2)) : Math.sqrt(1 - Math.pow(value, 2))
     },
-    saveGame () {
+    saveGame (death = false) {
+      let saveData = null
+
       for (let category of this.$store.state.vueDict.categoriesChosen) {
         this.$store.commit('vueDict/increaseCategoryPlayed', category)
       }
-      this.$store.commit('vueDict/transferAdditionalStat', false)
       this.addItemsToInventory()
-      let saveData = JSON.parse(JSON.stringify(this.$store.getters['getSaveData']))
-      for (let status of saveData.status) {
-        status.additional = 0
+
+      if (death) {
+        saveData = JSON.parse(JSON.stringify(this.$store.getters['getSaveData']))
+        saveData.gameState = 'map'
+        saveData.playerHealth = 100
+        for (let status of saveData.status) {
+          status.count += status.additional
+          status.additional = 0
+        }
+        saveData.dynamicLevelData[this.currentLevel] = {
+          steps: 0,
+          background: [],
+          foreground: [],
+          events: [],
+          itemsOnFloor: false,
+          obstacleAhead: false,
+          lootableObstacle: false,
+          bossSpawned: false
+        }
+        window.localStorage.setItem('globalDict', JSON.stringify(saveData))
+      } else {
+        saveData = this.$store.getters['getSaveData']
+        for (let status of saveData.status) {
+          status.count += status.additional
+          status.additional = 0
+        }
+        window.localStorage.setItem('globalDict', JSON.stringify(saveData))
       }
-      window.localStorage.setItem('globalDict', JSON.stringify(saveData))
     }
   },
   watch: {

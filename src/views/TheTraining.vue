@@ -88,6 +88,8 @@ export default {
       this.storedWords = stash.storedWords
       this.currentWord = stash.currentWord
       this.$store.commit('vueDict/setTrainingStash', null)
+    } else if (this.$store.state.vueDict.categoriesChosen.length === 0) {
+      this.$router.push({ name: 'category', params: { destination: 'training' } })
     }
   },
   mounted () {
@@ -108,15 +110,30 @@ export default {
   },
   computed: {
     words () {
-      return this.storedWords || this.$store.getters['vueDict/getShuffledVocabs']
+      if (this.storedWords) {
+        return this.storedWords
+      }
+      let vocabs = this.$store.getters['vueDict/getShuffledVocabs']
+
+      if (vocabs.words.length === 0) {
+        vocabs.words.push({
+          category: '',
+          german: '',
+          english: ''
+        })
+      }
+      return vocabs
     },
     tags () {
-      return [
-        {
-          nameId: 'trainingCategoryTag',
-          valueId: this.words.words[this.currentWord].category
-        }
-      ]
+      if (this.words.words.length > 0) {
+        return [
+          {
+            nameId: 'trainingCategoryTag',
+            valueId: this.words.words[this.currentWord].category
+          }
+        ]
+      }
+      return []
     },
     isJapanese () {
       return this.$store.state.targetLanguage === 'japanese'

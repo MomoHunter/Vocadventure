@@ -118,14 +118,7 @@ export default {
         let inventoryObject = this.$store.getters['vueDict/getInventoryObject'](id)
         let collectedObject = this.collectedItems.find(item => item.id === id)
 
-        if (inventoryObject && collectedObject) {
-          return inventoryObject.quantity + collectedObject.quantity
-        } else if (inventoryObject) {
-          return inventoryObject.quantity
-        } else if (collectedObject) {
-          return collectedObject.quantity
-        }
-        return 0
+        return (inventoryObject ? inventoryObject.quantity : 0) + (collectedObject ? collectedObject.quantity : 0)
       }
     },
     isEnough (costObject) {

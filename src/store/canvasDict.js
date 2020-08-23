@@ -96,53 +96,59 @@ export default {
       'items_leather': [false, 1866, 1707, 50, 50],
       'items_leatherarmor': [false, 1866, 1758, 55, 95],
       'items_leather_s': [false, 1866, 1854, 20, 20],
-      'items_mushroom': [false, 1866, 1875, 50, 50],
-      'items_mushroom_s': [false, 1866, 1926, 20, 20],
-      'items_noarmor': [false, 1866, 1947, 76, 60],
-      'items_pebble': [false, 1866, 2008, 50, 50],
-      'items_pebble_s': [false, 1866, 2059, 20, 20],
-      'items_pelt': [false, 1866, 2080, 50, 50],
-      'items_pelt_s': [false, 1866, 2131, 20, 19],
-      'items_pickledmushrooms': [false, 1866, 2151, 50, 50],
-      'items_pickledmushrooms_s': [false, 1866, 2202, 20, 20],
-      'items_plastic': [false, 1866, 2223, 50, 50],
-      'items_plastic_s': [false, 1866, 2274, 20, 20],
-      'items_rubbish': [false, 1866, 2295, 50, 50],
-      'items_rubbish_random': [false, 1866, 2346, 50, 50],
-      'items_rubbish_s': [false, 1866, 2397, 20, 20],
-      'items_stone': [false, 1866, 2418, 50, 50],
-      'items_stoneaxe': [false, 1866, 2469, 50, 50],
-      'items_stoneaxe_s': [false, 1866, 2520, 20, 20],
-      'items_stonepickaxe': [false, 1866, 2541, 37, 37],
-      'items_stonepickaxe_s': [false, 1866, 2579, 20, 20],
-      'items_stoneshovel': [false, 1866, 2600, 35, 35],
-      'items_stoneshovel_s': [false, 1866, 2636, 20, 20],
-      'items_stonesword': [false, 1866, 2657, 25, 26],
-      'items_stonesword_s': [false, 1866, 2684, 20, 20],
-      'items_stone_s': [false, 1866, 2705, 20, 20],
-      'items_string': [false, 1866, 2726, 50, 50],
-      'items_string_s': [false, 1866, 2777, 20, 20],
-      'items_treeseed': [false, 1866, 2798, 50, 50],
-      'items_treeseed_random': [false, 1866, 2849, 50, 50],
-      'items_treeseed_s': [false, 1866, 2900, 20, 20],
-      'items_tree_basic': [false, 1866, 2921, 50, 50],
-      'items_tree_sakura': [false, 1866, 2972, 50, 50],
-      'items_wood': [false, 1866, 3023, 50, 50],
-      'items_woodenbucket': [false, 1866, 3074, 50, 50],
-      'items_wood_s': [false, 1866, 3125, 20, 20],
+      'items_meat': [false, 1866, 1875, 50, 50],
+      'items_meat_s': [false, 1866, 1926, 20, 20],
+      'items_milk': [false, 1866, 1947, 50, 50],
+      'items_milk_s': [false, 1866, 1998, 20, 20],
+      'items_mushroom': [false, 1866, 2019, 50, 50],
+      'items_mushroom_s': [false, 1866, 2070, 20, 20],
+      'items_noarmor': [false, 1866, 2091, 76, 60],
+      'items_pebble': [false, 1866, 2152, 50, 50],
+      'items_pebble_s': [false, 1866, 2203, 20, 20],
+      'items_pelt': [false, 1866, 2224, 50, 50],
+      'items_pelt_s': [false, 1866, 2275, 20, 19],
+      'items_pickledmushrooms': [false, 1866, 2295, 50, 50],
+      'items_pickledmushrooms_s': [false, 1866, 2346, 20, 20],
+      'items_plastic': [false, 1866, 2367, 50, 50],
+      'items_plastic_s': [false, 1866, 2418, 20, 20],
+      'items_rubbish': [false, 1866, 2439, 50, 50],
+      'items_rubbish_random': [false, 1866, 2490, 50, 50],
+      'items_rubbish_s': [false, 1866, 2541, 20, 20],
+      'items_stone': [false, 1866, 2562, 50, 50],
+      'items_stoneaxe': [false, 1866, 2613, 50, 50],
+      'items_stoneaxe_s': [false, 1866, 2664, 20, 20],
+      'items_stonepickaxe': [false, 1866, 2685, 37, 37],
+      'items_stonepickaxe_s': [false, 1866, 2723, 20, 20],
+      'items_stoneshovel': [false, 1866, 2744, 35, 35],
+      'items_stoneshovel_s': [false, 1866, 2780, 20, 20],
+      'items_stonesword': [false, 1866, 2801, 25, 26],
+      'items_stonesword_s': [false, 1866, 2828, 20, 20],
+      'items_stone_s': [false, 1866, 2849, 20, 20],
+      'items_string': [false, 1866, 2870, 50, 50],
+      'items_string_s': [false, 1866, 2921, 20, 20],
+      'items_treeseed': [false, 1866, 2942, 50, 50],
+      'items_treeseed_random': [false, 1866, 2993, 50, 50],
+      'items_treeseed_s': [false, 1866, 3044, 20, 20],
+      'items_tree_basic': [false, 1866, 3065, 50, 50],
+      'items_tree_sakura': [false, 1866, 3116, 50, 50],
+      'items_wood': [false, 1866, 3167, 50, 50],
+      'items_woodenbucket': [false, 1866, 3218, 50, 50],
+      'items_woodenbucket_s': [false, 1866, 3269, 20, 20],
+      'items_wood_s': [false, 1866, 3290, 20, 20],
       'obstacles_bear': [false, 1943, 0, 90, 54],
       'obstacles_beenest': [false, 1943, 55, 44, 76],
       'obstacles_claypit': [false, 1943, 132, 86, 86],
-      'obstacles_crystalpillar': [false, 1943, 219, 40, 93],
-      'obstacles_crystals': [false, 1943, 313, 83, 77],
-      'obstacles_deer': [false, 1943, 391, 81, 87],
-      'obstacles_goblin': [false, 1943, 479, 71, 75],
-      'obstacles_goblinking': [false, 1943, 555, 232, 182],
-      'obstacles_goblin_d': [false, 1943, 738, 87, 80],
-      'obstacles_net': [false, 1943, 819, 36, 79],
-      'obstacles_rubbishheap': [false, 1943, 899, 88, 70],
-      'obstacles_trunk': [false, 1943, 970, 84, 95],
-      'obstacles_wall': [false, 1943, 1066, 60, 86],
+      'obstacles_cow': [false, 1943, 219, 100, 100],
+      'obstacles_crystalpillar': [false, 1943, 320, 40, 93],
+      'obstacles_crystals': [false, 1943, 414, 83, 77],
+      'obstacles_deer': [false, 1943, 492, 81, 87],
+      'obstacles_goblin': [false, 1943, 580, 71, 75],
+      'obstacles_goblinking': [false, 1943, 656, 232, 182],
+      'obstacles_goblin_d': [false, 1943, 839, 87, 80],
+      'obstacles_net': [false, 1943, 920, 36, 79],
+      'obstacles_rubbishheap': [false, 1943, 1000, 88, 70],
+      'obstacles_trunk': [false, 1943, 1071, 84, 95],
+      'obstacles_wall': [false, 1943, 1167, 60, 86],
       'player_level_standing': [false, 2176, 0, 55, 95],
       'player_map_standing': [false, 2176, 96, 25, 43],
       'special_placeholder': [false, 2232, 0, 50, 50],
@@ -378,10 +384,10 @@ export default {
                 { id: 'flower', chance: 0.2 }
               ],
               obstacles: [
+                { id: 'plainsCow', chance: 10.3 },
                 { id: 'plainsCrystals', chance: 0.02 },
                 { id: 'plainsCrystalPillar', chance: 0.016 },
-                { id: 'plainsClayPit', chance: 0.02 },
-                { id: 'plainsCow', chance: 0.3 }
+                { id: 'plainsClayPit', chance: 0.02 }
               ]
             }
           }
@@ -589,7 +595,7 @@ export default {
     },
     getNextObstacleEvent: (state) => (level) => {
       let events = state.dynamicLevelData[level].events.filter(
-        event => event.type === 'obstacle' && !event.registered
+        event => event.type === 'obstacle' && !event.registered && state.dynamicLevelData[level].steps < event.field
       )
       let index = 0
 
@@ -670,7 +676,20 @@ export default {
     getLootableObstacleObject: (state, getters) => {
       const lootableObstacle = getters.getObstacleOnField(state.dynamicLevelData[state.currentLevel].steps)
       if (lootableObstacle) {
-        return getters.getObstacleObject(state.currentLevel, lootableObstacle.id)
+        let lootableObstacleObject = getters.getObstacleObject(state.currentLevel, lootableObstacle.id)
+        if (lootableObstacleObject.lootableItems) {
+          return lootableObstacleObject
+        }
+      }
+      return null
+    },
+    getCollectableObstacleObject: (state, getters) => {
+      const collectableObstacle = getters.getObstacleOnField(state.dynamicLevelData[state.currentLevel].steps + 1)
+      if (collectableObstacle) {
+        let collectableObstacleObject = getters.getObstacleObject(state.currentLevel, collectableObstacle.id)
+        if (collectableObstacleObject.collectableItems) {
+          return collectableObstacleObject
+        }
       }
       return null
     },
@@ -949,6 +968,13 @@ export default {
         foundItem.quantity += item.quantity
       } else {
         state.collectedItems.push(item)
+      }
+    },
+    setCollectedItemsAnimated (state) {
+      for (let item of state.collectedItems) {
+        if (!item.animated) {
+          item.animated = true
+        }
       }
     },
     setCollectedItems (state, items) {

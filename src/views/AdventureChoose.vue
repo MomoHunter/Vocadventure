@@ -5,7 +5,7 @@
         {{ questionText }}
       </blockquote>
       <div class="itemBar overflowAuto flex-grow" v-if="hasItems">
-        <ItemBoxSmall class="customBox" v-for="item in items" :key="item.id" :item="item" hasInventoryCount />
+        <ItemBoxSmall class="customBox" v-for="item in requiredItems" :key="item.id" :item="item" hasInventoryCount />
       </div>
     </div>
     <div>
@@ -28,58 +28,71 @@ export default {
     ItemBoxSmall
   },
   computed: {
+    questionKey () {
+      return this.$store.state.canvasDict.questionKey
+    },
     hasItems () {
-      return !!this.lootableObstacleObject.lootableItems
+      if (this.lootableObstacleObject || this.collectableObstacleObject) {
+        return true
+      }
+      return false
     },
     lootableObstacleObject () {
       return this.$store.getters['canvasDict/getLootableObstacleObject']
     },
-    items () {
+    collectableObstacleObject () {
+      return this.$store.getters['canvasDict/getCollectableObstacleObject']
+    },
+    requiredItems () {
       if (this.lootableObstacleObject) {
-        return this.lootableObstacleObject.lootableItems.reduce((newArray, lootableItem) => {
-          for (let requiredItem of this.$store.getters['vueDict/getItemObject'](lootableItem.id).required) {
-            let foundItem = newArray.find(item => item.id === requiredItem.id)
-            if (foundItem) {
-              foundItem.quantity += requiredItem.quantity
-            } else {
-              newArray.push({
-                id: requiredItem.id,
-                quantity: requiredItem.quantity
-              })
-            }
-          }
-          return newArray
-        }, [])
+        return this.countRequiredItems(this.lootableObstacleObject.lootableItems)
+      } else if (this.collectableObstacleObject) {
+        return this.countRequiredItems(this.collectableObstacleObject.collectableItems)
       }
       return []
     },
+    collectedItems () {
+      return this.$store.state.canvasDict.collectedItems
+    },
     questionText () {
-      if (this.$store.state.canvasDict.questionKey === 'adventureChooseQuestion2') {
-        if (this.items.length > 0) {
-          const requiredItemTexts = this.items.map(({ id, quantity }) =>
-            `${quantity} ${this.getText(quantity === 1 ? id : `${id}_m`)}`
-          )
-          const lootableItemTexts = this.lootableObstacleObject.lootableItems.map(({ id, quantity }) =>
-            `${quantity} ${this.getText(quantity === 1 ? id : `${id}_m`)}`
-          )
-
+      if (this.questionKey === 'adventureChooseQuestion2') {
+        if (this.requiredItems.length > 0) {
           return this.getText(
-            'adventureChooseQuestion2',
-            this.printList(requiredItemTexts),
-            this.printList(lootableItemTexts)
+            this.questionKey,
+            this.printList(this.itemsToString(this.requiredItems)),
+            this.printList(this.itemsToString(this.lootableObstacleObject.lootableItems))
           )
         }
-        return this.getText('adventureChooseQuestion2', '', '')
-      } else if (this.$store.state.canvasDict.questionKey === 'adventureChooseQuestion3') {
-
+      } else if (this.questionKey === 'adventureChooseQuestion3') {
+        if (this.requiredItems.length > 0) {
+          return this.getText(
+            this.questionKey,
+            this.getText(`${this.collectableObstacleObject.id}_a`),
+            this.printList(this.itemsToString(this.collectableObstacleObject.collectableItems)),
+            this.printList(this.itemsToString(this.requiredItems))
+          )
+        }
       }
-      return this.getText(this.$store.state.canvasDict.questionKey)
+      return this.getText(this.questionKey)
     },
     disabled () {
-      if (this.$store.state.canvasDict.questionKey === 'adventureChooseQuestion2') {
-        for (let item of this.items) {
+      if (this.questionKey === 'adventureChooseQuestion2') {
+        for (let item of this.requiredItems) {
           let inventoryObject = this.$store.getters['vueDict/getInventoryObject'](item.id)
-          if (!inventoryObject || item.correctedQuantity >= inventoryObject.quantity) {
+          let collectedItem = this.collectedItems.find(collItem => collItem.id === item.id)
+          let ownItemQuantity = (collectedItem ? collectedItem.quantity : 0) +
+            (inventoryObject ? inventoryObject.quantity : 0)
+          if (item.quantity > ownItemQuantity) {
+            return true
+          }
+        }
+      } else if (this.questionKey === 'adventureChooseQuestion3') {
+        for (let item of this.requiredItems) {
+          let inventoryObject = this.$store.getters['vueDict/getInventoryObject'](item.id)
+          let collectedItem = this.collectedItems.find(collItem => collItem.id === item.id)
+          let ownItemQuantity = (collectedItem ? collectedItem.quantity : 0) +
+            (inventoryObject ? inventoryObject.quantity : 0)
+          if (item.quantity > ownItemQuantity) {
             return true
           }
         }
@@ -94,8 +107,29 @@ export default {
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
     },
+    itemsToString (items) {
+      return items.map(({ id, quantity }) =>
+        `${quantity} ${this.getText(quantity === 1 ? id : `${id}_m`)}`
+      )
+    },
     printList (list) {
       return list.length > 1 ? `${list.slice(0, -1).join(', ')} und ${list.slice(-1)}` : list[0]
+    },
+    countRequiredItems (items) {
+      return items.reduce((newArray, item) => {
+        for (let requiredItem of this.$store.getters['vueDict/getItemObject'](item.id).required) {
+          let foundItem = newArray.find(itemInArray => itemInArray.id === requiredItem.id)
+          if (foundItem) {
+            foundItem.quantity += requiredItem.quantity
+          } else {
+            newArray.push({
+              id: requiredItem.id,
+              quantity: requiredItem.quantity
+            })
+          }
+        }
+        return newArray
+      }, [])
     }
   }
 }
