@@ -381,13 +381,13 @@ export default {
               items: [
                 { id: 'grassbundle', chance: 0.02 },
                 { id: 'crystalchip', chance: 0.02 },
-                { id: 'flower', chance: 0.2 }
+                { id: 'flower', chance: 0.02 }
               ],
               obstacles: [
-                { id: 'plainsCow', chance: 10.3 },
                 { id: 'plainsCrystals', chance: 0.02 },
                 { id: 'plainsCrystalPillar', chance: 0.016 },
-                { id: 'plainsClayPit', chance: 0.02 }
+                { id: 'plainsClayPit', chance: 0.02 },
+                { id: 'plainsCow', chance: 0.03 }
               ]
             }
           }
@@ -521,18 +521,6 @@ export default {
         bossSpawned: false
       },
       'forest': {
-        steps: 0,
-        itemsFound: [],
-        background: [],
-        foreground: [],
-        events: [],
-        itemsOnFloor: false,
-        obstacleAhead: false,
-        lootableObstacle: false,
-        collectableObstacle: false,
-        bossSpawned: false
-      },
-      'plains': {
         steps: 0,
         itemsFound: [],
         background: [],
