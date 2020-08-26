@@ -7,7 +7,8 @@
             <div class="fullHeight fullWidth backgroundPicture"
                 :style="{ backgroundImage: 'url(' + baseUrl + nextUpgradeData.spritePath + ')' }"></div>
           </div>
-          <ButtonBasic color="is-success" icon="coins" text="adventureHomeUpgradeBuy" @click="buyUpgrade()" />
+          <ButtonBasic color="is-success" icon="coins" text="adventureHomeUpgradeBuy" @click="buyUpgrade()"
+                       :disabled="disabledBuy" />
         </div>
         <div class="media-content">
           <table class="table fullWidth narrow">
@@ -92,6 +93,14 @@ export default {
           }
           break
         default:
+      }
+      return false
+    },
+    disabledBuy () {
+      for (let costObject of this.nextUpgradeData.costs) {
+        if (this.ownQuantity(costObject.id) < costObject.quantity) {
+          return true
+        }
       }
       return false
     }

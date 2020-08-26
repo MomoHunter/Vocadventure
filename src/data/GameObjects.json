@@ -11,6 +11,20 @@
     "points": 35
   },
   {
+    "id": "berries",
+    "categories": [
+      "item",
+      "material",
+      "consumable",
+      "plains"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/berries.png",
+    "spriteKey": "items_berries",
+    "spriteKeySmall": "items_berries_s",
+    "points": 8
+  },
+  {
     "id": "bonfire",
     "categories": [
       "material",
@@ -728,6 +742,24 @@
     ]
   },
   {
+    "id": "plainsBerryBush",
+    "categories": [
+      "plains",
+      "obstacle"
+    ],
+    "bottomY": 265,
+    "approaches": false,
+    "spriteKey": "obstacles_berrybush",
+    "durability": 14,
+    "items": [
+      {
+        "id": "berries",
+        "collectable": false,
+        "quantity": 1
+      }
+    ]
+  },
+  {
     "id": "plainsClayPit",
     "categories": [
       "plains",
@@ -803,6 +835,25 @@
         "id": "crystal",
         "collectable": false,
         "quantity": 3
+      }
+    ]
+  },
+  {
+    "id": "plainsSlime",
+    "categories": [
+      "plains",
+      "obstacle"
+    ],
+    "bottomY": 265,
+    "power": 4,
+    "approaches": false,
+    "spriteKey": "obstacles_slime",
+    "durability": 16,
+    "items": [
+      {
+        "id": "slimeball",
+        "collectable": false,
+        "quantity": 2
       }
     ]
   },
@@ -889,6 +940,18 @@
     "spriteKeySmall": "items_rubbish_s",
     "unlocked": false,
     "points": 2
+  },
+  {
+    "id": "slimeball",
+    "categories": [
+      "material",
+      "plains"
+    ],
+    "quantity": 1,
+    "spritePath": "img/items/slimeball.png",
+    "spriteKeySmall": "items_slimeball_s",
+    "unlocked": false,
+    "points": 8
   },
   {
     "id": "stone",

@@ -535,18 +535,18 @@ export default {
           }
         }
       } else {
+        vocabs.words = vocabs.words.filter(word => word.difficulty <= this.$store.state.vueDict.difficulty)
+
         while (wordObjects.length < length) {
           let i = wordObjects.length
           let random = Math.floor(Math.random() * vocabs.words.length)
 
-          if (vocabs.words[random].difficulty <= this.$store.state.vueDict.difficulty) {
-            if (wordObjects.length === 0) {
-              wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
-            } else if (wordObjects[i - 1][vocabs.latinAlphabet] !== vocabs.words[random][vocabs.latinAlphabet]) {
-              wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
-            } else if (vocabs.words.length === 1) {
-              wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
-            }
+          if (wordObjects.length === 0) {
+            wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
+          } else if (wordObjects[i - 1][vocabs.latinAlphabet] !== vocabs.words[random][vocabs.latinAlphabet]) {
+            wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
+          } else if (vocabs.words.length === 1) {
+            wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
           }
         }
       }
@@ -1550,7 +1550,7 @@ export default {
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
-  height: 100%;
+  height: calc(100% - .5rem);
   justify-content: space-between;
 
   .routerView {

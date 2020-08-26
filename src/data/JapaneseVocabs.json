@@ -268,10 +268,33 @@
     { "german": "Südwesten", "english": "Southwest", "romaji": "nansei", "kana": "南西", "difficulty": 3 }
   ],
   "japaneseCategory9": [
-    { "german": "Person, Mensch, Leute", "english": "Person, human, people", "romaji": "hito", "kana": "人", "difficulty": 3 }
+    { "german": "Person, Mensch, Leute", "english": "Person, human, people", "romaji": "hito", "kana": "人", "difficulty": 3 },
+    { "german": "Person aus... (Nationalität)", "english": "Person from... (Nationality)", "romaji": "-jin", "kana": "・・・人", "difficulty": 3 },
+    { "german": "Person (höflich)", "english": "Person (polite)", "romaji": "kata", "kana": "方", "difficulty": 3 },
+    { "german": "Kerl, Typ (ugs., abfällig)", "english": "Guy (coll., derogatory)", "romaji": "yatsu", "kana": "やつ・奴", "difficulty": 3 },
+    { "german": "Ding", "english": "Thing", "romaji": "yatsu 2", "kana": "やつ・奴２", "difficulty": 3 },
+    { "german": "Kerl (vulgär)", "english": "Guy (vulgar)", "romaji": "yarou", "kana": "野郎", "difficulty": 3 },
+    { "german": "Mensch", "english": "Human", "romaji": "ningen", "kana": "人間", "difficulty": 3 },
+    { "german": "Menschheit", "english": "Humankind", "romaji": "jinrui", "kana": "人類", "difficulty": 3 },
+    { "german": "Menschenrasse", "english": "Humanrace", "romaji": "jinshu", "kana": "人種", "difficulty": 3 }
   ],
   "japaneseCategory10": [
-    { "german": "Baby", "english": "Baby", "romaji": "aka-chan", "kana": "赤ちゃん", "difficulty": 3 }
+    { "german": "Baby", "english": "Baby", "romaji": "aka-chan", "kana": "赤ちゃん", "difficulty": 3 },
+    { "german": "Kleinkind", "english": "Infant", "romaji": "youji", "kana": "幼児", "difficulty": 3 },
+    { "german": "Kind", "english": "Child", "romaji": "kodomo", "kana": "子供・子ども", "difficulty": 3 },
+    { "german": "Kind 2", "english": "Child 2", "romaji": "ko", "kana": "子", "difficulty": 3 },
+    { "german": "Pubertät", "english": "Puberty", "romaji": "shishun-ki", "kana": "思春期", "difficulty": 3 },
+    { "german": "Jugendliche(r)", "english": "Teenager", "romaji": "waka-mono", "kana": "若者", "difficulty": 3 },
+    { "german": "Jugendliche(r) 2", "english": "Teenager 2", "romaji": "seinen", "kana": "青年", "difficulty": 3 },
+    { "german": "Jugend(zeit)", "english": "Youth", "romaji": "seishun", "kana": "青春", "difficulty": 3 },
+    { "german": "Erwachsene(r)", "english": "Adult", "romaji": "otona", "kana": "大人", "difficulty": 3 },
+    { "german": "Generation", "english": "Generation", "romaji": "sedai", "kana": "世代", "difficulty": 3 },
+    { "german": "volljährig", "english": "of age", "romaji": "seinen", "kana": "成年", "difficulty": 3 },
+    { "german": "minderjährig", "english": "underage", "romaji": "mi-seinen", "kana": "未成年", "difficulty": 3 },
+    { "german": "Person mittleren Alters", "english": "Middle-aged person", "romaji": "chuunen", "kana": "中年", "difficulty": 3 },
+    { "german": "jung", "english": "young", "romaji": "wakai", "kana": "若い", "difficulty": 3 },
+    { "german": "älter werden", "english": "become old", "romaji": "toshi o toru", "kana": "年を取る", "difficulty": 3 },
+    { "german": "alte Person, alte Leute", "english": "old person, old people", "romaji": "roujin", "kana": "老人", "difficulty": 3 }
   ],
   "japaneseCategory11": [
     { "german": "Liebe (allgemein)", "english": "Love (in general)", "romaji": "ai", "kana": "愛", "difficulty": 3 }

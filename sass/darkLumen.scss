@@ -17,6 +17,7 @@ $button-color: $grey-light;
 $button-background-color: $grey-darker;
 $button-border-color: $grey-dark;
 $button-focus-color: $grey-light;
+$button-hover-color: $grey-light;
 
 $input-background-color: $grey-darker;
 $input-color: $grey-light;
@@ -220,4 +221,8 @@ $content-blockquote-border-left: 5px solid $grey-dark;
     background-color: $link;
     border-radius: 290486px;
   }
+}
+
+.tabs.is-toggle a:hover {
+  color: $grey;
 }
