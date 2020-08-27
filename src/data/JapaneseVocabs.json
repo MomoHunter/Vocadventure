@@ -294,7 +294,14 @@
     { "german": "Person mittleren Alters", "english": "Middle-aged person", "romaji": "chuunen", "kana": "中年", "difficulty": 3 },
     { "german": "jung", "english": "young", "romaji": "wakai", "kana": "若い", "difficulty": 3 },
     { "german": "älter werden", "english": "become old", "romaji": "toshi o toru", "kana": "年を取る", "difficulty": 3 },
-    { "german": "alte Person, alte Leute", "english": "old person, old people", "romaji": "roujin", "kana": "老人", "difficulty": 3 }
+    { "german": "alte Person, alte Leute", "english": "old person, old people", "romaji": "roujin", "kana": "老人", "difficulty": 3 },
+    { "german": "ältere Person (amtl. Bezeichn.)", "english": "older person (official designation)", "romaji": "kourei-sha", "kana": "高齢者", "difficulty": 3 },
+    { "german": "ältere Person, Senior (höfl.)", "english": "older person, Senior (polite)", "romaji": "toshiyori", "kana": "年寄り", "difficulty": 3 },
+    { "german": "ältere Person (sehr höflich)", "english": "older person (really polite)", "romaji": "nenpai no kata", "kana": "年配の方", "difficulty": 3 },
+    { "german": "Geschlecht (als Unterscheidung)", "english": "Gender (as differentiation)", "romaji": "seibetsu", "kana": "性別", "difficulty": 3 },
+    { "german": "Frau, Weib (respektloses Wort)", "english": "Woman (disrespektful word)", "romaji": "onna", "kana": "女", "difficulty": 3 },
+    { "german": "Frau", "english": "Woman", "romaji": "onna no hito", "kana": "女の人", "difficulty": 3 },
+    { "german": "Frau, weiblich", "english": "Woman, female", "romaji": "fujin", "kana": "婦人", "difficulty": 3 }
   ],
   "japaneseCategory11": [
     { "german": "Liebe (allgemein)", "english": "Love (in general)", "romaji": "ai", "kana": "愛", "difficulty": 3 }
