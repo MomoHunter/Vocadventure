@@ -1,6 +1,6 @@
 <template>
   <div class="flexboxContainer">
-    <div class="box upgradeBox is-10">
+    <div ref="upgradeBox" class="box upgradeBox is-10">
       <article class="media fullHeight" v-if="nextUpgradeData !== null">
         <div class="media-left is-30 fullHeight is-flex is-column">
           <div class="box imageBox marginBottomSmall">
@@ -10,7 +10,7 @@
           <ButtonBasic color="is-success" icon="coins" text="adventureHomeUpgradeBuy" @click="buyUpgrade()"
                        :disabled="disabledBuy" />
         </div>
-        <div class="media-content">
+        <div ref="table" class="media-content overflowAuto">
           <table class="table fullWidth narrow">
             <thead>
               <tr>
@@ -31,7 +31,7 @@
         {{ getText('adventureHomeNoUpgrade') }}
       </div>
     </div>
-    <div class="innerFlexContainerNavigation is-10 marginBottomBig">
+    <div ref="buttonBox1" class="innerFlexContainerNavigation is-10 marginBottomBig">
       <ButtonIcon class="is-half marginRightSmall" :class="getInvisible(currentPoint.left)"
                   icon="long-arrow-alt-left" color="is-link"
                   @click="$emit('click', getClickObject(currentPoint.left))" />
@@ -39,7 +39,7 @@
                   icon="long-arrow-alt-right" color="is-link"
                   @click="$emit('click', getClickObject(currentPoint.right))" />
     </div>
-    <div class="innerFlexContainerButton is-10">
+    <div ref="buttonBox2" class="innerFlexContainerButton is-10">
       <ButtonBasic class="is-half marginBottomSmall marginRightSmall" icon="map" color="is-warning"
                    text="adventureHomeButton1" @click="$emit('click', { type: 'backToMap' })" />
       <ButtonBasic class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
@@ -60,7 +60,23 @@ export default {
     ButtonBasic,
     ButtonIcon
   },
+  mounted () {
+    let buttonBox1 = window.getComputedStyle(this.$refs.buttonBox1)
+    let heights = this.$refs.buttonBox2.clientHeight + this.$refs.buttonBox1.clientHeight
+    let upgradeBox = window.getComputedStyle(this.$refs.upgradeBox)
+    heights += parseFloat(buttonBox1.getPropertyValue('margin-bottom'))
+    heights += parseFloat(upgradeBox.getPropertyValue('margin-bottom'))
+    heights += this.$store.getters['vueDict/getHeight']('status')
+    heights += this.$store.getters['vueDict/getHeight']('adventure')
+    heights += 71
+    let maxHeight = window.innerHeight - heights
+    this.$refs.upgradeBox.style.maxHeight = maxHeight + 'px'
+    this.$refs.table.style.maxHeight = (maxHeight - parseFloat(getComputedStyle(this.$refs.table).fontSize)) + 'px'
+  },
   computed: {
+    heights () {
+      return this.$store.state.vueDict.heights
+    },
     currentPoint () {
       return this.$store.getters['canvasDict/currentHomePoint']
     },
@@ -188,6 +204,10 @@ export default {
 
   .is-10 {
     width: calc(100% / 1.2);
+  }
+
+  .overflowAuto {
+    overflow: auto;
   }
 
   .upgradeBox {

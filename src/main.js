@@ -35,6 +35,12 @@ Vue.directive('focus', {
   }
 })
 
+Vue.directive('maxHeight', {
+  inserted (el) {
+    el.style.maxHeight = el.clientHeight + 'px'
+  }
+})
+
 Vue.config.productionTip = false
 
 new Vue({

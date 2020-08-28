@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <TheStatus class="statusMargin" :status="$store.state.vueDict.status"></TheStatus>
-    <div class="page">
+  <div ref="app" id="app">
+    <TheStatus class="statusMargin" :status="$store.state.vueDict.status" />
+    <div ref="page" class="page">
       <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition"
                   @after-enter="toggleTransitionActive(true)" @before-enter="toggleTransitionActive(false)">
         <router-view></router-view>
@@ -31,6 +31,11 @@ export default {
     if (window.screen.width * window.devicePixelRatio < 1150) {
       this.$store.commit('changeViewport', 0.75)
     }
+
+    this.$store.commit('vueDict/setHeight', {
+      type: 'status',
+      value: this.$refs.app.clientHeight - this.$refs.page.clientHeight
+    })
 
     this.loadData()
     this.$store.commit('canvasDict/setSpritesheet')

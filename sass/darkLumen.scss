@@ -138,14 +138,6 @@ $content-blockquote-border-left: 5px solid $grey-dark;
   }
 }
 
-.select:not(.is-multiple) {
-  height: 2.273em;
-}
-
-.select.is-large:not(.is-multiple) {
-  height: 2.648em;
-}
-
 .field.has-addons .control .select.is-small select {
   height: 2.648em;
   font-size: 1em;
@@ -182,8 +174,22 @@ $content-blockquote-border-left: 5px solid $grey-dark;
   height: 2.5em;
 }
 
-.select.is-small:not(.is-multiple):not(.is-loading)::after {
-  margin-top: -0.2em;
+.select:not(.is-multiple) {
+  height: 2.273em;
+
+  &.is-large {
+    height: 2.648em;
+  }
+
+  &:not(.is-loading) {
+    &.is-small::after {
+      margin-top: -0.2em;
+    }
+
+    &:hover::after {
+      border-color: $link;
+    }
+  }
 }
 
 .input.is-small {

@@ -1,7 +1,7 @@
 <template>
   <div class="box sliderBox">
     <div class="icon customIcon">
-      <font-awesome-icon :icon="['fas', icon]" :size="getSizeClass('fas')" />
+      <font-awesome-icon :icon="['fas', icon]" :size="getSizeClass('fas-special')" />
     </div>
     <input class="flexGrow slider" type="range" :min="min" :max="max" :step="step" :value="value"
            @input="$emit('input', parseFloat($event.target.value))">

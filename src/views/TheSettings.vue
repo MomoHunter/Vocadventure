@@ -18,7 +18,7 @@
     <div class="is-10">
       <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="settingsButton1"
                    @click="submitChanges()" />
-      <ButtonBasic class="marginBottomSmall" color="is-danger" icon="arrow-left" text="settingsButton2"
+      <ButtonBasic color="is-danger" icon="arrow-left" text="settingsButton2"
                    @click="$router.push({ name: 'menu' })" />
     </div>
   </div>
@@ -90,7 +90,7 @@ export default {
   left: 0px;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   height: calc(100% - 71px);
 

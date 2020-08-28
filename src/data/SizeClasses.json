@@ -29,6 +29,12 @@
     "medium": "lg",
     "large": "2x"
   },
+  "fas-special": {
+    "small": "sm",
+    "normal": "1x",
+    "medium": "lg",
+    "large": "lg"
+  },
   "mdi": {
     "small": "is-small",
     "normal": "is-normal",

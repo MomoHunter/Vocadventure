@@ -1,7 +1,7 @@
 <template>
   <div class="flexboxContainer is-10">
-    <div class="content flexGrow" :class="getSizeClass('content')">
-      <blockquote class="overflowAuto">
+    <div class="content flexGrow overflowAuto" :class="getSizeClass('content')" v-maxHeight>
+      <blockquote>
         {{ displayedIntroText }}
       </blockquote>
     </div>
@@ -100,7 +100,6 @@ export default {
 
   .overflowAuto {
     overflow: auto;
-    max-height: 180px;
   }
 
   .innerFlexContainerButton {
