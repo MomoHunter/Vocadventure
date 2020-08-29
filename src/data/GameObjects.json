@@ -985,7 +985,7 @@
       "shop"
     ],
     "quantity": 1,
-    "spritePath": "img/items_stoneaxe.png",
+    "spritePath": "img/items/stoneaxe.png",
     "durability": 10,
     "power": 2,
     "spriteKey": "items_stoneaxe",

@@ -28,6 +28,8 @@ export default {
     ModalMessage
   },
   mounted () {
+    let spinner = document.getElementById('spinner')
+
     if (window.screen.width * window.devicePixelRatio < 1150) {
       this.$store.commit('changeViewport', 0.75)
     }
@@ -39,6 +41,10 @@ export default {
 
     this.loadData()
     this.$store.commit('canvasDict/setSpritesheet')
+
+    if (spinner.parentNode) {
+      spinner.parentNode.removeChild(spinner)
+    }
   },
   data () {
     return {

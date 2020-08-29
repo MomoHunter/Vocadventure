@@ -301,7 +301,20 @@
     { "german": "Geschlecht (als Unterscheidung)", "english": "Gender (as differentiation)", "romaji": "seibetsu", "kana": "性別", "difficulty": 3 },
     { "german": "Frau, Weib (respektloses Wort)", "english": "Woman (disrespektful word)", "romaji": "onna", "kana": "女", "difficulty": 3 },
     { "german": "Frau", "english": "Woman", "romaji": "onna no hito", "kana": "女の人", "difficulty": 3 },
-    { "german": "Frau, weiblich", "english": "Woman, female", "romaji": "fujin", "kana": "婦人", "difficulty": 3 }
+    { "german": "Frau, weiblich", "english": "Woman, female", "romaji": "fujin", "kana": "婦人", "difficulty": 3 },
+    { "german": "Dame", "english": "Lady", "romaji": "fujin", "kana": "婦人", "difficulty": 3 },
+    { "german": "Mann, Kerl", "english": "Man, Guy", "romaji": "otoko", "kana": "男", "difficulty": 3 },
+    { "german": "Mann", "english": "Man", "romaji": "otoko no hito", "kana": "男の人", "difficulty": 3 },
+    { "german": "Mann, männlich", "english": "Man, male", "romaji": "dansei", "kana": "男性", "difficulty": 3 },
+    { "german": "Herr, Gentleman", "english": "Sir, Gentleman", "romaji": "shinshi", "kana": "紳士", "difficulty": 3 },
+    { "german": "Mädchen", "english": "Girl", "romaji": "onna no ko", "kana": "女の子", "difficulty": 3 },
+    { "german": "Mädchen 2", "english": "Girl 2", "romaji": "shoujo", "kana": "少女", "difficulty": 3 },
+    { "german": "Junge", "english": "Boy", "romaji": "otoko no ko", "kana": "男の子", "difficulty": 3 },
+    { "german": "Junge 2", "english": "Boy 2", "romaji": "shounen", "kana": "少年", "difficulty": 3 },
+    { "german": "Bub, Junge (ugs.)", "english": "Lad, boy (coll.)", "romaji": "bôya", "kana": "坊や", "difficulty": 3 },
+    { "german": "Mädchen, Frau (in Verbind.)", "english": "Girl, woman (in connection)", "romaji": "joshi", "kana": "女子", "difficulty": 3 },
+    { "german": "Junge, Mann (in Verbindungen)", "english": "Boy, man (in connection)", "romaji": "danshi", "kana": "男子", "difficulty": 3 },
+    { "german": "Mann und Frau, Männer und Frauen", "english": "man and woman, men and women", "romaji": "danjo", "kana": "男女", "difficulty": 3 }
   ],
   "japaneseCategory11": [
     { "german": "Liebe (allgemein)", "english": "Love (in general)", "romaji": "ai", "kana": "愛", "difficulty": 3 }
