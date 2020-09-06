@@ -1,7 +1,7 @@
 <template>
   <div class="flexboxContainer is-10">
     <div class="content flexing marginTopMiddle has-text-centered flex-grow" :class="getSizeClass('content')">
-      <blockquote>
+      <blockquote class="fullWidth">
         {{ questionText }}
       </blockquote>
       <div class="itemBar overflowAuto flex-grow" v-if="hasItems">

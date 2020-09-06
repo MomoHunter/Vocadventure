@@ -27,6 +27,16 @@ export default {
     ModalAreYouSure,
     ModalMessage
   },
+  data () {
+    return {
+      enterTransition: '',
+      leaveTransition: ''
+    }
+  },
+  created () {
+    document.addEventListener('swUpdateFound', this.swUpdateFound, { once: true })
+    document.addEventListener('swUpdated', this.swUpdated, { once: true })
+  },
   mounted () {
     let spinner = document.getElementById('spinner')
 
@@ -42,17 +52,17 @@ export default {
     this.loadData()
     this.$store.commit('canvasDict/setSpritesheet')
 
-    if (spinner.parentNode) {
+    if (spinner && spinner.parentNode) {
       spinner.parentNode.removeChild(spinner)
     }
   },
-  data () {
-    return {
-      enterTransition: '',
-      leaveTransition: ''
-    }
-  },
   methods: {
+    swUpdateFound (event) {
+      this.$store.commit('swUpdateFound')
+    },
+    swUpdated (event) {
+      this.$store.commit('swUpdated')
+    },
     loadData () {
       let data = JSON.parse(window.localStorage.getItem('globalDict'))
 

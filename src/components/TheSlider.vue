@@ -4,10 +4,12 @@
       <font-awesome-icon :icon="['fas', icon]" :size="getSizeClass('fas-special')" />
     </div>
     <input class="flexGrow slider" type="range" :min="min" :max="max" :step="step" :value="value"
-           @input="$emit('input', parseFloat($event.target.value))">
-    <div class="box valueBox is-dark">
+           @input="sendNewValue($event.target.value)">
+    <div class="box valueBox is-dark" v-if="!inputVisible" @click="showInput()">
       {{ value }}
     </div>
+    <input v-focus class="input inputWidth" type="number" v-else :value="value" @blur="hideInput()"
+           @input="sendNewValue($event.target.value)">
   </div>
 </template>
 
@@ -21,9 +23,25 @@ export default {
     value: Number,
     icon: String
   },
+  data () {
+    return {
+      inputVisible: false
+    }
+  },
   methods: {
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
+    },
+    showInput () {
+      this.inputVisible = true
+    },
+    hideInput () {
+      this.inputVisible = false
+    },
+    sendNewValue (newValue) {
+      if (newValue <= this.max && newValue >= this.min) {
+        this.$emit('input', parseFloat(newValue))
+      }
     }
   }
 }
@@ -49,6 +67,11 @@ export default {
     padding: .25rem;
     min-width: 40px;
     text-align: center;
+    margin-left: .5rem;
+  }
+
+  .inputWidth {
+    width: 20%;
     margin-left: .5rem;
   }
 }

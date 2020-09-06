@@ -1,6 +1,6 @@
 <template>
   <div class="flexContainer justifyEvenly">
-    <HeroBasic title="menuTitle" subtitle="menuSubtitle" lang />
+    <HeroBasic title="menuTitle" :subtitle="subtitleText" />
     <div class="is-10 is-relative">
       <div class="is-absolute">
         <transition :enter-active-class="trainingAnimation.enter"
@@ -60,18 +60,24 @@
         </transition>
       </div>
     </div>
+    <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
+      <TheNotification class="fullWidth" :text="updateText" color="is-success" v-show="updateText !== ''"
+                       @click="hideNotification()" />
+    </transition>
   </div>
 </template>
 
 <script>
 import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
+import TheNotification from '@/components/TheNotification.vue'
 
 export default {
   name: 'TheMenu',
   components: {
     HeroBasic,
-    ButtonBasic
+    ButtonBasic,
+    TheNotification
   },
   data () {
     return {
@@ -88,15 +94,32 @@ export default {
   computed: {
     query () {
       return this.$route.query.sub
+    },
+    subtitleText () {
+      return this.getText('menuSubtitle', this.$store.state.targetLanguage)
+    },
+    updateText () {
+      if (this.$store.state.swUpdated) {
+        return 'menuUpdated'
+      } else if (this.$store.state.swUpdateFound) {
+        return 'menuUpdateFound'
+      }
+      return ''
     }
   },
   methods: {
+    getText (id, ...params) {
+      return this.$store.getters.getText(id, ...params)
+    },
     navToTraining () {
       if (this.$store.state.targetLanguage !== 'japanese') {
         this.$router.push({ name: 'category', params: { destination: 'training' } })
       } else {
         this.$router.push({ name: 'menu', query: { sub: 'training' } })
       }
+    },
+    hideNotification () {
+      this.$store.commit('swReset')
     }
   },
   watch: {

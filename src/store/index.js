@@ -15,17 +15,19 @@ export default new Vuex.Store({
     targetLanguage: 'japanese',
     theme: 'darkLumen',
     size: 'normal',
-    viewport: 1
+    viewport: 1,
+    swUpdateFound: false,
+    swUpdated: false
   },
   getters: {
-    getText: (state) => (id, ...params) => {
+    getText: (state, getters) => (id, ...params) => {
       if (isNaN(id)) {
         let text = Texts[state.lang][id]
         if (text) {
           if (params.length > 0) {
             for (let i = 0; i < params.length; i++) {
               let regex = new RegExp('&' + (i + 1), 'g')
-              text = text.replace(regex, params[i])
+              text = text.replace(regex, getters.getText(params[i]))
             }
           }
           return text
@@ -83,6 +85,16 @@ export default new Vuex.Store({
 
       state.viewport = viewport
       viewportTag.content = 'width=device-width, initial-scale=' + viewport
+    },
+    swUpdateFound (state) {
+      state.swUpdateFound = true
+    },
+    swUpdated (state) {
+      state.swUpdated = true
+    },
+    swReset (state) {
+      state.swUpdateFound = false
+      state.swUpdated = false
     }
   },
   modules: {
