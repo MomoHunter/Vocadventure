@@ -317,7 +317,8 @@
     { "german": "Mann und Frau, Männer und Frauen", "english": "man and woman, men and women", "romaji": "danjo", "kana": "男女", "difficulty": 3 }
   ],
   "japaneseCategory11": [
-    { "german": "Liebe (allgemein)", "english": "Love (in general)", "romaji": "ai", "kana": "愛", "difficulty": 3 }
+    { "german": "Liebe (allgemein)", "english": "Love (in general)", "romaji": "ai", "kana": "愛", "difficulty": 3 },
+    { "german": "(Gefühl der) Liebe", "english": "(The feeling of) love", "romaji": "aijou", "kana": "愛情", "difficulty": 3 }
   ],
   "japaneseCategory12": [
     { "german": "Familie", "english": "Family", "romaji": "kazoku", "kana": "家族", "difficulty": 3 }
