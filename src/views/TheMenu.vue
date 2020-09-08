@@ -61,7 +61,8 @@
       </div>
     </div>
     <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-      <TheNotification class="fullWidth" :text="updateText" color="is-success" v-show="updateText !== ''"
+      <TheNotification class="fullWidth" :text="updateText" color="is-success" :icon="updateIcon"
+                       :spin="updateIcon === 'cog'" hasIcon v-show="updateText !== ''"
                        @click="hideNotification()" />
     </transition>
   </div>
@@ -105,6 +106,12 @@ export default {
         return 'menuUpdateFound'
       }
       return ''
+    },
+    updateIcon () {
+      if (this.$store.state.swUpdated) {
+        return 'check-square'
+      }
+      return 'cog'
     }
   },
   methods: {

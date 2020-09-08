@@ -1,7 +1,13 @@
 <template>
   <div class="notification atBottom" :class="color">
     <button class="delete" @click="$emit('click')"></button>
-    <div class="content" :class="getSizeClass('content')" v-html="getText(text)"></div>
+    <div class="flexContent">
+      <span class="icon" v-if="hasIcon">
+        <font-awesome-icon :icon="['fas', icon]" :spin="spin" :size="getSizeClass('fas')" />
+      </span>
+      <div class="content" :class="getSizeClass('content')" v-html="getText(text)">
+      </div>
+    </div>
   </div>
 </template>
 
@@ -10,7 +16,10 @@ export default {
   name: 'TheNotification',
   props: {
     text: String,
-    color: String
+    color: String,
+    hasIcon: Boolean,
+    icon: String,
+    spin: Boolean
   },
   methods: {
     getText (id) {
@@ -27,5 +36,11 @@ export default {
 .atBottom {
   position: absolute;
   bottom: 0px;
+}
+
+.flexContent {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
 }
 </style>
