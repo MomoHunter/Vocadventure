@@ -27,19 +27,9 @@
             <font-awesome-icon v-show="resultsVisible.on" :icon="['fas', foreignIcon]" :size="getSizeClass('fas')" />
           </transition>
         </span>
-        <div class="field is-10 has-addons noMarginBottom">
-          <div v-if="keyboardVisible" class="control">
-            <ButtonIcon icon="backspace" color="is-danger" @click="removeLetter()" />
-          </div>
-          <div class="control fullWidth">
-            <input class="input is-rounded" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
-                   :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
-                   v-model="foreignInput" @click="showKeyboard()" readonly />
-          </div>
-          <div v-if="keyboardVisible" class="control">
-            <ButtonIcon icon="check" color="is-success" @click="hideKeyboard()" />
-          </div>
-        </div>
+        <input class="input is-rounded is-10" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
+               :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
+               v-model="foreignInput" @click="showKeyboard()" readonly />
         <span class="icon is-1" :class="foreignCoinColor">
           <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
             <font-awesome-icon v-show="resultsVisible.on && isForeignCorrect > 0" :icon="['fas', 'coins']"
@@ -65,7 +55,7 @@
         </transition-group>
       </div>
     </transition>
-    <div class="innerFlexContainerButton is-10 marginBottomBig" v-show="!keyboardVisible">
+    <div class="innerFlexContainerButton is-10 marginBottomBig">
       <transition enter-active-class="animated fadeIn a-little-bit-faster"
                   leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
         <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginBottomSmall marginRightSmall"
@@ -137,9 +127,32 @@
                     @click="hideSolution()" />
       </transition>
     </div>
-    <TheProgressBar v-show="!keyboardVisible" class="is-10" color="is-success" :text="progressText"
+    <TheProgressBar class="is-10" color="is-success" :text="progressText"
                     :value="progressBarCount" :maxValue="vocabs.words.length" />
-    <transition enter-active-class="animated fadeInUp super-fast"
+    <transition enter-active-class="animated fadeInUp a-little-bit-faster"
+                leave-active-class="animated fadeOutDown a-little-bit-faster is-absolute">
+      <div v-show="keyboardVisible" class="specialKeyboard is-overlay has-background-grey-lighter">
+        <input class="input is-rounded is-10" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
+               :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
+               v-model="foreignInput" readonly />
+        <div class="flexGrow2 fullWidth keyboard">
+          <TabsBasic :names="keyboardNames" :selected="currentKeyboardTab" @click="setTab($event)" radiusless />
+          <div class="bottomKeyboard">
+            <div class="keyContainer">
+              <ButtonText class="is-radiusless keyboardButton" :text="sign" v-for="(sign, index) in keyboardSigns"
+                          :key="index" @click="addLetter(sign)" />
+            </div>
+          </div>
+        </div>
+        <div class="innerFlexContainerButton is-10">
+          <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginRightSmall" icon="backspace"
+                       color="is-danger" text="adventureKeyboardButton1" @click="removeLetter()" />
+          <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginLeftSmall" icon="check"
+                       color="is-success" text="adventureKeyboardButton2" @click="hideKeyboard()" />
+        </div>
+      </div>
+    </transition>
+    <!-- <transition enter-active-class="animated fadeInUp super-fast"
                 leave-active-class="animated fadeOutDown super-fast is-absolute">
       <div v-show="keyboardVisible" class="flexGrow2 fullWidth keyboard">
         <TabsBasic :names="keyboardNames" :selected="currentKeyboardTab" @click="setTab($event)" radiusless />
@@ -150,13 +163,13 @@
           </div>
         </div>
       </div>
-    </transition>
+    </transition> -->
   </div>
 </template>
 
 <script>
 import ButtonBasic from '@/components/ButtonBasic.vue'
-import ButtonIcon from '@/components/ButtonIcon.vue'
+// import ButtonIcon from '@/components/ButtonIcon.vue'
 import ButtonText from '@/components/ButtonText.vue'
 import ButtonMDI from '@/components/ButtonMDI.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
@@ -171,7 +184,7 @@ export default {
   name: 'AdventureInputs',
   components: {
     ButtonBasic,
-    ButtonIcon,
+    // ButtonIcon,
     ButtonText,
     ButtonMDI,
     TheProgressBar,
@@ -681,7 +694,19 @@ export default {
   }
 }
 
-.keyboard {
+.specialKeyboard {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  height: calc(100% + .5rem);
+  top: 0px;
+  z-index: 4;
+}
+
+/* .keyboard {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -707,5 +732,5 @@ export default {
       }
     }
   }
-}
+} */
 </style>

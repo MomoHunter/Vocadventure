@@ -186,7 +186,8 @@
     "６",
     "７",
     "８",
-    "９"
+    "９",
+    "０"
   ],
   "other": [
     { "id": "kanji", "position": 2, "function": "getKanji" }
