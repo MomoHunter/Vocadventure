@@ -132,10 +132,10 @@
     <transition enter-active-class="animated fadeInUp a-little-bit-faster"
                 leave-active-class="animated fadeOutDown a-little-bit-faster is-absolute">
       <div v-show="keyboardVisible" class="specialKeyboard is-overlay has-background-grey-lighter">
-        <input class="input is-rounded is-10" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
+        <input class="input is-rounded is-10 marginTopBig marginBottomBig" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
                :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
                v-model="foreignInput" readonly />
-        <div class="flexGrow2 fullWidth keyboard">
+        <div class="flexGrow2 fullWidth keyboard marginBottomBig">
           <TabsBasic :names="keyboardNames" :selected="currentKeyboardTab" @click="setTab($event)" radiusless />
           <div class="bottomKeyboard">
             <div class="keyContainer">
@@ -144,32 +144,21 @@
             </div>
           </div>
         </div>
-        <div class="innerFlexContainerButton is-10">
-          <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginRightSmall" icon="backspace"
-                       color="is-danger" text="adventureKeyboardButton1" @click="removeLetter()" />
-          <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginLeftSmall" icon="check"
-                       color="is-success" text="adventureKeyboardButton2" @click="hideKeyboard()" />
+        <div class="innerFlexContainerButton is-10 marginBottomBig">
+          <ButtonBasic class="is-full marginBottomSmall" icon="check"
+                       color="is-success" text="adventureKeyboardButton1" @click="hideKeyboard()" />
+          <ButtonBasic class="is-half marginRightSmall" icon="backspace"
+                       color="is-warning" text="adventureKeyboardButton2" @click="removeLetter()" />
+          <ButtonBasic class="is-half marginLeftSmall" icon="times"
+                       color="is-danger" text="adventureKeyboardButton3" @click="clearWord()" />
         </div>
       </div>
     </transition>
-    <!-- <transition enter-active-class="animated fadeInUp super-fast"
-                leave-active-class="animated fadeOutDown super-fast is-absolute">
-      <div v-show="keyboardVisible" class="flexGrow2 fullWidth keyboard">
-        <TabsBasic :names="keyboardNames" :selected="currentKeyboardTab" @click="setTab($event)" radiusless />
-        <div class="bottomKeyboard">
-          <div class="keyContainer">
-            <ButtonText class="is-radiusless keyboardButton" :text="sign" v-for="(sign, index) in keyboardSigns"
-                        :key="index" @click="addLetter(sign)" />
-          </div>
-        </div>
-      </div>
-    </transition> -->
   </div>
 </template>
 
 <script>
 import ButtonBasic from '@/components/ButtonBasic.vue'
-// import ButtonIcon from '@/components/ButtonIcon.vue'
 import ButtonText from '@/components/ButtonText.vue'
 import ButtonMDI from '@/components/ButtonMDI.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
@@ -184,7 +173,6 @@ export default {
   name: 'AdventureInputs',
   components: {
     ButtonBasic,
-    // ButtonIcon,
     ButtonText,
     ButtonMDI,
     TheProgressBar,
@@ -500,6 +488,9 @@ export default {
     removeLetter () {
       this.foreignInput = this.foreignInput.slice(0, -1)
     },
+    clearWord () {
+      this.foreignInput = ''
+    },
     rotateItemsLeft () {
       if (this.currentItemCategory === 0) {
         this.nextItemCategory = this.itemCategories.length - 1
@@ -656,6 +647,10 @@ export default {
     .is-half {
       width: calc(50% - .25rem);
     }
+
+    .is-full {
+      width: 100%;
+    }
   }
 
   .itemBar {
@@ -702,11 +697,12 @@ export default {
   align-items: center;
   width: 100%;
   height: calc(100% + .5rem);
+  padding-bottom: 71px;
   top: 0px;
   z-index: 4;
 }
 
-/* .keyboard {
+.keyboard {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -721,16 +717,15 @@ export default {
     flex-grow: 1;
 
     .keyContainer {
-      width: 95%;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
+      width: calc(100% / 1.2);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      justify-items: stretch;
 
       .keyboardButton {
-        flex: 1 0 2.5em;
         text-transform: none;
       }
     }
   }
-} */
+}
 </style>
