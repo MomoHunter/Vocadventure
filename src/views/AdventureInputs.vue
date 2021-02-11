@@ -132,7 +132,14 @@
     <transition enter-active-class="animated fadeInUp a-little-bit-faster"
                 leave-active-class="animated fadeOutDown a-little-bit-faster is-absolute">
       <div v-show="keyboardVisible" class="specialKeyboard is-overlay has-background-grey-lighter">
-        <input class="input is-rounded is-10 marginTopBig marginBottomBig" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
+        <div class="control is-10 marginTopBig marginBottomBig">
+          <div class="content">
+            <blockquote>
+              {{ vocabs.words[currentWordIndex][vocabs.mainAlphabet] }}
+            </blockquote>
+          </div>
+        </div>
+        <input class="input is-rounded is-10 marginBottomBig" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
                :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
                v-model="foreignInput" readonly />
         <div class="flexGrow2 fullWidth keyboard marginBottomBig">
