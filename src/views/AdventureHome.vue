@@ -1,6 +1,11 @@
 <template>
   <div class="flexboxContainer">
-    <div ref="upgradeBox" class="box upgradeBox is-10">
+    <div class="innerFlexContainerUpgrades is-10 flexGrow">
+      <ButtonBasic class="is-full marginBottomSmall" icon="angle-double-up" color="is-primary" text="adventureHomeUpgradesButton1" @click="showUpgrades()" />
+      <ButtonIcon class="is-half marginRightSmall" :class="getInvisible(currentPoint.left)" icon="long-arrow-alt-left" color="is-link" @click="$emit('click', getClickObject(currentPoint.left))" />
+      <ButtonIcon class="is-half marginLeftSmall" :class="getInvisible(currentPoint.right)" icon="long-arrow-alt-right" color="is-link" @click="$emit('click', getClickObject(currentPoint.right))" />
+    </div>
+    <!-- <div ref="upgradeBox" class="box upgradeBox is-10">
       <article class="media fullHeight" v-if="nextUpgradeData !== null">
         <div class="media-left is-30 fullHeight is-flex is-column">
           <div class="box imageBox marginBottomSmall">
@@ -38,7 +43,7 @@
       <ButtonIcon class="is-half marginLeftSmall" :class="getInvisible(currentPoint.right)"
                   icon="long-arrow-alt-right" color="is-link"
                   @click="$emit('click', getClickObject(currentPoint.right))" />
-    </div>
+    </div> -->
     <div ref="buttonBox2" class="innerFlexContainerButton is-10">
       <ButtonBasic class="is-half marginBottomSmall marginRightSmall" icon="map" color="is-warning"
                    text="adventureHomeButton1" @click="$emit('click', { type: 'backToMap' })" />
@@ -47,6 +52,12 @@
       <ButtonBasic class="is-full" icon="times" color="is-danger" text="adventureHomeButton3"
                    @click="$emit('click', { type: 'abort' })" />
     </div>
+    <transition enter-active-class="animated fadeInUp a-little-bit-faster"
+                leave-active-class="animated fadeOutDown a-little-bit-faster is-absolute">
+      <div v-show="upgradesVisible" class="upgradesContainer has-background-grey-lighter">
+        <ButtonBasic icon="coins" color="is-success" text="adventureHomeUpgradesButton2" />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -60,8 +71,13 @@ export default {
     ButtonBasic,
     ButtonIcon
   },
+  data () {
+    return {
+      upgradesVisible: false
+    }
+  },
   mounted () {
-    let buttonBox1 = window.getComputedStyle(this.$refs.buttonBox1)
+    /* let buttonBox1 = window.getComputedStyle(this.$refs.buttonBox1)
     let heights = this.$refs.buttonBox2.clientHeight + this.$refs.buttonBox1.clientHeight
     let upgradeBox = window.getComputedStyle(this.$refs.upgradeBox)
     heights += parseFloat(buttonBox1.getPropertyValue('margin-bottom'))
@@ -71,7 +87,7 @@ export default {
     heights += 71
     let maxHeight = window.innerHeight - heights
     this.$refs.upgradeBox.style.maxHeight = maxHeight + 'px'
-    this.$refs.table.style.maxHeight = (maxHeight - parseFloat(getComputedStyle(this.$refs.table).fontSize)) + 'px'
+    this.$refs.table.style.maxHeight = (maxHeight - parseFloat(getComputedStyle(this.$refs.table).fontSize)) + 'px' */
   },
   computed: {
     heights () {
@@ -158,6 +174,12 @@ export default {
       }
       return ''
     },
+    showUpgrades () {
+      this.upgradesVisible = true
+    },
+    hideUpgrades () {
+      this.upgradesVisible = false
+    },
     buyUpgrade () {
       let buyable = true
       for (let cost of this.nextUpgradeData.costs) {
@@ -198,7 +220,6 @@ export default {
   flex-wrap: nowrap;
   width: 100%;
   height: 100%;
-  justify-content: flex-end;
   align-items: center;
   padding-bottom: 71px;
 
@@ -208,6 +229,10 @@ export default {
 
   .overflowAuto {
     overflow: auto;
+  }
+
+  .flexGrow {
+    flex-grow: 1;
   }
 
   .upgradeBox {
@@ -246,6 +271,26 @@ export default {
         background-repeat: no-repeat;
         background-size: contain;
       }
+    }
+  }
+
+  .innerFlexContainerUpgrades {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: flex-start;
+
+    .is-half {
+      width: calc(50% - .25rem);
+    }
+
+    .is-full {
+      width: 100%;
+    }
+
+    .invisible {
+      opacity: .2;
+      pointer-events: none;
     }
   }
 
