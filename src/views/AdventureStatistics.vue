@@ -43,40 +43,40 @@
           {{ getText('adventureStatisticsNoItems') }}
         </div>
         <div class="is-10 flexGrow overflowAuto marginBottomBig">
-          <table class="table resultTable is-fullwidth">
+          <table class="table fullWidth">
             <tbody v-for="word in getCorrectWords()" :key="word.index">
               <tr>
-                <td colspan="2" class="wordHeader has-background-primary has-text-black" :class="getSizeClass('td')">
+                <td colspan="2" class="has-background-primary has-text-black" :class="getSizeClass('td')">
                   {{ vocabs.words[word.index][vocabs.mainAlphabet] }}
                 </td>
               </tr>
               <tr>
                 <td rowspan="2" class="vAlign" :class="getSizeClass('td')">
                   <font-awesome-icon :class="getVocabIconColor(word.latinCorrectWords.result)"
-                                      :icon="['fas', getVocabIcon(word.latinCorrectWords.result)]"
-                                      :size="getSizeClass('fas')" />
+                                     :icon="['fas', getVocabIcon(word.latinCorrectWords.result)]"
+                                     :size="getSizeClass('fas')" />
                 </td>
-                <td :class="getSizeClass('td')">
+                <td class="fullWidth" :class="getSizeClass('td')">
                   {{ vocabs.words[word.index][vocabs.latinAlphabet] }}
                 </td>
               </tr>
               <tr>
-                <td :class="getSizeClass('td')">
+                <td class="fullWidth" :class="getSizeClass('td')">
                   {{ word.latinCorrectWords.inputValue || '-' }}
                 </td>
               </tr>
               <tr>
                 <td rowspan="2" class="vAlign" :class="getSizeClass('td')">
                   <font-awesome-icon :class="getVocabIconColor(word.foreignCorrectWords.result)"
-                                      :icon="['fas', getVocabIcon(word.foreignCorrectWords.result)]"
-                                      :size="getSizeClass('fas')" />
+                                     :icon="['fas', getVocabIcon(word.foreignCorrectWords.result)]"
+                                     :size="getSizeClass('fas')" />
                 </td>
-                <td :class="getSizeClass('td')">
+                <td class="fullWidth" :class="getSizeClass('td')">
                   {{ vocabs.words[word.index][vocabs.foreignAlphabet] }}
                 </td>
               </tr>
               <tr>
-                <td :class="getSizeClass('td')">
+                <td class="fullWidth" :class="getSizeClass('td')">
                   {{ word.foreignCorrectWords.inputValue || '-' }}
                 </td>
               </tr>
@@ -224,11 +224,12 @@ export default {
     top: 0px;
     z-index: 4;
 
-    .resultTable {
+    .vAlign {
+      vertical-align: middle;
+    }
 
-      .vAlign {
-        vertical-align: middle;
-      }
+    .table tbody tr:last-child td {
+      border-bottom-width: 1px !important;
     }
   }
 

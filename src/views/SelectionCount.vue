@@ -183,7 +183,7 @@ export default {
   left: 0px;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   height: calc(100% - 71px);
 
