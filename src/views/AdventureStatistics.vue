@@ -1,11 +1,5 @@
 <template>
   <div class="flexboxContainer">
-    <!-- <div class="itemContainer" v-if="items.length > 0">
-      <ItemBoxSmall :item="item" v-for="item in items" :key="item.id" />
-    </div>
-    <div class="noItemsContainer" v-else>
-      {{ getText('adventureStatisticsNoItems') }}
-    </div> -->
     <div class="is-10 box resultBox marginBottomSmall">
       <div class="innerResultBox">
         <span class="content flexGrow noMarginBottom">
@@ -15,7 +9,7 @@
           {{ percentages.latinAlphabet }}%
         </span>
       </div>
-      <div class="innerResultBox">
+      <div class="innerResultBox" v-if="hasForeignAlphabet">
         <span class="content flexGrow marginTopSmall noMarginBottom">
           {{ getText(vocabs.foreignAlphabet) }}
         </span>
@@ -36,6 +30,7 @@
     <transition enter-active-class="animated fadeInUp a-little-bit-faster"
                 leave-active-class="animated fadeOutDown a-little-bit-faster is-absolute">
       <div v-show="detailsVisible" class="detailsContainer has-background-grey-lighter">
+        <HeroBasic class="marginBottomBig" title="adventureStatisticsDetailsTitle" />
         <div class="itemContainer marginBottomBig" v-if="items.length > 0">
           <ItemBoxSmall :item="item" v-for="item in items" :key="item.id" />
         </div>
@@ -65,7 +60,7 @@
                   {{ word.latinCorrectWords.inputValue || '-' }}
                 </td>
               </tr>
-              <tr>
+              <tr v-if="hasForeignAlphabet">
                 <td rowspan="2" class="vAlign" :class="getSizeClass('td')">
                   <font-awesome-icon :class="getVocabIconColor(word.foreignCorrectWords.result)"
                                      :icon="['fas', getVocabIcon(word.foreignCorrectWords.result)]"
@@ -75,7 +70,7 @@
                   {{ vocabs.words[word.index][vocabs.foreignAlphabet] }}
                 </td>
               </tr>
-              <tr>
+              <tr v-if="hasForeignAlphabet">
                 <td class="fullWidth" :class="getSizeClass('td')">
                   {{ word.foreignCorrectWords.inputValue || '-' }}
                 </td>
@@ -92,12 +87,14 @@
 </template>
 
 <script>
+import HeroBasic from '@/components/HeroBasic.vue'
 import ItemBoxSmall from '@/components/ItemBoxSmall.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 
 export default {
   name: 'AdventureStatistics',
   components: {
+    HeroBasic,
     ItemBoxSmall,
     ButtonBasic
   },
@@ -118,6 +115,9 @@ export default {
     },
     vocabs () {
       return this.$store.state.vueDict.vocabs
+    },
+    hasForeignAlphabet () {
+      return this.vocabs.foreignAlphabet !== ''
     }
   },
   methods: {
@@ -133,7 +133,7 @@ export default {
         result.push({
           index: i,
           latinCorrectWords: this.$store.state.vueDict.correctLatinWords[i],
-          foreignCorrectWords: this.$store.state.vueDict.correctForeignWords[i]
+          foreignCorrectWords: this.hasForeignAlphabet ? this.$store.state.vueDict.correctForeignWords[i] : {}
         })
       }
       return result
@@ -219,7 +219,6 @@ export default {
     align-items: center;
     width: 100%;
     height: calc(100% + .5rem);
-    padding-top: 1.5rem;
     padding-bottom: 71px;
     top: 0px;
     z-index: 4;
