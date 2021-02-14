@@ -9,7 +9,7 @@ import {
   faExpandArrowsAlt, faUserGraduate, faHome, faSort, faSortUp, faSortDown, faSearch, faCoins, faBriefcase, faEye,
   faEyeSlash, faClipboardCheck, faAngleDown, faAngleUp, faEdit, faBackspace, faLongArrowAltDown, faLongArrowAltLeft,
   faLongArrowAltRight, faLongArrowAltUp, faMap, faVolumeUp, faVolumeOff, faVolumeMute, faSyncAlt, faCheckSquare, faList,
-  faPlus, faMinus, faGlasses
+  faPlus, faMinus, faGlasses, faClipboardList
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -18,7 +18,7 @@ library.add(
   faExpandArrowsAlt, faUserGraduate, faHome, faSort, faSortUp, faSortDown, faSearch, faCoins, faBriefcase, faEye,
   faEyeSlash, faClipboardCheck, faAngleDown, faAngleUp, faEdit, faBackspace, faLongArrowAltDown, faLongArrowAltLeft,
   faLongArrowAltRight, faLongArrowAltUp, faMap, faVolumeUp, faVolumeOff, faVolumeMute, faSyncAlt, faCheckSquare, faList,
-  faPlus, faMinus, faGlasses
+  faPlus, faMinus, faGlasses, faClipboardList
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

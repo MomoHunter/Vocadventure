@@ -105,16 +105,4 @@ export default {
 .halfWidth {
   width: 50%;
 }
-
-.is-small {
-  font-size: .85em;
-}
-
-.is-medium {
-  font-size: 1.25rem;
-}
-
-.is-large {
-  font-size: 1.5rem;
-}
 </style>

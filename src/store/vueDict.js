@@ -254,11 +254,21 @@ export default {
     incCurrentWord (state) {
       state.currentWordIndex++
     },
-    addCorrectLatin (state, bool) {
-      state.correctLatinWords.push(bool)
+    /**
+     * Adds the latinWord, inputs and result
+     * @param {Object} state vueDict State
+     * @param {Object} latinWord { inputValue, result }
+     */
+    addCorrectLatin (state, latinWord) {
+      state.correctLatinWords.push(latinWord)
     },
-    addCorrectForeign (state, bool) {
-      state.correctForeignWords.push(bool)
+    /**
+     * Adds the foreignWord, inputs and result
+     * @param {Object} state vueDict State
+     * @param {Object} latinWord { inputValue, result }
+     */
+    addCorrectForeign (state, foreignWord) {
+      state.correctForeignWords.push(foreignWord)
     },
     resetCorrectLatin (state) {
       state.correctLatinWords = []

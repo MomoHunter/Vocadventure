@@ -48,6 +48,10 @@ html, body {
   margin-top: 1rem !important;
 }
 
+.marginTopSmall {
+  margin-top: .5rem !important;
+}
+
 .marginBottomSmall {
   margin-bottom: .5rem !important;
 }
@@ -136,5 +140,19 @@ html, body {
       width: 2.5rem;
       height: 2.5rem;
     }
+  }
+}
+
+td {
+  &.is-small {
+    font-size: .85em;
+  }
+
+  &.is-medium {
+    font-size: 1.25rem;
+  }
+
+  &.is-large {
+    font-size: 1.5rem;
   }
 }

@@ -313,9 +313,9 @@ export default {
     },
     progressBarCount () {
       if (this.resultsVisible.on) {
-        return this.$store.state.vueDict.currentWordIndex + 1
+        return this.currentWordIndex + 1
       }
-      return this.$store.state.vueDict.currentWordIndex
+      return this.currentWordIndex
     },
     progressText () {
       return this.progressBarCount + ' / ' + this.vocabs.words.length
@@ -410,17 +410,23 @@ export default {
       return this.$store.getters.getSizeClass(type)
     },
     streamline (word) {
-      return word.toLowerCase().replace(/(\(.+\)|（.+）)|[-, ;.!?/！。・、？1-9１-９]/g, '')
+      return word.toLowerCase().replace(/(\(.+\)|（.+）)|[-, ;.!?/！。・、？0-9０-９]/g, '')
     },
     checkInput () {
       this.resultsVisible.off = false
       this.animationQueue.push(['resultsVisible', 'on'])
       this.keyboardVisible = false
       this.userLatinInput = this.latinInput
-      this.$store.commit('vueDict/addCorrectLatin', this.isLatinCorrect)
+      this.$store.commit('vueDict/addCorrectLatin', {
+        inputValue: this.userLatinInput,
+        result: this.isLatinCorrect
+      })
       if (this.hasForeignAlphabet) {
         this.userForeignInput = this.foreignInput
-        this.$store.commit('vueDict/addCorrectForeign', this.isForeignCorrect)
+        this.$store.commit('vueDict/addCorrectForeign', {
+          inputValue: this.userForeignInput,
+          result: this.isForeignCorrect
+        })
       }
 
       if (this.isLatinCorrect > 0) {
