@@ -1,5 +1,5 @@
 <template>
-  <div class="box outerBox noMarginBottom" :class="color">
+  <div class="box outerBox noMarginBottom" :class="[color, getSizeClass('itemBox')]">
     <div class="box innerBox">
       <div class="fullHeight fullWidth backgroundPicture"
            :style="{ backgroundImage: 'url(' + baseUrl + itemData.spritePath + ')' }"></div>
@@ -82,12 +82,27 @@ export default {
   flex-direction: column;
   flex-wrap: nowrap;
   padding: .25rem;
-  min-width: 65px;
-  height: 100%;
+  width: 4em;
+  height: 6em;
   position: relative;
 
+  &.is-small {
+  width: 3em;
+  height: 4.5em;
+  }
+
+  &.is-medium {
+  width: 5em;
+  height: 7.5em;
+  }
+
+  &.is-large {
+  width: 6em;
+  height: 9em;
+  }
+
   .innerBox {
-    padding: .5rem;
+    padding: .35rem;
     flex-grow: 1;
     margin-bottom: .25rem;
 

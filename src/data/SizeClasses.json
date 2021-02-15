@@ -106,5 +106,11 @@
     "normal": "",
     "medium": "is-medium",
     "large": "is-large"
+  },
+  "itemBox": {
+    "small": "is-small",
+    "normal": "",
+    "medium": "is-medium",
+    "large": "is-large"
   }
 }
