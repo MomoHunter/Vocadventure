@@ -53,9 +53,43 @@
                    @click="$emit('click', { type: 'abort' })" />
     </div>
     <transition enter-active-class="animated fadeInUp a-little-bit-faster"
-                leave-active-class="animated fadeOutDown a-little-bit-faster is-absolute">
+                leave-active-class="animated fadeOutDown a-little-bit-faster">
       <div v-show="upgradesVisible" class="upgradesContainer has-background-grey-lighter">
-        <ButtonBasic icon="coins" color="is-success" text="adventureHomeUpgradesButton2" />
+        <h1 class="title marginTopBig" :class="getSizeClass('title')">
+          {{ getText(nextUpgradeData.id) }}
+        </h1>
+        <div class="box imageBox">
+          <div class="fullHeight fullWidth backgroundPicture"
+               :style="{ backgroundImage: 'url(' + baseUrl + nextUpgradeData.spritePath + ')' }"></div>
+        </div>
+        <div class="content">
+          <ul>
+            <li>
+              Hi
+            </li>
+          </ul>
+        </div>
+        <div class="is-10 flexGrow overflowAuto marginBottomBig">
+          <table class="table fullWidth">
+            <thead>
+              <tr class="headerSticky">
+                <td class="has-background-primary">{{ getText('adventureHomeColumn1') }}</td>
+                <td class="has-background-primary has-text-centered">{{ getText('adventureHomeColumn2') }}</td>
+                <td class="has-background-primary has-text-centered">{{ getText('adventureHomeColumn3') }}</td>
+              </tr>
+            </thead>
+            <tr v-for="cost in nextUpgradeData.costs" :key="cost.id">
+              <td>{{ getText(cost.id) }}</td>
+              <td class="has-text-centered" :class="isEnough(cost)">{{ ownQuantity(cost.id).toLocaleString() }}</td>
+              <td class="has-text-centered">{{ cost.quantity.toLocaleString() }}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="is-10">
+          <ButtonBasic class="marginBottomSmall" icon="coins" color="is-success" text="adventureHomeUpgradesButton2"
+                       :disabled="disabledBuy" />
+          <ButtonBasic icon="times" color="is-danger" text="adventureHomeUpgradesButton3" @click="hideUpgrades()" />
+        </div>
       </div>
     </transition>
   </div>
@@ -320,6 +354,41 @@ export default {
 
     .is-full {
       width: 100%;
+    }
+  }
+
+  .upgradesContainer {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 100%;
+    height: calc(100% + .5rem);
+    padding-bottom: 71px;
+    top: 0px;
+    z-index: 4;
+
+    .imageBox {
+      padding: .5rem;
+      width: 10em;
+      height: 10em;
+
+      .backgroundPicture {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+    }
+
+    .headerSticky td {
+      position: sticky;
+      top: 0px;
+      z-index: 20;
+    }
+
+    .table tbody tr:last-child td {
+      border-bottom-width: 1px !important;
     }
   }
 }

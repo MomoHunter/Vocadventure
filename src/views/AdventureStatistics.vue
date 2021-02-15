@@ -28,7 +28,7 @@
                    @click="$emit('click', { type: 'navTo', value: 'menu' })" />
     </div>
     <transition enter-active-class="animated fadeInUp a-little-bit-faster"
-                leave-active-class="animated fadeOutDown a-little-bit-faster is-absolute">
+                leave-active-class="animated fadeOutDown a-little-bit-faster">
       <div v-show="detailsVisible" class="detailsContainer has-background-grey-lighter">
         <HeroBasic class="marginBottomBig" title="adventureStatisticsDetailsTitle" />
         <div class="itemContainer marginBottomBig" v-if="items.length > 0">
@@ -79,7 +79,8 @@
           </table>
         </div>
         <div class="is-10">
-          <ButtonBasic icon="times" color="is-danger" text="adventureStatisticsDetailsButton1" @click="hideDetails()" />
+          <ButtonBasic class="marginBottomSmall" icon="times" color="is-danger" text="adventureStatisticsDetailsButton1"
+                       @click="hideDetails()" />
         </div>
       </div>
     </transition>

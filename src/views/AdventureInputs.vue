@@ -130,7 +130,7 @@
     <TheProgressBar class="is-10" color="is-success" :text="progressText"
                     :value="progressBarCount" :maxValue="vocabs.words.length" />
     <transition enter-active-class="animated fadeInUp a-little-bit-faster"
-                leave-active-class="animated fadeOutDown a-little-bit-faster is-absolute">
+                leave-active-class="animated fadeOutDown a-little-bit-faster">
       <div v-show="keyboardVisible" class="specialKeyboard is-overlay has-background-grey-lighter">
         <div class="control is-10 marginTopBig marginBottomBig">
           <div class="content">

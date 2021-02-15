@@ -106,7 +106,6 @@ export default {
 
   .itemContainer {
     display: flex;
-    max-height: 90px;
     width: calc(100% / 1.2);
     max-width: calc(100% / 1.2);
     overflow: auto;
