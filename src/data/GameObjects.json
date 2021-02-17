@@ -1170,6 +1170,9 @@
     "nextUpgrade": "woodenhouse1",
     "spritePath": "img/buildings/tent.png",
     "spriteKey": "buildings_tent",
+    "gains": [
+      "upgradeTentSleep"
+    ],
     "costs": [
       {
         "id": "string",
@@ -1278,6 +1281,10 @@
     "nextUpgrade": "grindstone",
     "spritePath": "img/buildings/woodenhouse1.png",
     "spriteKey": "buildings_woodenhouse1",
+    "gains": [
+      "upgradeWoodenhouse1Sleep",
+      "upgradeWoodenhouse1Building"
+    ],
     "costs": [
       {
         "id": "wood",

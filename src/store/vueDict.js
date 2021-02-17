@@ -9,7 +9,6 @@ export default {
       { id: 'steps', count: 0, additional: 0 },
       { id: 'coins', count: 0, additional: 0 }
     ],
-    heights: {},
     categoriesChosen: [],
     categoriesPlayed: [],
     writeKanji: null,
@@ -60,9 +59,6 @@ export default {
     transitionActive: false
   },
   getters: {
-    getHeight: (state) => (type) => {
-      return state.heights[type] || 0
-    },
     getCategories: (state, getters, rootState) => {
       return Object.keys(Vocabulary[rootState.targetLanguage].words)
     },
@@ -192,9 +188,6 @@ export default {
       state.status.forEach(entry => {
         entry.additional = 0
       })
-    },
-    setHeight (state, object) {
-      state.heights[object.type] = object.value
     },
     setWriteKanji (state, object) {
       state.writeKanji = object

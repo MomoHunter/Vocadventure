@@ -67,6 +67,10 @@ $content-blockquote-border-left: 5px solid $grey-dark;
   color: $silver;
 }
 
+.has-background-background {
+  background-color: $body-background-color;
+}
+
 .hero {
   background-color: lighten($grey-darker, 3);
 }

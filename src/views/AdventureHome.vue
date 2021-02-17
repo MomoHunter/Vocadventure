@@ -1,7 +1,8 @@
 <template>
   <div class="flexboxContainer">
     <div class="innerFlexContainerUpgrades is-10 flexGrow">
-      <ButtonBasic class="is-full marginBottomSmall" icon="angle-double-up" color="is-primary" text="adventureHomeUpgradesButton1" @click="showUpgrades()" />
+      <ButtonBasic class="is-full marginBottomSmall" icon="angle-double-up" color="is-primary"
+                   text="adventureHomeUpgradesButton1" @click="showUpgrades()" :disabled="nextUpgradeData === null" />
       <ButtonIcon class="is-half marginRightSmall" :class="getInvisible(currentPoint.left)" icon="long-arrow-alt-left" color="is-link" @click="$emit('click', getClickObject(currentPoint.left))" />
       <ButtonIcon class="is-half marginLeftSmall" :class="getInvisible(currentPoint.right)" icon="long-arrow-alt-right" color="is-link" @click="$emit('click', getClickObject(currentPoint.right))" />
     </div>
@@ -44,7 +45,7 @@
                   icon="long-arrow-alt-right" color="is-link"
                   @click="$emit('click', getClickObject(currentPoint.right))" />
     </div> -->
-    <div ref="buttonBox2" class="innerFlexContainerButton is-10">
+    <div class="innerFlexContainerButton is-10">
       <ButtonBasic class="is-half marginBottomSmall marginRightSmall" icon="map" color="is-warning"
                    text="adventureHomeButton1" @click="$emit('click', { type: 'backToMap' })" />
       <ButtonBasic class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
@@ -54,7 +55,7 @@
     </div>
     <transition enter-active-class="animated fadeInUp a-little-bit-faster"
                 leave-active-class="animated fadeOutDown a-little-bit-faster">
-      <div v-show="upgradesVisible" class="upgradesContainer has-background-grey-lighter">
+      <div v-show="upgradesVisible" class="upgradesContainer has-background-background">
         <h1 class="title marginTopBig" :class="getSizeClass('title')">
           {{ getText(nextUpgradeData.id) }}
         </h1>
@@ -62,26 +63,29 @@
           <div class="fullHeight fullWidth backgroundPicture"
                :style="{ backgroundImage: 'url(' + baseUrl + nextUpgradeData.spritePath + ')' }"></div>
         </div>
-        <div class="content">
-          <ul>
-            <li>
-              Hi
-            </li>
-          </ul>
-        </div>
         <div class="is-10 flexGrow overflowAuto marginBottomBig">
+          <h2 class="subtitle has-text-weight-bold marginBottomSmall" :class="getSizeClass('subtitle')">
+            {{ getText('adventureHomeUpgradesUnlocks') }}
+          </h2>
+          <div class="content" :class="getSizeClass('content')">
+            <ul>
+              <li v-for="(id, index) in nextUpgradeData.gains" :key="index">
+                {{ getText(id) }}
+              </li>
+            </ul>
+          </div>
           <table class="table fullWidth">
             <thead>
               <tr class="headerSticky">
-                <td class="has-background-primary">{{ getText('adventureHomeColumn1') }}</td>
-                <td class="has-background-primary has-text-centered">{{ getText('adventureHomeColumn2') }}</td>
-                <td class="has-background-primary has-text-centered">{{ getText('adventureHomeColumn3') }}</td>
+                <td class="has-background-primary" :class="getSizeClass('td')">{{ getText('adventureHomeColumn1') }}</td>
+                <td class="has-background-primary has-text-centered" :class="getSizeClass('td')">{{ getText('adventureHomeColumn2') }}</td>
+                <td class="has-background-primary has-text-centered" :class="getSizeClass('td')">{{ getText('adventureHomeColumn3') }}</td>
               </tr>
             </thead>
             <tr v-for="cost in nextUpgradeData.costs" :key="cost.id">
-              <td>{{ getText(cost.id) }}</td>
-              <td class="has-text-centered" :class="isEnough(cost)">{{ ownQuantity(cost.id).toLocaleString() }}</td>
-              <td class="has-text-centered">{{ cost.quantity.toLocaleString() }}</td>
+              <td :class="getSizeClass('td')">{{ getText(cost.id) }}</td>
+              <td class="has-text-centered" :class="[isEnough(cost), getSizeClass('td')]">{{ ownQuantity(cost.id).toLocaleString() }}</td>
+              <td class="has-text-centered" :class="getSizeClass('td')">{{ cost.quantity.toLocaleString() }}</td>
             </tr>
           </table>
         </div>
@@ -385,6 +389,10 @@ export default {
       position: sticky;
       top: 0px;
       z-index: 20;
+    }
+
+    .content ul {
+      margin-top: 0;
     }
 
     .table tbody tr:last-child td {

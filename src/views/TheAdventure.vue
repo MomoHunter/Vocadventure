@@ -1,10 +1,10 @@
 <template>
-  <div ref="adventure" class="flexContainer">
-    <div ref="fully" class="fullWidth marginBottomBig">
+  <div class="flexContainer">
+    <div class="fullWidth marginBottomBig">
       <HeroWithTags title="adventureTitle" :tagObjects="tags" />
       <canvas id="adventureCanvas" width="600" height="300"></canvas>
     </div>
-    <div ref="view" class="routerView fullWidth">
+    <div class="routerView fullWidth">
       <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition" mode="out-in">
         <router-view @click="viewClickHandler($event)"></router-view>
       </transition>
@@ -112,10 +112,6 @@ export default {
   },
   mounted () {
     this.$store.commit('canvasDict/initCanvas')
-    this.$store.commit('vueDict/setHeight', {
-      type: 'adventure',
-      value: this.$refs.adventure.clientHeight - this.$refs.view.clientHeight
-    })
     this.transition.progress = Math.hypot(this.canvasWidth / 2, this.canvasHeight / 2)
     this.loopActivated = true
     this.canvasLoop(0)
