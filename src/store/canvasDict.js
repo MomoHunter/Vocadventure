@@ -522,6 +522,7 @@ export default {
         ],
         foreground: [],
         events: [],
+        killedEnemies: [],
         itemsOnFloor: false,
         obstacleAhead: false,
         lootableObstacle: false,
@@ -534,6 +535,7 @@ export default {
         background: [],
         foreground: [],
         events: [],
+        killedEnemies: [],
         itemsOnFloor: false,
         obstacleAhead: false,
         lootableObstacle: false,
@@ -903,6 +905,15 @@ export default {
 
       for (let event of events) {
         event.registered = true
+      }
+    },
+    addKilledEnemy (state, id) {
+      let entry = state.dynamicLevelData[state.currentLevel].killedEnemies.find(enemy => { return enemy.id === id })
+
+      if (entry) {
+        entry.amount += 1
+      } else {
+        state.dynamicLevelData[state.currentLevel].killedEnemies.push({ id: id, amount: 1 })
       }
     },
     setQuestionKey (state, key) {

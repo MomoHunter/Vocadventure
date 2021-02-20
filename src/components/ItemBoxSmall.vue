@@ -82,21 +82,25 @@ export default {
   flex-direction: column;
   flex-wrap: nowrap;
   padding: .25rem;
+  min-width: 4em;
   width: 4em;
   height: 6em;
   position: relative;
 
   &.is-small {
+  min-width: 3em;
   width: 3em;
   height: 4.5em;
   }
 
   &.is-medium {
+  min-width: 5em;
   width: 5em;
   height: 7.5em;
   }
 
   &.is-large {
+  min-width: 6em;
   width: 6em;
   height: 9em;
   }

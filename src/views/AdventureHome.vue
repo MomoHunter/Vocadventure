@@ -1,50 +1,13 @@
 <template>
   <div class="flexboxContainer">
-    <div class="innerFlexContainerUpgrades is-10 flexGrow">
-      <ButtonBasic class="is-full marginBottomSmall" icon="angle-double-up" color="is-primary"
-                   text="adventureHomeUpgradesButton1" @click="showUpgrades()" :disabled="nextUpgradeData === null" />
+    <div class="innerFlexContainerUpgrades is-10 flexGrow marginTopSmall">
+      <ButtonBasic v-show="nextUpgradeData !== null" class="is-full marginBottomSmall" icon="angle-double-up"
+                   color="is-primary" text="adventureHomeUpgradesButton1" @click="showUpgrades()" />
+      <ButtonBasic v-show="nextUpgradeData === null" class="is-full marginBottomSmall" icon="times"
+                   color="is-danger" text="adventureHomeUpgradesButton2" disabled />
       <ButtonIcon class="is-half marginRightSmall" :class="getInvisible(currentPoint.left)" icon="long-arrow-alt-left" color="is-link" @click="$emit('click', getClickObject(currentPoint.left))" />
       <ButtonIcon class="is-half marginLeftSmall" :class="getInvisible(currentPoint.right)" icon="long-arrow-alt-right" color="is-link" @click="$emit('click', getClickObject(currentPoint.right))" />
     </div>
-    <!-- <div ref="upgradeBox" class="box upgradeBox is-10">
-      <article class="media fullHeight" v-if="nextUpgradeData !== null">
-        <div class="media-left is-30 fullHeight is-flex is-column">
-          <div class="box imageBox marginBottomSmall">
-            <div class="fullHeight fullWidth backgroundPicture"
-                :style="{ backgroundImage: 'url(' + baseUrl + nextUpgradeData.spritePath + ')' }"></div>
-          </div>
-          <ButtonBasic color="is-success" icon="coins" text="adventureHomeUpgradeBuy" @click="buyUpgrade()"
-                       :disabled="disabledBuy" />
-        </div>
-        <div ref="table" class="media-content overflowAuto">
-          <table class="table fullWidth narrow">
-            <thead>
-              <tr>
-                <td class="has-background-primary">{{ getText('adventureHomeColumn1') }}</td>
-                <td class="has-background-primary has-text-centered">{{ getText('adventureHomeColumn2') }}</td>
-                <td class="has-background-primary has-text-centered">{{ getText('adventureHomeColumn3') }}</td>
-              </tr>
-            </thead>
-            <tr v-for="cost in nextUpgradeData.costs" :key="cost.id">
-              <td>{{ getText(cost.id) }}</td>
-              <td class="has-text-centered" :class="isEnough(cost)">{{ ownQuantity(cost.id).toLocaleString() }}</td>
-              <td class="has-text-centered">{{ cost.quantity.toLocaleString() }}</td>
-            </tr>
-          </table>
-        </div>
-      </article>
-      <div class="content centered fullHeight" :class="getSizeClass('content')" v-else>
-        {{ getText('adventureHomeNoUpgrade') }}
-      </div>
-    </div>
-    <div ref="buttonBox1" class="innerFlexContainerNavigation is-10 marginBottomBig">
-      <ButtonIcon class="is-half marginRightSmall" :class="getInvisible(currentPoint.left)"
-                  icon="long-arrow-alt-left" color="is-link"
-                  @click="$emit('click', getClickObject(currentPoint.left))" />
-      <ButtonIcon class="is-half marginLeftSmall" :class="getInvisible(currentPoint.right)"
-                  icon="long-arrow-alt-right" color="is-link"
-                  @click="$emit('click', getClickObject(currentPoint.right))" />
-    </div> -->
     <div class="innerFlexContainerButton is-10">
       <ButtonBasic class="is-half marginBottomSmall marginRightSmall" icon="map" color="is-warning"
                    text="adventureHomeButton1" @click="$emit('click', { type: 'backToMap' })" />
@@ -90,9 +53,9 @@
           </table>
         </div>
         <div class="is-10">
-          <ButtonBasic class="marginBottomSmall" icon="coins" color="is-success" text="adventureHomeUpgradesButton2"
+          <ButtonBasic class="marginBottomSmall" icon="coins" color="is-success" text="adventureHomeUpgradesButton3"
                        :disabled="disabledBuy" />
-          <ButtonBasic icon="times" color="is-danger" text="adventureHomeUpgradesButton3" @click="hideUpgrades()" />
+          <ButtonBasic icon="times" color="is-danger" text="adventureHomeUpgradesButton4" @click="hideUpgrades()" />
         </div>
       </div>
     </transition>
@@ -114,23 +77,7 @@ export default {
       upgradesVisible: false
     }
   },
-  mounted () {
-    /* let buttonBox1 = window.getComputedStyle(this.$refs.buttonBox1)
-    let heights = this.$refs.buttonBox2.clientHeight + this.$refs.buttonBox1.clientHeight
-    let upgradeBox = window.getComputedStyle(this.$refs.upgradeBox)
-    heights += parseFloat(buttonBox1.getPropertyValue('margin-bottom'))
-    heights += parseFloat(upgradeBox.getPropertyValue('margin-bottom'))
-    heights += this.$store.getters['vueDict/getHeight']('status')
-    heights += this.$store.getters['vueDict/getHeight']('adventure')
-    heights += 71
-    let maxHeight = window.innerHeight - heights
-    this.$refs.upgradeBox.style.maxHeight = maxHeight + 'px'
-    this.$refs.table.style.maxHeight = (maxHeight - parseFloat(getComputedStyle(this.$refs.table).fontSize)) + 'px' */
-  },
   computed: {
-    heights () {
-      return this.$store.state.vueDict.heights
-    },
     currentPoint () {
       return this.$store.getters['canvasDict/currentHomePoint']
     },
@@ -273,45 +220,6 @@ export default {
     flex-grow: 1;
   }
 
-  .upgradeBox {
-    flex-grow: 1;
-    padding: .5rem;
-
-    .centered {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .is-30 {
-      width: 30%;
-    }
-
-    .is-70 {
-      width: 70%;
-    }
-
-    .is-column {
-      flex-direction: column;
-    }
-
-    .narrow td {
-      padding-top: .25rem;
-      padding-bottom: .25rem;
-    }
-
-    .imageBox {
-      padding: .5rem;
-      flex-grow: 1;
-
-      .backgroundPicture {
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
-      }
-    }
-  }
-
   .innerFlexContainerUpgrades {
     display: flex;
     flex-wrap: wrap;
@@ -324,21 +232,6 @@ export default {
 
     .is-full {
       width: 100%;
-    }
-
-    .invisible {
-      opacity: .2;
-      pointer-events: none;
-    }
-  }
-
-  .innerFlexContainerNavigation {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-
-    .is-half {
-      width: calc(50% - .25rem);
     }
 
     .invisible {

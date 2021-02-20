@@ -1069,6 +1069,10 @@ export default {
             field: nextObstacle.field
           })
 
+          if (obstacleObject.power) {
+            this.$store.commit('canvasDict/addKilledEnemy', obstacleObject.id)
+          }
+
           if (nextObstacle.boss) {
             for (let unlock of nextObstacle.unlocks) {
               this.$store.commit('canvasDict/unlockLevel', unlock)
