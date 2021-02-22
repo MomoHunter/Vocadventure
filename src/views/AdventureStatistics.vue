@@ -30,7 +30,9 @@
     <transition enter-active-class="animated fadeInUp a-little-bit-faster"
                 leave-active-class="animated fadeOutDown a-little-bit-faster">
       <div v-show="detailsVisible" class="detailsContainer has-background-grey-lighter">
-        <HeroBasic class="marginBottomBig" title="adventureStatisticsDetailsTitle" />
+        <h2 class="subtitle has-text-weight-bold marginBottomSmall" :class="getSizeClass('subtitle')">
+          {{ getText('adventureStatisticsDetailsTitle') }}
+        </h2>
         <div class="itemContainer marginBottomBig" v-if="items.length > 0">
           <ItemBoxSmall :item="item" v-for="item in items" :key="item.id" />
         </div>
@@ -88,14 +90,12 @@
 </template>
 
 <script>
-import HeroBasic from '@/components/HeroBasic.vue'
 import ItemBoxSmall from '@/components/ItemBoxSmall.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 
 export default {
   name: 'AdventureStatistics',
   components: {
-    HeroBasic,
     ItemBoxSmall,
     ButtonBasic
   },

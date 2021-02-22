@@ -133,28 +133,13 @@ export default {
           }
         ]
       } else if (this.gameState.startsWith('map')) {
-        if (this.currentLevel === 'home') {
-          return [
-            {
-              nameId: 'level',
-              valueId: this.currentLevel,
-              color: 'is-info'
-            }
-          ]
-        } else {
-          return [
-            {
-              nameId: 'level',
-              valueId: this.currentLevel,
-              color: 'is-info'
-            },
-            {
-              nameId: 'steps',
-              valueId: this.$store.state.canvasDict.dynamicLevelData[this.currentLevel].steps,
-              color: 'is-info'
-            }
-          ]
-        }
+        return [
+          {
+            nameId: 'level',
+            valueId: this.currentLevel,
+            color: 'is-info'
+          }
+        ]
       } else if (this.gameState.startsWith('home')) {
         return [
           {

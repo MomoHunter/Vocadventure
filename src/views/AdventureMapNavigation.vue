@@ -1,6 +1,6 @@
 <template>
   <div class="flexboxContainer">
-    <div class="is-10 marginBottomSmall marginTopSmall">
+    <div class="is-10 marginBottomSmall marginTopSmall" v-show="currentLevel !== 'home'">
       <ButtonBasic icon="list" color="is-info" text="adventureMapButton1" @click="showDetails()" />
     </div>
     <div class="gridContainer is-10 marginBottomBig">
@@ -38,8 +38,13 @@
           <h2 class="subtitle has-text-weight-bold marginBottomSmall" :class="getSizeClass('subtitle')">
             {{ getText('adventureMapDetailsFoundItems') }}
           </h2>
-          <div class="itemContainer marginBottomBig flexGrow" v-show="dynamicLevelData.itemsFound.length > 0">
+          <div class="itemContainer marginBottomBig flexGrow" v-if="dynamicLevelData.itemsFound.length > 0">
             <ItemBoxSmall :item="item" v-for="item in dynamicLevelData.itemsFound" :key="item.id" />
+          </div>
+          <div class="emptyItemContainer marginBottomBig" :class="getSizeClass('content')" v-else>
+            <div class="content" :class="getSizeClass('content')">
+              {{ getText('adventureMapDetailsNoItems') }}
+            </div>
           </div>
         </div>
         <div class="is-10 flexGrow">
@@ -165,6 +170,28 @@ export default {
 
     > :not(:last-child) {
       margin-right: .5rem;
+    }
+  }
+
+  .emptyItemContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 6em;
+
+    &.is-small {
+      height: 4.5em;
+    }
+
+    &.is-medium {
+      height: 7.5em;
+    }
+
+    &.is-large {
+      height: 9em;
     }
   }
 
