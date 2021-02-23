@@ -1,5 +1,5 @@
 <template>
-  <div class="box itemBox noMarginBottom" :class="color" @click="$emit('click', item.id)">
+  <div class="box itemBox noMarginBottom" :class="[color, getSizeClass('itemBoxBasic')]" @click="$emit('click', item.id)">
     <span class="activeIcon has-text-success" v-show="equipped">
       <font-awesome-icon :icon="['fas', 'check-square']" :size="getSizeClass('fas')" />
     </span>
@@ -31,7 +31,8 @@ export default {
   props: {
     item: Object,
     equipped: Boolean,
-    hasInfoBar: Boolean
+    hasInfoBar: Boolean,
+    isSizeable: Boolean
   },
   computed: {
     baseUrl () {
@@ -42,11 +43,11 @@ export default {
     },
     color () {
       if (this.itemData.categories.includes('weapon')) {
-        return 'is-primary'
+        return 'is-weapon'
       } else if (this.itemData.categories.includes('consumable')) {
-        return 'is-success'
+        return 'is-consumable'
       } else if (this.itemData.categories.includes('armor')) {
-        return 'is-warning'
+        return 'is-armor'
       } else {
         return 'is-basic'
       }
@@ -57,6 +58,9 @@ export default {
       return this.$store.getters.getText(id)
     },
     getSizeClass (type) {
+      if (type === 'itemBoxBasic' && !this.isSizeable) {
+        return ''
+      }
       return this.$store.getters.getSizeClass(type)
     },
     getProgressColor () {
@@ -83,6 +87,26 @@ export default {
   height: 100%;
   position: relative;
   padding: .5rem;
+
+  &.is-small {
+    width: 7em;
+    height: 10.5em;
+  }
+
+  &.is-normal {
+    width: 9em;
+    height: 13.5em;
+  }
+
+  &.is-medium {
+    width: 11em;
+    height: 16.5em;
+  }
+
+  &.is-large {
+    width: 13em;
+    height: 19.5em;
+  }
 
   .pictureBox {
     padding: .5rem;

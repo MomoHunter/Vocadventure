@@ -1,139 +1,94 @@
 <template>
   <div class="flexboxContainer">
-    <transition leave-active-class="animated slideOutLeft a-little-bit-faster"
-                enter-active-class="animated slideInLeft a-little-bit-faster" @after-leave="endTrigger()">
-      <div class="innerFlexContainerInput flexGrow marginBottomBig" v-show="itemsVisible.off">
-        <span class="icon is-1" :class="latinIconColor">
-          <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
-            <font-awesome-icon v-show="resultsVisible.on" :icon="['fas', latinIcon]" :size="getSizeClass('fas')" />
-          </transition>
-        </span>
-        <input class="input is-rounded is-10" type="text" :placeholder="getText(vocabs.latinAlphabet)"
-               :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
-               v-model="latinInput" :readonly="resultsVisible.on" />
-        <span class="icon is-1" :class="latinCoinColor">
-          <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
-            <font-awesome-icon v-show="resultsVisible.on && isLatinCorrect > 0" :icon="['fas', 'coins']"
-                               :size="getSizeClass('fas')" />
-          </transition>
-        </span>
-      </div>
-    </transition>
-    <transition leave-active-class="animated slideOutRight a-little-bit-faster"
-                enter-active-class="animated slideInRight a-little-bit-faster">
-      <div class="innerFlexContainerInput flexGrow marginBottomBig" v-show="hasForeignAlphabet && itemsVisible.off">
-        <span class="icon is-1" :class="foreignIconColor">
-          <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
-            <font-awesome-icon v-show="resultsVisible.on" :icon="['fas', foreignIcon]" :size="getSizeClass('fas')" />
-          </transition>
-        </span>
-        <input class="input is-rounded is-10" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
-               :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
-               v-model="foreignInput" @click="showKeyboard()" readonly />
-        <span class="icon is-1" :class="foreignCoinColor">
-          <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
-            <font-awesome-icon v-show="resultsVisible.on && isForeignCorrect > 0" :icon="['fas', 'coins']"
-                               :size="getSizeClass('fas')" />
-          </transition>
-        </span>
-      </div>
-    </transition>
-    <transition leave-active-class="animated zoomOut a-little-bit-faster"
-                enter-active-class="animated zoomIn a-little-bit-faster">
-      <div v-show="itemsVisible.on" class="subtitle has-text-centered" :class="getSizeClass('subtitle')">
-        {{ getText(itemCategories[currentItemCategory].text) }}
-      </div>
-    </transition>
-    <transition leave-active-class="animated zoomOut a-little-bit-faster"
-                enter-active-class="animated zoomIn a-little-bit-faster" @after-leave="endTrigger()">
-      <div class="is-10 itemBar flexGrow overflowAuto marginBottomBig" v-show="itemsVisible.on">
-        <transition-group class="transitionGroup" leave-active-class="animated zoomOut a-little-bit-faster"
-                          enter-active-class="animated zoomIn a-little-bit-faster" tag="div"
-                          @after-leave="setItemCategory()">
-          <ItemBoxBasic class="customBox" v-for="item in items" :key="item.id" :item="item"
-                      :equipped="itemEquipped(item.id)" hasInfoBar @click="itemBoxAction(item)" />
-        </transition-group>
-      </div>
-    </transition>
+    <div class="innerFlexContainerInput flexGrow marginBottomBig">
+      <span class="icon is-1" :class="latinIconColor">
+        <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
+          <font-awesome-icon v-show="resultsVisible.on" :icon="['fas', latinIcon]" :size="getSizeClass('fas')" />
+        </transition>
+      </span>
+      <input class="input is-rounded is-10" type="text" :placeholder="getText(vocabs.latinAlphabet)"
+             :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
+             v-model="latinInput" :readonly="resultsVisible.on" />
+      <span class="icon is-1" :class="latinCoinColor">
+        <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
+          <font-awesome-icon v-show="resultsVisible.on && isLatinCorrect > 0" :icon="['fas', 'coins']"
+                             :size="getSizeClass('fas')" />
+        </transition>
+      </span>
+    </div>
+    <div class="innerFlexContainerInput flexGrow marginBottomBig" v-show="hasForeignAlphabet">
+      <span class="icon is-1" :class="foreignIconColor">
+        <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
+          <font-awesome-icon v-show="resultsVisible.on" :icon="['fas', foreignIcon]" :size="getSizeClass('fas')" />
+        </transition>
+      </span>
+      <input class="input is-rounded is-10" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
+             :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
+             v-model="foreignInput" @click="showKeyboard()" readonly />
+      <span class="icon is-1" :class="foreignCoinColor">
+        <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
+          <font-awesome-icon v-show="resultsVisible.on && isForeignCorrect > 0" :icon="['fas', 'coins']"
+                             :size="getSizeClass('fas')" />
+        </transition>
+      </span>
+    </div>
     <div class="innerFlexContainerButton is-10 marginBottomBig">
       <transition enter-active-class="animated fadeIn a-little-bit-faster"
                   leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
-        <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginBottomSmall marginRightSmall"
-                    icon="map" color="is-warning" text="adventureButton5"
-                    @click="$emit('click', { type: 'backToMap' })" />
+        <ButtonBasic v-show="resultsVisible.off" class="is-half marginBottomSmall marginRightSmall"
+                     icon="map" color="is-warning" text="adventureButton5"
+                     @click="$emit('click', { type: 'backToMap' })" />
       </transition>
       <transition enter-active-class="animated fadeIn a-little-bit-faster"
                   leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginBottomSmall marginLeftSmall"
-                    icon="check" color="is-success" text="adventureButton2" @click="checkInput()" />
+        <ButtonBasic v-show="resultsVisible.off" class="is-half marginBottomSmall marginLeftSmall"
+                     icon="check" color="is-success" text="adventureButton2" @click="checkInput()" />
       </transition>
       <transition enter-active-class="animated fadeIn a-little-bit-faster"
                   leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonMDI v-show="itemsVisible.on" class="is-half marginBottomSmall marginRightSmall" color="is-link"
-                   :text="leftItemButton.text" @click="rotateItemsLeft()">
-          <BottleTonicOutline v-if="leftItemButton.id === 'consumables'"
-                              :class="getSizeClass('mdi')" />
-          <Sword v-if="leftItemButton.id === 'weapons'" :class="getSizeClass('mdi')" />
-          <ShieldOutline v-if="leftItemButton.id === 'armor'" :class="getSizeClass('mdi')" />
-        </ButtonMDI>
-      </transition>
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
-                  leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonMDI v-show="itemsVisible.on" class="is-half marginBottomSmall marginLeftSmall" color="is-link"
-                   :text="rightItemButton.text" @click="rotateItemsRight()">
-          <BottleTonicOutline v-if="rightItemButton.id === 'consumables'"
-                              :class="getSizeClass('mdi')" />
-          <Sword v-if="rightItemButton.id === 'weapons'" :class="getSizeClass('mdi')" />
-          <ShieldOutline v-if="rightItemButton.id === 'armor'" :class="getSizeClass('mdi')" />
-        </ButtonMDI>
-      </transition>
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
-                  leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonBasic v-show="(itemsVisible.off || itemsVisible.on) && (resultsVisible.off || resultsVisible.on)"
+        <ButtonBasic v-show="resultsVisible.off || resultsVisible.on"
                      class="is-half marginRightSmall" icon="times" color="is-danger" text="adventureButton1"
                      @click="$emit('click', { type: 'abort' })" />
-      </transition>
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
-                  leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonBasic v-show="itemsVisible.on" class="is-half marginLeftSmall" icon="list" color="is-primary"
-                    text="adventureButton9" @click="hideItems()" />
       </transition>
       <transition :enter-active-class="enterActiveClass"
                   leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
         <ButtonBasic v-show="resultsVisible.on && currentWordIndex + 1 !== vocabs.words.length"
-                    class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
-                    text="adventureButton3" @click="nextWord()" :disabled="$store.state.canvasDict.animationActive" />
+                     class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
+                     text="adventureButton3" @click="nextWord()" :disabled="$store.state.canvasDict.animationActive" />
       </transition>
       <transition :enter-active-class="enterActiveClass"
                   leave-active-class="animated fadeOut a-little-bit-faster">
         <ButtonBasic v-show="resultsVisible.on && currentWordIndex + 1 === vocabs.words.length"
-                    class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
-                    text="adventureButton4" @click="$emit('click', { type: 'finish' })"
-                    :disabled="$store.state.canvasDict.animationActive" />
+                     class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
+                     text="adventureButton4" @click="$emit('click', { type: 'finish' })"
+                     :disabled="$store.state.canvasDict.animationActive" />
       </transition>
       <transition enter-active-class="animated fadeIn a-little-bit-faster"
                   leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="is-half marginLeftSmall" icon="briefcase"
-                    color="is-primary" text="adventureButton6" @click="showItems()" />
+        <ButtonBasic v-show="resultsVisible.off" class="is-half marginLeftSmall" icon="briefcase"
+                     color="is-primary" text="adventureButton6" @click="showItems()" />
       </transition>
       <transition enter-active-class="animated fadeIn a-little-bit-faster"
                   leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
         <ButtonBasic v-show="resultsVisible.on && solutionVisible.off" icon="eye" color="is-info" text="adventureButton7"
-                    @click="showSolution()" />
+                     @click="showSolution()" />
       </transition>
       <transition enter-active-class="animated fadeIn a-little-bit-faster"
                   leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
-        <ButtonBasic v-show="resultsVisible.on && solutionVisible.on" icon="eye-slash" color="is-info" text="adventureButton8"
-                    @click="hideSolution()" />
+        <ButtonBasic v-show="resultsVisible.on && solutionVisible.on" icon="eye-slash" color="is-info"
+                     text="adventureButton8" @click="hideSolution()" />
       </transition>
     </div>
     <TheProgressBar class="is-10" color="is-success" :text="progressText"
                     :value="progressBarCount" :maxValue="vocabs.words.length" />
     <transition enter-active-class="animated fadeInUp a-little-bit-faster"
                 leave-active-class="animated fadeOutDown a-little-bit-faster">
-      <div v-show="keyboardVisible" class="specialKeyboard is-overlay has-background-grey-lighter">
-        <div class="control is-10 marginTopBig marginBottomBig">
-          <div class="content">
+      <div v-show="keyboardVisible" class="specialKeyboard has-background-background">
+        <h1 class="title marginTopBig" :class="getSizeClass('title')">
+          {{ getText('adventureKeyboardTitle') }}
+        </h1>
+        <div class="control is-10 marginBottomBig">
+          <div class="content" :class="getSizeClass('content')">
             <blockquote>
               {{ vocabs.words[currentWordIndex][vocabs.mainAlphabet] }}
             </blockquote>
@@ -142,7 +97,7 @@
         <input class="input is-rounded is-10 marginBottomBig" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
                :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
                v-model="foreignInput" readonly />
-        <div class="flexGrow2 fullWidth keyboard marginBottomBig">
+        <div class="flexGrow fullWidth keyboard marginBottomBig">
           <TabsBasic :names="keyboardNames" :selected="currentKeyboardTab" @click="setTab($event)" radiusless />
           <div class="bottomKeyboard">
             <div class="keyContainer">
@@ -161,13 +116,61 @@
         </div>
       </div>
     </transition>
+    <transition enter-active-class="animated fadeInUp a-little-bit-faster"
+                leave-active-class="animated fadeOutDown a-little-bit-faster">
+      <div v-show="itemsVisible" class="itemSelectionContainer has-background-background">
+        <h1 class="title marginTopBig" :class="getSizeClass('title')">
+          {{ getText('adventureItemSelectionTitle') }}
+        </h1>
+        <div class="is-10 marginBottomBig flexGrow overflowAuto">
+          <div class="customTitle marginBottomSmall has-text-white-ter has-background-weapon">
+            <Sword class="marginRightSmall" :class="getSizeClass('mdi')" />
+            <div class="content" :class="getSizeClass('content')">
+              {{ getText('adventureItemWeapons') }}
+            </div>
+          </div>
+          <div class="itemBar overflowAuto marginBottomBig">
+            <ItemBoxBasic v-for="item in weapons" :key="item.id" :item="item"
+                          :equipped="itemEquipped(item.id, 'weapons')" hasInfoBar isSizeable
+                          @click="itemBoxAction(item, 'weapons')" />
+          </div>
+          <div class="customTitle marginBottomSmall has-text-white-ter has-background-armor">
+            <ShieldOutline class="marginRightSmall" :class="getSizeClass('mdi')" />
+            <div class="content" :class="getSizeClass('content')">
+              {{ getText('adventureItemArmor') }}
+            </div>
+          </div>
+          <div class="itemBar overflowAuto marginBottomBig">
+            <ItemBoxBasic v-for="item in armor" :key="item.id" :item="item"
+                          :equipped="itemEquipped(item.id, 'armor')" hasInfoBar isSizeable
+                          @click="itemBoxAction(item, 'armor')" />
+          </div>
+          <div class="customTitle marginBottomSmall has-text-white-ter has-background-consumable">
+            <BottleTonicOutline class="marginRightSmall" :class="getSizeClass('mdi')" />
+            <div class="content" :class="getSizeClass('content')">
+              {{ getText('adventureItemConsumables') }}
+            </div>
+          </div>
+          <div class="itemBar overflowAuto marginBottomBig">
+            <ItemBoxBasic v-for="item in consumables" :key="item.id" :item="item"
+                          :equipped="itemEquipped(item.id, 'consumables')" hasInfoBar isSizeable
+                          @click="itemBoxAction(item, 'consumables')" />
+            <div class="consumablesPlaceholder" :class="getSizeClass('itemBoxBasic')" v-if="consumables.length === 0">
+              {{ getText('adventureItemSelectionNoConsumables') }}
+            </div>
+          </div>
+        </div>
+        <div class="is-10">
+          <ButtonBasic icon="times" color="is-danger" text="adventureItemSelectionButton1" @click="hideItems()" />
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import ButtonText from '@/components/ButtonText.vue'
-import ButtonMDI from '@/components/ButtonMDI.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
 import TabsBasic from '@/components/TabsBasic.vue'
 import ItemBoxBasic from '@/components/ItemBoxBasic.vue'
@@ -181,7 +184,6 @@ export default {
   components: {
     ButtonBasic,
     ButtonText,
-    ButtonMDI,
     TheProgressBar,
     TabsBasic,
     ItemBoxBasic,
@@ -192,6 +194,7 @@ export default {
   data () {
     return {
       keyboardVisible: false,
+      itemsVisible: false,
       solutionVisible: {
         off: true,
         on: false
@@ -200,20 +203,8 @@ export default {
         off: true,
         on: false
       },
-      itemsVisible: {
-        off: true,
-        on: false
-      },
       inputBorderInfo: false,
       animationQueue: [],
-      itemCategories: [
-        { id: 'armor', text: 'adventureItemArmor' },
-        { id: 'weapons', text: 'adventureItemWeapons' },
-        { id: 'consumables', text: 'adventureItemConsumables' }
-      ],
-      noItems: false,
-      nextItemCategory: 1,
-      currentItemCategory: 1,
       consumableUsed: false,
       latinInput: '',
       foreignInput: '',
@@ -360,40 +351,24 @@ export default {
 
       return kanji
     },
-    items () {
-      let items = []
-      if (!this.noItems) {
-        switch (this.itemCategories[this.currentItemCategory].id) {
-          case 'weapons':
-            items = this.$store.state.vueDict.inventory.filter(item =>
-              item.categories.includes('weapon') && item.quantity > 0
-            )
-            items.unshift({ id: 'hand', quantity: 1 })
-            break
-          case 'consumables':
-            items = this.$store.state.vueDict.inventory.filter(item =>
-              item.categories.includes('consumable') && item.quantity > 0
-            )
-            break
-          case 'armor':
-            items = this.$store.state.vueDict.inventory.filter(item =>
-              item.categories.includes('armor') && item.quantity > 0
-            )
-            items.unshift(this.$store.getters['vueDict/getItemObject']('noarmor'))
-            break
-          default:
-        }
-      }
-
+    weapons () {
+      let items = this.$store.state.vueDict.inventory.filter(item =>
+        item.categories.includes('weapon') && item.quantity > 0
+      )
+      items.unshift(this.$store.getters['vueDict/getItemObject']('hand'))
       return items
     },
-    leftItemButton () {
-      let index = this.currentItemCategory === 0 ? this.itemCategories.length - 1 : this.currentItemCategory - 1
-      return this.itemCategories[index]
+    armor () {
+      let items = this.$store.state.vueDict.inventory.filter(item =>
+        item.categories.includes('armor') && item.quantity > 0
+      )
+      items.unshift(this.$store.getters['vueDict/getItemObject']('noarmor'))
+      return items
     },
-    rightItemButton () {
-      let index = this.currentItemCategory === this.itemCategories.length - 1 ? 0 : this.currentItemCategory + 1
-      return this.itemCategories[index]
+    consumables () {
+      return this.$store.state.vueDict.inventory.filter(item =>
+        item.categories.includes('consumable') && item.quantity > 0
+      )
     },
     baseUrl () {
       return process.env.BASE_URL
@@ -472,14 +447,6 @@ export default {
       this.solutionVisible.on = false
       this.animationQueue.push(['solutionVisible', 'off'])
     },
-    showItems () {
-      this.itemsVisible.off = false
-      this.animationQueue.push(['itemsVisible', 'on'])
-    },
-    hideItems () {
-      this.itemsVisible.on = false
-      this.animationQueue.push(['itemsVisible', 'off'])
-    },
     showKeyboard () {
       if (this.resultsVisible.off) {
         this.keyboardVisible = true
@@ -487,6 +454,12 @@ export default {
     },
     hideKeyboard () {
       this.keyboardVisible = false
+    },
+    showItems () {
+      this.itemsVisible = true
+    },
+    hideItems () {
+      this.itemsVisible = false
     },
     setTab (id) {
       this.currentKeyboardTab = id
@@ -504,38 +477,8 @@ export default {
     clearWord () {
       this.foreignInput = ''
     },
-    rotateItemsLeft () {
-      if (this.currentItemCategory === 0) {
-        this.nextItemCategory = this.itemCategories.length - 1
-      } else {
-        this.nextItemCategory = this.currentItemCategory - 1
-      }
-
-      if (this.items.length === 0) {
-        this.setItemCategory()
-      } else {
-        this.noItems = true
-      }
-    },
-    rotateItemsRight () {
-      if (this.currentItemCategory === this.itemCategories.length - 1) {
-        this.nextItemCategory = 0
-      } else {
-        this.nextItemCategory = this.currentItemCategory + 1
-      }
-
-      if (this.items.length === 0) {
-        this.setItemCategory()
-      } else {
-        this.noItems = true
-      }
-    },
-    setItemCategory () {
-      this.currentItemCategory = this.nextItemCategory
-      this.noItems = false
-    },
-    itemBoxAction (item) {
-      switch (this.itemCategories[this.currentItemCategory].id) {
+    itemBoxAction (item, type) {
+      switch (type) {
         case 'weapons':
           this.$store.commit('canvasDict/setEquippedItem', item.id)
           break
@@ -559,23 +502,14 @@ export default {
         default:
       }
     },
-    itemEquipped (itemId) {
-      switch (this.itemCategories[this.currentItemCategory].id) {
+    itemEquipped (itemId, type) {
+      switch (type) {
         case 'weapons':
           return itemId === this.$store.state.canvasDict.character.hand
         case 'armor':
           return itemId === this.$store.state.canvasDict.character.armor
         default:
           return false
-      }
-    },
-    getProgressColor (item) {
-      if (item.durability < item.maxDurability / 3) {
-        return 'is-danger'
-      } else if (item.durability < item.maxDurability / 1.5) {
-        return 'is-warning'
-      } else {
-        return 'is-success'
       }
     },
     endTrigger () {
@@ -614,10 +548,6 @@ export default {
 
   .flexGrow {
     flex-grow: 1;
-  }
-
-  .flexGrow2 {
-    flex-grow: 8;
   }
 
   .overflowAuto {
@@ -666,77 +596,94 @@ export default {
     }
   }
 
-  .itemBar {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    height: 100%;
-
-    .transitionGroup {
-      width: 100%;
-      height: 100%;
-      display: contents;
-
-      .customBox {
-        min-width: 150px;
-        position: relative;
-
-        &:not(:first-child) {
-          margin-left: .25rem;
-        }
-
-        &:not(:last-child) {
-          margin-right: .25rem;
-        }
-
-        &:first-child {
-          margin-left: auto;
-        }
-
-        &:last-child {
-          margin-right: auto;
-        }
-      }
-    }
-  }
-}
-
-.specialKeyboard {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  width: 100%;
-  height: calc(100% + .5rem);
-  padding-bottom: 71px;
-  top: 0px;
-  z-index: 4;
-}
-
-.keyboard {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-
-  .bottomKeyboard {
+  .specialKeyboard {
+    position: absolute;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;
-    height: 0;
-    overflow: auto;
-    flex-grow: 1;
+    width: 100%;
+    height: calc(100% + .5rem);
+    padding-bottom: 71px;
+    top: 0px;
+    z-index: 4;
 
-    .keyContainer {
-      width: calc(100% / 1.2);
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      justify-items: stretch;
+    .keyboard {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
 
-      .keyboardButton {
-        text-transform: none;
+      .bottomKeyboard {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+        height: 0;
+        overflow: auto;
+        flex-grow: 1;
+
+        .keyContainer {
+          width: calc(100% / 1.2);
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          justify-items: stretch;
+
+          .keyboardButton {
+            text-transform: none;
+          }
+        }
+      }
+    }
+  }
+
+  .itemSelectionContainer {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 100%;
+    height: calc(100% + .5rem);
+    padding-bottom: 71px;
+    top: 0px;
+    z-index: 4;
+
+    .customTitle {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      padding: .25rem;
+      border-radius: 290486px;
+    }
+
+    .itemBar {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+
+    .consumablesPlaceholder {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      width: 100%;
+
+      &.is-small {
+        height: 7em;
+      }
+
+      &.is-normal {
+        height: 9em;
+      }
+
+      &.is-medium {
+        height: 11em;
+      }
+
+      &.is-large {
+        height: 13em;
       }
     }
   }

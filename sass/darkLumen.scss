@@ -71,6 +71,18 @@ $content-blockquote-border-left: 5px solid $grey-dark;
   background-color: $body-background-color;
 }
 
+.has-background-weapon {
+  background-color: darken($primary-dark, 8);
+}
+
+.has-background-armor {
+  background-color: darken($orange, 9);
+}
+
+.has-background-consumable {
+  background-color: darken($success-dark, 8);
+}
+
 .hero {
   background-color: lighten($grey-darker, 3);
 }
@@ -86,19 +98,19 @@ $content-blockquote-border-left: 5px solid $grey-dark;
 .box {
   border-color: $grey-dark;
 
-  &.is-success {
+  &.is-consumable {
     color: $white-ter;
     background-color: darken($success-dark, 8);
     border-color: $success-dark;
   }
 
-  &.is-primary {
+  &.is-weapon {
     color: $white-ter;
     background-color: darken($primary-dark, 8);
     border-color: darken($primary-dark, 16);
   }
 
-  &.is-warning {
+  &.is-armor {
     color: $white-ter;
     background-color: darken($orange, 9);
     border-color: darken($orange, 18);
