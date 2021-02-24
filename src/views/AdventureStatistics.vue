@@ -29,15 +29,20 @@
     </div>
     <transition enter-active-class="animated fadeInUp a-little-bit-faster"
                 leave-active-class="animated fadeOutDown a-little-bit-faster">
-      <div v-show="detailsVisible" class="detailsContainer has-background-grey-lighter">
-        <h2 class="subtitle has-text-weight-bold marginBottomSmall" :class="getSizeClass('subtitle')">
+      <div v-show="detailsVisible" class="detailsContainer has-background-background">
+        <h1 class="title marginTopBig" :class="getSizeClass('title')">
           {{ getText('adventureStatisticsDetailsTitle') }}
-        </h2>
-        <div class="itemContainer marginBottomBig" v-if="items.length > 0">
-          <ItemBoxSmall :item="item" v-for="item in items" :key="item.id" />
-        </div>
-        <div class="noItemsContainer marginBottomBig" v-else>
-          {{ getText('adventureStatisticsNoItems') }}
+        </h1>
+        <div class="is-10">
+          <h2 class="subtitle has-text-weight-bold marginBottomSmall" :class="getSizeClass('subtitle')">
+            {{ getText('adventureStatisticsDetailsFoundItems') }}
+          </h2>
+          <div class="itemContainer marginBottomBig" v-if="items.length > 0">
+            <ItemBoxSmall :item="item" v-for="item in items" :key="item.id" />
+          </div>
+          <div class="noItemsContainer content marginBottomBig" :class="getSizeClass('content')" v-else>
+            {{ getText('adventureStatisticsNoItems') }}
+          </div>
         </div>
         <div class="is-10 flexGrow overflowAuto marginBottomBig">
           <table class="table fullWidth">
@@ -231,16 +236,36 @@ export default {
     .table tbody tr:last-child td {
       border-bottom-width: 1px !important;
     }
-  }
 
-  .itemContainer {
-    display: flex;
-    min-height: 16%;
-    max-width: calc(100% / 1.2);
-    overflow: auto;
+    .itemContainer {
+      display: flex;
+      min-height: 16%;
+      max-width: calc(100% / 1.2);
+      overflow: auto;
 
-    > :not(:last-child) {
-      margin-right: .5rem;
+      > :not(:last-child) {
+        margin-right: .5rem;
+      }
+    }
+
+    .noItemsContainer {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      height: 6em;
+
+      &.is-small {
+      height: 4.5em;
+      }
+
+      &.is-medium {
+      height: 7.5em;
+      }
+
+      &.is-large {
+      height: 9em;
+      }
     }
   }
 }
