@@ -26,9 +26,9 @@
     </table>
     <div class="is-10 buttonContainer">
       <ButtonIcon class="is-1 marginRightSmall marginBottomSmall" color="is-link" icon="minus" @click="redAmount()" />
-      <ButtonText v-show="!inputVisible" class="is-8 marginRightSmall marginLeftSmall marginBottomSmall" color="is-link"
+      <ButtonText v-show="!inputVisible" class="flexGrow minWidth marginRightSmall marginLeftSmall marginBottomSmall" color="is-link"
                   :text="amount" @click="showInput()" />
-      <InputWithButton v-if="inputVisible" class="is-8 marginRightSmall marginLeftSmall marginBottomSmall"
+      <InputWithButton v-if="inputVisible" class="flexGrow is-half marginRightSmall marginLeftSmall marginBottomSmall"
                        colorInput="is-link" colorButton="is-success" type="number" iconButton="check"
                        v-model="inputAmount" @click="hideInput()" />
       <ButtonIcon class="is-1 marginLeftSmall marginBottomSmall" color="is-link" icon="plus" @click="incAmount()" />
@@ -185,10 +185,10 @@ export default {
             }
 
             let newItem = {
-              id: this.item.id,
-              quantity: this.item.quantity * this.amount,
-              categories: this.item.categories,
-              durability: this.item.durability || null
+              id: itemData.id,
+              quantity: itemData.quantity,
+              categories: itemData.categories,
+              durability: itemData.durability || null
             }
 
             this.$store.commit('vueDict/addToInventory', newItem)
@@ -263,6 +263,10 @@ export default {
 
   .flexGrow {
     flex-grow: 1;
+  }
+
+  .minWidth {
+    min-width: 50%;
   }
 
   .backgroundPicture {

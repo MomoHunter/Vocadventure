@@ -3,7 +3,7 @@
     <HeroBasic title="trainingTitle" />
     <div class="field is-10 is-grouped is-grouped-multiline">
       <div class="control fullWidth">
-        <TagBasic textOne="trainingCategoryTag" :textTwo="words.words[currentWord].category" colorTwo="is-info" />
+        <TagBasic textOne="trainingCategoryTag" :textTwo="getCategory" colorTwo="is-info" />
       </div>
       <div class="control fullWidth">
         <div class="content">
@@ -137,6 +137,11 @@ export default {
     },
     isJapanese () {
       return this.$store.state.targetLanguage === 'japanese'
+    },
+    getCategory () {
+      return this.$store.getters['vueDict/getCategories'].find(category => {
+        return category.id === this.words.words[this.currentWord].category
+      }, this).categoryName
     },
     getLatinWord () {
       return this.words.words[this.currentWord][this.words.latinAlphabet]

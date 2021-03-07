@@ -1,4 +1,6 @@
-import Vocabulary from '@/data/Vocabulary.js'
+import TargetLanguages from '@/data/TargetLanguages.js'
+import JapaneseVocabs from '@/data/JapaneseVocabs.json'
+import GreekVocabs from '@/data/GreekVocabs.json'
 import GameObjects from '@/data/GameObjects.json'
 
 export default {
@@ -13,14 +15,25 @@ export default {
     categoriesPlayed: [],
     writeKanji: null,
     trainingStash: null,
+    destination: '',
     boughtItems: [],
     currentShopPage: 1,
     currentInventoryPage: 1,
+    targetLanguages: TargetLanguages,
+    vocabulary: [
+      JapaneseVocabs,
+      GreekVocabs
+    ],
+    selectedWordPackKey: '',
+    selectedWordPack: null,
+    selectedWordPackCategoryIndex: 0,
+    selectedWordPackWordIndex: -1,
     difficulty: 0,
     wordCount: 0,
     reversed: false,
     items: GameObjects.filter(
       obj => obj.categories.includes('item') ||
+             obj.categories.includes('shop') ||
              obj.categories.includes('material') ||
              obj.categories.includes('material2')
     ),
@@ -59,51 +72,118 @@ export default {
     transitionActive: false
   },
   getters: {
+    /**
+     * Collects the available categories and evaluates the correct name for the currently selected language
+     * @param {Object} state state of vuex store component vueDict
+     * @param {Object} getters all getters of vuex store component vueDict
+     * @param {Object} rootState rootstate of vuex store
+     * @returns Array with objects {id, categoryName} where id consists of
+     *          if pack is custom, then c, else s (for standard)
+     *          index of pack
+     *          index of category
+     *          the above is separated by _
+     */
     getCategories: (state, getters, rootState) => {
-      return Object.keys(Vocabulary[rootState.targetLanguage].words)
-    },
-    getCategoryDifficulty: (state, getters, rootState) => (id) => {
-      let category = Vocabulary[rootState.targetLanguage].words[id]
+      let supportedPacks = state.vocabulary.filter(pack => {
+        return pack.targetLanguage === rootState.targetLanguage &&
+          pack.supportedLanguages.includes(rootState.lang)
+      })
 
-      return category.reduce((acc, word) => {
-        return acc + word.difficulty
-      }, 0) / category.length
+      return supportedPacks.flatMap(pack => {
+        let id = (pack.isCustom ? 'c' : 's') + '_' + pack.index.toString() + '_'
+        let categoryName = '[' + pack.tag + '] '
+
+        return pack.categories.map(category => {
+          return {
+            id: id + category.index,
+            categoryName: categoryName + category[rootState.lang]
+          }
+        })
+      })
     },
+    /**
+     * Evaluates the average difficulty of a specified category
+     * @param {Object} state state of vuex store component vueDict
+     * @param {String} id the id of the category, definition can be found by 'getCategories' under 'returns'
+     */
+    getCategoryDifficulty: (state) => (id) => {
+      let keyParts = id.split('_')
+      let wordPack = state.vocabulary.find(pack => {
+        if ((!pack.isCustom && keyParts[0] === 's') || (pack.isCustom && keyParts[0] === 'c')) {
+          return pack.index === parseInt(keyParts[1])
+        }
+        return false
+      })
+      let category = wordPack.categories.find(category => {
+        return category.index === parseInt(keyParts[2])
+      })
+
+      return category.words.reduce((acc, word) => {
+        return acc + word.difficulty
+      }, 0) / category.words.length
+    },
+    /**
+     * collects all words included in the categories of the categoriesChosen list
+     * @param {Object} state state of vuex store component vueDict
+     * @param {Object} getters all getters of vuex store component vueDict
+     * @param {Object} rootState rootstate of vuex store
+     */
     getFullVocabs: (state, getters, rootState) => {
       let wordObjects = []
-      let vocabs = Vocabulary[rootState.targetLanguage]
+      let targetLangInfo = state.targetLanguages[rootState.targetLanguage]
 
       for (let category of state.categoriesChosen) {
-        vocabs.words[category].forEach((word, index) => {
-          let wordCopy = JSON.parse(JSON.stringify(word))
+        let keyParts = category.split('_')
+        let wordPack = state.vocabulary.find(pack => {
+          if ((!pack.isCustom && keyParts[0] === 's') || (pack.isCustom && keyParts[0] === 'c')) {
+            return pack.index === parseInt(keyParts[1])
+          }
+          return false
+        })
+        let foundCategory = wordPack.categories.find(entry => {
+          return entry.index === parseInt(keyParts[2])
+        })
+        for (let i = 0; i < foundCategory.words.length; i++) {
+          let wordCopy = JSON.parse(JSON.stringify(foundCategory.words[i]))
+          // category and index are for the kanji write page
           wordCopy.category = category
-          wordCopy.index = index
+          wordCopy.index = i
           wordObjects.push(wordCopy)
-        }, this)
+        }
       }
 
       return {
         words: wordObjects,
-        signs: JSON.parse(JSON.stringify(vocabs.signs)),
-        mainAlphabet: state.reversed ? vocabs.foreignAlphabet : rootState.lang,
-        latinAlphabet: state.reversed ? rootState.lang : vocabs.latinAlphabet,
-        foreignAlphabet: state.reversed ? '' : vocabs.foreignAlphabet,
-        lang: vocabs.lang
+        signs: JSON.parse(JSON.stringify(targetLangInfo.signs)),
+        mainAlphabet: state.reversed ? targetLangInfo.foreignAlphabet : rootState.lang,
+        latinAlphabet: state.reversed ? rootState.lang : targetLangInfo.latinAlphabet,
+        foreignAlphabet: state.reversed ? '' : targetLangInfo.foreignAlphabet,
+        // lang for tts
+        lang: targetLangInfo.lang
       }
     },
     getVocabsWithCategories: (state, getters, rootState) => {
       let objects = {}
-      let vocabs = Vocabulary[rootState.targetLanguage]
+      let targetLangInfo = TargetLanguages[rootState.targetLanguage]
 
       for (let category of state.categoriesChosen) {
-        objects[category] = JSON.parse(JSON.stringify(vocabs.words[category]))
+        let keyParts = category.split('_')
+        let wordPack = state.vocabulary.find(pack => {
+          if ((!pack.isCustom && keyParts[0] === 's') || (pack.isCustom && keyParts[0] === 'c')) {
+            return pack.index === parseInt(keyParts[1])
+          }
+          return false
+        })
+        objects[category] = JSON.parse(JSON.stringify(wordPack.categories.find(entry => {
+          return entry.index === parseInt(keyParts[2])
+        }).words))
       }
 
       return {
         words: objects,
-        latinAlphabet: vocabs.latinAlphabet,
-        foreignAlphabet: vocabs.foreignAlphabet,
-        lang: vocabs.lang
+        latinAlphabet: targetLangInfo.latinAlphabet,
+        foreignAlphabet: targetLangInfo.foreignAlphabet,
+        lang: targetLangInfo.lang
       }
     },
     getShuffledVocabs: (state, getters) => {
@@ -137,6 +217,17 @@ export default {
     },
     getCoins: (state) => {
       return state.status.find(status => status.id === 'coins')
+    },
+    getSelectedWordPack: (state) => {
+      let keyParts = state.selectedWordPackKey.split('_')
+      let wordPack = state.vocabulary.find(pack =>
+        ((!pack.isCustom && keyParts[0] === 's') || (pack.isCustom && keyParts[0] === 'c')) &&
+        pack.index === parseInt(keyParts[1])
+      )
+      if (wordPack) {
+        return JSON.parse(JSON.stringify(wordPack))
+      }
+      return null
     },
     getItemObject: (state) => (id) => {
       return state.items.find(item => item.id === id)
@@ -194,6 +285,54 @@ export default {
     },
     setTrainingStash (state, object) {
       state.trainingStash = object
+    },
+    setDestination (state, destination) {
+      state.destination = destination
+    },
+    addWordPack (state, pack) {
+      state.vocabulary.push(pack)
+      state.vocabulary.sort((wordPack1, wordPack2) => {
+        if (wordPack1.isCustom && !wordPack2.isCustom) {
+          return 1
+        } else if (!wordPack1.isCustom && wordPack2.isCustom) {
+          return -1
+        } else {
+          if (wordPack1.index > wordPack2.index) {
+            return 1
+          } else if (wordPack1.index < wordPack2.index) {
+            return -1
+          } else {
+            return 0
+          }
+        }
+      })
+    },
+    removeWordPack (state, key) {
+      let keyParts = key.split('_')
+      state.vocabulary = state.vocabulary.filter(pack =>
+        !(((!pack.isCustom && keyParts[0] === 's') || (pack.isCustom && keyParts[0] === 'c')) &&
+        pack.index === parseInt(keyParts[1]))
+      )
+    },
+    setSelectedWordPackKey (state, packKey) {
+      state.selectedWordPackKey = packKey
+    },
+    setSelectedWordPack (state, pack) {
+      state.selectedWordPack = pack
+    },
+    setSelectedWordPackCategoryIndex (state, index) {
+      state.selectedWordPackCategoryIndex = index
+    },
+    setSelectedWordPackWordIndex (state, index) {
+      state.selectedWordPackWordIndex = index
+    },
+    addWordToSelectedPack (state, wordObject) {
+      state.selectedWordPack.categories.find(category => category.index === state.selectedWordPackCategoryIndex)
+        .words.push(wordObject)
+    },
+    updateWordInSelectedPack (state, wordObject) {
+      state.selectedWordPack.categories.find(category => category.index === state.selectedWordPackCategoryIndex)
+        .words[state.selectedWordPackWordIndex] = wordObject
     },
     changeCategoriesPlayed (state, categoriesPlayed) {
       state.categoriesPlayed = categoriesPlayed
@@ -296,6 +435,7 @@ export default {
         }
       } else {
         let itemObject = state.inventory.find(item => item.id === object.id)
+        console.log(object.id)
         if (itemObject.quantity + object.quantity < 0) {
           itemObject.quantity += object.quantity
         } else if (itemObject.quantity + object.quantity === 0) {

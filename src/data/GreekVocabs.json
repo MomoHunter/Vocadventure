@@ -1,34 +1,55 @@
 {
-  "greekCategory1": [
-    { "german": "der Urlaub", "english": "the Vacation", "euclidean": "διακοπές", "pronunciation": "Dhiakopäß", "difficulty": 1 },
-    { "german": "Griechenland", "english": "Greece", "euclidean": "Ελλάδα", "pronunciation": "älaDHa", "difficulty": 1 },
-    { "german": "der Tourist/in", "english": "the Tourist", "euclidean": "τουρίστας/τουρίστρια", "pronunciation": "turißtaß/turißtria", "difficulty": 1 },
-    { "german": "der Franzose/in", "english": "the Frenchman", "euclidean": "Γάλλος/Γαλλίδα", "pronunciation": "ghaloß/ghaliDHa", "difficulty": 1 },
-    { "german": "müde", "english": "tired", "euclidean": "κουρασμένο/η", "pronunciation": "kurasmäno/i", "difficulty": 1 },
-    { "german": "das Museum", "english": "the Museum", "euclidean": "το μουσειο", "pronunciation": "to mußio", "difficulty": 1 },
-    { "german": "von jetzt", "english": "from now on", "euclidean": "από τώρα", "pronunciation": "apo tora", "difficulty": 1 },
-    { "german": "von wo", "english": "from where", "euclidean": "από πού", "pronunciation": "apo pu", "difficulty": 1 },
-    { "german": "Wo ist", "english": "where is", "euclidean": "πού είναι", "pronunciation": "pu inä", "difficulty": 1 },
-    { "german": "historisch", "english": "historic", "euclidean": "ιστορικός/ό/ή", "pronunciation": "ißtorikos/o/i", "difficulty": 1 },
-    { "german": "der Akzent/ die Aussprache", "english": "the Accent", "euclidean": "η προφορά", "pronunciation": "i profora", "difficulty": 1 },
-    { "german": "fremdländisch", "english": "foreign", "euclidean": "ξένη", "pronunciation": "kßäni", "difficulty": 1 },
-    { "german": "endlich", "english": "finally", "euclidean": "επιτέλους", "pronunciation": "äpitäluß", "difficulty": 1 },
-    { "german": "die Sprache", "english": "the Speech", "euclidean": "γλώσσα", "pronunciation": "gloßßa", "difficulty": 1 },
-    { "german": "mach-en/st/-t/-en", "english": "to do", "euclidean": "κάν-ω/-εις/-ει/-ουν", "pronunciation": "kan-o/-is/-i/-un", "difficulty": 1 },
-    { "german": "die Insel", "english": "the Island", "euclidean": "η νησί", "pronunciation": "nißie", "difficulty": 1 },
-    { "german": "Genau!", "english": "Exactly!", "euclidean": "ακριβώς", "pronunciation": "akriwoß", "difficulty": 1 },
-    { "german": "gegenüber", "english": "opposite", "euclidean": "απέναντι", "pronunciation": "apänandi", "difficulty": 1 },
-    { "german": "die Dame", "english": "the Lady", "euclidean": "η κυρία", "pronunciation": "i kiria", "difficulty": 1 },
-    { "german": "zusammen", "english": "together", "euclidean": "μαζί", "pronunciation": "masi", "difficulty": 1 },
-    { "german": "hier", "english": "here", "euclidean": "εδώ", "pronunciation": "eDHo", "difficulty": 1 },
-    { "german": "sein", "english": "to be", "euclidean": "είμαι", "pronunciation": "imä", "difficulty": 1 },
-    { "german": "du bist", "english": "you are", "euclidean": "είσαι", "pronunciation": "ißä", "difficulty": 1 },
-    { "german": "er/sie/es ist/sie sind", "english": "he/she/it is", "euclidean": "είναι", "pronunciation": "inä", "difficulty": 1 },
-    { "german": "wir sind", "english": "we are", "euclidean": "είμαστε", "pronunciation": "imastä", "difficulty": 1 },
-    { "german": "ihr seid", "english": "you are (plural)", "euclidean": "είστε", "pronunciation": "istä", "difficulty": 1 }
+  "index": 2,
+  "tag": "STG",
+  "name": "Standard Greek",
+  "targetLanguage": "greek",
+  "supportedLanguages": [
+    "german",
+    "english"
   ],
-  "greekCategory2": [
-    { "german": "die Freunde", "english": "the Friends", "euclidean": "φίλοι", "pronunciation": "fili", "difficulty": 1 }
+  "isCustom": false,
+  "categories": [
+    {
+      "index": 1,
+      "german": "Urlaub",
+      "english": "Vacation",
+      "words": [
+        { "german": "der Urlaub", "english": "the Vacation", "euclidean": "διακοπές", "pronunciation": "Dhiakopäß", "difficulty": 1 },
+        { "german": "Griechenland", "english": "Greece", "euclidean": "Ελλάδα", "pronunciation": "älaDHa", "difficulty": 1 },
+        { "german": "der Tourist/in", "english": "the Tourist", "euclidean": "τουρίστας/τουρίστρια", "pronunciation": "turißtaß/turißtria", "difficulty": 1 },
+        { "german": "der Franzose/in", "english": "the Frenchman", "euclidean": "Γάλλος/Γαλλίδα", "pronunciation": "ghaloß/ghaliDHa", "difficulty": 1 },
+        { "german": "müde", "english": "tired", "euclidean": "κουρασμένο/η", "pronunciation": "kurasmäno/i", "difficulty": 1 },
+        { "german": "das Museum", "english": "the Museum", "euclidean": "το μουσειο", "pronunciation": "to mußio", "difficulty": 1 },
+        { "german": "von jetzt", "english": "from now on", "euclidean": "από τώρα", "pronunciation": "apo tora", "difficulty": 1 },
+        { "german": "von wo", "english": "from where", "euclidean": "από πού", "pronunciation": "apo pu", "difficulty": 1 },
+        { "german": "Wo ist", "english": "where is", "euclidean": "πού είναι", "pronunciation": "pu inä", "difficulty": 1 },
+        { "german": "historisch", "english": "historic", "euclidean": "ιστορικός/ό/ή", "pronunciation": "ißtorikos/o/i", "difficulty": 1 },
+        { "german": "der Akzent/die Aussprache", "english": "the Accent", "euclidean": "η προφορά", "pronunciation": "i profora", "difficulty": 1 },
+        { "german": "fremdländisch", "english": "foreign", "euclidean": "ξένη", "pronunciation": "kßäni", "difficulty": 1 },
+        { "german": "endlich", "english": "finally", "euclidean": "επιτέλους", "pronunciation": "äpitäluß", "difficulty": 1 },
+        { "german": "die Sprache", "english": "the Speech", "euclidean": "γλώσσα", "pronunciation": "gloßßa", "difficulty": 1 },
+        { "german": "mach-en/-st/-t/-en", "english": "to do", "euclidean": "κάν-ω/-εις/-ει/-ουν", "pronunciation": "kan-o/-is/-i/-un", "difficulty": 1 },
+        { "german": "die Insel", "english": "the Island", "euclidean": "η νησί", "pronunciation": "nißie", "difficulty": 1 },
+        { "german": "Genau!", "english": "Exactly!", "euclidean": "ακριβώς", "pronunciation": "akriwoß", "difficulty": 1 },
+        { "german": "gegenüber", "english": "opposite", "euclidean": "απέναντι", "pronunciation": "apänandi", "difficulty": 1 },
+        { "german": "die Dame", "english": "the Lady", "euclidean": "η κυρία", "pronunciation": "i kiria", "difficulty": 1 },
+        { "german": "zusammen", "english": "together", "euclidean": "μαζί", "pronunciation": "masi", "difficulty": 1 },
+        { "german": "hier", "english": "here", "euclidean": "εδώ", "pronunciation": "eDHo", "difficulty": 1 },
+        { "german": "sein", "english": "to be", "euclidean": "είμαι", "pronunciation": "imä", "difficulty": 1 },
+        { "german": "du bist", "english": "you are", "euclidean": "είσαι", "pronunciation": "ißä", "difficulty": 1 },
+        { "german": "er/sie/es ist/sie sind", "english": "he/she/it is", "euclidean": "είναι", "pronunciation": "inä", "difficulty": 1 },
+        { "german": "wir sind", "english": "we are", "euclidean": "είμαστε", "pronunciation": "imastä", "difficulty": 1 },
+        { "german": "ihr seid", "english": "you are (plural)", "euclidean": "είστε", "pronunciation": "istä", "difficulty": 1 }
+      ]
+    },
+    {
+      "index": 2,
+      "german": "Freunde",
+      "english": "Friends",
+      "words": [
+        { "german": "die Freunde", "english": "the Friends", "euclidean": "φίλοι", "pronunciation": "fili", "difficulty": 1 }
+      ]
+    }
   ]
 }
   

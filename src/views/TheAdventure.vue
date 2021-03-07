@@ -152,12 +152,7 @@ export default {
       return [
         {
           nameId: 'adventureCategoryTag',
-          valueId: this.currentWord.category,
-          color: 'is-info'
-        },
-        {
-          nameId: 'adventureCountTag',
-          valueId: this.$store.state.vueDict.vocabs.words.length,
+          valueId: this.getCategory(this.currentWord.category),
           color: 'is-info'
         },
         {
@@ -229,6 +224,11 @@ export default {
     },
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
+    },
+    getCategory (id) {
+      return this.$store.getters['vueDict/getCategories'].find(category => {
+        return category.id === id
+      }, this).categoryName
     },
     viewClickHandler (object) {
       let dynLevelData = this.$store.getters['canvasDict/getDynamicLevelData'](this.currentLevel)

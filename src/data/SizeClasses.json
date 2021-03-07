@@ -118,5 +118,23 @@
     "normal": "",
     "medium": "is-medium",
     "large": "is-large"
+  },
+  "text": {
+    "small": "is-size-6",
+    "normal": "is-size-5",
+    "medium": "is-size-4",
+    "large": "is-size-3"
+  },
+  "smallText": {
+    "small": "is-size-8",
+    "normal": "is-size-7",
+    "medium": "is-size-6",
+    "large": "is-size-5"
+  },
+  "flag": {
+    "small": "is-small",
+    "normal": "is-normal",
+    "medium": "is-medium",
+    "large": "is-large"
   }
 }

@@ -126,6 +126,8 @@ export default {
           window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
         }
       }
+
+      this.$store.dispatch('getPacks')
     },
     toggleTransitionActive (bool) {
       this.$store.commit('vueDict/changeTransitionActive', bool)

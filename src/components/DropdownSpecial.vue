@@ -11,7 +11,7 @@
               <thead>
                 <tr class="headerSticky">
                   <td colspan="4" class="has-background-primary has-text-centered" :class="getSizeClass('td')">
-                    {{ getText(key) }}
+                    {{ getText(getCategory(key)) }}
                   </td>
                 </tr>
               </thead>
@@ -63,6 +63,11 @@ export default {
     },
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
+    },
+    getCategory (id) {
+      return this.$store.getters['vueDict/getCategories'].find(category => {
+        return category.id === id
+      }, this).categoryName
     },
     selectWord (category, index) {
       this.$emit('click', { category: category, index: index })

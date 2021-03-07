@@ -25,9 +25,8 @@
 </template>
 
 <script>
-import Texts from '@/data/Texts.json'
 import Themes from '@/data/Themes.json'
-import Vocabulary from '@/data/Vocabulary.js'
+import TargetLanguages from '@/data/TargetLanguages.js'
 
 import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
@@ -53,10 +52,10 @@ export default {
   },
   computed: {
     languages () {
-      return Object.keys(Texts)
+      return Object.keys(this.$store.state.texts)
     },
     targetLanguages () {
-      return Object.keys(Vocabulary)
+      return Object.keys(TargetLanguages)
     },
     themes () {
       return Object.keys(Themes)

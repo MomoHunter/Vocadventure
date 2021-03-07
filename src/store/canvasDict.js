@@ -970,7 +970,7 @@ export default {
       state.collectables.push(itemId)
     },
     addCollectedItem (state, item) {
-      let foundItem = state.collectedItems.find(collectedItem => collectedItem.id === item.id)
+      let foundItem = state.collectedItems.find(collectedItem => collectedItem.id === item.id && !collectedItem.animated)
       if (foundItem) {
         foundItem.quantity += item.quantity
       } else {

@@ -16,13 +16,15 @@ export default new Vuex.Store({
     theme: 'darkLumen',
     size: 'normal',
     viewport: 1,
+    texts: Texts,
     swUpdateFound: false,
-    swUpdated: false
+    swUpdated: false,
+    db: null
   },
   getters: {
     getText: (state, getters) => (id, ...params) => {
       if (isNaN(id)) {
-        let text = Texts[state.lang][id]
+        let text = state.texts[state.lang][id]
         if (text) {
           if (params.length > 0) {
             for (let i = 0; i < params.length; i++) {
@@ -95,6 +97,91 @@ export default new Vuex.Store({
     swReset (state) {
       state.swUpdateFound = false
       state.swUpdated = false
+    },
+    setDb (state, db) {
+      state.db = db
+    }
+  },
+  actions: {
+    async getDb (context) {
+      return new Promise((resolve, reject) => {
+        if (context.state.db) {
+          return resolve(context.state.db)
+        }
+
+        let request = window.indexedDB.open('wordpackdb', 1)
+
+        request.onerror = e => {
+          console.error('Error opening db', e)
+          reject(e)
+        }
+
+        request.onsuccess = e => {
+          context.commit('setDb', e.target.result)
+          resolve(e.target.result)
+        }
+
+        request.onupgradeneeded = e => {
+          console.log('New DB will be created')
+          let db = e.target.result
+          db.createObjectStore('wordPacks', { autoIncrement: false, keyPath: 'index' })
+        }
+      })
+    },
+    async savePack (context, pack) {
+      let db = await context.dispatch('getDb')
+
+      await new Promise(resolve => {
+        let trans = db.transaction(['wordPacks'], 'readwrite')
+        trans.oncomplete = () => {
+          resolve(pack)
+        }
+
+        let store = trans.objectStore('wordPacks')
+        store.put(pack)
+      }).then(wordPack => {
+        context.commit('vueDict/addWordPack', wordPack)
+      })
+    },
+    async getPacks (context) {
+      let db = await context.dispatch('getDb')
+
+      await new Promise(resolve => {
+        let trans = db.transaction(['wordPacks'], 'readonly')
+        trans.oncomplete = () => {
+          resolve(wordPacks)
+        }
+
+        let store = trans.objectStore('wordPacks')
+        let wordPacks = []
+
+        store.openCursor().onsuccess = e => {
+          let cursor = e.target.result
+          if (cursor) {
+            wordPacks.push(cursor.value)
+            cursor.continue()
+          }
+        }
+      }).then(wordPacks => {
+        wordPacks.forEach(pack => {
+          context.commit('vueDict/addWordPack', pack)
+        })
+      })
+    },
+    async deletePack (context, pack) {
+      let db = await context.dispatch('getDb')
+
+      await new Promise(resolve => {
+        let trans = db.transaction(['wordPacks'], 'readwrite')
+        trans.oncomplete = () => {
+          resolve(pack)
+        }
+
+        let store = trans.objectStore('wordPacks')
+        store.delete(pack.index)
+      }).then(wordPack => {
+        context.commit('vueDict/removeWordPack', (wordPack.isCustom ? 'c' : 's') + '_' + wordPack.index.toString())
+      })
     }
   },
   modules: {

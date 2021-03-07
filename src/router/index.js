@@ -3,6 +3,10 @@ import VueRouter from 'vue-router'
 import TheMenu from '@/views/TheMenu.vue'
 import SelectionCategory from '@/views/SelectionCategory.vue'
 import SelectionCount from '@/views/SelectionCount.vue'
+import ThePackages from '@/views/ThePackages.vue'
+import PackagesEdit from '@/views/PackagesEdit.vue'
+import PackagesEditCategories from '@/views/PackagesEditCategories.vue'
+import PackagesEditWord from '@/views/PackagesEditWord.vue'
 import TheTraining from '@/views/TheTraining.vue'
 import TheWriteKanji from '@/views/TheWriteKanji.vue'
 import TheAdventure from '@/views/TheAdventure.vue'
@@ -40,6 +44,7 @@ const routes = [
     meta: {
       forward: [
         'selection',
+        'packages',
         'training',
         'writeKanji'
       ]
@@ -54,6 +59,44 @@ const routes = [
         'adventure',
         'adventureInputs'
       ]
+    }
+  },
+  {
+    path: '/packages',
+    name: 'packages',
+    component: ThePackages,
+    meta: {
+      forward: [
+        'packagesEdit'
+      ]
+    }
+  },
+  {
+    path: '/packages/edit',
+    name: 'packagesEdit',
+    component: PackagesEdit,
+    meta: {
+      forward: [
+        'packagesEditCategories'
+      ]
+    }
+  },
+  {
+    path: '/packages/edit/categories',
+    name: 'packagesEditCategories',
+    component: PackagesEditCategories,
+    meta: {
+      forward: [
+        'packagesEditWord'
+      ]
+    }
+  },
+  {
+    path: '/packages/edit/word',
+    name: 'packagesEditWord',
+    component: PackagesEditWord,
+    meta: {
+      forward: []
     }
   },
   {

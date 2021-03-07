@@ -31,21 +31,23 @@
     <div class="field is-grouped is-grouped-multiline maxThirdHeight overflowAuto is-10 flexShrink marginBottomSmall"
          v-show="!nothingSelected">
       <div v-for="category of $store.state.vueDict.categoriesChosen" :key="category" class="control">
-        <TagWithDelete :textOne="category" colorOne="is-primary" colorDelete="is-danger"
+        <TagWithDelete :textOne="getCategoryName(category)" colorOne="is-primary" colorDelete="is-danger"
                        @click="removeCategory(category)"/>
       </div>
     </div>
     <div class="is-10 flexGrow overflowAuto marginBottomSmall">
       <div class="buttons">
-        <ButtonText v-for="category of categoriesAvailable" :key="category" color="is-primary" :text="category"
-                    @click="addCategory(category)" />
+        <ButtonText v-for="category in categoriesAvailable" :key="category.id" color="is-primary"
+                    :text="category.categoryName" @click="addCategory(category)" />
       </div>
     </div>
-    <div class="is-10">
-      <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="categoryButton5"
-                   @click="navTo()" />
-      <ButtonBasic class="marginBottomSmall" color="is-danger" icon="arrow-left" text="categoryButton6"
+    <div class="is-10 buttonContainer">
+      <ButtonBasic class="marginBottomSmall" color="is-info" icon="tasks" text="categoryButton7"
+                   @click="navTo('packages')" />
+      <ButtonBasic class="is-half marginRightSmall" color="is-danger" icon="arrow-left" text="categoryButton6"
                    @click="navTo('menu')" />
+      <ButtonBasic class="is-half marginLeftSmall" color="is-success" icon="check" text="categoryButton5"
+                   @click="navTo()" />
     </div>
     <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
       <TheNotification v-show="showNotification" class="fullWidth" color="is-danger" text="selectionCategoryNotification"
@@ -106,8 +108,8 @@ export default {
     },
     categoriesAvailable () {
       return this.$store.getters['vueDict/getCategories'].filter(entry => {
-        return !this.$store.state.vueDict.categoriesChosen.includes(entry) &&
-          this.getText(entry).toLowerCase().includes(this.searchString.toLowerCase())
+        return !this.$store.state.vueDict.categoriesChosen.includes(entry.id) &&
+          entry.categoryName.toLowerCase().includes(this.searchString.toLowerCase())
       }, this).sort(this.sortFunction(this))
     },
     nothingSelected () {
@@ -124,6 +126,9 @@ export default {
     getCategoryPlayed (id) {
       return this.$store.getters['vueDict/getCategoryPlayed'](id)
     },
+    getCategoryName (id) {
+      return this.$store.getters['vueDict/getCategories'].find(entry => entry.id === id).categoryName
+    },
     toggleSort () {
       this.showSort = !this.showSort
     },
@@ -134,11 +139,11 @@ export default {
       }
     },
     addCategory (category) {
-      this.$store.commit('vueDict/addCategory', category)
+      this.$store.commit('vueDict/addCategory', category.id)
       this.closeNotification()
     },
     addAllCategories () {
-      this.$store.commit('vueDict/setCategories', this.$store.getters['vueDict/getCategories'])
+      this.$store.commit('vueDict/setCategories', this.$store.getters['vueDict/getCategories'].map(entry => entry.id))
       this.closeNotification()
     },
     removeCategory (category) {
@@ -165,9 +170,9 @@ export default {
         case 'sortAlphAsc':
           this.sortFunction = function (that) {
             return (a, b) => {
-              if (that.getText(a) > that.getText(b)) {
+              if (a.categoryName > b.categoryName) {
                 return 1
-              } else if (that.getText(a) < that.getText(b)) {
+              } else if (a.categoryName < b.categoryName) {
                 return -1
               } else {
                 return 0
@@ -178,9 +183,9 @@ export default {
         case 'sortAlphDesc':
           this.sortFunction = function (that) {
             return (a, b) => {
-              if (that.getText(a) < that.getText(b)) {
+              if (a.categoryName < b.categoryName) {
                 return 1
-              } else if (that.getText(a) > that.getText(b)) {
+              } else if (a.categoryName > b.categoryName) {
                 return -1
               } else {
                 return 0
@@ -191,9 +196,9 @@ export default {
         case 'sortDiffAsc':
           this.sortFunction = function (that) {
             return (a, b) => {
-              if (that.getDifficulty(a) > that.getDifficulty(b)) {
+              if (that.getDifficulty(a.id) > that.getDifficulty(b.id)) {
                 return 1
-              } else if (that.getDifficulty(a) < that.getDifficulty(b)) {
+              } else if (that.getDifficulty(a.id) < that.getDifficulty(b.id)) {
                 return -1
               } else {
                 return 0
@@ -204,9 +209,9 @@ export default {
         case 'sortDiffDesc':
           this.sortFunction = function (that) {
             return (a, b) => {
-              if (that.getDifficulty(a) < that.getDifficulty(b)) {
+              if (that.getDifficulty(a.id) < that.getDifficulty(b.id)) {
                 return 1
-              } else if (that.getDifficulty(a) > that.getDifficulty(b)) {
+              } else if (that.getDifficulty(a.id) > that.getDifficulty(b.id)) {
                 return -1
               } else {
                 return 0
@@ -217,9 +222,9 @@ export default {
         case 'sortPlayedAsc':
           this.sortFunction = function (that) {
             return (a, b) => {
-              if (that.getCategoryPlayed(a).count > that.getCategoryPlayed(b).count) {
+              if (that.getCategoryPlayed(a.id).count > that.getCategoryPlayed(b.id).count) {
                 return 1
-              } else if (that.getCategoryPlayed(a).count < that.getCategoryPlayed(b).count) {
+              } else if (that.getCategoryPlayed(a.id).count < that.getCategoryPlayed(b.id).count) {
                 return -1
               } else {
                 return 0
@@ -230,9 +235,9 @@ export default {
         case 'sortPlayedDesc':
           this.sortFunction = function (that) {
             return (a, b) => {
-              if (that.getCategoryPlayed(a).count < that.getCategoryPlayed(b).count) {
+              if (that.getCategoryPlayed(a.id).count < that.getCategoryPlayed(b.id).count) {
                 return 1
-              } else if (that.getCategoryPlayed(a).count > that.getCategoryPlayed(b).count) {
+              } else if (that.getCategoryPlayed(a.id).count > that.getCategoryPlayed(b.id).count) {
                 return -1
               } else {
                 return 0
@@ -261,6 +266,9 @@ export default {
             this.$router.push({ name: 'menu' })
           }
         }
+      } else if (destination === 'packages') {
+        this.$store.commit('vueDict/setDestination', this.destination)
+        this.$router.push({ name: 'packages' })
       } else {
         if (this.$store.state.vueDict.categoriesChosen.length !== 0) {
           if (this.destination === 'adventure') {
@@ -293,6 +301,16 @@ export default {
 
   .is-10 {
     width: calc(100% / 1.2);
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .is-half {
+      width: calc(50% - .25rem);
+    }
   }
 
   .flexGrow {

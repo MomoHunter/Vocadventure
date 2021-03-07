@@ -38,7 +38,7 @@
             {{ getText('adventureStatisticsDetailsFoundItems') }}
           </h2>
           <div class="itemContainer marginBottomBig" v-if="items.length > 0">
-            <ItemBoxSmall :item="item" v-for="item in items" :key="item.id" />
+            <ItemBoxSmall :item="item" v-for="item in condensedItems" :key="item.id" />
           </div>
           <div class="noItemsContainer content marginBottomBig" :class="getSizeClass('content')" v-else>
             {{ getText('adventureStatisticsNoItems') }}
@@ -124,6 +124,17 @@ export default {
     },
     hasForeignAlphabet () {
       return this.vocabs.foreignAlphabet !== ''
+    },
+    condensedItems () {
+      return this.items.reduce((arr, item) => {
+        let foundItem = arr.find(arrItem => arrItem.id === item.id)
+        if (foundItem) {
+          foundItem.quantity += item.quantity
+        } else {
+          arr.push(item)
+        }
+        return arr
+      }, [])
     }
   },
   methods: {
@@ -240,7 +251,7 @@ export default {
     .itemContainer {
       display: flex;
       min-height: 16%;
-      max-width: calc(100% / 1.2);
+      max-width: 100%;
       overflow: auto;
 
       > :not(:last-child) {
