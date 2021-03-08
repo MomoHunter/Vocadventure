@@ -26,7 +26,7 @@ export default {
     ],
     selectedWordPackKey: '',
     selectedWordPack: null,
-    selectedWordPackCategoryIndex: 0,
+    selectedWordPackCategoryIndex: -1,
     selectedWordPackWordIndex: -1,
     difficulty: 0,
     wordCount: 0,

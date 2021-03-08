@@ -38,7 +38,7 @@
         <h1 class="title marginTopBig" :class="getSizeClass('title')">
           {{ getText('packagesEditCategoriesPanelTitle') }}
         </h1>
-        <div class="flexGrow overflowAuto">
+        <div class="flexGrow overflowAuto is-10">
           <input class="input marginBottomSmall" type="text" v-for="lang in supportedLanguages" :key="lang"
                  :placeholder="getText(lang)" v-model="newCategoryData[lang]" />
         </div>
@@ -82,6 +82,9 @@ export default {
   created () {
     if (this.$store.state.vueDict.selectedWordPack) {
       this.categories = JSON.parse(JSON.stringify(this.$store.state.vueDict.selectedWordPack.categories))
+    }
+    if (this.$store.state.vueDict.selectedWordPackCategoryIndex >= 0) {
+      this.expandedCategories.push(this.$store.state.vueDict.selectedWordPackCategoryIndex)
     }
   },
   computed: {
@@ -191,15 +194,18 @@ export default {
       this.newCategoryData = {}
       this.newCategoryVisible = false
     },
-    navTo (destination, categoryIndex = 0) {
+    navTo (destination, categoryIndex = -1) {
+      let wordPack = JSON.parse(JSON.stringify(this.$store.state.vueDict.selectedWordPack))
+      wordPack.categories = this.categories
+
       switch (destination) {
         case 'packagesEditWord':
+          this.$store.commit('vueDict/setSelectedWordPack', wordPack)
           this.$store.commit('vueDict/setSelectedWordPackCategoryIndex', categoryIndex)
           break
         case 'packagesEdit':
-          let wordPack = JSON.parse(JSON.stringify(this.$store.state.vueDict.selectedWordPack))
-          wordPack.categories = this.categories
           this.$store.commit('vueDict/setSelectedWordPack', wordPack)
+          this.$store.commit('vueDict/setSelectedWordPackCategoryIndex', -1)
           break
         default:
       }
