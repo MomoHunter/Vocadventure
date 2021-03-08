@@ -176,17 +176,17 @@ export default {
         this.newCategoryData.index = this.categories.reduce((newIndex, category) => {
           return category.index >= newIndex ? category.index + 1 : newIndex
         }, 1)
-        this.newCategoryData.words = []
         for (let lang of this.supportedLanguages) {
           this.newCategoryData[lang] = ''
         }
+        this.newCategoryData.words = []
       } else {
         let category = this.categories.find(cat => cat.index === categoryIndex)
         this.newCategoryData.index = categoryIndex
-        this.newCategoryData.words = []
         for (let lang of this.supportedLanguages) {
           this.newCategoryData[lang] = category[lang]
         }
+        this.newCategoryData.words = []
       }
       this.newCategoryVisible = true
     },
