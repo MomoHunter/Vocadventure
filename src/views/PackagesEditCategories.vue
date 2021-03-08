@@ -150,7 +150,6 @@ export default {
       this.expandedCategories = this.expandedCategories.filter(index => index !== categoryIndex)
     },
     confirmRemoveWord (categoryIndex, index) {
-      console.log(categoryIndex, index)
       this.selectedCategoryIndex = categoryIndex
       this.selectedWordIndex = index
       this.$store.commit('vueDict/showModal', {

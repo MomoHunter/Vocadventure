@@ -127,11 +127,10 @@ export default {
       })
     },
     downloadPack (wordPack) {
-      console.log(wordPack)
       let element = document.createElement('a')
-      let file = new Blob([JSON.stringify(wordPack)], { type: 'text/json' })
+      let file = new Blob([JSON.stringify(wordPack)], { type: 'application/json' })
       element.href = URL.createObjectURL(file)
-      element.download = wordPack.name + '-wordpack.json'
+      element.download = wordPack.name.toLowerCase().trim().replace(/ /g, '_') + '-wordpack.json'
       element.click()
     },
     getFile (file) {

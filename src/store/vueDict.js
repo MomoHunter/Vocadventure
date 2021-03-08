@@ -435,7 +435,6 @@ export default {
         }
       } else {
         let itemObject = state.inventory.find(item => item.id === object.id)
-        console.log(object.id)
         if (itemObject.quantity + object.quantity < 0) {
           itemObject.quantity += object.quantity
         } else if (itemObject.quantity + object.quantity === 0) {
