@@ -1,11 +1,11 @@
 <template>
-  <div class="tags has-addons">
-    <span class="tag" :class="[colorOne, getSizeClass('tag')]" @click="$emit('click')">
-      {{ getText(textOne) }}
-    </span>
-    <span class="tag" :class="[colorTwo, getSizeClass('tag')]" @click="$emit('click')">
-      {{ getText(textTwo) }}
-    </span>
+  <div class="tag" :class="[getSizeClass('general'), color]">
+    <div class="title">
+      {{ getText(title) }}
+    </div>
+    <div class="text">
+      {{ getText(text) }}
+    </div>
   </div>
 </template>
 
@@ -13,10 +13,9 @@
 export default {
   name: 'TagBasic',
   props: {
-    colorOne: String,
-    textOne: String,
-    colorTwo: String,
-    textTwo: [String, Number]
+    title: String,
+    text: [String, Number],
+    color: String
   },
   methods: {
     getText (id) {

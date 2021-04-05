@@ -1,5 +1,42 @@
 <template>
-  <div class="flexboxContainer">
+  <div class="page">
+    <HeroBasic :title="title" :subtitle="categoryName" />
+    <div class="flex-grow overflow-auto padding-top-medium">
+      <div class="flex-row margin-bottom-medium">
+        <ButtonMDI class="width-third" :class="{ 'single-2': difficultySelected(1) }" color="green" text="difficulty1"
+                   @click="setDifficulty(1)">
+          <SpeedometerSlow :class="getSizeClass('general')" />
+        </ButtonMDI>
+        <ButtonMDI class="width-third" :class="{ 'single-2': difficultySelected(2) }" color="yellow" text="difficulty2"
+                   @click="setDifficulty(2)">
+          <SpeedometerMedium :class="getSizeClass('general')" />
+        </ButtonMDI>
+        <ButtonMDI class="width-third" :class="{ 'single-2': difficultySelected(3) }" color="red" text="difficulty3"
+                   @click="setDifficulty(3)">
+          <Speedometer :class="getSizeClass('general')" />
+        </ButtonMDI>
+      </div>
+      <InputBasic class="border-bottom margin-bottom-medium" v-for="lang in supportedLanguages" :title="lang"
+                  type="text" icon="font" v-model="newWordData.languageTranslations[lang]" noFocus :key="lang"
+                  @click="hideNotification()" />
+      <InputBasic class="border-bottom margin-bottom-medium" :title="targetLanguageData.latinAlphabet"
+                  type="text" icon="globe" v-model="newWordData.latinAlphabet" noFocus @click="hideNotification()" />
+      <InputBasic v-show="targetLanguageData.foreignAlphabet !== ''" class="border-bottom margin-bottom-medium"
+                  :title="targetLanguageData.foreignAlphabet" type="text" icon="globe"
+                  v-model="newWordData.foreignAlphabet" noFocus @click="hideNotification()" />
+    </div>
+    <div class="button-container">
+      <ButtonBasic class="width-half" icon="times" color="red" text="packagesEditWordButton2" @click="navTo()" />
+      <ButtonBasic class="width-half" icon="check" color="green" text="packagesEditWordButton1" @click="saveWord()" />
+    </div>
+    <transition enter-active-class="animate__animated animate__backInUp duration-c-700ms"
+                leave-active-class="animate__animated animate__backOutDown duration-c-700ms">
+      <NotificationBasic v-show="notificationVisible" title="packagesEditWordNotificationTitle"
+                       :text="['packagesEditWordNotificationText']" color="red" icon="exclamation"
+                       @click="hideNotification()" />
+    </transition>
+  </div>
+  <!-- <div class="flexboxContainer">
     <HeroBasic class="marginBottomSmall" title="packagesEditWordTitle" />
     <div class="is-10 overflowAuto flexGrow">
       <input class="input marginBottomSmall" :class="getSizeClass('input')" type="text"
@@ -36,17 +73,18 @@
       <ButtonBasic icon="times" color="is-danger" text="packagesEditWordButton2" @click="navTo()" />
     </div>
     <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-      <TheNotification v-show="notificationVisible" class="fullWidth" color="is-danger" text="packagesEditWordNotification"
+      <NotificationBasic v-show="notificationVisible" class="fullWidth" color="is-danger" text="packagesEditWordNotification"
                        @click="hideNotification()" />
     </transition>
-  </div>
+  </div> -->
 </template>
 
 <script>
 import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonMDI from '@/components/ButtonMDI.vue'
+import InputBasic from '@/components/InputBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
-import TheNotification from '@/components/TheNotification.vue'
+import NotificationBasic from '@/components/NotificationBasic.vue'
 
 import SpeedometerSlow from 'vue-material-design-icons/SpeedometerSlow.vue'
 import SpeedometerMedium from 'vue-material-design-icons/SpeedometerMedium.vue'
@@ -57,8 +95,9 @@ export default {
   components: {
     HeroBasic,
     ButtonMDI,
+    InputBasic,
     ButtonBasic,
-    TheNotification,
+    NotificationBasic,
     SpeedometerSlow,
     SpeedometerMedium,
     Speedometer
@@ -98,6 +137,12 @@ export default {
     }
   },
   computed: {
+    title () {
+      if (this.wordIndex >= 0) {
+        return 'packagesEditWordTitleEdit'
+      }
+      return 'packagesEditWordTitleNew'
+    },
     targetLanguageData () {
       if (this.$store.state.vueDict.selectedWordPack) {
         return this.$store.state.vueDict.targetLanguages[this.$store.state.vueDict.selectedWordPack.targetLanguage]
@@ -113,14 +158,24 @@ export default {
     categoryIndex () {
       return this.$store.state.vueDict.selectedWordPackCategoryIndex
     },
+    categoryName () {
+      let wordPack = this.$store.state.vueDict.selectedWordPack
+      if (wordPack) {
+        let foundCategory = wordPack.categories.find(category =>
+          category.index === this.categoryIndex
+        )
+
+        if (foundCategory) {
+          return [foundCategory[this.$store.state.lang]]
+        }
+      }
+      return ['']
+    },
     wordIndex () {
       return this.$store.state.vueDict.selectedWordPackWordIndex
     }
   },
   methods: {
-    getText (id) {
-      return this.$store.getters.getText(id)
-    },
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
     },
@@ -158,7 +213,7 @@ export default {
       if (this.targetLanguageData.foreignAlphabet !== '') {
         wordObject[this.targetLanguageData.foreignAlphabet] = this.newWordData.foreignAlphabet
       }
-      if (this.$store.state.vueDict.selectedWordPackWordIndex >= 0) {
+      if (this.wordIndex >= 0) {
         this.$store.commit('vueDict/updateWordInSelectedPack', wordObject)
         this.$store.commit('vueDict/setSelectedWordPackWordIndex', -1)
       } else {
@@ -178,33 +233,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.flexboxContainer {
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  height: calc(100% - 71px);
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .is-third {
-    width: calc(100% / 3);
-  }
-
-  .flexGrow {
-    flex-grow: 1;
-  }
-
-  .overflowAuto {
-    overflow: auto;
-  }
-}
-</style>

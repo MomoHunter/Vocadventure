@@ -1,17 +1,3 @@
 {
-  "darkLumen": "css/darkLumen.min.css",
-  "bulma": "css/bulma.min.css",
-  "darkly": "css/darkly.bw.min.css",
-  "cerulean": "css/cerulean.bw.min.css",
-  "cosmo": "css/cosmo.bw.min.css",
-  "cyborg": "css/cyborg.bw.min.css",
-  "flatly": "css/flatly.bw.min.css",
-  "lumen": "css/lumen.bw.min.css",
-  "lux": "css/lux.bw.min.css",
-  "materia": "css/materia.bw.min.css",
-  "nuclear": "css/nuclear.bw.min.css",
-  "slate": "css/slate.bw.min.css",
-  "solar": "css/solar.bw.min.css",
-  "spacelab": "css/spacelab.bw.min.css",
-  "superhero": "css/superhero.bw.min.css"
+  "garium": "css/garium.min.css"
 }

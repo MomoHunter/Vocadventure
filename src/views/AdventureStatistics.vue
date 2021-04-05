@@ -1,107 +1,88 @@
 <template>
-  <div class="flexboxContainer">
-    <div class="is-10 box resultBox marginBottomSmall">
-      <div class="innerResultBox">
-        <span class="content flexGrow noMarginBottom">
+  <div class="adventure-page">
+    <div class="statistics flex-grow overflow-auto">
+      <div class="result flex-row border-bottom margin-bottom-medium" :class="getSizeClass('general')">
+        <div class="title flex-grow">
           {{ getText(vocabs.latinAlphabet) }}
-        </span>
-        <span class="content noMarginBottom">
+        </div>
+        <div class="percentage">
           {{ percentages.latinAlphabet }}%
-        </span>
+        </div>
       </div>
-      <div class="innerResultBox" v-if="hasForeignAlphabet">
-        <span class="content flexGrow marginTopSmall noMarginBottom">
+      <div v-if="hasForeignAlphabet" class="result flex-row border-bottom margin-bottom-medium"
+           :class="getSizeClass('general')">
+        <div class="title flex-grow">
           {{ getText(vocabs.foreignAlphabet) }}
-        </span>
-        <span class="content marginTopSmall noMarginBottom">
+        </div>
+        <div class="percentage">
           {{ percentages.foreignAlphabet }}%
-        </span>
+        </div>
+      </div>
+      <TitleBasic class="margin-bottom-mini" text="adventureStatisticsFoundItems" icon="plus" color="green" />
+      <div v-if="items.length > 0" class="flex-row gap-column-small overflow-auto margin-bottom-medium">
+        <ItemBoxBasic class="small" v-for="item in condensedItems" mode="small" :item="item" :key="item.id" />
+      </div>
+      <div v-else class="item-box-replacement margin-bottom-medium" :class="getSizeClass('general')">
+        {{ getText('adventureStatisticsNoItems') }}
+      </div>
+      <TitleBasic class="margin-bottom-mini" text="adventureStatisticsWordTitle" icon="pen" color="info" />
+      <div class="correct-word flex-column" :class="getSizeClass('general')" v-for="word in getCorrectWords()"
+           :key="word.index">
+        <div class="title info flex-row">
+          <div class="index">
+            {{ word.index + 1 }}
+          </div>
+          <div class="text flex-grow">
+            {{ vocabs.words[word.index][vocabs.mainAlphabet] }}
+          </div>
+        </div>
+        <div class="latin flex-row">
+          <div class="icon" :class="getVocabIconColor(word.latinCorrectWords.result)">
+            <font-awesome-icon :icon="['fas', getVocabIcon(word.latinCorrectWords.result)]" />
+          </div>
+          <div class="word flex-column flex-grow">
+            <div class="own">
+              {{ word.latinCorrectWords.inputValue || '-' }}
+            </div>
+            <div class="correct">
+              {{ vocabs.words[word.index][vocabs.latinAlphabet] }}
+            </div>
+          </div>
+        </div>
+        <div v-if="hasForeignAlphabet" class="foreign flex-row">
+          <div class="icon" :class="getVocabIconColor(word.foreignCorrectWords.result)">
+            <font-awesome-icon :icon="['fas', getVocabIcon(word.foreignCorrectWords.result)]" />
+          </div>
+          <div class="word flex-column flex-grow">
+            <div class="own">
+              {{ word.foreignCorrectWords.inputValue || '-' }}
+            </div>
+            <div class="correct">
+              {{ vocabs.words[word.index][vocabs.foreignAlphabet] }}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="is-10 flexGrow">
-      <ButtonBasic icon="clipboard-list" color="is-info" text="adventureStatisticsButton3" @click="showDetails()" />
-    </div>
-    <div class="is-10">
-      <ButtonBasic class="marginBottomSmall" icon="arrow-left" color="is-warning" text="adventureStatisticsButton1"
+    <div class="button-container">
+      <ButtonBasic class="width-half" icon="arrow-left" color="yellow" text="adventureStatisticsButton1"
                    @click="$emit('click', { type: 'navTo', value: 'category' })" />
-      <ButtonBasic icon="check" color="is-success" text="adventureStatisticsButton2"
+      <ButtonBasic class="width-half" icon="check" color="green" text="adventureStatisticsButton2"
                    @click="$emit('click', { type: 'navTo', value: 'menu' })" />
     </div>
-    <transition enter-active-class="animated fadeInUp a-little-bit-faster"
-                leave-active-class="animated fadeOutDown a-little-bit-faster">
-      <div v-show="detailsVisible" class="detailsContainer has-background-background">
-        <h1 class="title marginTopBig" :class="getSizeClass('title')">
-          {{ getText('adventureStatisticsDetailsTitle') }}
-        </h1>
-        <div class="is-10">
-          <h2 class="subtitle has-text-weight-bold marginBottomSmall" :class="getSizeClass('subtitle')">
-            {{ getText('adventureStatisticsDetailsFoundItems') }}
-          </h2>
-          <div class="itemContainer marginBottomBig" v-if="items.length > 0">
-            <ItemBoxSmall :item="item" v-for="item in condensedItems" :key="item.id" />
-          </div>
-          <div class="noItemsContainer content marginBottomBig" :class="getSizeClass('content')" v-else>
-            {{ getText('adventureStatisticsNoItems') }}
-          </div>
-        </div>
-        <div class="is-10 flexGrow overflowAuto marginBottomBig">
-          <table class="table fullWidth">
-            <tbody v-for="word in getCorrectWords()" :key="word.index">
-              <tr>
-                <td colspan="2" class="has-background-primary has-text-black" :class="getSizeClass('td')">
-                  {{ vocabs.words[word.index][vocabs.mainAlphabet] }}
-                </td>
-              </tr>
-              <tr>
-                <td rowspan="2" class="vAlign" :class="getSizeClass('td')">
-                  <font-awesome-icon :class="getVocabIconColor(word.latinCorrectWords.result)"
-                                     :icon="['fas', getVocabIcon(word.latinCorrectWords.result)]"
-                                     :size="getSizeClass('fas')" />
-                </td>
-                <td class="fullWidth" :class="getSizeClass('td')">
-                  {{ vocabs.words[word.index][vocabs.latinAlphabet] }}
-                </td>
-              </tr>
-              <tr>
-                <td class="fullWidth" :class="getSizeClass('td')">
-                  {{ word.latinCorrectWords.inputValue || '-' }}
-                </td>
-              </tr>
-              <tr v-if="hasForeignAlphabet">
-                <td rowspan="2" class="vAlign" :class="getSizeClass('td')">
-                  <font-awesome-icon :class="getVocabIconColor(word.foreignCorrectWords.result)"
-                                     :icon="['fas', getVocabIcon(word.foreignCorrectWords.result)]"
-                                     :size="getSizeClass('fas')" />
-                </td>
-                <td class="fullWidth" :class="getSizeClass('td')">
-                  {{ vocabs.words[word.index][vocabs.foreignAlphabet] }}
-                </td>
-              </tr>
-              <tr v-if="hasForeignAlphabet">
-                <td class="fullWidth" :class="getSizeClass('td')">
-                  {{ word.foreignCorrectWords.inputValue || '-' }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="is-10">
-          <ButtonBasic class="marginBottomSmall" icon="times" color="is-danger" text="adventureStatisticsDetailsButton1"
-                       @click="hideDetails()" />
-        </div>
-      </div>
-    </transition>
   </div>
 </template>
 
 <script>
-import ItemBoxSmall from '@/components/ItemBoxSmall.vue'
+import ItemBoxBasic from '@/components/ItemBoxBasic.vue'
+import TitleBasic from '@/components/TitleBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 
 export default {
   name: 'AdventureStatistics',
   components: {
-    ItemBoxSmall,
+    ItemBoxBasic,
+    TitleBasic,
     ButtonBasic
   },
   data () {
@@ -177,11 +158,11 @@ export default {
     getVocabIconColor (result) {
       switch (result) {
         case 2:
-          return 'has-text-success'
+          return 'green'
         case 1:
-          return 'has-text-warning'
+          return 'yellow'
         default:
-          return 'has-text-danger'
+          return 'red'
       }
     },
     showDetails () {
@@ -195,89 +176,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flexboxContainer {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  padding-bottom: 71px;
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .flexGrow {
-    flex-grow: 1;
-  }
-
-  .overflowAuto {
-    overflow: auto;
-  }
-
-  .resultBox {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    padding: 1rem;
-
-    .innerResultBox {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-    }
-  }
-
-  .detailsContainer {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-    width: 100%;
-    height: calc(100% + .5rem);
-    padding-bottom: 71px;
-    top: 0px;
-    z-index: 4;
-
-    .vAlign {
-      vertical-align: middle;
-    }
-
-    .table tbody tr:last-child td {
-      border-bottom-width: 1px !important;
-    }
-
-    .itemContainer {
-      display: flex;
-      min-height: 16%;
-      max-width: 100%;
-      overflow: auto;
-
-      > :not(:last-child) {
-        margin-right: .5rem;
-      }
-    }
-
-    .noItemsContainer {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      align-items: center;
-      height: 6em;
-
-      &.is-small {
-      height: 4.5em;
-      }
-
-      &.is-medium {
-      height: 7.5em;
-      }
-
-      &.is-large {
-      height: 9em;
-      }
-    }
-  }
+.statistics {
+  height: 1rem;
 }
 </style>

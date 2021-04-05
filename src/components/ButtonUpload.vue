@@ -1,16 +1,18 @@
 <template>
-  <button class="button spaceBetween is-outlined is-fullwidth" :class="[getSizeClass('button'), color]"
-     @click="$emit('click')">
-    <span>{{ getText(text) }}</span>
+  <div class="button upload" :class="[getSizeClass('general'), color]">
+    <input class="input" type="file" accept=".json" multiple @change="$emit('change', $event.target.files)">
     <span class="icon">
       <font-awesome-icon :icon="['fas', icon]" />
     </span>
-  </button>
+    <span class="text">
+      {{ getText(text) }}
+    </span>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'ButtonRightIcon',
+  name: 'ButtonUpload',
   props: {
     icon: String,
     text: String,
@@ -28,7 +30,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.spaceBetween {
-  justify-content: space-between;
+.button {
+  justify-content: center;
+  align-items: center;
 }
 </style>

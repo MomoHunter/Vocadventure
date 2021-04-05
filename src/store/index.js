@@ -13,9 +13,10 @@ export default new Vuex.Store({
     version: '0.1.0',
     lang: 'german',
     targetLanguage: 'japanese',
-    theme: 'darkLumen',
+    theme: 'garium',
     size: 'normal',
     viewport: 1,
+    volume: 100,
     texts: Texts,
     swUpdateFound: false,
     swUpdated: false,
@@ -51,8 +52,10 @@ export default new Vuex.Store({
         theme: state.theme,
         size: state.size,
         viewport: state.viewport,
+        volume: state.volume,
         status: state.vueDict.status,
         categoriesPlayed: state.vueDict.categoriesPlayed,
+        activeWordPacks: state.vueDict.activeWordPacks,
         inventory: state.vueDict.inventory,
         unlockedItems: state.vueDict.unlockedItems,
         watchedIntro: state.canvasDict.watchedIntro,
@@ -87,6 +90,9 @@ export default new Vuex.Store({
 
       state.viewport = viewport
       viewportTag.content = 'width=device-width, initial-scale=' + viewport
+    },
+    changeVolume (state, volume) {
+      state.volume = volume
     },
     swUpdateFound (state) {
       state.swUpdateFound = true

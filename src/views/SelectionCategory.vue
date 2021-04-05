@@ -1,71 +1,58 @@
 <template>
-  <div class="flexContainer">
-    <HeroBasic class="marginBottomSmall" :title="destination" subtitle="selectionCategorySubtitle" />
-    <div v-show="!showSearch && !showSort" class="field has-addons is-10">
-      <div class="control fullWidth">
-        <ButtonBasic color="is-link" :icon="sortIcon" text="categoryButton1" @click="toggleSort()" />
-      </div>
-      <div class="control">
-        <ButtonMDIIcon color="is-link" @click="addAllCategories()">
-          <ExpandAll :class="getSizeClass('mdi')" />
-        </ButtonMDIIcon>
-      </div>
-      <div class="control">
-        <ButtonMDIIcon color="is-link" @click="removeAllCategories()">
-          <AnimationOutline :class="getSizeClass('mdi')" />
-        </ButtonMDIIcon>
-      </div>
-      <div class="control fullWidth">
-        <ButtonBasic color="is-link" icon="search" text="categoryButton4" @click="toggleSearch()" />
+  <div class="page">
+    <HeroBasic :title="destination" :subtitle="['selectionCategorySubtitle']" />
+    <div v-show="!searchVisible && !sortVisible" class="action-container flex-row">
+      <ButtonBasic class="width-full" color="action" :icon="sortIcon" text="categoryButton1" @click="showSort()" />
+      <ButtonMDIIcon color="action" @click="removeAllCategories()">
+        <AnimationOutline :class="getSizeClass('general')" />
+      </ButtonMDIIcon>
+      <ButtonMDIIcon color="action" @click="addAllCategories()">
+        <ExpandAll :class="getSizeClass('general')" />
+      </ButtonMDIIcon>
+      <ButtonBasic class="width-full" color="action" icon="search" text="categoryButton4" @click="showSearch()" />
+    </div>
+    <div v-show="sortVisible" class="action-container flex-row flex-center">
+      <DropdownBasic class="width-full" :icon="sortIcon" color="action" :options="sorters" selected="sortStandard"
+                     @change="sort($event)" />
+      <ButtonIcon icon="times" color="red" @click="hideSort()" />
+    </div>
+    <div v-if="searchVisible" class="action-container">
+      <InputWithButton class="width-full" type="text" iconInput="search" iconButton="times" colorInput="action"
+                       colorButton="red" @click="hideSearch()" v-model="searchString" />
+    </div>
+    <div class="flex-column overflow-auto max-height flex-shrink" :class="{ 'border-bottom': !nothingSelected }">
+      <div v-for="category in $store.state.vueDict.categoriesChosen" class="flex-row" :key="category">
+        <ButtonText class="single-1 flex-grow" color="selected" :text="getCategoryName(category)" />
+        <ButtonIcon class="single-1" icon="times" color="red" @click="removeCategory(category)" />
       </div>
     </div>
-    <div v-show="showSort" class="field has-addons is-10">
-      <DropdownRounded class="is-expanded" :options="sorters" :icon="sortIcon" selected="sortStandard" color="is-link"
-                       @change="sort($event)" />
-      <div class="control">
-        <ButtonIcon color="is-danger" icon="times" @click="toggleSort()" />
-      </div>
+    <div class="flex-grow flex-column overflow-auto">
+      <ButtonText v-for="category in categoriesAvailable" class="single-1 width-full" color="info"
+                  :text="category.categoryName" :key="category.id" @click="addCategory(category)" />
     </div>
-    <InputWithButton v-if="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
-                     iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
-    <div class="field is-grouped is-grouped-multiline maxThirdHeight overflowAuto is-10 flexShrink marginBottomSmall"
-         v-show="!nothingSelected">
-      <div v-for="category of $store.state.vueDict.categoriesChosen" :key="category" class="control">
-        <TagWithDelete :textOne="getCategoryName(category)" colorOne="is-primary" colorDelete="is-danger"
-                       @click="removeCategory(category)"/>
-      </div>
+    <div class="button-container flex-row flex-wrap">
+      <ButtonBasic class="width-half" color="red" icon="arrow-left" text="categoryButton6" @click="navTo('menu')" />
+      <ButtonBasic class="width-half" color="green" icon="check" text="categoryButton5" @click="navTo('next')" />
+      <ButtonBasic class="width-full" color="info" icon="tasks" text="categoryButton7" @click="navTo('packages')" />
     </div>
-    <div class="is-10 flexGrow overflowAuto marginBottomSmall">
-      <div class="buttons">
-        <ButtonText v-for="category in categoriesAvailable" :key="category.id" color="is-primary"
-                    :text="category.categoryName" @click="addCategory(category)" />
-      </div>
-    </div>
-    <div class="is-10 buttonContainer">
-      <ButtonBasic class="marginBottomSmall" color="is-info" icon="tasks" text="categoryButton7"
-                   @click="navTo('packages')" />
-      <ButtonBasic class="is-half marginRightSmall" color="is-danger" icon="arrow-left" text="categoryButton6"
-                   @click="navTo('menu')" />
-      <ButtonBasic class="is-half marginLeftSmall" color="is-success" icon="check" text="categoryButton5"
-                   @click="navTo()" />
-    </div>
-    <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-      <TheNotification v-show="showNotification" class="fullWidth" color="is-danger" text="selectionCategoryNotification"
-                       @click="closeNotification()" />
+    <transition enter-active-class="animate__animated animate__backInUp duration-c-700ms"
+                leave-active-class="animate__animated animate__backOutDown duration-c-700ms">
+      <NotificationBasic v-show="notificationVisible" title="selectionCategoryNotificationTitle"
+                       :text="['selectionCategoryNotificationText']" color="red" icon="exclamation"
+                       @click="hideNotification()" />
     </transition>
   </div>
 </template>
 
 <script>
 import HeroBasic from '@/components/HeroBasic.vue'
-import DropdownRounded from '@/components/DropdownRounded.vue'
-import TagWithDelete from '@/components/TagWithDelete.vue'
+import DropdownBasic from '@/components/DropdownBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import ButtonIcon from '@/components/ButtonIcon.vue'
 import ButtonMDIIcon from '@/components/ButtonMDIIcon.vue'
 import ButtonText from '@/components/ButtonText.vue'
 import InputWithButton from '@/components/InputWithButton.vue'
-import TheNotification from '@/components/TheNotification.vue'
+import NotificationBasic from '@/components/NotificationBasic.vue'
 
 import AnimationOutline from 'vue-material-design-icons/AnimationOutline.vue'
 import ExpandAll from 'vue-material-design-icons/ExpandAll.vue'
@@ -74,28 +61,36 @@ export default {
   name: 'SelectionCategory',
   components: {
     HeroBasic,
-    DropdownRounded,
-    TagWithDelete,
+    DropdownBasic,
     ButtonBasic,
     ButtonIcon,
     ButtonMDIIcon,
     ButtonText,
     InputWithButton,
-    TheNotification,
+    NotificationBasic,
     AnimationOutline,
     ExpandAll
   },
   data () {
     return {
-      showSort: false,
-      showSearch: false,
-      showNotification: false,
+      sortVisible: false,
+      searchVisible: false,
+      notificationVisible: false,
       searchString: '',
       sortIcon: 'sort',
       sortFunction (that) {
         return (a, b) => { return 0 }
       }
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.name === 'menu' || to.name === 'packages') {
+      this.$store.commit('vueDict/setCategories', [])
+      this.$store.commit('vueDict/setDifficulty', 1)
+      this.$store.commit('vueDict/setWordCount', 10)
+      this.$store.commit('vueDict/setReversed', false)
+    }
+    next()
   },
   computed: {
     destination () {
@@ -129,28 +124,35 @@ export default {
     getCategoryName (id) {
       return this.$store.getters['vueDict/getCategories'].find(entry => entry.id === id).categoryName
     },
-    toggleSort () {
-      this.showSort = !this.showSort
-    },
-    toggleSearch () {
-      this.showSearch = !this.showSearch
-      if (!this.showSearch) {
-        this.searchString = ''
-      }
-    },
     addCategory (category) {
       this.$store.commit('vueDict/addCategory', category.id)
-      this.closeNotification()
+      this.hideNotification()
     },
     addAllCategories () {
-      this.$store.commit('vueDict/setCategories', this.$store.getters['vueDict/getCategories'].map(entry => entry.id))
-      this.closeNotification()
+      this.$store.commit('vueDict/setCategories',
+        this.$store.getters['vueDict/getCategories'].filter(entry =>
+          entry.categoryName.toLowerCase().includes(this.searchString.toLowerCase())
+        , this).map(entry => entry.id)
+      )
+      this.hideNotification()
     },
     removeCategory (category) {
       this.$store.commit('vueDict/removeCategory', category)
     },
     removeAllCategories () {
       this.$store.commit('vueDict/setCategories', [])
+    },
+    showSort () {
+      this.sortVisible = true
+    },
+    hideSort () {
+      this.sortVisible = false
+    },
+    showSearch () {
+      this.searchVisible = true
+    },
+    hideSearch () {
+      this.searchVisible = false
     },
     sort (type) {
       if (type.endsWith('Asc')) {
@@ -251,90 +253,51 @@ export default {
     getDifficulty (id) {
       return this.$store.getters['vueDict/getCategoryDifficulty'](id)
     },
-    navTo (destination) {
-      if (destination === 'menu') {
-        this.$store.commit('vueDict/setCategories', [])
-        this.$store.commit('vueDict/setDifficulty', 0)
-        this.$store.commit('vueDict/setWordCount', 0)
-        this.$store.commit('vueDict/setReversed', false)
-        if (this.destination === 'adventure') {
-          this.$router.push({ name: 'menu', query: { sub: 'adventure' } })
-        } else {
-          if (this.$store.state.targetLanguage === 'japanese') {
-            this.$router.push({ name: 'menu', query: { sub: 'training' } })
-          } else {
-            this.$router.push({ name: 'menu' })
+    navTo (name) {
+      switch (name) {
+        case 'menu':
+          let destination = this.destination
+          if (this.destination === 'writeKanji') {
+            destination = 'training'
           }
-        }
-      } else if (destination === 'packages') {
-        this.$store.commit('vueDict/setDestination', this.destination)
-        this.$router.push({ name: 'packages' })
-      } else {
-        if (this.$store.state.vueDict.categoriesChosen.length !== 0) {
+
+          if (destination === 'training' && this.$store.state.targetLanguage !== 'japanese') {
+            this.$router.push({ name: name })
+          } else {
+            this.$router.push({ name: name, query: { sub: destination } })
+          }
+          break
+        case 'packages':
+          this.$store.commit('vueDict/setDestination', this.destination)
+          this.$router.push({ name: name })
+          break
+        case 'next':
+          if (this.nothingSelected) {
+            this.showNotification()
+            break
+          }
+
           if (this.destination === 'adventure') {
             this.$router.push({ name: 'selection' })
           } else {
             this.$router.push({ name: this.destination })
           }
-        } else {
-          this.showNotification = true
-        }
+          break
+        default:
       }
     },
-    closeNotification () {
-      this.showNotification = false
+    showNotification () {
+      this.notificationVisible = true
+    },
+    hideNotification () {
+      this.notificationVisible = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.flexContainer {
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: calc(100% - 71px);
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .buttonContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    .is-half {
-      width: calc(50% - .25rem);
-    }
-  }
-
-  .flexGrow {
-    flex-grow: 1;
-  }
-}
-
-.halfWidth {
-  width: 50%;
-}
-
-.quarterWidth {
-  width: 25%;
-}
-
-.maxThirdHeight {
-  max-height: 20%;
-}
-
-.overflowAuto {
-  overflow: auto;
-}
-
-.flexShrink {
-  flex-shrink: 0;
+.max-height {
+  max-height: 22%;
 }
 </style>

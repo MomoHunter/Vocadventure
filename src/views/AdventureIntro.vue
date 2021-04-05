@@ -1,27 +1,27 @@
 <template>
-  <div class="flexboxContainer is-10">
-    <div class="content flexGrow overflowAuto" :class="getSizeClass('content')" v-maxHeight>
-      <blockquote>
-        {{ displayedIntroText }}
-      </blockquote>
+  <div class="adventure-page">
+    <div class="story flex-grow overflow-auto">
+      <TheBlockquote v-show="displayedIntroText !== ''" :text="displayedIntroText" />
     </div>
-    <div class="innerFlexContainerButton">
-      <ButtonBasic class="marginBottomSmall" icon="check" text="adventureIntroButton1" color="is-success"
-                  @click="continueAction()" />
-      <ButtonBasic class="is-half marginRightSmall" icon="times" text="adventureIntroButton2" color="is-danger"
+    <div class="button-container">
+      <ButtonBasic class="width-half" icon="times" text="adventureIntroButton2" color="red"
                   @click="$emit('click', { type: 'abort' })" />
-      <ButtonBasic class="is-half marginLeftSmall" icon="arrow-right" text="adventureIntroButton3" color="is-warning"
+      <ButtonBasic class="width-half" icon="check" text="adventureIntroButton1" color="green"
+                  @click="continueAction()" />
+      <ButtonBasic class="width-full" icon="arrow-right" text="adventureIntroButton3" color="yellow"
                   @click="$emit('click', { type: 'skipIntro' })" />
     </div>
   </div>
 </template>
 
 <script>
+import TheBlockquote from '@/components/TheBlockquote.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 
 export default {
   name: 'AdventureIntro',
   components: {
+    TheBlockquote,
     ButtonBasic
   },
   data () {
@@ -43,9 +43,6 @@ export default {
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)
-    },
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
     },
     continueAction () {
       if (this.displayedIntroText === this.getText('adventureIntroPart' + this.currentIntroPart)) {
@@ -80,32 +77,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flexboxContainer {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding-bottom: 71px;
-
-  &.is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .is-half {
-    width: calc(50% - .25rem);
-  }
-
-  .flexGrow {
-    flex-grow: 1;
-  }
-
-  .overflowAuto {
-    overflow: auto;
-  }
-
-  .innerFlexContainerButton {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
+.story {
+  height: 1rem;
 }
 </style>

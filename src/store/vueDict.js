@@ -24,12 +24,13 @@ export default {
       JapaneseVocabs,
       GreekVocabs
     ],
+    activeWordPacks: ['s_1', 's_2'],
     selectedWordPackKey: '',
     selectedWordPack: null,
     selectedWordPackCategoryIndex: -1,
     selectedWordPackWordIndex: -1,
-    difficulty: 0,
-    wordCount: 0,
+    difficulty: 1,
+    wordCount: 10,
     reversed: false,
     items: GameObjects.filter(
       obj => obj.categories.includes('item') ||
@@ -72,6 +73,12 @@ export default {
     transitionActive: false
   },
   getters: {
+    getWordPackKey: (state) => (wordPack) => {
+      return (wordPack.isCustom ? 'c' : 's') + '_' + wordPack.index.toString()
+    },
+    getCategoryKey: (state, getters) => (wordPack, index) => {
+      return getters.getWordPackKey(wordPack) + '_' + index
+    },
     /**
      * Collects the available categories and evaluates the correct name for the currently selected language
      * @param {Object} state state of vuex store component vueDict
@@ -86,11 +93,12 @@ export default {
     getCategories: (state, getters, rootState) => {
       let supportedPacks = state.vocabulary.filter(pack => {
         return pack.targetLanguage === rootState.targetLanguage &&
+          state.activeWordPacks.includes(getters.getWordPackKey(pack)) &&
           pack.supportedLanguages.includes(rootState.lang)
       })
 
       return supportedPacks.flatMap(pack => {
-        let id = (pack.isCustom ? 'c' : 's') + '_' + pack.index.toString() + '_'
+        let id = getters.getWordPackKey(pack) + '_'
         let categoryName = '[' + pack.tag + '] '
 
         return pack.categories.map(category => {
@@ -313,6 +321,17 @@ export default {
         !(((!pack.isCustom && keyParts[0] === 's') || (pack.isCustom && keyParts[0] === 'c')) &&
         pack.index === parseInt(keyParts[1]))
       )
+    },
+    changeActiveWordPacks (state, packKeys) {
+      state.activeWordPacks = packKeys
+    },
+    activateWordPack (state, key) {
+      if (!state.activeWordPacks.includes(key)) {
+        state.activeWordPacks.push(key)
+      }
+    },
+    deactivateWordPack (state, key) {
+      state.activeWordPacks = state.activeWordPacks.filter(wordPackKey => wordPackKey !== key)
     },
     setSelectedWordPackKey (state, packKey) {
       state.selectedWordPackKey = packKey

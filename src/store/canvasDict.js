@@ -714,7 +714,7 @@ export default {
   },
   mutations: {
     initCanvas (state) {
-      state.canvas = document.getElementById('adventureCanvas')
+      state.canvas = document.getElementById('adventure-canvas')
       state.context = state.canvas.getContext('2d')
     },
     setSpritesheet (state) {

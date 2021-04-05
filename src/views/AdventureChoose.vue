@@ -1,31 +1,30 @@
 <template>
-  <div class="flexboxContainer is-10">
-    <div class="content flexing marginTopMiddle has-text-centered flex-grow" :class="getSizeClass('content')">
-      <blockquote class="fullWidth">
-        {{ questionText }}
-      </blockquote>
-      <div class="itemBar overflowAuto flex-grow" v-if="hasItems">
-        <ItemBoxSmall class="customBox" v-for="item in requiredItems" :key="item.id" :item="item" hasInventoryCount />
-      </div>
+  <div class="adventure-page">
+    <TheBlockquote class="margin-bottom-medium" :text="questionText" />
+    <div v-if="hasItems" class="flex-row gap-column-small overflow-auto">
+      <ItemBoxBasic class="small" v-for="item in requiredItems" mode="small" :item="item" :key="item.id" />
     </div>
-    <div>
-      <ButtonBasic class="marginBottomSmall" icon="check" text="adventureChooseButton1" color="is-success"
-                   @click="$emit('click', { type: 'chooseYes' })" :disabled="disabled" />
-      <ButtonBasic icon="times" text="adventureChooseButton2" color="is-danger"
+    <div class="flex-grow"></div>
+    <div class="button-container">
+      <ButtonBasic class="width-half" icon="times" color="red" text="adventureChooseButton2"
                    @click="$emit('click', { type: 'chooseNo' })" />
+      <ButtonBasic class="width-half" icon="check" color="green" text="adventureChooseButton1"
+                   @click="$emit('click', { type: 'chooseYes' })" :disabled="disabled" />
     </div>
   </div>
 </template>
 
 <script>
+import TheBlockquote from '@/components/TheBlockquote.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
-import ItemBoxSmall from '@/components/ItemBoxSmall.vue'
+import ItemBoxBasic from '@/components/ItemBoxBasic.vue'
 
 export default {
   name: 'AdventureChoose',
   components: {
+    TheBlockquote,
     ButtonBasic,
-    ItemBoxSmall
+    ItemBoxBasic
   },
   computed: {
     questionKey () {
@@ -134,40 +133,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.flexboxContainer {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
-  padding-bottom: 71px;
-
-  &.is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .content.flexing {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .flex-grow {
-    flex-grow: 1;
-  }
-
-  .itemBar {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    height: 100%;
-
-    .customBox {
-      min-width: 110px;
-      position: relative;
-    }
-  }
-}
-</style>

@@ -1,10 +1,11 @@
 <template>
-  <button class="button is-rounded is-fullwidth" @click="$emit('click')"
-          :class="[getSizeClass('button'), color, { 'is-outlined': !selected }]">
+  <button class="button" :class="[getSizeClass('general'), color]" @click="$emit('click')">
     <span class="icon">
       <slot></slot>
     </span>
-    <span>{{ getText(text) }}</span>
+    <span class="text">
+      {{ getText(text) }}
+    </span>
   </button>
 </template>
 
@@ -13,8 +14,7 @@ export default {
   name: 'ButtonMDI',
   props: {
     color: String,
-    text: String,
-    selected: Boolean
+    text: String
   },
   methods: {
     getText (id) {
@@ -26,3 +26,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.button {
+  justify-content: center;
+  align-items: center;
+}
+</style>

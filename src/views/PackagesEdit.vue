@@ -1,47 +1,29 @@
 <template>
-  <div class="flexboxContainer">
+  <div class="page">
     <HeroBasic title="packagesEditTitle" />
-    <div class="is-10 flexGrow marginTopBig">
-      <div class="field" @click="hideNotification()">
-        <div class="control has-icons-left">
-          <input class="input" type="text" :class="getSizeClass('input')" v-model="wordPack.tag" maxlength="3"
-                 :placeholder="getText('packagesEditTag')" />
-          <span class="icon is-left">
-            <font-awesome-icon :icon="['fas', 'tag']" />
-          </span>
-        </div>
-      </div>
-      <div class="field" @click="hideNotification()">
-        <div class="control has-icons-left">
-          <input class="input" type="text" :class="getSizeClass('input')" v-model="wordPack.name"
-                 :placeholder="getText('packagesEditName')" />
-          <span class="icon is-left">
-            <font-awesome-icon :icon="['fas', 'font']" />
-          </span>
-        </div>
-      </div>
-      <DropdownBasic class="marginBottomMiddle" :options="targetLanguageOptions" :selected="wordPack.targetLanguage"
-                     icon="user-graduate" />
-      <h2 class="subtitle has-text-weight-bold marginBottomSmall" :class="getSizeClass('subtitle')">
-        {{ getText('packagesEditSupportedLanguages') }}
-      </h2>
-      <div class="suplangContainer">
-        <label class="checkbox" v-for="key in Object.keys($store.state.texts)" :key="key">
-          <input type="checkbox" :checked="wordPack.supportedLanguages.includes(key)" @click="toggleSupportedLang(key)">
-          {{ getText(key) }}
-        </label>
-      </div>
+    <div class="flex-grow overflow-auto">
+      <InputBasic class="border-bottom margin-top-medium margin-bottom-medium" v-model="wordPack.tag"
+                  title="packagesEditTag" type="text" icon="tag" :maxlength="3" noFocus />
+      <InputBasic class="border-bottom margin-bottom-medium" v-model="wordPack.name" title="packagesEditName"
+                  type="text" icon="font" noFocus />
+      <DropdownBasic class="border-bottom margin-bottom-medium" title="packagesEditTargetLanguage"
+                     :options="targetLanguageOptions" icon="user-graduate" :selected="wordPack.targetLanguage"
+                     @change="setTargetLanguage($event)" />
+      <CheckboxBasic class="border-bottom margin-bottom-medium" v-for="key in Object.keys($store.state.texts)"
+                     title="packagesEditSupportedLanguages" icon="globe" :text="key"
+                     :active="wordPack.supportedLanguages.includes(key)" :key="key" @click="toggleSupportedLang(key)" />
     </div>
-    <div class="is-10 buttonContainer">
-      <ButtonBasic class="marginBottomSmall" icon="list" color="is-info" text="packagesEditButton1"
-                   @click="navTo('packagesEditCategories')" />
-      <ButtonBasic class="is-half marginRightSmall" icon="times" color="is-danger" text="packagesEditButton2"
-                   @click="showModal()" />
-      <ButtonBasic class="is-half marginLeftSmall" icon="check" color="is-success" text="packagesEditButton3"
+    <div class="button-container flex-row flex-wrap">
+      <ButtonBasic class="width-half" icon="times" color="red" text="packagesEditButton2" @click="showModal()" />
+      <ButtonBasic class="width-half" icon="check" color="green" text="packagesEditButton3"
                    @click="navTo('packages', true)" />
+      <ButtonBasic class="width-full" icon="list" color="info" text="packagesEditButton1"
+                   @click="navTo('packagesEditCategories')" />
     </div>
-    <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-      <TheNotification v-show="notificationVisible" class="fullWidth" color="is-danger" text="packagesEditNotification"
+    <transition enter-active-class="animate__animated animate__backInUp duration-c-700ms"
+                leave-active-class="animate__animated animate__backOutDown duration-c-700ms">
+      <NotificationBasic v-show="notificationVisible" title="packagesEditNotificationTitle"
+                       :text="['packagesEditNotificationText']" color="red" icon="exclamation"
                        @click="hideNotification()" />
     </transition>
   </div>
@@ -50,16 +32,20 @@
 <script>
 import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
+import InputBasic from '@/components/InputBasic.vue'
 import DropdownBasic from '@/components/DropdownBasic.vue'
-import TheNotification from '@/components/TheNotification.vue'
+import CheckboxBasic from '@/components/CheckboxBasic.vue'
+import NotificationBasic from '@/components/NotificationBasic.vue'
 
 export default {
   name: 'PackagesEdit',
   components: {
     HeroBasic,
     ButtonBasic,
+    InputBasic,
     DropdownBasic,
-    TheNotification
+    CheckboxBasic,
+    NotificationBasic
   },
   data () {
     return {
@@ -73,6 +59,23 @@ export default {
         categories: []
       },
       notificationVisible: false
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.name === 'packages') {
+      if (this.$store.state.vueDict.selectedWordPackKey === '') {
+        next()
+      } else if (!this.modalVisible) {
+        this.showModal()
+        next(false)
+      } else {
+        this.$store.commit('vueDict/closeModal')
+        this.$store.commit('vueDict/setSelectedWordPackKey', '')
+        this.$store.commit('vueDict/setSelectedWordPack', null)
+        next()
+      }
+    } else {
+      next()
     }
   },
   beforeCreate () {
@@ -115,12 +118,6 @@ export default {
     }
   },
   methods: {
-    getText (id) {
-      return this.$store.getters.getText(id)
-    },
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
-    },
     getNewIndex () {
       return this.$store.state.vueDict.vocabulary.reduce((maxIndex, wordPack) => {
         if (wordPack.isCustom) {
@@ -128,6 +125,9 @@ export default {
         }
         return maxIndex
       }, 1)
+    },
+    setTargetLanguage (value) {
+      this.wordPack.targetLanguage = value
     },
     toggleSupportedLang (lang) {
       if (this.wordPack.supportedLanguages.includes(lang)) {
@@ -147,15 +147,21 @@ export default {
       this.$store.commit('vueDict/showModal', {
         name: 'message',
         title: 'packagesEditModalTitle',
-        text: 'packagesEditModalText',
-        color: '',
-        leftIcon: 'times',
-        leftText: 'packagesEditModalButtonLeft',
-        leftColor: 'is-danger',
-        rightIcon: 'check',
-        rightText: 'packagesEditModalButtonRight',
-        rightColor: 'is-success'
+        text: ['packagesEditModalText'],
+        buttons: [
+          {
+            icon: 'times',
+            text: 'packagesEditModalButton1',
+            color: 'red'
+          },
+          {
+            icon: 'check',
+            text: 'packagesEditModalButton2',
+            color: 'green'
+          }
+        ]
       })
+      this.modalVisible = true
     },
     navTo (destination, saving = false) {
       switch (destination) {
@@ -177,8 +183,6 @@ export default {
               this.$router.push({ name: destination })
             }
           } else {
-            this.$store.commit('vueDict/setSelectedWordPackKey', '')
-            this.$store.commit('vueDict/setSelectedWordPack', null)
             this.$router.push({ name: destination })
           }
           break
@@ -189,10 +193,11 @@ export default {
   watch: {
     answer () {
       switch (this.answer) {
-        case 'buttonLeft':
+        case 'button1':
           this.$store.commit('vueDict/closeModal')
+          this.modalVisible = false
           break
-        case 'buttonRight':
+        case 'button2':
           this.navTo('packages')
           this.$store.commit('vueDict/closeModal')
           break
@@ -202,41 +207,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.flexboxContainer {
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  height: calc(100% - 71px);
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .flexGrow {
-    flex-grow: 1;
-  }
-
-  .suplangContainer {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
-
-  .buttonContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    .is-half {
-      width: calc(50% - .25rem);
-    }
-  }
-}
-</style>

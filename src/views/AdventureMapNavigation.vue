@@ -1,89 +1,68 @@
 <template>
-  <div class="flexboxContainer">
-    <div class="is-10 marginBottomSmall marginTopSmall" v-show="currentLevel !== 'home'">
-      <ButtonBasic icon="list" color="is-info" text="adventureMapButton1" @click="showDetails()" />
-    </div>
-    <div class="gridContainer is-10 marginBottomBig">
-      <ButtonIcon class="top-center" :class="getInvisible(currentMapPoint.tc)" icon="long-arrow-alt-up" color="is-link"
-                  @click="$emit('click', getClickObject(currentMapPoint.tc))" />
-      <ButtonIcon class="center-left" :class="getInvisible(currentMapPoint.cl)" icon="long-arrow-alt-left"
-                  color="is-link" @click="$emit('click', getClickObject(currentMapPoint.cl))" />
-      <ButtonIcon class="center-center" :class="getInvisible(currentMapPoint.cc)" icon="home" color="is-success"
-                  @click="$emit('click', getClickObject(currentMapPoint.cc, true))" />
-      <ButtonIcon class="center-right" :class="getInvisible(currentMapPoint.cr)" icon="long-arrow-alt-right"
-                  color="is-link" @click="$emit('click', getClickObject(currentMapPoint.cr))" />
-      <ButtonIcon class="bottom-center" :class="getInvisible(currentMapPoint.bc)" icon="long-arrow-alt-down"
-                  color="is-link" @click="$emit('click', getClickObject(currentMapPoint.bc))" />
-    </div>
-    <div class="is-10">
-      <ButtonBasic class="marginBottomSmall" icon="check" text="adventureMapButton2" color="is-success"
-                   @click="$emit('click', { type: 'selectLevel' })" />
-      <ButtonBasic icon="times" text="adventureMapButton3" color="is-danger" @click="$emit('click', { type: 'abort' })" />
-    </div>
-    <transition enter-active-class="animated fadeInUp a-little-bit-faster"
-                leave-active-class="animated fadeOutDown a-little-bit-faster">
-      <div v-show="detailsVisible" class="detailsContainer has-background-background">
-        <h1 class="title marginTopBig" :class="getSizeClass('title')">
-          {{ getText(currentLevel) }}
-        </h1>
-        <div class="is-10 marginBottomBig">
-          <h2 class="subtitle has-text-weight-bold marginBottomSmall" :class="getSizeClass('subtitle')">
-            {{ getText('adventureMapDetailsSteps') }}
-          </h2>
-          <div class="content" :class="getSizeClass('content')">
-            {{ dynamicLevelData.steps }}
-          </div>
-        </div>
-        <div class="is-10">
-          <h2 class="subtitle has-text-weight-bold marginBottomSmall" :class="getSizeClass('subtitle')">
-            {{ getText('adventureMapDetailsFoundItems') }}
-          </h2>
-          <div class="itemContainer marginBottomBig flexGrow" v-if="dynamicLevelData.itemsFound.length > 0">
-            <ItemBoxSmall :item="item" v-for="item in dynamicLevelData.itemsFound" :key="item.id" />
-          </div>
-          <div class="emptyItemContainer marginBottomBig" :class="getSizeClass('content')" v-else>
-            <div class="content" :class="getSizeClass('content')">
-              {{ getText('adventureMapDetailsNoItems') }}
-            </div>
-          </div>
-        </div>
-        <div class="is-10 flexGrow">
-          <h2 class="subtitle has-text-weight-bold marginBottomSmall" :class="getSizeClass('subtitle')">
-            {{ getText('adventureMapDetailsKilledEnemies') }}
-          </h2>
-          <div class="overflowAuto">
-            <table class="table fullWidth">
-              <thead>
-                <tr class="headerSticky">
-                  <td class="has-background-primary" :class="getSizeClass('td')">{{ getText('adventureMapDetailsColumn1') }}</td>
-                  <td class="is-3 has-background-primary" :class="getSizeClass('td')">{{ getText('adventureMapDetailsColumn2') }}</td>
-                </tr>
-              </thead>
-              <tr v-for="(enemy, index) in dynamicLevelData.killedEnemies" :key="index">
-                <td :class="getSizeClass('td')">{{ getText(enemy.id) }}</td>
-                <td :class="getSizeClass('td')">{{ getText(enemy.amount) }}</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <ButtonBasic class="is-10" icon="times" color="is-danger" text="adventureMapDetailsButton1"
-                     @click="hideDetails()" />
+  <div class="adventure-page">
+    <HeroBasic class="mini" title="adventureMapButton1" :subtitle="[currentLevel]" />
+    <div class="details flex-grow overflow-auto">
+      <TitleBasic text="adventureMapDetailsSteps" icon="shoe-prints" color="info" />
+      <div class="section-text margin-bottom-medium" :class="getSizeClass('general')">
+        {{ dynamicLevelData.steps }}
       </div>
-    </transition>
+      <TitleBasic class="margin-bottom-mini" text="adventureMapDetailsFoundItems" icon="plus" color="green" />
+      <div v-if="dynamicLevelData.itemsFound.length > 0" class="flex-row gap-column-small overflow-auto margin-bottom-medium">
+        <ItemBoxBasic class="small" v-for="item in dynamicLevelData.itemsFound" mode="small" :item="item" :key="item.id" />
+      </div>
+      <div v-else class="item-box-replacement margin-bottom-medium" :class="getSizeClass('general')">
+        {{ getText('adventureMapDetailsNoItems') }}
+      </div>
+      <TitleBasic text="adventureMapDetailsKilledEnemies" icon="skull-crossbones" color="red" />
+      <div class="enemies" :class="getSizeClass('general')">
+        <div class="entry" v-for="enemy in dynamicLevelData.killedEnemies" :key="enemy.id">
+          <div class="name">
+            {{ getText(enemy.id) }}
+          </div>
+          <div class="amount">
+            {{ getText(enemy.amount) }}
+          </div>
+        </div>
+        <div v-show="dynamicLevelData.killedEnemies.length === 0" class="no-entry">
+          {{ getText('adventureMapDetailsNoEnemies') }}
+        </div>
+      </div>
+    </div>
+    <div class="button-container">
+      <ButtonIcon class="width-third" icon="long-arrow-alt-left" color="action"
+                  @click="$emit('click', getClickObject(currentMapPoint.cl))"
+                  :disabled="hasLevel(currentMapPoint.cl)" />
+      <ButtonIcon class="width-third" :class="getInvisible(currentMapPoint.cc)" icon="home" color="green"
+                  @click="$emit('click', getClickObject(currentMapPoint.cc, true))"
+                  :disabled="hasLevel(currentMapPoint.cc)" />
+      <ButtonIcon class="width-third" icon="long-arrow-alt-right" color="action"
+                  @click="$emit('click', getClickObject(currentMapPoint.cr))"
+                  :disabled="hasLevel(currentMapPoint.cr)" />
+    </div>
+    <div class="button-container">
+      <ButtonBasic class="width-half" icon="times" text="adventureMapButton3" color="red"
+                   @click="$emit('click', { type: 'abort' })" />
+      <ButtonBasic class="width-half" icon="check" text="adventureMapButton2" color="green"
+                   @click="$emit('click', { type: 'selectLevel' })" />
+    </div>
   </div>
 </template>
 
 <script>
+import HeroBasic from '@/components/HeroBasic.vue'
+import TitleBasic from '@/components/TitleBasic.vue'
 import ButtonIcon from '@/components/ButtonIcon.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
-import ItemBoxSmall from '@/components/ItemBoxSmall.vue'
+import ItemBoxBasic from '@/components/ItemBoxBasic.vue'
 
 export default {
   name: 'AdventureMapNavigation',
   components: {
+    HeroBasic,
+    TitleBasic,
     ButtonIcon,
     ButtonBasic,
-    ItemBoxSmall
+    ItemBoxBasic
   },
   data () {
     return {
@@ -111,6 +90,12 @@ export default {
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
     },
+    hasLevel (direction) {
+      if (!direction || !this.$store.state.canvasDict.dynamicLevelData[direction]) {
+        return true
+      }
+      return false
+    },
     getInvisible (link) {
       if (!link || !this.$store.state.canvasDict.dynamicLevelData[link]) {
         return 'invisible'
@@ -135,132 +120,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flexboxContainer {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: flex-end;
-  width: 100%;
-  height: 100%;
-  padding-bottom: 71px;
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .is-3 {
-    width: calc(100% / 4);
-  }
-
-  .flexGrow {
-    flex-grow: 1;
-  }
-
-  .centerContent {
-    display: flex;
-    align-items: center;
-  }
-
-  .itemContainer {
-    display: flex;
-    width: 100%;
-    max-width: 100%;
-    overflow: auto;
-
-    > :not(:last-child) {
-      margin-right: .5rem;
-    }
-  }
-
-  .emptyItemContainer {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 6em;
-
-    &.is-small {
-      height: 4.5em;
-    }
-
-    &.is-medium {
-      height: 7.5em;
-    }
-
-    &.is-large {
-      height: 9em;
-    }
-  }
-
-  .gridContainer {
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    grid-template-rows: repeat(3, auto);
-    grid-column-gap: .5rem;
-    grid-row-gap: .5rem;
-
-    .invisible {
-      opacity: .2;
-      pointer-events: none;
-    }
-
-    > .top-left {
-      grid-area: 1 / 1 / 2 / 2;
-    }
-
-    > .top-center {
-      grid-area: 1 / 2 / 2 / 3;
-    }
-
-    > .top-right {
-      grid-area: 1 / 3 / 2 / 4;
-    }
-
-    > .center-left {
-      grid-area: 2 / 1 / 3 / 2;
-    }
-
-    > .center-center {
-      grid-area: 2 / 2 / 3 / 3;
-    }
-
-    > .center-right {
-      grid-area: 2 / 3 / 3 / 4;
-    }
-
-    > .bottom-left {
-      grid-area: 3 / 1 / 4 / 2;
-    }
-
-    > .bottom-center {
-      grid-area: 3 / 2 / 4 / 3;
-    }
-
-    > .bottom-right {
-      grid-area: 3 / 3 / 4 / 4;
-    }
-  }
-
-  .detailsContainer {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-    width: 100%;
-    height: calc(100% + .5rem);
-    padding-bottom: 71px;
-    top: 0px;
-    z-index: 4;
-
-    .headerSticky td {
-      position: sticky;
-      top: 0px;
-      z-index: 20;
-    }
-  }
+.details {
+  height: 1rem;
 }
 </style>

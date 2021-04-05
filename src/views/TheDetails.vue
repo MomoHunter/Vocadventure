@@ -1,66 +1,70 @@
 <template>
-  <div class="flexContainer">
-    <HeroWithTags class="marginBottomSmall" :title="item.id" :tagObjects="tags" />
-    <div class="box is-10 flexGrow">
-      <div class="fullWidth fullHeight backgroundPicture"
-           :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
+  <div class="page">
+    <HeroBasic :title="item.id" />
+    <div v-if="quantity >= 0" class="margin-top-mini margin-bottom-mini margin-left-mini">
+      <TagBasic title="detailsTagOwn" :text="quantity" color="info-2" />
     </div>
-    <div class="is-10 content" :class="getSizeClass('content')">
-      <blockquote>
-        {{ getText(item.id + 'Desc') }}
-      </blockquote>
+    <div class="flex-grow flex-column overflow-auto">
+      <div class="shop-image width-full margin-bottom-medium" :class="getSizeClass('general')">
+        <div class="image-box" :style="{ backgroundImage: 'url(' + baseUrl + item.spritePath + ')' }"></div>
+      </div>
+      <TheBlockquote class="margin-bottom-medium" :text="item.id + 'Desc'" />
+      <div class="section-title" :class="getSizeClass('general')">
+        {{ getText('detailsCostsTitle') }}
+      </div>
+      <div class="costs" :class="getSizeClass('general')">
+        <div class="entry flex-row" v-for="cost in item.costs" :key="cost.id">
+          <div class="image">
+            <div class="image-box" :style="{ backgroundImage: 'url(' + baseUrl + getCostIcon(cost.id) + ')' }"></div>
+          </div>
+          <div class="material flex-grow">
+            {{ getText(cost.id) }}
+          </div>
+          <div class="own" :class="isEnough(cost)">
+            {{ formatValue(ownQuantity(cost.id)) }}
+          </div>
+          <div class="needed">
+            {{ formatValue(cost.quantity * amount) }}
+          </div>
+        </div>
+      </div>
     </div>
-    <table class="table is-10">
-      <thead>
-        <tr>
-          <td class="has-background-primary">{{ getText('detailsColumn1') }}</td>
-          <td class="has-background-primary has-text-centered">{{ getText('detailsColumn2') }}</td>
-          <td class="has-background-primary has-text-centered">{{ getText('detailsColumn3') }}</td>
-        </tr>
-      </thead>
-      <tr v-for="cost in item.costs" :key="cost.id">
-        <td>{{ getText(cost.id) }}</td>
-        <td class="has-text-centered" :class="isEnough(cost)">{{ ownQuantity(cost.id).toLocaleString() }}</td>
-        <td class="has-text-centered">{{ (cost.quantity * amount).toLocaleString() }}</td>
-      </tr>
-    </table>
-    <div class="is-10 buttonContainer">
-      <ButtonIcon class="is-1 marginRightSmall marginBottomSmall" color="is-link" icon="minus" @click="redAmount()" />
-      <ButtonText v-show="!inputVisible" class="flexGrow minWidth marginRightSmall marginLeftSmall marginBottomSmall" color="is-link"
-                  :text="amount" @click="showInput()" />
-      <InputWithButton v-if="inputVisible" class="flexGrow is-half marginRightSmall marginLeftSmall marginBottomSmall"
-                       colorInput="is-link" colorButton="is-success" type="number" iconButton="check"
-                       v-model="inputAmount" @click="hideInput()" />
-      <ButtonIcon class="is-1 marginLeftSmall marginBottomSmall" color="is-link" icon="plus" @click="incAmount()" />
-      <ButtonBasic class="is-half marginRightSmall" icon="arrow-left" text="detailsButton2" color="is-danger"
-                   @click="$router.push({ name: 'shop' })" />
-      <ButtonBasic class="is-half marginLeftSmall" icon="coins" text="detailsButton1" color="is-success"
-                   @click="buy()" />
+    <div class="button-container flex-row">
+      <ButtonIcon v-show="!inputVisible" icon="minus" color="action" @click="redAmount()" />
+      <ButtonText v-show="!inputVisible" class="flex-grow" color="action" :text="amount" @click="showInput()" />
+      <InputWithButton v-if="inputVisible" class="flex-grow" type="number" iconInput="times" iconButton="check"
+                       colorInput="action" colorButton="green" :maxlength="3" v-model="inputAmount"
+                       @click="hideInput()" />
+      <ButtonIcon v-show="!inputVisible" icon="plus" color="action" @click="incAmount()" />
     </div>
-    <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-      <TheNotification v-show="notificationVisible" class="fullWidth" color="is-danger" text="detailsNotification"
-                       @click="closeNotification()" />
-    </transition>
+    <div class="button-container">
+      <ButtonBasic class="width-half" icon="times" color="red" text="detailsButton2"
+                   @click="navTo()" />
+      <ButtonBasic class="width-half" icon="coins" color="green" text="detailsButton1" @click="buy()"
+                   :disabled="!canBuy" />
+    </div>
   </div>
 </template>
 
 <script>
-import HeroWithTags from '@/components/HeroWithTags.vue'
+import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import ButtonIcon from '@/components/ButtonIcon.vue'
 import ButtonText from '@/components/ButtonText.vue'
 import InputWithButton from '@/components/InputWithButton.vue'
-import TheNotification from '@/components/TheNotification.vue'
+import TagBasic from '@/components/TagBasic.vue'
+import TheBlockquote from '@/components/TheBlockquote.vue'
 
 export default {
   name: 'TheDetails',
   components: {
-    HeroWithTags,
+    HeroBasic,
     ButtonBasic,
     ButtonIcon,
     ButtonText,
     InputWithButton,
-    TheNotification
+    TagBasic,
+    TheBlockquote
   },
   data () {
     return {
@@ -75,23 +79,26 @@ export default {
     item () {
       return this.$store.getters['vueDict/getItemObject'](this.$route.params.item)
     },
-    tags () {
-      let quantity = this.$store.getters['vueDict/getInventoryObject'](this.$route.params.item)
-      if (!quantity) {
+    quantity () {
+      let itemData = this.$store.getters['vueDict/getInventoryObject'](this.$route.params.item)
+
+      if (!itemData) {
         if (this.item.output) {
-          return []
+          return -1
         }
-        quantity = 0
+        return 0
       } else {
-        quantity = quantity.quantity
+        return itemData.quantity.toLocaleString()
       }
-      return [
-        {
-          nameId: 'detailsTagOwn',
-          valueId: quantity.toLocaleString(),
-          color: 'is-info'
+    },
+    canBuy () {
+      this.item.costs.forEach(entry => {
+        if (this.ownQuantity(entry.id) < entry.quantity * this.amount) {
+          return false
         }
-      ]
+      }, this)
+
+      return true
     },
     baseUrl () {
       return process.env.BASE_URL
@@ -103,6 +110,15 @@ export default {
     },
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
+    },
+    getCostIcon (itemId) {
+      let itemData = this.$store.getters['vueDict/getItemObject'](itemId)
+      if (itemData) {
+        return itemData.spritePath
+      } else if (itemId === 'coins') {
+        return 'img/items/coin.png'
+      }
+      return ''
     },
     redAmount () {
       if (this.amount === 1) {
@@ -136,9 +152,9 @@ export default {
     },
     isEnough (costObject) {
       if (this.ownQuantity(costObject.id) >= costObject.quantity * this.amount) {
-        return 'has-text-success'
+        return 'green'
       }
-      return 'has-text-danger'
+      return 'red'
     },
     ownQuantity (id) {
       if (id === 'coins') {
@@ -152,69 +168,57 @@ export default {
       }
     },
     buy () {
-      let buyable = true
-
       this.item.costs.forEach(entry => {
-        if (this.ownQuantity(entry.id) < entry.quantity * this.amount) {
-          buyable = false
+        if (entry.id === 'coins') {
+          this.$store.commit('vueDict/addStat', { id: entry.id, quantity: -entry.quantity * this.amount })
+        } else {
+          this.$store.commit('vueDict/addToInventory', { id: entry.id, quantity: -entry.quantity * this.amount })
         }
       }, this)
 
-      if (buyable) {
-        this.item.costs.forEach(entry => {
-          if (entry.id === 'coins') {
-            this.$store.commit('vueDict/addStat', { id: entry.id, quantity: -entry.quantity * this.amount })
-          } else {
-            this.$store.commit('vueDict/addToInventory', { id: entry.id, quantity: -entry.quantity * this.amount })
-          }
-        }, this)
+      if (this.item.output) {
+        let max = this.item.output.reduce((acc, value) => { return acc + value.chance }, 0)
+        let itemData = null
 
-        if (this.item.output) {
-          let max = this.item.output.reduce((acc, value) => { return acc + value.chance }, 0)
-          let itemData = null
+        for (let i = 0; i < this.amount; i++) {
+          let random = max * Math.random()
 
-          for (let i = 0; i < this.amount; i++) {
-            let random = max * Math.random()
-
-            for (let output of this.item.output) {
-              random -= output.chance
-              if (random <= 0) {
-                itemData = this.$store.getters['vueDict/getItemObject'](output.id)
-                break
-              }
+          for (let output of this.item.output) {
+            random -= output.chance
+            if (random <= 0) {
+              itemData = this.$store.getters['vueDict/getItemObject'](output.id)
+              break
             }
-
-            let newItem = {
-              id: itemData.id,
-              quantity: itemData.quantity,
-              categories: itemData.categories,
-              durability: itemData.durability || null
-            }
-
-            this.$store.commit('vueDict/addToInventory', newItem)
-            this.addBoughtItem(newItem)
-            this.$store.commit('vueDict/unlockItem', itemData.id)
-            this.$store.commit('vueDict/addStat', { id: 'points', quantity: itemData.points })
           }
-        } else {
+
           let newItem = {
-            id: this.item.id,
-            quantity: this.item.quantity * this.amount,
-            categories: this.item.categories,
-            durability: this.item.durability || null
+            id: itemData.id,
+            quantity: itemData.quantity,
+            categories: itemData.categories,
+            durability: itemData.durability || null
           }
+
           this.$store.commit('vueDict/addToInventory', newItem)
           this.addBoughtItem(newItem)
-          this.$store.commit('vueDict/unlockItem', this.item.id)
-          this.$store.commit('vueDict/addStat', { id: 'points', quantity: this.item.points })
+          this.$store.commit('vueDict/unlockItem', itemData.id)
+          this.$store.commit('vueDict/addStat', { id: 'points', quantity: itemData.points })
         }
-        window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
-        this.$router.push({ name: 'shop' })
-        this.$store.commit('vueDict/setBoughtItems', this.boughtItems)
-        this.boughtItems = []
       } else {
-        this.notificationVisible = true
+        let newItem = {
+          id: this.item.id,
+          quantity: this.item.quantity * this.amount,
+          categories: this.item.categories,
+          durability: this.item.durability || null
+        }
+        this.$store.commit('vueDict/addToInventory', newItem)
+        this.addBoughtItem(newItem)
+        this.$store.commit('vueDict/unlockItem', this.item.id)
+        this.$store.commit('vueDict/addStat', { id: 'points', quantity: this.item.points })
       }
+      window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
+      this.navTo()
+      this.$store.commit('vueDict/setBoughtItems', this.boughtItems)
+      this.boughtItems = []
     },
     addBoughtItem (item) {
       let itemData = this.boughtItems.find(bought => bought.id === item.id)
@@ -229,16 +233,18 @@ export default {
         })
       }
     },
-    closeNotification () {
-      this.notificationVisible = false
-    }
-  },
-  watch: {
-    inputAmount () {
-      if (parseInt(this.inputAmount) > 999) {
-        this.inputAmount = '999'
-      } else if (parseInt(this.inputAmount) < 1 && this.inputAmount !== '') {
-        this.inputAmount = '1'
+    navTo () {
+      this.$router.push({ name: 'shop' })
+    },
+    formatValue (value) {
+      if (value < 1_000_000) {
+        return value.toLocaleString()
+      } else if (value < 1_000_000_000) {
+        return (value / 1_000_000).toFixed(3) + 'M'
+      } else if (value < 1_000_000_000_000) {
+        return (value / 1_000_000_000).toFixed(3) + 'B'
+      } else {
+        return (value / 1_000_000_000_000).toFixed(3) + 'T'
       }
     }
   }
@@ -246,51 +252,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flexContainer {
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
+.costs {
   align-items: center;
-  height: calc(100% - 71px);
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .flexGrow {
-    flex-grow: 1;
-  }
-
-  .minWidth {
-    min-width: 50%;
-  }
-
-  .backgroundPicture {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-  }
-
-  .buttonContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    .is-1 {
-      width: calc(100% / 10 - .25rem);
-    }
-
-    .is-8 {
-      width: calc(100% / 1.25 - .5rem);
-    }
-
-    .is-half {
-      width: calc(50% - .25rem);
-    }
-  }
 }
 </style>

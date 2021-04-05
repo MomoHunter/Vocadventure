@@ -1,69 +1,56 @@
 <template>
-  <div class="flexContainer spaceBetween">
-    <HeroBasic title="selectionCountTitle" subtitle="selectionCountSubtitle" />
-    <div class="field has-addons is-10">
-      <div class="control is-third">
-        <ButtonMDI :selected="difficultySelected(1)" color="is-success" text="difficulty1"
-                   @click="setDifficulty(1)">
-          <SpeedometerSlow :class="getSizeClass('mdi')" />
+  <div class="page">
+    <HeroBasic title="selectionCountTitle" :subtitle="['selectionCountSubtitle']" />
+    <div class="buttons flex-grow flex-column overflow-auto">
+      <div class="flex-row">
+        <ButtonMDI class="width-third" :class="{ 'single-2': difficultySelected(1) }" color="green" text="difficulty1"
+                  @click="setDifficulty(1)">
+          <SpeedometerSlow :class="getSizeClass('general')" />
+        </ButtonMDI>
+        <ButtonMDI class="width-third" :class="{ 'single-2': difficultySelected(2) }" color="yellow" text="difficulty2"
+                  @click="setDifficulty(2)">
+          <SpeedometerMedium :class="getSizeClass('general')" />
+        </ButtonMDI>
+        <ButtonMDI class="width-third" :class="{ 'single-2': difficultySelected(3) }" color="red" text="difficulty3"
+                  @click="setDifficulty(3)">
+          <Speedometer :class="getSizeClass('general')" />
         </ButtonMDI>
       </div>
-      <div class="control is-third">
-        <ButtonMDI :selected="difficultySelected(2)" color="is-warning" text="difficulty2"
-                   @click="setDifficulty(2)">
-          <SpeedometerMedium :class="getSizeClass('mdi')" />
-        </ButtonMDI>
+      <div class="flex-row flex-wrap">
+        <ButtonText class="width-third" :class="{ 'single-2': wordCountSelected(option) }"
+                    v-for="option in availableOptions" color="action" :text="option" :key="option"
+                    @click="setWordCount(option)" />
+        <ButtonText v-show="!inputVisible" class="width-full" :class="{ 'single-2': customCountSet }" color="action"
+                    :text="customCountText" @click="showInput()" />
+        <InputWithButton v-if="inputVisible" class="width-full" v-model="customCount" type="number" colorInput="action"
+                         colorButton="green" iconInput="pen" iconButton="check" :maxlength="4" @click="hideInput()" />
+        <ButtonText class="width-full" :class="{ 'single-2': wordCountSelected(countAllWords) }" color="action"
+                    text="selectionCountAll" @click="setWordCount(countAllWords)" />
       </div>
-      <div class="control is-third">
-        <ButtonMDI :selected="difficultySelected(3)" color="is-danger" text="difficulty3"
-                   @click="setDifficulty(3)">
-          <Speedometer :class="getSizeClass('mdi')" />
-        </ButtonMDI>
-      </div>
+      <ButtonBasic class="width-full" :class="{ 'single-2': $store.state.vueDict.reversed }" icon="sync-alt"
+                   color="action" text="selectionCountReverse" @click="toggleWordsReversed()" />
     </div>
-    <div class="field is-grouped is-grouped-multiline is-10">
-      <div class="control is-third" :class="optionClasses(option)" v-for="option of availableOptions" :key="option">
-        <ButtonText class="is-fullwidth" color="is-primary" :text="option" @click="setWordCount(option)"
-                                 :selected="wordCountSelected(option)" />
-      </div>
-      <div class="control is-two-third left-row">
-        <ButtonText v-show="!isInputVisible && !customCountSet" class="is-fullwidth" color="is-primary"
-                    text="selectionCountCustom" @click="showInput()" />
-        <ButtonText v-show="!isInputVisible && customCountSet" class="is-fullwidth" color="is-primary"
-                                 :text="customCount" @click="showInput()"
-                                 :selected="wordCountSelected(parseInt(customCount))" />
-        <InputWithButton v-if="isInputVisible" colorInput="is-primary" colorButton="is-success" type="number"
-                         iconButton="check" @click="hideInput()" v-model="customCount" />
-      </div>
-      <div class="control is-third right-row">
-        <ButtonText class="is-fullwidth" color="is-primary" text="selectionCountAll"
-                    @click="setWordCount(countAllWords)" :selected="wordCountSelected(countAllWords)" />
-      </div>
-      <div class="control is-full marginTopBig">
-        <ButtonBasic class="small" color="is-primary" icon="sync-alt" text="selectionCountReverse"
-                    :selected="$store.state.vueDict.reversed" @click="toggleWordsReversed()" />
-      </div>
+    <div class="button-container">
+      <ButtonBasic class="width-half" icon="arrow-left" color="red" text="selectionButton2"
+                   @click="navTo('category', 'adventure')" />
+      <ButtonBasic class="width-half" icon="check" color="green" text="selectionButton1" @click="navTo('adventure')" />
     </div>
-    <div class="is-10">
-      <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="selectionButton1"
-                   @click="navTo()" />
-      <ButtonBasic class="marginBottomSmall" color="is-danger" icon="arrow-left" text="selectionButton2"
-                   @click="$router.push({ name: 'category', params: { destination: 'adventure' } })" />
-    </div>
-    <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-      <TheNotification v-show="showNotification" class="fullWidth" color="is-danger" :text="notificationId"
-                       @click="closeNotification()" />
+    <transition enter-active-class="animate__animated animate__backInUp duration-c-700ms"
+                leave-active-class="animate__animated animate__backOutDown duration-c-700ms">
+      <NotificationBasic v-show="notificationVisible" title="selectionCountNotificationTitle"
+                       :text="['selectionCountNotificationText']" color="red" icon="exclamation"
+                       @click="hideNotification()" />
     </transition>
   </div>
 </template>
 
 <script>
 import HeroBasic from '@/components/HeroBasic.vue'
-import ButtonMDI from '@/components/ButtonMDI.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
+import ButtonMDI from '@/components/ButtonMDI.vue'
 import ButtonText from '@/components/ButtonText.vue'
 import InputWithButton from '@/components/InputWithButton.vue'
-import TheNotification from '@/components/TheNotification.vue'
+import NotificationBasic from '@/components/NotificationBasic.vue'
 
 import SpeedometerSlow from 'vue-material-design-icons/SpeedometerSlow.vue'
 import SpeedometerMedium from 'vue-material-design-icons/SpeedometerMedium.vue'
@@ -73,22 +60,26 @@ export default {
   name: 'SelectionCount',
   components: {
     HeroBasic,
-    ButtonMDI,
     ButtonBasic,
+    ButtonMDI,
     ButtonText,
     InputWithButton,
-    TheNotification,
+    NotificationBasic,
     SpeedometerSlow,
     SpeedometerMedium,
     Speedometer
   },
   data () {
     return {
-      isInputVisible: false,
+      inputVisible: false,
       customCount: '',
       availableOptions: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200],
-      showNotification: false,
-      notificationId: 'selectionCountNotification1'
+      notificationVisible: false
+    }
+  },
+  created () {
+    if (this.$store.state.vueDict.categoriesChosen.length === 0) {
+      this.navTo('category', 'adventure')
     }
   },
   mounted () {
@@ -100,6 +91,9 @@ export default {
   computed: {
     customCountSet () {
       return this.customCount !== ''
+    },
+    customCountText () {
+      return this.customCount === '' ? 'selectionCountCustom' : this.customCount
     },
     countAllWords () {
       return this.$store.getters['vueDict/getFullVocabs'].words.length
@@ -116,119 +110,63 @@ export default {
       this.$store.commit('vueDict/setDifficulty', difficulty)
       this.showNotification = false
     },
-    optionClasses (option) {
-      let index = this.availableOptions.indexOf(option) % 3
-
-      switch (index) {
-        case 0:
-          return 'left-row'
-        case 1:
-          return 'center-row'
-        case 2:
-          return 'right-row'
-        default:
-          return 'full-row'
-      }
-    },
     wordCountSelected (count) {
+      if (this.customCountSet) {
+        return false
+      }
       return this.$store.state.vueDict.wordCount === count
     },
     setWordCount (count) {
       this.$store.commit('vueDict/setWordCount', count)
       this.customCount = ''
-      this.showNotification = false
+      this.hideNotification()
     },
     showInput () {
-      this.isInputVisible = true
+      this.inputVisible = true
     },
     hideInput () {
-      this.isInputVisible = false
+      this.inputVisible = false
       if (this.customCountSet) {
-        if (this.customCount > 9001) {
-          this.customCount = 9001
+        if (parseInt(this.customCount) > 9001) {
+          this.customCount = '9001'
         }
         this.$store.commit('vueDict/setWordCount', parseInt(this.customCount))
       } else {
         if (!this.availableOptions.includes(this.$store.state.vueDict.wordCount)) {
-          this.$store.commit('vueDict/setWordCount', 0)
+          this.$store.commit('vueDict/setWordCount', 10)
         }
       }
     },
     toggleWordsReversed () {
       this.$store.commit('vueDict/setReversed', !this.$store.state.vueDict.reversed)
     },
-    navTo () {
-      if (this.$store.state.vueDict.difficulty === 0 || this.$store.state.vueDict.wordCount === 0) {
-        this.showNotification = true
-        this.notificationId = 'selectionCountNotification1'
-      } else if (this.$store.getters['vueDict/getVocabsWithDifficulty'].words.length === 0) {
-        this.showNotification = true
-        this.notificationId = 'selectionCountNotification2'
-      } else {
-        this.$router.push({ name: 'adventure' })
+    navTo (name, params = '') {
+      switch (name) {
+        case 'category':
+          this.$router.push({ name: name, params: { destination: params } })
+          break
+        case 'adventure':
+          if (this.$store.getters['vueDict/getVocabsWithDifficulty'].words.length === 0) {
+            this.showNotification()
+          } else {
+            this.$router.push({ name: name })
+          }
+          break
+        default:
       }
     },
-    closeNotification () {
-      this.showNotification = false
+    showNotification () {
+      this.notificationVisible = true
+    },
+    hideNotification () {
+      this.notificationVisible = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.flexContainer {
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  height: calc(100% - 71px);
-
-  &.spaceBetween {
-    justify-content: space-between;
-  }
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .is-third {
-    width: calc(100% / 3);
-  }
-
-  .is-two-third {
-    width: calc(100% / 1.5);
-  }
-
-  .is-full {
-    width: 100%;
-  }
-
-  .left-row {
-    margin: 0px !important;
-    padding-right: .25rem;
-    padding-bottom: .5rem;
-  }
-
-  .center-row {
-    margin: 0px !important;
-    padding-left: .25rem;
-    padding-right: .25rem;
-    padding-bottom: .5rem;
-  }
-
-  .right-row {
-    margin: 0px !important;
-    padding-left: .25rem;
-    padding-bottom: .5rem;
-  }
-
-  .full-row {
-    margin: 0px !important;
-    padding-bottom: .5rem;
-  }
+.buttons {
+  justify-content: space-evenly;
 }
 </style>

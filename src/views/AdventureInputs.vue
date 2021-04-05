@@ -1,167 +1,130 @@
 <template>
-  <div class="flexboxContainer">
-    <div class="innerFlexContainerInput flexGrow marginBottomBig">
-      <span class="icon is-1" :class="latinIconColor">
-        <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
-          <font-awesome-icon v-show="resultsVisible.on" :icon="['fas', latinIcon]" :size="getSizeClass('fas')" />
-        </transition>
-      </span>
-      <input class="input is-rounded is-10" type="text" :placeholder="getText(vocabs.latinAlphabet)"
-             :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
-             v-model="latinInput" :readonly="resultsVisible.on" />
-      <span class="icon is-1" :class="latinCoinColor">
-        <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
-          <font-awesome-icon v-show="resultsVisible.on && isLatinCorrect > 0" :icon="['fas', 'coins']"
-                             :size="getSizeClass('fas')" />
-        </transition>
-      </span>
-    </div>
-    <div class="innerFlexContainerInput flexGrow marginBottomBig" v-show="hasForeignAlphabet">
-      <span class="icon is-1" :class="foreignIconColor">
-        <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
-          <font-awesome-icon v-show="resultsVisible.on" :icon="['fas', foreignIcon]" :size="getSizeClass('fas')" />
-        </transition>
-      </span>
-      <input class="input is-rounded is-10" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
-             :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
-             v-model="foreignInput" @click="showKeyboard()" readonly />
-      <span class="icon is-1" :class="foreignCoinColor">
-        <transition leave-active-class="animated fadeOut a-little-bit-faster" enter-active-class="animated fadeIn">
-          <font-awesome-icon v-show="resultsVisible.on && isForeignCorrect > 0" :icon="['fas', 'coins']"
-                             :size="getSizeClass('fas')" />
-        </transition>
-      </span>
-    </div>
-    <div class="innerFlexContainerButton is-10 marginBottomBig">
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
-                  leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
-        <ButtonBasic v-show="resultsVisible.off" class="is-half marginBottomSmall marginRightSmall"
-                     icon="map" color="is-warning" text="adventureButton5"
-                     @click="$emit('click', { type: 'backToMap' })" />
-      </transition>
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
-                  leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonBasic v-show="resultsVisible.off" class="is-half marginBottomSmall marginLeftSmall"
-                     icon="check" color="is-success" text="adventureButton2" @click="checkInput()" />
-      </transition>
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
-                  leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonBasic v-show="resultsVisible.off || resultsVisible.on"
-                     class="is-half marginRightSmall" icon="times" color="is-danger" text="adventureButton1"
-                     @click="$emit('click', { type: 'abort' })" />
-      </transition>
-      <transition :enter-active-class="enterActiveClass"
-                  leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
-        <ButtonBasic v-show="resultsVisible.on && currentWordIndex + 1 !== vocabs.words.length"
-                     class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
-                     text="adventureButton3" @click="nextWord()" :disabled="$store.state.canvasDict.animationActive" />
-      </transition>
-      <transition :enter-active-class="enterActiveClass"
-                  leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonBasic v-show="resultsVisible.on && currentWordIndex + 1 === vocabs.words.length"
-                     class="is-half marginBottomSmall marginLeftSmall" icon="clipboard-check" color="is-success"
-                     text="adventureButton4" @click="$emit('click', { type: 'finish' })"
-                     :disabled="$store.state.canvasDict.animationActive" />
-      </transition>
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
-                  leave-active-class="animated fadeOut a-little-bit-faster">
-        <ButtonBasic v-show="resultsVisible.off" class="is-half marginLeftSmall" icon="briefcase"
-                     color="is-primary" text="adventureButton6" @click="showItems()" />
-      </transition>
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
-                  leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
-        <ButtonBasic v-show="resultsVisible.on && solutionVisible.off" icon="eye" color="is-info" text="adventureButton7"
-                     @click="showSolution()" />
-      </transition>
-      <transition enter-active-class="animated fadeIn a-little-bit-faster"
-                  leave-active-class="animated fadeOut a-little-bit-faster" @after-leave="endTrigger()">
-        <ButtonBasic v-show="resultsVisible.on && solutionVisible.on" icon="eye-slash" color="is-info"
-                     text="adventureButton8" @click="hideSolution()" />
-      </transition>
-    </div>
-    <TheProgressBar class="is-10" color="is-success" :text="progressText"
-                    :value="progressBarCount" :maxValue="vocabs.words.length" />
-    <transition enter-active-class="animated fadeInUp a-little-bit-faster"
-                leave-active-class="animated fadeOutDown a-little-bit-faster">
-      <div v-show="keyboardVisible" class="specialKeyboard has-background-background">
-        <h1 class="title marginTopBig" :class="getSizeClass('title')">
-          {{ getText('adventureKeyboardTitle') }}
-        </h1>
-        <div class="control is-10 marginBottomBig">
-          <div class="content" :class="getSizeClass('content')">
-            <blockquote>
-              {{ vocabs.words[currentWordIndex][vocabs.mainAlphabet] }}
-            </blockquote>
+  <div class="adventure-page">
+    <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
+                leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+      <div v-show="itemsVisible.off" class="inputs flex-grow flex-column">
+        <InputTwoIcons class="border-bottom" :class="{ 'on-focus': solutionVisible.on }" :title="vocabs.latinAlphabet"
+                      type="text" :color="inputColor" :colorLeft="latinIconColor" :colorRight="latinCoinColor"
+                      :iconLeft="latinIcon" iconRight="coins" v-model="latinInput" :readonly="resultsVisible.on"
+                      :leftIconVisible="resultsVisible.on" :rightIconVisible="resultsVisible.on && isLatinCorrect > 0" />
+        <InputTwoIcons v-show="hasForeignAlphabet" class="border-bottom" :class="{ 'on-focus': solutionVisible.on }"
+                      :title="vocabs.foreignAlphabet" type="text" :color="inputColor" :colorLeft="foreignIconColor"
+                      :colorRight="foreignCoinColor" :iconLeft="foreignIcon" iconRight="coins" v-model="foreignInput"
+                      :leftIconVisible="resultsVisible.on" :rightIconVisible="resultsVisible.on && isForeignCorrect > 0"
+                      @click="showKeyboard()" readonly />
+      </div>
+    </transition>
+    <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
+                leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+      <div v-show="itemsVisible.on" class="items flex-grow overflow-auto">
+        <TitleBasic class="margin-bottom-mini" text="adventureItemWeapons" color="weapons">
+          <Sword :class="getSizeClass('general')" />
+        </TitleBasic>
+        <div class="flex-row gap-column-small overflow-auto margin-bottom-medium">
+          <div class="flex-column" v-for="item in weapons" :key="item.id">
+            <ItemBoxBasic class="small" mode="small" :item="item" :equipped="itemEquipped(item.id, 'weapons')" />
+            <ButtonText class="small single-1 width-full" color="green" text="adventureItemButton1"
+                        @click="itemBoxAction(item, 'weapons')" />
           </div>
         </div>
-        <input class="input is-rounded is-10 marginBottomBig" type="text" :placeholder="getText(vocabs.foreignAlphabet)"
-               :class="[getSizeClass('input'), { 'is-info': inputBorderInfo}]"
-               v-model="foreignInput" readonly />
-        <div class="flexGrow fullWidth keyboard marginBottomBig">
-          <TabsBasic :names="keyboardNames" :selected="currentKeyboardTab" @click="setTab($event)" radiusless />
-          <div class="bottomKeyboard">
-            <div class="keyContainer">
-              <ButtonText class="is-radiusless keyboardButton" :text="sign" v-for="(sign, index) in keyboardSigns"
-                          :key="index" @click="addLetter(sign)" />
-            </div>
+        <TitleBasic class="margin-bottom-mini" text="adventureItemArmor" color="armor">
+          <ShieldOutline :class="getSizeClass('general')" />
+        </TitleBasic>
+        <div class="flex-row gap-column-small overflow-auto margin-bottom-medium">
+          <div class="flex-column" v-for="item in armor" :key="item.id">
+            <ItemBoxBasic class="small" mode="small" :item="item" :equipped="itemEquipped(item.id, 'armor')" />
+            <ButtonText class="small single-1 width-full" color="green" text="adventureItemButton2"
+                        @click="itemBoxAction(item, 'armor')" />
           </div>
         </div>
-        <div class="innerFlexContainerButton is-10 marginBottomBig">
-          <ButtonBasic class="is-full marginBottomSmall" icon="check"
-                       color="is-success" text="adventureKeyboardButton1" @click="hideKeyboard()" />
-          <ButtonBasic class="is-half marginRightSmall" icon="backspace"
-                       color="is-warning" text="adventureKeyboardButton2" @click="removeLetter()" />
-          <ButtonBasic class="is-half marginLeftSmall" icon="times"
-                       color="is-danger" text="adventureKeyboardButton3" @click="clearWord()" />
+        <TitleBasic class="margin-bottom-mini" text="adventureItemConsumables" color="consumables">
+          <BottleTonicOutline :class="getSizeClass('general')" />
+        </TitleBasic>
+        <div v-if="consumables.length > 0" class="flex-row gap-column-small overflow-auto">
+          <div class="flex-column" v-for="item in consumables" :key="item.id">
+            <ItemBoxBasic class="small" mode="small" :item="item" />
+            <ButtonText class="small single-1 width-full" color="green" text="adventureItemButton3"
+                        @click="itemBoxAction(item, 'consumables')" />
+          </div>
+        </div>
+        <div v-else class="item-box-replacement" :class="getSizeClass('general')">
+          {{ getText('adventureItemSelectionNoConsumables') }}
         </div>
       </div>
     </transition>
-    <transition enter-active-class="animated fadeInUp a-little-bit-faster"
-                leave-active-class="animated fadeOutDown a-little-bit-faster">
-      <div v-show="itemsVisible" class="itemSelectionContainer has-background-background">
-        <h1 class="title marginTopBig" :class="getSizeClass('title')">
-          {{ getText('adventureItemSelectionTitle') }}
-        </h1>
-        <div class="is-10 marginBottomBig flexGrow overflowAuto">
-          <div class="customTitle marginBottomSmall has-text-white-ter has-background-weapon">
-            <Sword class="marginRightSmall" :class="getSizeClass('mdi')" />
-            <div class="content" :class="getSizeClass('content')">
-              {{ getText('adventureItemWeapons') }}
-            </div>
-          </div>
-          <div class="itemBar overflowAuto marginBottomBig">
-            <ItemBoxBasic v-for="item in weapons" :key="item.id" :item="item"
-                          :equipped="itemEquipped(item.id, 'weapons')" hasInfoBar isSizeable
-                          @click="itemBoxAction(item, 'weapons')" />
-          </div>
-          <div class="customTitle marginBottomSmall has-text-white-ter has-background-armor">
-            <ShieldOutline class="marginRightSmall" :class="getSizeClass('mdi')" />
-            <div class="content" :class="getSizeClass('content')">
-              {{ getText('adventureItemArmor') }}
-            </div>
-          </div>
-          <div class="itemBar overflowAuto marginBottomBig">
-            <ItemBoxBasic v-for="item in armor" :key="item.id" :item="item"
-                          :equipped="itemEquipped(item.id, 'armor')" hasInfoBar isSizeable
-                          @click="itemBoxAction(item, 'armor')" />
-          </div>
-          <div class="customTitle marginBottomSmall has-text-white-ter has-background-consumable">
-            <BottleTonicOutline class="marginRightSmall" :class="getSizeClass('mdi')" />
-            <div class="content" :class="getSizeClass('content')">
-              {{ getText('adventureItemConsumables') }}
-            </div>
-          </div>
-          <div class="itemBar overflowAuto marginBottomBig">
-            <ItemBoxBasic v-for="item in consumables" :key="item.id" :item="item"
-                          :equipped="itemEquipped(item.id, 'consumables')" hasInfoBar isSizeable
-                          @click="itemBoxAction(item, 'consumables')" />
-            <div class="consumablesPlaceholder" :class="getSizeClass('itemBoxBasic')" v-if="consumables.length === 0">
-              {{ getText('adventureItemSelectionNoConsumables') }}
-            </div>
-          </div>
+    <TheProgressBar class="width-full border-top" color="green" :value="progressBarCount"
+                    :maxValue="vocabs.words.length" />
+    <div class="button-container flex-row flex-wrap">
+      <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
+                  leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+        <ButtonBasic v-show="resultsVisible.off || resultsVisible.on" class="width-half" icon="times" color="red"
+                     text="adventureButton1" @click="$emit('click', { type: 'abort' })" />
+      </transition>
+      <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
+                  leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+        <ButtonBasic v-show="resultsVisible.off" class="width-half" icon="check" color="green" text="adventureButton2"
+                     @click="checkInput()" />
+      </transition>
+      <transition :enter-active-class="enterActiveClass"
+                  leave-active-class="animate__animated animate__fadeOut duration-c-350ms" @after-leave="endTrigger()">
+        <ButtonBasic v-show="resultsVisible.on && currentWordIndex + 1 !== vocabs.words.length" class="width-half"
+                     icon="arrow-right" color="green" text="adventureButton3" @click="nextWord()"
+                     :disabled="$store.state.canvasDict.animationActive" />
+      </transition>
+      <transition :enter-active-class="enterActiveClass"
+                  leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+        <ButtonBasic v-show="resultsVisible.on && currentWordIndex + 1 === vocabs.words.length" class="width-half"
+                     icon="clipboard-check" color="green" text="adventureButton4"
+                     @click="$emit('click', { type: 'finish' })" :disabled="$store.state.canvasDict.animationActive" />
+      </transition>
+      <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
+                  leave-active-class="animate__animated animate__fadeOut duration-c-350ms" @after-leave="endTrigger()">
+        <ButtonBasic v-show="resultsVisible.off" class="width-half" icon="map" color="yellow" text="adventureButton5"
+                     @click="$emit('click', { type: 'backToMap' })" />
+      </transition>
+      <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
+                  leave-active-class="animate__animated animate__fadeOut duration-c-350ms" @after-leave="endTrigger()">
+        <ButtonBasic v-show="resultsVisible.off && itemsVisible.off" class="width-half" icon="briefcase" color="action"
+                     text="adventureButton6" @click="showItems()" />
+      </transition>
+      <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
+                  leave-active-class="animate__animated animate__fadeOut duration-c-350ms" @after-leave="endTrigger()">
+        <ButtonBasic v-show="resultsVisible.off && itemsVisible.on" class="width-half" icon="list" color="action"
+                     text="adventureButton9" @click="hideItems()" />
+      </transition>
+      <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
+                  leave-active-class="animate__animated animate__fadeOut duration-c-350ms" @after-leave="endTrigger()">
+        <ButtonBasic v-show="resultsVisible.on && solutionVisible.off" class="width-full" icon="eye" color="info"
+                     text="adventureButton7" @click="showSolution()" />
+      </transition>
+      <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
+                  leave-active-class="animate__animated animate__fadeOut duration-c-350ms" @after-leave="endTrigger()">
+        <ButtonBasic v-show="resultsVisible.on && solutionVisible.on" class="width-full" icon="eye-slash" color="info"
+                     text="adventureButton8" @click="hideSolution()" />
+      </transition>
+    </div>
+    <transition enter-active-class="animate__animated animate__fadeInUp duration-c-350ms"
+                leave-active-class="animate__animated animate__fadeOutDown duration-c-350ms">
+      <div v-show="keyboardVisible" class="keyboard flex-column">
+        <HeroBasic title="adventureKeyboardTitle" :subtitle="[vocabs.foreignAlphabet]" />
+        <TheBlockquote class="margin-top-small margin-bottom-medium" :text="vocabs.words[currentWordIndex][vocabs.mainAlphabet]" />
+        <InputTwoIcons class="border-bottom on-focus margin-bottom-medium" :title="vocabs.foreignAlphabet" type="text"
+                        color="action" v-model="foreignInput" readonly />
+        <div class="flex-row border-top border-bottom">
+          <ButtonText class="width-full" :class="{ 'single-2': isCurrentTab(name) }" v-for="name in keyboardNames"
+                      color="action" :text="name" :key="name" @click="setTab(name)" />
         </div>
-        <div class="is-10">
-          <ButtonBasic icon="times" color="is-danger" text="adventureItemSelectionButton1" @click="hideItems()" />
+        <div class="keys flex-grow flex-row flex-wrap overflow-auto">
+          <ButtonText class="width-fifth" v-for="(sign, index) in keyboardSigns" :text="sign" color="action"
+                      :key="index" @click="addLetter(sign)" />
+        </div>
+        <div class="button-container">
+          <ButtonBasic class="width-half" icon="times" color="red" text="adventureKeyboardButton3"
+                       @click="clearWord()" />
+          <ButtonBasic class="width-half" icon="backspace" color="yellow" text="adventureKeyboardButton2"
+                       @click="removeLetter()" />
+          <ButtonBasic class="width-full" icon="check" color="green" text="adventureKeyboardButton1"
+                       @click="hideKeyboard()" />
         </div>
       </div>
     </transition>
@@ -169,11 +132,14 @@
 </template>
 
 <script>
+import InputTwoIcons from '@/components/InputTwoIcons.vue'
+import HeroBasic from '@/components/HeroBasic.vue'
+import TitleBasic from '@/components/TitleBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import ButtonText from '@/components/ButtonText.vue'
-import TheProgressBar from '@/components/TheProgressBar.vue'
-import TabsBasic from '@/components/TabsBasic.vue'
 import ItemBoxBasic from '@/components/ItemBoxBasic.vue'
+import TheBlockquote from '@/components/TheBlockquote.vue'
+import TheProgressBar from '@/components/TheProgressBar.vue'
 
 import BottleTonicOutline from 'vue-material-design-icons/BottleTonicOutline.vue'
 import Sword from 'vue-material-design-icons/Sword.vue'
@@ -182,11 +148,14 @@ import ShieldOutline from 'vue-material-design-icons/ShieldOutline.vue'
 export default {
   name: 'AdventureInputs',
   components: {
+    InputTwoIcons,
+    HeroBasic,
+    TitleBasic,
     ButtonBasic,
     ButtonText,
-    TheProgressBar,
-    TabsBasic,
     ItemBoxBasic,
+    TheBlockquote,
+    TheProgressBar,
     BottleTonicOutline,
     Sword,
     ShieldOutline
@@ -194,7 +163,10 @@ export default {
   data () {
     return {
       keyboardVisible: false,
-      itemsVisible: false,
+      itemsVisible: {
+        off: true,
+        on: false
+      },
       solutionVisible: {
         off: true,
         on: false
@@ -203,7 +175,6 @@ export default {
         off: true,
         on: false
       },
-      inputBorderInfo: false,
       animationQueue: [],
       consumableUsed: false,
       latinInput: '',
@@ -248,19 +219,19 @@ export default {
     latinIconColor () {
       switch (this.isLatinCorrect) {
         case 2:
-          return 'has-text-success'
+          return 'green'
         case 1:
-          return 'has-text-warning'
+          return 'yellow'
         default:
-          return 'has-text-danger'
+          return 'red'
       }
     },
     latinCoinColor () {
       switch (this.isLatinCorrect) {
         case 2:
-          return 'has-text-warning'
+          return 'gold'
         default:
-          return 'has-text-silver'
+          return 'silver'
       }
     },
     isForeignCorrect () {
@@ -287,29 +258,32 @@ export default {
     foreignIconColor () {
       switch (this.isForeignCorrect) {
         case 2:
-          return 'has-text-success'
+          return 'green'
         case 1:
-          return 'has-text-warning'
+          return 'yellow'
         default:
-          return 'has-text-danger'
+          return 'red'
       }
     },
     foreignCoinColor () {
       switch (this.isForeignCorrect) {
         case 2:
-          return 'has-text-warning'
+          return 'gold'
         default:
-          return 'has-text-silver'
+          return 'silver'
       }
+    },
+    inputColor () {
+      if (this.solutionVisible.on) {
+        return 'info'
+      }
+      return 'action'
     },
     progressBarCount () {
       if (this.resultsVisible.on) {
         return this.currentWordIndex + 1
       }
       return this.currentWordIndex
-    },
-    progressText () {
-      return this.progressBarCount + ' / ' + this.vocabs.words.length
     },
     keyboardNames () {
       let names = Object.keys(this.vocabs.signs)
@@ -370,11 +344,9 @@ export default {
         item.categories.includes('consumable') && item.quantity > 0
       )
     },
-    baseUrl () {
-      return process.env.BASE_URL
-    },
     enterActiveClass () {
-      return 'animated a-little-bit-faster ' + (this.$store.state.canvasDict.animationActive ? 'fadeInC2' : 'fadeIn')
+      return 'animate__animated duration-c-350ms ' +
+        (this.$store.state.canvasDict.animationActive ? 'fade-in-to-disabled' : 'animate__fadeIn')
     }
   },
   methods: {
@@ -456,10 +428,15 @@ export default {
       this.keyboardVisible = false
     },
     showItems () {
-      this.itemsVisible = true
+      this.itemsVisible.off = false
+      this.animationQueue.push(['itemsVisible', 'on'])
     },
     hideItems () {
-      this.itemsVisible = false
+      this.itemsVisible.on = false
+      this.animationQueue.push(['itemsVisible', 'off'])
+    },
+    isCurrentTab (id) {
+      return id === this.currentKeyboardTab
     },
     setTab (id) {
       this.currentKeyboardTab = id
@@ -518,13 +495,11 @@ export default {
         this[variable[0]][variable[1]] = true
 
         if (variable[0] === 'solutionVisible' && variable[1] === 'on') {
-          this.inputBorderInfo = true
           this.latinInput = this.vocabs.words[this.currentWordIndex][this.vocabs.latinAlphabet]
           if (this.hasForeignAlphabet) {
             this.foreignInput = this.vocabs.words[this.currentWordIndex][this.vocabs.foreignAlphabet]
           }
         } else if (variable[0] === 'solutionVisible' && variable[1] === 'off') {
-          this.inputBorderInfo = false
           this.latinInput = this.userLatinInput
           if (this.hasForeignAlphabet) {
             this.foreignInput = this.userForeignInput
@@ -537,155 +512,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flexboxContainer {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  width: 100%;
-  height: 100%;
-  justify-content: space-between;
-  align-items: center;
+.inputs {
+  justify-content: space-evenly;
+}
 
-  .flexGrow {
-    flex-grow: 1;
-  }
-
-  .overflowAuto {
-    overflow: auto;
-  }
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .is-max-10 {
-    max-width: calc(100% / 1.2);
-  }
-
-  .is-absolute {
-    position: absolute;
-    bottom: 0;
-  }
-
-  .innerFlexContainerInput {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    .is-1 {
-      width: calc(100% / 12);
-    }
-
-    .is-10 {
-      width: calc(100% / 1.2);
-    }
-  }
-
-  .innerFlexContainerButton {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-
-    .is-half {
-      width: calc(50% - .25rem);
-    }
-
-    .is-full {
-      width: 100%;
-    }
-  }
-
-  .specialKeyboard {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-    width: 100%;
-    height: calc(100% + .5rem);
-    padding-bottom: 71px;
-    top: 0px;
-    z-index: 4;
-
-    .keyboard {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-
-      .bottomKeyboard {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        align-items: center;
-        height: 0;
-        overflow: auto;
-        flex-grow: 1;
-
-        .keyContainer {
-          width: calc(100% / 1.2);
-          display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          justify-items: stretch;
-
-          .keyboardButton {
-            text-transform: none;
-          }
-        }
-      }
-    }
-  }
-
-  .itemSelectionContainer {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-    width: 100%;
-    height: calc(100% + .5rem);
-    padding-bottom: 71px;
-    top: 0px;
-    z-index: 4;
-
-    .customTitle {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: center;
-      padding: .25rem;
-      border-radius: 290486px;
-    }
-
-    .itemBar {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-    }
-
-    .consumablesPlaceholder {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      align-items: center;
-      width: 100%;
-
-      &.is-small {
-        height: 7em;
-      }
-
-      &.is-normal {
-        height: 9em;
-      }
-
-      &.is-medium {
-        height: 11em;
-      }
-
-      &.is-large {
-        height: 13em;
-      }
-    }
-  }
+.items {
+  height: 1rem;
 }
 </style>

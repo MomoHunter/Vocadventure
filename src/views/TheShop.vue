@@ -1,46 +1,45 @@
 <template>
-  <div class="flexContainer">
-    <HeroBasic class="marginBottomSmall" title="shopTitle" />
-    <div v-show="!showSearch && !showSort" class="field has-addons is-10">
-      <div class="control halfWidth">
-        <ButtonBasic color="is-link" :icon="sortIcon" text="shopButton1" @click="toggleSort()" />
-      </div>
-      <div class="control halfWidth">
-        <ButtonBasic color="is-link" icon="search" text="shopButton2" @click="toggleSearch()" />
-      </div>
+  <div class="page">
+    <HeroBasic title="shopTitle" />
+    <div v-show="!searchVisible && !sortVisible" class="action-container">
+      <ButtonBasic class="width-half" :icon="sortIcon" color="action" text="shopButton1" @click="showSort()" />
+      <ButtonBasic class="width-half" icon="search" color="action" text="shopButton2" @click="showSearch()" />
     </div>
-    <div v-show="showSort" class="field has-addons is-10">
-      <DropdownRounded class="is-expanded" :options="sorters" :icon="sortIcon" selected="sortStandard" color="is-link"
-                       @change="sort($event)" />
-      <div class="control">
-        <ButtonIcon color="is-danger" icon="times" @click="toggleSort()" />
-      </div>
+    <div v-show="sortVisible" class="action-container flex-row flex-center">
+      <DropdownBasic class="width-full" :icon="sortIcon" color="action" :options="sorters" selected="sortStandard"
+                     @change="sort($event)" />
+      <ButtonIcon icon="times" color="red" @click="hideSort()" />
     </div>
-    <InputWithButton v-if="showSearch" class="is-10" colorInput="is-link" colorButton="is-danger" type="text"
-                     iconInput="search" iconButton="times" @click="toggleSearch()" v-model="searchString" />
-    <div v-if="visibleItems.length > 0" class="is-10 flexGrow itemContainer marginBottomBig">
-      <transition-group class="transitionGroup" tag="div" :enter-active-class="enterTransition"
+    <div v-if="searchVisible" class="action-container">
+      <InputWithButton class="width-full" type="text" iconInput="search" iconButton="times" colorInput="action"
+                       colorButton="red" @click="hideSearch()" v-model="searchString" />
+    </div>
+    <div v-show="pages === 0" class="flex-grow flex-row flex-center">
+      {{ getText('shopNoItems') }}
+    </div>
+    <div v-show="pages !== 0" class="item-container flex-grow">
+      <transition-group class="transition-group width-full height-full" tag="div"
+                        :enter-active-class="enterTransition"
                         :leave-active-class="leaveTransition">
-        <ItemBoxBasic class="customBox" :class="absoluteClass(index)" v-for="(item, index) in visibleItems" :key="item.id"
-                    :item="item" @click="$router.push({ name: 'details', params: { item: item.id } })" />
+        <ItemBoxBasic :class="[index % 2 === 0 ? 'left' : 'right', index < 2 ? 'top' : 'bottom']"
+                      v-for="(item, index) in visibleItems" mode="shop" :item="item" :key="item.id"
+                      @click="navTo('details', item.id)" />
       </transition-group>
     </div>
-    <div v-else class="is-10 flexGrow emptyPage">
-      <p class="content" :class="getSizeClass('content')">
-        {{ getText('shopNoItems') }}
-      </p>
+    <div v-show="pages !== 0" class="pagination button-container flex-row overflow-auto flex-shrink">
+      <ButtonText :class="{ 'single-2': currentPage === page }" v-for="page in pages" color="action" :text="page"
+                  :key="page" @click="changePage(page)" />
     </div>
-    <PaginationBasic v-show="pages > 1" :pages="pages" :currentPage="currentPage" @click="changePage($event)" />
-    <div class="is-10">
-      <ButtonBasic class="marginBottomSmall" color="is-primary" icon="briefcase" text="shopButton4"
-                   @click="$router.push({ name: 'inventory' })" />
-      <ButtonBasic color="is-danger" icon="arrow-left" text="shopButton5"
-                   @click="$router.push({ name: 'menu', query: { sub: 'adventure' } })" />
+    <div class="button-container">
+      <ButtonBasic class="width-half" icon="arrow-left" color="red" text="shopButton5"
+                   @click="navTo('menu', 'adventure')" />
+      <ButtonBasic class="width-half" icon="briefcase" color="info" text="shopButton4" @click="navTo('inventory')" />
     </div>
-    <transition enter-active-class="animated bounceInDown delay-500ms" leave-active-class="animated bounceOutUp"
+    <transition enter-active-class="animate__animated animate__backInUp duration-c-700ms"
+                leave-active-class="animate__animated animate__backOutDown duration-c-700ms"
                 @after-enter="setTimer()" @after-leave="clearBoughtItems()">
-      <MessageItems v-show="messageVisible" title="shopNewItems" class="fullWidth"
-                    color="is-success" :items="$store.state.vueDict.boughtItems" @click="closeMessage()" />
+      <NotificationItems v-show="notificationVisible" title="shopNotificationTitle" color="green"
+                         icon="shopping-cart" :items="$store.state.vueDict.boughtItems" @click="hideNotification()" />
     </transition>
   </div>
 </template>
@@ -48,34 +47,34 @@
 <script>
 import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
-import DropdownRounded from '@/components/DropdownRounded.vue'
-import ButtonIcon from '@/components/ButtonIcon.vue'
 import InputWithButton from '@/components/InputWithButton.vue'
-import PaginationBasic from '@/components/PaginationBasic.vue'
-import MessageItems from '@/components/MessageItems.vue'
+import DropdownBasic from '@/components/DropdownBasic.vue'
 import ItemBoxBasic from '@/components/ItemBoxBasic.vue'
+import ButtonIcon from '@/components/ButtonIcon.vue'
+import ButtonText from '@/components/ButtonText.vue'
+import NotificationItems from '@/components/NotificationItems.vue'
 
 export default {
   name: 'TheShop',
   components: {
     HeroBasic,
     ButtonBasic,
-    DropdownRounded,
-    ButtonIcon,
     InputWithButton,
-    PaginationBasic,
-    MessageItems,
-    ItemBoxBasic
+    DropdownBasic,
+    ItemBoxBasic,
+    ButtonIcon,
+    ButtonText,
+    NotificationItems
   },
   data () {
     return {
-      showSearch: false,
-      showSort: false,
-      messageVisible: false,
+      sortVisible: false,
+      searchVisible: false,
+      notificationVisible: false,
       searchString: '',
       sortIcon: 'sort',
-      enterTransition: 'animated fadeInLeft',
-      leaveTransition: 'animated fadeOutRight',
+      enterTransition: 'animate__animated slide-in-left-custom',
+      leaveTransition: 'animate__animated slide-out-left-custom',
       sortFunction (that) {
         return (a, b) => { return 0 }
       }
@@ -83,7 +82,7 @@ export default {
   },
   mounted () {
     if (this.$store.state.vueDict.boughtItems.length > 0) {
-      this.messageVisible = true
+      this.notificationVisible = true
     }
   },
   beforeDestroy () {
@@ -111,9 +110,6 @@ export default {
     pages () {
       return Math.ceil(this.items.length / 4)
     },
-    baseUrl () {
-      return process.env.BASE_URL
-    },
     currentPage: {
       get () {
         return this.$store.state.vueDict.currentShopPage
@@ -126,9 +122,6 @@ export default {
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)
-    },
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
     },
     sort (type) {
       if (type.endsWith('Asc')) {
@@ -174,42 +167,43 @@ export default {
         default:
       }
     },
-    toggleSort () {
-      this.showSort = !this.showSort
-    },
-    toggleSearch () {
-      this.showSearch = !this.showSearch
-      if (!this.showSearch) {
-        this.searchString = ''
-      }
-    },
     changePage (page) {
-      if (page !== '&hellip;') {
-        this.currentPage = page
-      }
-    },
-    absoluteClass (index) {
-      switch (index) {
-        case 0:
-          return 'alignTop alignLeft'
-        case 1:
-          return 'alignTop alignRight'
-        case 2:
-          return 'alignBottom alignLeft'
-        case 3:
-          return 'alignBottom alignRight'
-        default:
-          return 'alignTop alignLeft'
-      }
+      this.currentPage = page
     },
     setTimer () {
-      setTimeout(this.closeMessage, 10000)
+      setTimeout(this.hideNotification, 30000)
     },
-    closeMessage () {
-      this.messageVisible = false
+    hideNotification () {
+      this.notificationVisible = false
     },
     clearBoughtItems () {
       this.$store.commit('vueDict/setBoughtItems', [])
+    },
+    showSort () {
+      this.sortVisible = true
+    },
+    hideSort () {
+      this.sortVisible = false
+    },
+    showSearch () {
+      this.searchVisible = true
+    },
+    hideSearch () {
+      this.searchVisible = false
+    },
+    navTo (name, params = '') {
+      switch (name) {
+        case 'menu':
+          this.$router.push({ name: name, query: { sub: params } })
+          break
+        case 'details':
+          this.$router.push({ name: name, params: { item: params } })
+          break
+        case 'inventory':
+          this.$router.push({ name: name })
+          break
+        default:
+      }
     }
   },
   watch: {
@@ -218,11 +212,11 @@ export default {
     },
     currentPage (to, from) {
       if (to > from) {
-        this.enterTransition = 'animated fadeInRight'
-        this.leaveTransition = 'animated fadeOutLeft'
-      } else {
-        this.enterTransition = 'animated fadeInLeft'
-        this.leaveTransition = 'animated fadeOutRight'
+        this.enterTransition = 'animate__animated slide-in-left-custom'
+        this.leaveTransition = 'animate__animated slide-out-left-custom'
+      } else if (to < from) {
+        this.enterTransition = 'animate__animated slide-in-right-custom'
+        this.leaveTransition = 'animate__animated slide-out-right-custom'
       }
     }
   }
@@ -230,65 +224,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flexContainer {
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  height: calc(100% - 71px);
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .halfWidth {
-    width: 50%;
-  }
-
-  .flexGrow {
-    flex-grow: 1;
-  }
-
-  .emptyPage {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-.itemContainer {
-  .transitionGroup {
-    position: relative;
-    width: 100%;
-    height: 100%;
-
-    .customBox {
-      position: absolute;
-      width: calc(50% - .5rem);
-      height: calc(50% - .5rem);
-
-      &.alignLeft {
-        margin-right: .5rem;
-        left: 0px;
-      }
-
-      &.alignRight {
-        margin-left: .5rem;
-        right: 0px;
-      }
-
-      &.alignTop {
-        top: 0px;
-      }
-
-      &.alignBottom {
-        bottom: 0px;
-      }
-    }
-  }
+.pagination {
+  justify-content: center;
 }
 </style>

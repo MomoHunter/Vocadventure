@@ -1,20 +1,11 @@
 <template>
-  <div class="modal is-active" v-if="show">
-    <div class="modal-background"></div>
-    <div class="modal-content is-clipped">
-      <p class="image is-4by3">
-        <img src="@/assets/rusure.gif" alt="Are you sure?">
-      </p>
-      <div class="flexContainer">
-        <div class="is-10">
-          <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="modalButton1"
-                      @click="deleteData()" />
-          <ButtonBasic color="is-danger" icon="times" text="modalButton2"
-                      @click="$store.commit('vueDict/closeModal')" />
-        </div>
-      </div>
+  <div class="modal width-full height-full flex-column">
+    <img src="@/assets/rusure.gif" alt="Are you sure?">
+    <div class="flex-row">
+      <ButtonBasic class="single-2 flex-grow" color="red" icon="times" text="modalButton1"
+                   @click="$store.commit('vueDict/closeModal')" />
+      <ButtonBasic class="single-2 flex-grow" color="green" icon="check" text="modalButton2" @click="deleteData()" />
     </div>
-    <button class="modal-close" :class="getSizeClass('button')" @click="$store.commit('vueDict/closeModal')" />
   </div>
 </template>
 
@@ -23,9 +14,6 @@ import ButtonBasic from '@/components/ButtonBasic.vue'
 
 export default {
   name: 'TheModal',
-  props: {
-    show: Boolean
-  },
   components: {
     ButtonBasic
   },
@@ -43,14 +31,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flexContainer {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
+.modal {
   justify-content: center;
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
+  max-width: 700px;
 }
 </style>

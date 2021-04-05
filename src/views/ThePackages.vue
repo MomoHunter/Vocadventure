@@ -1,77 +1,59 @@
 <template>
-  <div class="flexboxContainer">
-    <HeroBasic title="packagesTitle" />
-    <div class="entryContainer is-10 flexGrow overflowAuto marginTopBig marginBottomBig">
-      <div class="outerEntryContainer" v-for="(wordPack, index) in $store.state.vueDict.vocabulary" :key="index">
-        <div class="innerEntryContainer" :class="getSizeClass('flag')">
-          <svg class="svgFlagElement" :class="getSizeClass('flag')">
-            <image class="flagElement" :class="getSizeClass('flag')"
-                   :href="baseUrl + 'img/flags/' + getFlagName(wordPack.targetLanguage) + '.svg'"
-                   preserveAspectRatio="none" />
-          </svg>
-          <div class="foregroundContainer" :class="getSizeClass('flag')">
-            <div class="textOverflow" :class="getSizeClass('text')">
-              [{{ wordPack.tag }}] {{ wordPack.name }}
-            </div>
-            <div class="textOverflow" :class="getSizeClass('smallText')">
-              Kategorien: {{ getCategoryCount(wordPack) }} | Wörter: {{ getWordCount(wordPack) }}
-            </div>
-          </div>
-        </div>
-        <button class="button customButton is-success is-outlined" :class="getSizeClass('button')"
-                @click="navTo('edit', getWordPackKey(wordPack))">
-          <span class="icon">
-            <font-awesome-icon :icon="['fas', 'pen']" />
-          </span>
-        </button>
-        <button class="button customButton is-info is-outlined" :class="getSizeClass('button')"
-                @click="downloadPack(wordPack)">
-          <span class="icon">
-            <font-awesome-icon :icon="['fas', 'download']" />
-          </span>
-        </button>
-        <button class="button customButton is-danger is-outlined" :class="getSizeClass('button')"
-                @click="deletePack(wordPack)">
-          <span class="icon">
-            <font-awesome-icon :icon="['fas', 'trash']" />
-          </span>
-        </button>
-      </div>
+  <div class="page">
+    <HeroBasic title="packagesTitle" :subtitle="subtitle" />
+    <div class="action-container">
+      <ButtonBasic class="width-half" icon="download" color="action"
+                   text="packagesButton1" @click="switchMode('download')" />
+      <ButtonUpload class="width-half" icon="upload" color="action" text="packagesButton2"
+                    @change="processFiles($event)" />
     </div>
-    <div class="is-10 buttonContainer">
-      <div class="file fullWidth marginBottomSmall is-info">
-        <label class="file-label fullWidth">
-          <input class="file-input fullWidth" type="file" name="resume" @change="getFile($event.target.files[0])">
-          <span class="file-cta roundBorder fullWidth">
-            <span class="file-icon">
-              <font-awesome-icon :icon="['fas', 'upload']" />
-            </span>
-            <span class="file-label">
-              {{ getText('packagesButton1') }}
-            </span>
-          </span>
-        </label>
-      </div>
-      <ButtonBasic class="is-half marginRightSmall" icon="arrow-left" color="is-danger" text="packagesButton3" @click="navTo()" />
-      <ButtonBasic class="is-half marginLeftSmall" icon="plus" color="is-success" text="packagesButton4"
+    <div class="flex-grow overflow-auto">
+      <PackageListEntry v-for="(wordPack, index) in $store.state.vueDict.vocabulary" :wordPack="wordPack" :mode="mode"
+                        :isActiveList="activeList" @toggle="handleEntryToggle(wordPack, $event)"
+                        @click="navTo('edit', getWordPackKey(wordPack))" :key="index" />
+    </div>
+    <div v-show="mode !== 'standard'" class="button-container">
+      <ButtonBasic class="width-half" icon="times" color="red" text="packagesButton5" @click="switchMode('standard')" />
+      <ButtonBasic class="width-half" icon="check" color="green" text="packagesButton6"
+                   @click="showModal()" :disabled="selectedPacks.length === 0" />
+    </div>
+    <div class="button-container flex-row flex-wrap">
+      <ButtonBasic class="width-half" icon="arrow-left" color="red" text="packagesButton3" @click="navTo('category')" />
+      <ButtonBasic class="width-half" icon="plus" color="green" text="packagesButton4"
                    @click="navTo('edit', getNewPackKey())" />
+      <ButtonBasic class="width-full" icon="trash" color="red" text="packagesButton7" @click="switchMode('delete')" />
     </div>
+    <transition enter-active-class="animate__animated animate__backInUp duration-c-700ms"
+                leave-active-class="animate__animated animate__backOutDown duration-c-700ms">
+      <NotificationBasic v-show="notificationVisible" title="packagesNotificationTitle"
+                       :text="['packagesNotificationText', supportedLanguages]" color="red" icon="exclamation"
+                       @click="hideNotification()" />
+    </transition>
   </div>
 </template>
 
 <script>
 import HeroBasic from '@/components/HeroBasic.vue'
+import PackageListEntry from '@/components/PackageListEntry.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
+import ButtonUpload from '@/components/ButtonUpload.vue'
+import NotificationBasic from '@/components/NotificationBasic.vue'
 
 export default {
   name: 'ThePackages',
   components: {
     HeroBasic,
-    ButtonBasic
+    PackageListEntry,
+    ButtonBasic,
+    ButtonUpload,
+    NotificationBasic
   },
   data () {
     return {
-      selectedPack: null
+      mode: 'standard',
+      selectedPacks: [],
+      selectedWordPack: null,
+      notificationVisible: false
     }
   },
   computed: {
@@ -80,28 +62,74 @@ export default {
     },
     baseUrl () {
       return process.env.BASE_URL
+    },
+    activeList () {
+      switch (this.mode) {
+        case 'download':
+        case 'delete':
+          return this.selectedPacks
+        default:
+          return this.$store.state.vueDict.activeWordPacks
+      }
+    },
+    subtitle () {
+      switch (this.mode) {
+        case 'download':
+          return ['packagesSubtitleDownload']
+        case 'delete':
+          return ['packagesSubtitleDelete']
+        default:
+          return ['']
+      }
+    },
+    supportedLanguages () {
+      if (this.selectedWordPack) {
+        return this.selectedWordPack.supportedLanguages.map(lang => {
+          return '<li>' + this.getText(lang) + '</li>'
+        }).join('')
+      }
+      return ''
     }
   },
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)
     },
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
+    handleEntryToggle (wordPack, bool) {
+      switch (this.mode) {
+        case 'download':
+          if (bool) {
+            if (this.selectedPacks.length === 1) {
+              this.selectedPacks = []
+            }
+            this.selectedPacks.push(this.getWordPackKey(wordPack))
+          } else {
+            this.selectedPacks = this.selectedPacks.filter(key => key !== this.getWordPackKey(wordPack))
+          }
+          break
+        case 'delete':
+          if (bool) {
+            this.selectedPacks.push(this.getWordPackKey(wordPack))
+          } else {
+            this.selectedPacks = this.selectedPacks.filter(key => key !== this.getWordPackKey(wordPack))
+          }
+          break
+        default:
+          if (bool) {
+            this.$store.commit('vueDict/activateWordPack', this.getWordPackKey(wordPack))
+          } else {
+            this.$store.commit('vueDict/deactivateWordPack', this.getWordPackKey(wordPack))
+          }
+      }
     },
-    getFlagName (targetLanguage) {
-      return this.$store.state.vueDict.targetLanguages[targetLanguage].flag
-    },
-    getCategoryCount (wordPack) {
-      return wordPack.categories.length.toLocaleString()
-    },
-    getWordCount (wordPack) {
-      return wordPack.categories.reduce((count, category) => {
-        return count + category.words.length
-      }, 0).toLocaleString()
+    switchMode (newMode) {
+      if (this.mode !== newMode) {
+        this.mode = newMode
+        this.selectedPacks = []
+      }
     },
     getWordPackKey (wordPack) {
-      return (wordPack.isCustom ? 'c' : 's') + '_' + wordPack.index.toString()
+      return this.$store.getters['vueDict/getWordPackKey'](wordPack)
     },
     getNewPackKey () {
       return 'c_' + this.$store.state.vueDict.vocabulary.reduce((maxIndex, wordPack) => {
@@ -111,19 +139,52 @@ export default {
         return maxIndex
       }, 1).toString()
     },
-    deletePack (wordPack) {
-      this.selectedPack = wordPack
-      this.$store.commit('vueDict/showModal', {
-        name: 'message',
-        title: 'packagesModalTitle',
-        text: 'packagesModalText',
-        color: '',
-        leftIcon: 'times',
-        leftText: 'packagesModalButtonLeft',
-        leftColor: 'is-danger',
-        rightIcon: 'check',
-        rightText: 'packagesModalButtonRight',
-        rightColor: 'is-success'
+    showModal () {
+      switch (this.mode) {
+        case 'download':
+          for (let key of this.selectedPacks) {
+            this.downloadPack(this.getWordPack(key))
+          }
+          this.switchMode('standard')
+          break
+        case 'delete':
+          this.$store.commit('vueDict/showModal', {
+            name: 'message',
+            title: 'packagesModalTitle',
+            text: [
+              'packagesModalText',
+              this.selectedPacks.map(key => {
+                let wordPack = this.getWordPack(key)
+                if (wordPack) {
+                  return '<li>[' + wordPack.tag + '] ' + wordPack.name + '</li>'
+                }
+                return ''
+              }, this).join('')
+            ],
+            buttons: [
+              {
+                icon: 'times',
+                text: 'packagesModalButton1',
+                color: 'red'
+              },
+              {
+                icon: 'check',
+                text: 'packagesModalButton2',
+                color: 'green'
+              }
+            ]
+          })
+          break
+        default:
+      }
+    },
+    getWordPack (key) {
+      let keyParts = key.split('_')
+      return this.$store.state.vueDict.vocabulary.find(pack => {
+        if (((!pack.isCustom && keyParts[0] === 's') || (pack.isCustom && keyParts[0] === 'c')) &&
+              pack.index === parseInt(keyParts[1])) {
+          return pack
+        }
       })
     },
     downloadPack (wordPack) {
@@ -133,41 +194,68 @@ export default {
       element.download = wordPack.name.toLowerCase().trim().replace(/ /g, '_') + '-wordpack.json'
       element.click()
     },
-    getFile (file) {
+    processFiles (files) {
+      let newFirstIndex = this.$store.state.vueDict.vocabulary.reduce((maxIndex, wordPack) => {
+        if (wordPack.isCustom) {
+          return wordPack.index >= maxIndex ? wordPack.index + 1 : maxIndex
+        }
+        return maxIndex
+      }, 1)
+
+      for (let i = 0; i < files.length; i++) {
+        this.getFile(files[i], newFirstIndex + i)
+      }
+    },
+    getFile (file, index) {
       const fileReader = new FileReader()
       fileReader.addEventListener('load', event => {
         let loadedPack = JSON.parse(event.target.result)
         loadedPack.isCustom = true
-        loadedPack.index = this.$store.state.vueDict.vocabulary.reduce((maxIndex, wordPack) => {
-          if (wordPack.isCustom) {
-            return wordPack.index >= maxIndex ? wordPack.index + 1 : maxIndex
-          }
-          return maxIndex
-        }, 1)
+        loadedPack.index = index
 
         this.$store.dispatch('savePack', loadedPack)
+        this.handleEntryToggle(loadedPack, true)
       })
       fileReader.readAsText(file)
     },
+    showNotification () {
+      this.notificationVisible = true
+    },
+    hideNotification () {
+      this.notificationVisible = false
+    },
     navTo (destination = '', packKey = '') {
       if (destination === 'edit') {
-        this.$store.commit('vueDict/setSelectedWordPackKey', packKey)
-        this.$router.push({ name: 'packagesEdit' })
+        let wordPack = this.getWordPack(packKey)
+        if (!wordPack || wordPack.supportedLanguages.includes(this.$store.state.lang)) {
+          this.$store.commit('vueDict/setSelectedWordPackKey', packKey)
+          this.$router.push({ name: 'packagesEdit' })
+        } else {
+          this.selectedWordPack = wordPack
+          this.showNotification()
+        }
       } else {
-        this.$router.push({ name: 'category', params: { destination: this.$store.state.vueDict.destination } })
+        window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
+        if (this.$store.state.vueDict.destination !== '') {
+          this.$router.push({ name: 'category', params: { destination: this.$store.state.vueDict.destination } })
+        } else {
+          this.$router.push({ name: 'category', params: { destination: 'training' } })
+        }
       }
     }
   },
   watch: {
     answer () {
       switch (this.answer) {
-        case 'buttonLeft':
-          this.selectedPack = null
+        case 'button1':
           this.$store.commit('vueDict/closeModal')
           break
-        case 'buttonRight':
-          this.$store.dispatch('deletePack', this.selectedPack)
+        case 'button2':
+          for (let key of this.selectedPacks) {
+            this.$store.dispatch('deletePack', this.getWordPack(key))
+          }
           this.$store.commit('vueDict/closeModal')
+          this.switchMode('standard')
           break
         default:
       }
@@ -175,200 +263,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.flexboxContainer {
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  height: calc(100% - 71px);
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .flexGrow {
-    flex-grow: 1;
-  }
-
-  .overflowAuto {
-    overflow: auto;
-  }
-
-  .textOverflow {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .is-size-8 {
-    font-size: .6rem !important;
-  }
-
-  .entryContainer {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-
-    .outerEntryContainer {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-
-      &:first-child {
-        border-top: 1px solid #878b8b;
-      }
-
-      &:last-child {
-        border-bottom: 1px solid #878b8b;
-      }
-
-      .innerEntryContainer {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        border-top: 1px solid #878b8b;
-        border-bottom: 1px solid #878b8b;
-
-        &.is-small {
-          max-width: calc(100% - 6.6rem);
-        }
-
-        &.is-normal {
-          max-width: calc(100% - 8.1rem);
-        }
-
-        &.is-medium {
-          max-width: calc(100% - 9.9rem);
-        }
-
-        &.is-large {
-          max-width: calc(100% - 12rem);
-        }
-
-        .foregroundContainer {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          flex-wrap: nowrap;
-
-          &.is-small {
-            background-image: linear-gradient(290deg, rgba(0, 0, 0, 0), #0c0c0c 3.64rem);
-            padding-right: 3.74rem;
-          }
-
-          &.is-normal {
-            background-image: linear-gradient(290deg, rgba(0, 0, 0, 0), #0c0c0c 4.6rem);
-            padding-right: 4.7rem;
-          }
-
-          &.is-medium {
-            background-image: linear-gradient(290deg, rgba(0, 0, 0, 0), #0c0c0c 5.8rem);
-            padding-right: 5.9rem;
-          }
-
-          &.is-large {
-            background-image: linear-gradient(290deg, rgba(0, 0, 0, 0), #0c0c0c 7.6rem);
-            padding-right: 7.7rem;
-          }
-        }
-
-        .svgFlagElement {
-          position: absolute;
-          top: 0;
-          right: 0;
-          z-index: -1;
-
-          &.is-small {
-            height: 2.4rem;
-            width: 3.84rem;
-          }
-
-          &.is-normal {
-            height: 3rem;
-            width: 4.8rem;
-          }
-
-          &.is-medium {
-            height: 3.75rem;
-            width: 6rem;
-          }
-
-          &.is-large {
-            height: 4.875rem;
-            width: 7.8rem;
-          }
-        }
-
-        .flagElement {
-          &.is-small {
-            height: 2.4rem;
-            width: 3.84rem;
-          }
-
-          &.is-normal {
-            height: 3rem;
-            width: 4.8rem;
-          }
-
-          &.is-medium {
-            height: 3.75rem;
-            width: 6rem;
-          }
-
-          &.is-large {
-            height: 4.875rem;
-            width: 7.8rem;
-          }
-        }
-      }
-
-      .customButton {
-        border-radius: 0px;
-        height: 100%;
-        border-bottom-width: 1px;
-        width: 2.7rem;
-
-        &.is-small {
-          width: 2.2rem;
-        }
-
-        &.is-medium {
-          width: 3.3rem;
-        }
-
-        &.is-large {
-          width: 4rem;
-        }
-      }
-    }
-  }
-
-  .buttonContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    .is-half {
-      width: calc(50% - .25rem);
-    }
-
-    .roundBorder {
-      border-radius: 290486px;
-      border-color: #3298dc;
-      background-color: transparent;
-      color: #3298dc;
-      text-transform: uppercase;
-      font-size: .85rem;
-      font-weight: bold;
-      height: 36px;
-      justify-content: center;
-    }
-  }
-}
-</style>

@@ -1,0 +1,1676 @@
+@charset "utf-8";
+@use "sass:color";
+
+@font-face {
+  font-family: "Nunito";
+  src: url("../assets/fonts/Nunito-ExtraLight.ttf") format("truetype");
+  font-weight: 100;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../assets/fonts/Nunito-Light.ttf") format("truetype");
+  font-weight: 200;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../assets/fonts/Nunito-Regular.ttf") format("truetype");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../assets/fonts/Nunito-Medium.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../assets/fonts/Nunito-SemiBold.ttf") format("truetype");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../assets/fonts/Nunito-Bold.ttf") format("truetype");
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../assets/fonts/Nunito-ExtraBold.ttf") format("truetype");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../assets/fonts/Nunito-Black.ttf") format("truetype");
+  font-weight: 800;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../assets/fonts/NunitoHeavy-Regular.ttf") format("truetype");
+  font-weight: 900;
+}
+
+/*
+Sizes:
+small: 80%
+normal: 100%
+large: 140%
+giga: 200%
+*/
+
+$sizes: 0.8 1 1.4 2;
+$size-classes: is-small is-normal is-large is-giga;
+
+$color-background: #0a0a0a; //#363945
+$color-font: #acacac;
+$color-font-dark: #5e5e5e;
+$color-hero: #2f2f2f;
+$color-border: #444444;
+$color-green: #228b22;
+$color-green-dark: darken($color-green, 15);
+$color-yellow: #c1c631; //#f5df4d
+$color-red: #cd212a;
+$color-red-dark: darken($color-red, 15);
+$color-info: #4aada3;
+$color-info-2: #4a96ad;
+$color-info-dark: #275a55;
+$color-action: #1ccf7c;
+$color-selected: #bf8013;
+$color-armor: #DC793E;
+$color-consumables: #8eb44c;
+$color-weapons: #1271c5;
+$color-basic: #a570a8;
+$color-gold: #847217;
+$color-silver: #a2aaaa;
+
+$color-white: #ffffff;
+$color-bright: #d9d9d9;
+$color-9: color.scale($color-bright, $red: -9.8%, $green: -9.8%, $blue: -9.8%);
+$color-8: color.scale($color-bright, $red: -19.6%, $green: -19.6%, $blue: -19.6%);
+$color-7: color.scale($color-bright, $red: -29.4%, $green: -29.4%, $blue: -29.4%);
+$color-6: color.scale($color-bright, $red: -39.2%, $green: -39.2%, $blue: -39.2%);
+$color-5: color.scale($color-bright, $red: -49%, $green: -49%, $blue: -49%);
+$color-4: color.scale($color-bright, $red: -58.8%, $green: -58.8%, $blue: -58.8%);
+$color-3: color.scale($color-bright, $red: -68.6%, $green: -68.6%, $blue: -68.6%);
+$color-2: color.scale($color-bright, $red: -78.4%, $green: -78.4%, $blue: -78.4%);
+$color-1: color.scale($color-bright, $red: -88.2%, $green: -88.2%, $blue: -88.2%);
+$color-dark: color.scale($color-bright, $red: -98%, $green: -98%, $blue: -98%);
+
+$colors: 'background' $color-background, 'green' $color-green, 'green-dark' $color-green-dark, 'yellow' $color-yellow, 'red' $color-red, 'red-dark' $color-red-dark,
+ 'info' $color-info, 'info-2' $color-info-2, 'info-dark' $color-info-dark, 'action' $color-action, 'selected' $color-selected,
+  'armor' $color-armor, 'consumables' $color-consumables, 'weapons' $color-weapons, 'basic' $color-basic, 'gold' $color-gold, 'silver' $color-silver, 'bright' $color-bright,
+  'color-9' $color-9, 'color-8' $color-8, 'color-7' $color-7, 'color-6' $color-6, 'color-5' $color-5,
+  'color-4' $color-4, 'color-3' $color-3, 'color-2' $color-2, 'color-1' $color-1, 'dark' $color-dark;
+
+html, body {
+  background: $color-background;
+  color: $color-font;
+  font-family: Nunito;
+  font-weight: 300;
+  box-sizing: border-box;
+}
+
+html * {
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.text {
+  @each $color in $colors {
+    &-#{nth($color, 1)} {
+      color: nth($color, 2);
+    }
+  }
+}
+
+.background {
+  @each $color in $colors {
+    &-#{nth($color, 1)} {
+      background: nth($color, 2);
+    }
+  }
+}
+
+.border {
+  &-top {
+    border-top: 3px solid $color-border;
+  }
+
+  &-bottom {
+    border-bottom: 3px solid $color-border;
+  }
+}
+
+.status {
+  .status-item {
+    @for $i from 1 through length($sizes) {
+      &.#{nth($size-classes, $i)} {
+        .name {
+          font-size: .3cm * nth($sizes, $i);
+        }
+
+        .value {
+          font-size: .7cm * nth($sizes, $i);
+        }
+      }
+    }
+    
+    .value {
+      font-weight: bold;
+    }
+  }
+}
+
+.hero {
+  position: relative;
+  background: $color-hero;
+  width: 100%;
+
+  .title {
+    font-weight: 700;
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      min-height: 7rem * nth($sizes, $i);
+
+      .title {
+        font-size: .9cm * nth($sizes, $i);
+      }
+
+      .subtitle {
+        font-size: .35cm * nth($sizes, $i);
+      }
+    }
+  }
+
+  &.mini {
+    @for $i from 1 through length($sizes) {
+      &.#{nth($size-classes, $i)} {
+        min-height: 3rem * nth($sizes, $i);
+  
+        .title {
+          font-size: .5cm * nth($sizes, $i);
+        }
+  
+        .subtitle {
+          font-size: .25cm * nth($sizes, $i);
+        }
+      }
+    }
+  }
+}
+
+.button {
+  background: transparent;
+  color: $color-font;
+  border: none;
+  text-transform: uppercase;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  cursor: pointer;
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      min-height: 2.5rem * nth($sizes, $i);
+      height: 2.5rem * nth($sizes, $i);
+      min-width: 2.5rem * nth($sizes, $i);
+      font-size: .35cm * nth($sizes, $i);
+
+      .icon:not(:last-child) {
+        padding-right: .25rem;
+      }
+    }
+  }
+
+  &.menu {
+    flex-direction: column;
+
+    @for $i from 1 through length($sizes) {
+      &.#{nth($size-classes, $i)} {
+        height: 6rem * nth($sizes, $i);
+
+        .text {
+          font-size: .35cm * nth($sizes, $i);
+        }
+  
+        .icon {
+          padding-right: 0;
+          padding-bottom: .25rem;
+          font-size: 1cm * nth($sizes, $i);
+        }
+      }
+    }
+  }
+
+  &.close {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+
+    @for $i from 1 through length($sizes) {
+      &.#{nth($size-classes, $i)} {
+        font-size: .6cm * nth($sizes, $i);
+        padding-right: 0;
+      }
+    }
+  }
+
+  &.single-1 {
+    @each $color in $colors {
+      &.#{nth($color, 1)} {
+        border-top: 1px solid nth($color, 2);
+        border-bottom: 1px solid nth($color, 2);
+      }
+    }
+  }
+
+  &.single-2 {
+    @each $color in $colors {
+      &.#{nth($color, 1)} {
+        border-top: 2px solid nth($color, 2);
+        border-bottom: 2px solid nth($color, 2);
+      }
+    }
+  }
+
+  &.upload {
+    position: relative;
+
+    .input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+  }
+
+  &.small {
+    @for $i from 1 through length($sizes) {
+      &.#{nth($size-classes, $i)} {
+        font-size: .2cm * nth($sizes, $i);
+        height: 1.25rem * nth($sizes, $i);
+        min-height: 1.25rem * nth($sizes, $i);
+      }
+    }
+  }
+
+  @each $color in $colors {
+    &.#{nth($color, 1)} {
+      color: nth($color, 2);
+    }
+  }
+
+  &:disabled {
+    opacity: .4;
+  }
+}
+
+.menu-button-container {
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      height: 12rem * nth($sizes, $i);
+    }
+  }
+}
+
+.button-container {
+  border-top: 3px solid $color-border;
+}
+
+.action-container {
+  border-bottom: 3px solid $color-border;
+}
+
+.notification {
+  background: $color-8;
+  color: $color-dark;
+
+  .title {
+    font-weight: 500;
+  }
+
+  .text {
+    color: $color-3;
+  }
+
+  .button {
+    color: $color-font-dark;
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      margin: .5rem * nth($sizes, $i) 1rem * nth($sizes, $i);
+      padding: .5rem * nth($sizes, $i) 1rem * nth($sizes, $i);
+      width: calc(100% - 2rem * #{nth($sizes, $i)});
+      font-size: .4cm * nth($sizes, $i);
+
+      .bar {
+        min-width: .4rem * nth($sizes, $i);
+      }
+
+      .icon {
+        font-size: .8cm * nth($sizes, $i);
+        min-width: 2rem * nth($sizes, $i);
+      }
+    }
+  }
+
+  &.items {
+    background: $color-1;
+    color: $color-font;
+    
+    @for $i from 1 through length($sizes) {
+      &.#{nth($size-classes, $i)} {
+        $width: (.4rem + 2rem + 2.5rem) * nth($sizes, $i);
+
+        .list {
+          max-width: calc(100% - 1.5rem - #{$width})
+        }
+      }
+    }
+  }
+
+  @each $color in $colors {
+    &.#{nth($color, 1)} {
+      .bar {
+        background: nth($color, 2);
+      }
+
+      .icon {
+        color: nth($color, 2);
+      }
+    }
+  }
+}
+
+.dropdown {
+  position: relative;
+  cursor: pointer;
+
+  .title {
+    text-transform: uppercase;
+  }
+
+  .select {
+    appearance: none;
+    background: transparent;
+    color: $color-font;
+    border: none;
+    width: 100%;
+
+    &::selection {
+      background: $color-bright;
+    }
+
+    .option {
+      background: $color-background;
+    }
+  }
+
+  .icon, .arrow {
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      $font-size: .5cm * nth($sizes, $i);
+      padding: 0 .5rem * nth($sizes, $i);
+
+      .title {
+        font-size: .2cm * nth($sizes, $i);
+        padding-left: 1rem * nth($sizes, $i);
+        margin-bottom: -2px * nth($sizes, $i);
+      }
+
+      .select {
+        font-size: $font-size;
+        padding-left: 1.5rem * nth($sizes, $i);
+      }
+
+      .icon {
+        font-size: $font-size;
+        width: 2rem * nth($sizes, $i);
+        left: -.5rem * nth($sizes, $i);
+      }
+
+      .arrow {
+        font-size: $font-size;
+        width: 2rem * nth($sizes, $i);
+        right: -.5rem * nth($sizes, $i);
+      }
+    }
+  }
+
+  @each $color in $colors {
+    &.#{nth($color, 1)} {
+      .icon {
+        color: nth($color, 2);
+      }
+
+      .arrow {
+        color: nth($color, 2);
+      }
+    }
+  }
+
+  &.single {
+    border-bottom: 2px solid $color-border;
+
+    @for $i from 1 through length($sizes) {
+      &.#{nth($size-classes, $i)} {
+        $font-size: .5cm * nth($sizes, $i);
+
+        .select {
+          font-size: $font-size;
+        }
+
+        .icon {
+          font-size: $font-size;
+        }
+
+        .arrow {
+          font-size: $font-size;
+        }
+      }
+    }
+  }
+
+  &.special {
+    @for $i from 1 through length($sizes) {
+      &.#{nth($size-classes, $i)} {
+        $font-size: .5cm * nth($sizes, $i);
+
+        .trigger {
+          font-size: $font-size;
+          min-height: 2.5rem * nth($sizes, $i);
+          padding: 0 2rem * nth($sizes, $i);
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+  }
+}
+
+.dropdown-menu {
+  .dropdown-menu-item {
+    .category {
+      position: sticky;
+      top: 0;
+      background: $color-background;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .word {
+      display: flex;
+      align-content: stretch;
+
+      .index {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top: 1px solid $color-border;
+        border-bottom: 1px solid $color-border;
+      }
+
+      .details {
+        border-top: 1px solid $color-border;
+        border-bottom: 1px solid $color-border;
+
+        .name {
+          display: flex;
+          align-items: center;
+        }
+  
+        .translation {
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      @each $color in $colors {
+        &.#{nth($color, 1)} {
+          .details, .index {
+            color: nth($color, 2);
+            border-top: 1px solid nth($color, 2);
+            border-bottom: 1px solid nth($color, 2);
+          }
+        }
+      }
+    }
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      .dropdown-menu-item {
+        font-size: .5cm * nth($sizes, $i);
+
+        .category {
+          min-height: 2.5rem * nth($sizes, $i);
+        }
+
+        .word {
+          min-height: 2.5rem * nth($sizes, $i);
+
+          .index {
+            min-width: 2.5rem * nth($sizes, $i);
+          }
+
+          .details {
+            .name {
+              padding: 0 .25rem * nth($sizes, $i);
+            }
+
+            .translation {
+              font-size: .25cm * nth($sizes, $i);
+              padding: .15rem * nth($sizes, $i) .25rem * nth($sizes, $i);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @each $color in $colors {
+    &.#{nth($color, 1)} {
+      .dropdown-menu-item {
+        .category {
+          color: nth($color, 2);
+          border-top: 1px solid nth($color, 2);
+          border-bottom: 1px solid nth($color, 2);
+        }
+      }
+    }
+  }
+}
+
+.modal {
+  position: absolute;
+  background: rgba(15, 15, 15, 0.8);
+
+  .content {
+    > .title {
+      background: $color-1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 600;
+    }
+
+    > .text {
+      background: $color-3;
+    }
+
+    > .buttons {
+      background: $color-2;
+    }
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      .content {
+        > .title {
+          height: 2.5rem * nth($sizes, $i);
+          font-size: .6cm * nth($sizes, $i);
+        }
+
+        > .text {
+          padding: .5rem * nth($sizes, $i) 1rem * nth($sizes, $i);
+          font-size: .5cm * nth($sizes, $i);
+          max-height: 15rem * nth($sizes, $i);
+        }
+      }
+    }
+  }
+}
+
+.slider {
+  border-bottom: 2px solid $color-border;
+
+  .title {
+    text-transform: uppercase;
+    margin-bottom: .25rem;
+  }
+
+  .icon {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .input-slider {
+    appearance: none;
+    width: 100%;
+    background: transparent;
+
+    &::-webkit-slider-runnable-track {
+      appearance: none;
+      background: $color-4;
+      height: 2px;
+    }
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      border-style: solid;
+      border-color: $color-background;
+      background: $color-4;
+      border-radius: 0;
+      border-width: 1px;
+      cursor: pointer;
+    }
+
+    &::-moz-range-track {
+      appearance: none;
+      background: $color-4;
+    }
+
+    &::-moz-range-thumb {
+      appearance: none;
+      border-style: solid;
+      border-color: $color-background;
+      background: $color-4;
+      border-radius: 0;
+      cursor: pointer;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+  
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      $font-size: .5cm * nth($sizes, $i);
+      // padding: 0 .5rem * nth($sizes, $i);
+
+      .title {
+        font-size: .2cm * nth($sizes, $i);
+        padding-left: 1.5rem * nth($sizes, $i);
+        margin-bottom: -2px * nth($sizes, $i);
+      }
+
+      .icon {
+        font-size: $font-size;
+        min-width: 2rem * nth($sizes, $i);
+      }
+
+      .input-slider {
+        &::-webkit-slider-thumb {
+          width: .3cm * nth($sizes, $i);
+          height: .3cm * nth($sizes, $i);
+          margin-top: -(.15cm - 1px) * nth($sizes, $i);
+        }
+
+        &::-moz-range-thumb {
+          width: .3cm * nth($sizes, $i);
+          height: .3cm * nth($sizes, $i);
+        }
+      }
+
+      .value {
+        font-size: $font-size;
+        min-width: 3rem * nth($sizes, $i);
+      }
+    }
+  }
+}
+
+.material-design-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      > .material-design-icon__svg {
+        width: .5cm * nth($sizes, $i);
+        height: .5cm * nth($sizes, $i);
+      }
+    }
+  }
+}
+
+.input-text {
+  .title {
+    text-transform: uppercase;
+  }
+
+  .input {
+    background: transparent;
+    border: none;
+    color: $color-font;
+  }
+
+  .icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      $font-size: .5cm * nth($sizes, $i);
+
+      .title {
+        font-size: .2cm * nth($sizes, $i);
+        padding-left: 1.5rem * nth($sizes, $i);
+        margin-bottom: -2px * nth($sizes, $i);
+      }
+
+      .input {
+        font-size: $font-size;
+        height: 1.5rem * nth($sizes, $i);
+      }
+
+      .icon {
+        height: 1.5rem * nth($sizes, $i);
+        font-size: $font-size;
+        width: 2rem * nth($sizes, $i);
+      }
+    }
+  }
+
+  @each $color in $colors {
+    &.#{nth($color, 1)} {
+      .input:not(:read-only):focus {
+        border-top: 2px solid transparent;
+        border-bottom: 2px solid nth($color, 2);
+      }
+
+      .icon {
+        color: nth($color, 2);
+      }
+    }
+  }
+
+  &.icons {
+    .icon {
+      @each $color in $colors {
+        &.#{nth($color, 1)} {
+          color: nth($color, 2);
+        }
+      }
+    }
+
+    @each $color in $colors {
+      &.#{nth($color, 1)} {
+        &.on-focus {
+          .input {
+            border-top: 2px solid transparent;
+            border-bottom: 2px solid nth($color, 2);
+          }
+        }
+      }
+    }
+  }
+}
+
+.progress {
+  .foreground {
+    bottom: 0;
+    left: 0;
+    height: 100%;
+  }
+
+  .text {
+    top: 0;
+    left: 0;
+    vertical-align: middle;
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      .background {
+        height: 2.5rem * nth($sizes, $i);
+      }
+
+      .text {
+        font-size: .4cm * nth($sizes, $i);
+        line-height: 2.5rem * nth($sizes, $i);
+      }
+    }
+  }
+
+  @each $color in $colors {
+    &.#{nth($color, 1)} {
+      .foreground {
+        border-top: 3px solid nth($color, 2);
+        border-bottom: 3px solid nth($color, 2);
+      }
+    }
+  }
+}
+
+.text-with-icon {
+  border-bottom: 2px solid $color-border;
+
+  .title {
+    text-transform: uppercase;
+  }
+
+  .icon {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      right: 0;
+    }
+
+    @each $color in $colors {
+      &.#{nth($color, 1)} {
+        color: nth($color, 2);
+      }
+    }
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      .title {
+        font-size: .2cm * nth($sizes, $i);
+        padding-left: 1.5rem * nth($sizes, $i);
+      }
+
+      .text {
+        font-size: .5cm * nth($sizes, $i);
+        padding: 0 2rem * nth($sizes, $i);
+      }
+
+      .icon {
+        font-size: .5cm * nth($sizes, $i);
+        width: 2rem * nth($sizes, $i);
+      }
+    }
+  }
+}
+
+.blockquote {
+  background: $color-1;
+  display: flex;
+  align-items: stretch;
+
+  .bar {
+    flex-shrink: 0;
+    min-width: 4px;
+    min-height: 100%;
+    background: $color-3;
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      padding: .6rem * nth($sizes, $i) .5rem * nth($sizes, $i);
+
+      .bar {
+        margin-right: .5rem * nth($sizes, $i);
+      }
+
+      .text {
+        font-size: .5cm *nth($sizes, $i);
+      }
+    }
+  }
+}
+
+.tag {
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: row;
+
+  .title {
+    background: $color-2;
+  }
+
+  .text {
+    color: $color-white;
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      .title {
+        font-size: .2cm * nth($sizes, $i);
+        padding: .25rem * nth($sizes, $i) .45rem * nth($sizes, $i);
+      }
+
+      .text {
+        font-size: .2cm *nth($sizes, $i);
+        padding: .25rem * nth($sizes, $i) .45rem * nth($sizes, $i);
+      }
+    }
+  }
+
+  @each $color in $colors {
+    &.#{nth($color, 1)} {
+      .text {
+        background: nth($color, 2);
+      }
+    }
+  }
+}
+
+.special-font {
+  position: relative;
+
+  .background {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 10% auto auto 10%;
+    grid-template-rows: 10% auto auto 10%;
+
+    .top {
+      grid-row: 2 / 2;
+      border-bottom: 2px dashed $color-border;
+      border-top: 4px solid $color-border;
+    }
+
+    .bottom {
+      grid-row: 3 / 3;
+      border-top: 2px dashed $color-border;
+      border-bottom: 4px solid $color-border;
+    }
+
+    .left {
+      grid-column: 2 / 2;
+      border-right: 2px dashed $color-border;
+      border-left: 4px solid $color-border;
+    }
+
+    .right {
+      grid-column: 3 / 3;
+      border-left: 2px dashed $color-border;
+      border-right: 4px solid $color-border;
+    }
+  }
+
+  .letter {
+    position: absolute;
+  }
+}
+
+.package-list-entry {
+  max-width: 100%;
+
+  .details {
+    position: relative;
+
+    .flag {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .foreground {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-top: 1px solid $color-border;
+      border-bottom: 1px solid $color-border;
+
+      .title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+  
+      .stats {
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      $button-length: 2.5rem * 2 * nth($sizes, $i);
+
+      .details {
+        height: 2.75rem * nth($sizes, $i);
+        max-width: calc(100% - #{$button-length});
+
+        .flag {
+          width: 4.4rem * nth($sizes, $i);
+          height: 2.75rem * nth($sizes, $i);
+
+          .flag-image {
+            width: 4.4rem * nth($sizes, $i);
+            height: 2.75rem * nth($sizes, $i);
+          }
+        }
+
+        .foreground {
+          background: linear-gradient(290deg, rgba(0, 0, 0, 0), $color-background 4.1rem * nth($sizes, $i));
+          padding: .15rem * nth($sizes, $i) 4rem * nth($sizes, $i) .15rem * nth($sizes, $i) .45rem * nth($sizes, $i);
+
+          .title {
+            font-size: .5cm * nth($sizes, $i);
+          }
+
+          .stats {
+            font-size: .25cm * nth($sizes, $i);
+          }
+        }
+      }
+    }
+  }
+
+  &.special {
+    @for $i from 1 through length($sizes) {
+      &.#{nth($size-classes, $i)} {
+        $button-length: 2.5rem * nth($sizes, $i);
+
+        .details {
+          max-width: calc(100% - #{$button-length});
+        }
+      }
+    }
+
+    @each $color in $colors {
+      &.#{nth($color, 1)} {
+        .details {
+          .foreground {
+            color: nth($color, 2);
+            border-top-color: nth($color, 2);
+            border-bottom-color: nth($color, 2);
+          }
+        }
+      }
+    }
+  }
+
+  &.inactive {
+    .details {
+      opacity: .4;
+    }
+  }
+}
+
+.checkbox {
+  .title {
+    text-transform: uppercase;
+  }
+
+  .icon, .check {
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .icon {
+    left: 0;
+  }
+
+  .check {
+    right: 0;
+
+    .body {
+      position: relative;
+      border: 2px solid $color-font;
+
+      &.on {
+        .head {
+          right: 2px;
+        }
+      }
+
+      &.off {
+        .head {
+          left: 2px;
+        }
+      }
+
+      .head {
+        position: absolute;
+        background: $color-font;
+        top: 2px;
+        color: $color-font-dark;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      @each $color in $colors {
+        &.#{nth($color, 1)} {
+          background: nth($color, 2);
+        }
+      }
+    }
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      .title {
+        font-size: .2cm * nth($sizes, $i);
+        padding-left: 1.5rem * nth($sizes, $i);
+        margin-bottom: -2px * nth($sizes, $i);
+      }
+
+      .icon {
+        font-size: .5cm * nth($sizes, $i);
+        width: 2rem * nth($sizes, $i);
+      }
+
+      .text {
+        font-size: .5cm * nth($sizes, $i);
+        padding: 0 2rem * nth($sizes, $i);
+      }
+
+      .check {
+        width: 2.5rem * nth($sizes, $i);
+
+        .body {
+          width: 2rem * nth($sizes, $i);
+          height: 1.3rem * nth($sizes, $i);
+
+          .head {
+            $height: 1.3rem * nth($sizes, $i);
+            height: calc(#{$height} - 8px);
+            width: calc(#{$height} - 8px);
+            font-size: calc(#{$height} - 12px);
+          }
+        }
+      }
+    }
+  }
+}
+
+.package-category-entry {
+  .details {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+
+    @each $color in $colors {
+      &.#{nth($color, 1)} {
+        color: nth($color, 2);
+        border-top: 1px solid nth($color, 2);
+        border-bottom: 1px solid nth($color, 2);
+      }
+    }
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      .details {
+        font-size: .5cm * nth($sizes, $i);
+        padding: .15rem * nth($sizes, $i) .45rem * nth($sizes, $i);
+      }
+    }
+  }
+}
+
+.item-box {
+  .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .details {
+    display: flex;
+    align-items: center;
+    border-top: 3px solid $color-border;
+    border-bottom: 3px solid $color-border;
+
+    .healing {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .amount {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      .title {
+        font-size: .35cm * nth($sizes, $i);
+        line-height: .35cm * nth($sizes, $i);
+        min-height: 2.5rem * nth($sizes, $i);
+        padding: .15rem * nth($sizes, $i) .5rem * nth($sizes, $i);
+      }
+
+      .image {
+        padding: 1rem * nth($sizes, $i);
+      }
+
+      .details {
+        font-size: .4cm * nth($sizes, $i);
+        max-height: 2.5rem * nth($sizes, $i);
+
+        .healing {
+          height: 2.5rem * nth($sizes, $i);
+          width: 2.5rem * nth($sizes, $i);
+        }
+
+        .amount {
+          height: 2.5rem * nth($sizes, $i);
+          width: 2.5rem * nth($sizes, $i);
+        }
+      }
+    }
+  }
+
+  &.small {
+
+    .details {
+      border-top: 2px solid $color-border;
+      border-bottom: 2px solid $color-border;
+    }
+
+    .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @each $color in $colors {
+        &.#{nth($color, 1)} {
+          color: nth($color, 2);
+        }
+      }
+    }
+
+    @for $i from 1 through length($sizes) {
+      &.#{nth($size-classes, $i)} {
+        height: 6rem * nth($sizes, $i);
+        min-width: 4.5rem * nth($sizes, $i);
+
+        .title {
+          font-size: .2cm * nth($sizes, $i);
+          line-height: .2cm * nth($sizes, $i);
+          min-height: 1.25rem * nth($sizes, $i);
+          padding: 0 .25rem * nth($sizes, $i);
+        }
+  
+        .image {
+          padding: .5rem * nth($sizes, $i);
+        }
+  
+        .details {
+          font-size: .2cm * nth($sizes, $i);
+          max-height: 1.25rem * nth($sizes, $i);
+  
+          .healing {
+            height: 1.25rem * nth($sizes, $i);
+            width: 1.75rem * nth($sizes, $i);
+          }
+
+          .amount {
+            height: 1.25rem * nth($sizes, $i);
+            width: 1.75rem * nth($sizes, $i);
+          }
+
+          .icon {
+            width: 1.25rem * nth($sizes, $i);
+            height: 1.25rem * nth($sizes, $i);
+            font-size: .3cm * nth($sizes, $i);
+          }
+        }
+      }
+    }
+    
+    @each $color in $colors {
+      &.#{nth($color, 1)} {
+        .title {
+          border-top: 2px solid nth($color, 2);
+          border-bottom: 2px solid nth($color, 2);
+        }
+      }
+    }
+  }
+
+  @each $color in $colors {
+    &.#{nth($color, 1)} {
+      .title {
+        color: nth($color, 2);
+        border-top: 3px solid nth($color, 2);
+        border-bottom: 3px solid nth($color, 2);
+      }
+    }
+  }
+}
+
+.item-container {
+  .transition-group {
+    display: grid;
+    grid-template-columns: 10% 38% 4% 38% 10%;
+    grid-template-rows: 3% 45% 4% 45% 3%;
+  
+    .left {
+      grid-column: 2 / 3;
+    }
+  
+    .right {
+      grid-column: 4 / 5;
+    }
+  
+    .top {
+      grid-row: 2 / 3;
+    }
+  
+    .bottom {
+      grid-row: 4 / 5;
+    }
+  }
+}
+
+.costs {
+  .entry {
+    border-top: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+
+    .image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .image-box {
+        width: 60%;
+        height: 60%;
+      }
+    }
+
+    .material {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .own, .needed {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .own {
+      @each $color in $colors {
+        &.#{nth($color, 1)} {
+          color: nth($color, 2);
+        }
+      }
+    }
+  
+    &:last-child {
+      border-bottom: 2px solid $color-border;
+    }
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      .entry {
+        font-size: .5cm * nth($sizes, $i);
+        min-height: 2.5rem * nth($sizes, $i);
+
+        .image {
+          min-width: 2.5rem * nth($sizes, $i);
+          height: 2.5rem * nth($sizes, $i);
+
+          .image-box {
+            width: 1.5rem * nth($sizes, $i);
+            height: 1.5rem * nth($sizes, $i);
+          }
+        }
+
+        .material {
+          padding: .15rem * nth($sizes, $i) .45rem * nth($sizes, $i);
+          height: 2.5rem * nth($sizes, $i);
+          line-height: 2.5rem * nth($sizes, $i);
+        }
+
+        .own {
+          min-width: 5rem * nth($sizes, $i);
+        }
+
+        .needed {
+          min-width: 5rem * nth($sizes, $i);
+        }
+      }
+    }
+  }
+}
+
+.shop-image {
+  border-top: 3px solid $color-border;
+  border-bottom: 3px solid $color-border;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .image-box {
+    height: 80%;
+    width: 80%;
+  }
+  
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      min-height: 7.5rem * nth($sizes, $i);
+
+      .image-box {
+        height: 6rem * nth($sizes, $i);
+      }
+    }
+  }
+}
+
+.image-box {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.item-box-replacement {
+  display: flex;
+  align-items: center;
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      font-size: .5cm * nth($sizes, $i);
+      min-height: 6rem * nth($sizes, $i);
+      padding-left: 1.5rem * nth($sizes, $i);
+    }
+  }
+}
+
+.section-title {
+  font-weight: 600;
+  border-bottom: 2px solid $color-border;
+
+  .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      font-size: .4cm * nth($sizes, $i);
+
+      &.no-icons {
+        padding-left: 1.5rem * nth($sizes, $i);
+      }
+
+      .icon {
+        width: 1.5rem * nth($sizes, $i)
+      }
+    }
+  }
+
+  @each $color in $colors {
+    &.#{nth($color, 1)} {
+      .icon {
+        color: nth($color, 2);
+      }
+    }
+  }
+}
+
+.section-text {
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      font-size: .5cm * nth($sizes, $i);
+      padding-left: 1.5rem * nth($sizes, $i);
+    }
+  }
+}
+
+.enemies {
+  .entry {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+
+    .name {
+      flex-grow: 1;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .no-entry {
+    display: flex;
+    align-items: center;
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      font-size: .5cm * nth($sizes, $i);
+
+      .entry {
+        height: 2.5rem * nth($sizes, $i);
+
+        .amount {
+          width: 2.5rem * nth($sizes, $i);
+        }
+      }
+
+      .no-entry {
+        height: 2.5rem * nth($sizes, $i);
+        padding-left: 1.5rem * nth($sizes, $i);
+      }
+    }
+  }
+}
+
+.keyboard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: $color-background;
+}
+
+.result {
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      font-size: .5cm * nth($sizes, $i);
+      padding: 0 .5rem * nth($sizes, $i);
+    }
+  }
+}
+
+.correct-word {
+  .title {
+    .index {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .text {
+      display: flex;
+      align-items: center;
+    }
+
+    @each $color in $colors {
+      &.#{nth($color, 1)} {
+        border-top: 1px solid nth($color, 2);
+        border-bottom: 1px solid nth($color, 2);
+        color: nth($color, 2);
+      }
+    }
+  }
+
+  .latin, .foreign {
+    border-top: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+
+    .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @each $color in $colors {
+        &.#{nth($color, 1)} {
+          color: nth($color, 2);
+        }
+      }
+    }
+
+    .word {
+      justify-content: center;
+    }
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      font-size: .5cm * nth($sizes, $i);
+
+      .title {
+        min-height: 2.5rem * nth($sizes, $i);
+
+        .index {
+          min-height: 2.5rem * nth($sizes, $i);
+          min-width: 2.5rem * nth($sizes, $i);
+        }
+      }
+
+      .latin, .foreign {
+        .icon {
+          min-height: 2.5rem * nth($sizes, $i);
+          min-width: 2.5rem * nth($sizes, $i);
+        }
+
+        .correct {
+          font-size: .25cm * nth($sizes, $i);
+        }
+      }
+    }
+  }
+}

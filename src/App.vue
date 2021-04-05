@@ -1,15 +1,21 @@
 <template>
-  <div ref="app" id="app">
-    <TheStatus class="statusMargin" :status="$store.state.vueDict.status" />
-    <div class="page">
+  <div ref="app" id="app" class="height-full flex-column">
+    <TheStatus :status="$store.state.vueDict.status" />
+    <div class="flex-grow width-full relative">
       <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition"
                   @after-enter="toggleTransitionActive(true)" @before-enter="toggleTransitionActive(false)">
         <router-view></router-view>
       </transition>
     </div>
-    <ModalAreYouSure :show="$store.state.vueDict.showModals.name === 'areYouSure'" />
-    <ModalMessage :show="$store.state.vueDict.showModals.name === 'message'" :options="$store.state.vueDict.showModals"
-                  @click="$store.commit('vueDict/modalAnswer', $event)" />
+    <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
+                leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+      <ModalAreYouSure v-show="modalName === 'areYouSure'" />
+    </transition>
+    <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
+                leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+      <ModalMessage v-if="$store.state.vueDict.showModals.name === 'message'" :options="$store.state.vueDict.showModals"
+                    @click="$store.commit('vueDict/modalAnswer', $event)" />
+    </transition>
   </div>
 </template>
 
@@ -20,7 +26,7 @@ import ModalAreYouSure from '@/components/ModalAreYouSure.vue'
 import ModalMessage from '@/components/ModalMessage.vue'
 
 export default {
-  name: 'app',
+  name: 'App',
   store: Store,
   components: {
     TheStatus,
@@ -51,6 +57,11 @@ export default {
       spinner.parentNode.removeChild(spinner)
     }
   },
+  computed: {
+    modalName () {
+      return this.$store.state.vueDict.showModals.name
+    }
+  },
   methods: {
     swUpdateFound (event) {
       this.$store.commit('swUpdateFound')
@@ -77,11 +88,17 @@ export default {
         if (data.viewport) {
           this.$store.commit('changeViewport', data.viewport)
         }
+        if (data.volume) {
+          this.$store.commit('changeVolume', data.volume)
+        }
         if (data.status) {
           this.$store.commit('vueDict/changeStatus', data.status)
         }
         if (data.categoriesPlayed) {
           this.$store.commit('vueDict/changeCategoriesPlayed', data.categoriesPlayed)
+        }
+        if (data.activeWordPacks) {
+          this.$store.commit('vueDict/changeActiveWordPacks', data.activeWordPacks)
         }
         if (data.inventory) {
           this.$store.commit('vueDict/changeInventory', data.inventory)
@@ -135,21 +152,15 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      this.enterTransition = 'animated ' +
-        (from.meta.forward.includes(to.name) ? 'slideInRight' : 'slideInLeft') +
-        ' faster delay-100ms'
-      this.leaveTransition = 'animated ' +
-        (from.meta.forward.includes(to.name) ? 'slideOutLeft' : 'slideOutRight') +
-        ' faster'
+      this.enterTransition = 'animate__animated ' +
+        (from.meta.forward.includes(to.name) ? 'animate__slideInRight' : 'animate__slideInLeft') +
+        ' duration-c-500ms delay-c-100ms'
+      this.leaveTransition = 'animate__animated ' +
+        (from.meta.forward.includes(to.name) ? 'animate__slideOutLeft' : 'animate__slideOutRight') +
+        ' duration-c-500ms'
     }
   }
 }
 </script>
 
 <style lang="scss" src="@/assets/custom.scss"></style>
-
-<style lang="scss" scoped>
-.statusMargin {
-  margin-top: 5px;
-}
-</style>

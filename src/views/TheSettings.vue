@@ -1,25 +1,28 @@
 <template>
-  <div class="flexContainer">
-    <HeroBasic class="marginBottomSmall" title="settingsTitle" />
-    <div class="is-10 flexGrow">
-      <DropdownBasic class="marginBottomSmall" icon="globe" :options="languages"
-                     :selected="$store.state.lang" @change="changeValue('newLanguage', $event)" />
-      <DropdownBasic class="marginBottomSmall" icon="user-graduate" :options="targetLanguages"
-                     :selected="$store.state.targetLanguage"
+  <div class="page">
+    <HeroBasic title="settingsTitle" />
+    <div class="flex-grow overflow-auto">
+      <DropdownBasic class="single margin-bottom-medium margin-top-medium" title="settingsLanguage" icon="globe"
+                     :options="languages" :selected="$store.state.lang" @change="changeValue('newLanguage', $event)" />
+      <DropdownBasic class="single margin-bottom-medium" title="settingsTargetLanguage" icon="user-graduate"
+                     :options="targetLanguages" :selected="$store.state.targetLanguage"
                      @change="changeValue('newTargetLanguage', $event)" />
-      <DropdownBasic class="marginBottomSmall" icon="palette" :options="themes"
+      <DropdownBasic class="single margin-bottom-medium" title="settingsTheme" icon="palette" :options="themes"
                      :selected="$store.state.theme" @change="changeValue('newTheme', $event)" />
-      <DropdownBasic class="marginBottomSmall" icon="expand-arrows-alt" :options="sizes"
+      <DropdownBasic class="single margin-bottom-medium" title="settingsSize" icon="expand-arrows-alt" :options="sizes"
                      :selected="$store.state.size" @change="changeValue('newSize', $event)" />
-      <TheSlider class="marginBottomSmall" :min="0.5" :max="1.2" :step="0.05" v-model="newViewport" icon="glasses" />
-      <ButtonBasic class="marginBottomSmall" color="is-danger" icon="trash" text="settingsButtonDelete"
+      <TheSlider class="margin-bottom-medium" title="settingsViewport" :min="0.5" :max="1.2" :step="0.05"
+                 v-model="newViewport" icon="glasses" />
+      <TheSlider class="margin-bottom-medium" title="settingsVolume" :min="0" :max="100" :step="1" v-model="newVolume"
+                 icon="volume-up" />
+      <ButtonBasic class="single-2 width-full margin-bottom-medium" color="red" icon="trash" text="settingsButtonDelete"
                    @click="$store.commit('vueDict/showModal', { name: 'areYouSure' })" />
     </div>
-    <div class="is-10">
-      <ButtonBasic class="marginBottomSmall" color="is-success" icon="check" text="settingsButton1"
-                   @click="submitChanges()" />
-      <ButtonBasic color="is-danger" icon="arrow-left" text="settingsButton2"
+    <div class="button-container">
+      <ButtonBasic class="width-half" color="red" icon="arrow-left" text="settingsButton2"
                    @click="$router.push({ name: 'menu' })" />
+      <ButtonBasic class="width-half" color="green" icon="check" text="settingsButton1"
+                   @click="submitChanges()" />
     </div>
   </div>
 </template>
@@ -47,7 +50,8 @@ export default {
       newTargetLanguage: this.$store.state.targetLanguage,
       newTheme: this.$store.state.theme,
       newSize: this.$store.state.size,
-      newViewport: this.$store.state.viewport
+      newViewport: this.$store.state.viewport,
+      newVolume: this.$store.state.volume
     }
   },
   computed: {
@@ -61,7 +65,7 @@ export default {
       return Object.keys(Themes)
     },
     sizes () {
-      return ['small', 'normal', 'medium', 'large']
+      return ['small', 'normal', 'large', 'giga']
     }
   },
   methods: {
@@ -74,6 +78,7 @@ export default {
       this.$store.commit('changeTheme', this.newTheme)
       this.$store.commit('changeSize', this.newSize)
       this.$store.commit('changeViewport', this.newViewport)
+      this.$store.commit('changeVolume', this.newVolume)
       window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
       this.$router.push({ name: 'menu' })
     }
@@ -82,6 +87,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .flexContainer {
   width: 100%;
   position: absolute;

@@ -1,10 +1,10 @@
 <template>
-  <div class="flexContainer">
-    <div class="fullWidth marginBottomBig">
-      <HeroWithTags title="adventureTitle" :tagObjects="tags" />
-      <canvas id="adventureCanvas" width="600" height="300"></canvas>
+  <div class="page">
+    <div class="width-full flex-column">
+      <HeroBasic title="adventureTitle" />
+      <canvas id="adventure-canvas" width="600" height="300"></canvas>
     </div>
-    <div class="routerView fullWidth">
+    <div class="router-view width-full flex-column flex-grow">
       <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition" mode="out-in">
         <router-view @click="viewClickHandler($event)"></router-view>
       </transition>
@@ -15,12 +15,12 @@
 <script>
 import * as Helper from '@/canvas/helper.js'
 import { AnimationObject } from '@/canvas/elements.js'
-import HeroWithTags from '@/components/HeroWithTags.vue'
+import HeroBasic from '@/components/HeroBasic.vue'
 
 export default {
   name: 'TheAdventure',
   components: {
-    HeroWithTags
+    HeroBasic
   },
   data () {
     return {
@@ -490,14 +490,19 @@ export default {
       this.$store.commit('vueDict/showModal', {
         name: 'message',
         title: 'adventureModalTitle',
-        text: 'adventureModalText',
-        color: '',
-        leftIcon: 'times',
-        leftText: 'adventureModalButtonLeft',
-        leftColor: 'is-danger',
-        rightIcon: 'check',
-        rightText: 'adventureModalButtonRight',
-        rightColor: 'is-success'
+        text: ['adventureModalText'],
+        buttons: [
+          {
+            icon: 'times',
+            text: 'adventureModalButton1',
+            color: 'red'
+          },
+          {
+            icon: 'check',
+            text: 'adventureModalButton2',
+            color: 'green'
+          }
+        ]
       })
       this.loopActivated = false
     },
@@ -1078,32 +1083,34 @@ export default {
             })
           }
 
-          for (let item of obstacleObject.items) {
-            const itemObject = this.$store.getters['vueDict/getItemObject'](item.id)
-            if (itemObject.categories.includes('collectable')) {
-              const alreadyCollected = this.$store.getters['canvasDict/isAlreadyCollected'](item.id)
+          if (obstacleObject.items) {
+            for (let item of obstacleObject.items) {
+              const itemObject = this.$store.getters['vueDict/getItemObject'](item.id)
+              if (itemObject.categories.includes('collectable')) {
+                const alreadyCollected = this.$store.getters['canvasDict/isAlreadyCollected'](item.id)
 
-              if (!alreadyCollected) {
-                this.$store.commit('canvasDict/addCollectable', item.id)
-              } else {
-                continue
+                if (!alreadyCollected) {
+                  this.$store.commit('canvasDict/addCollectable', item.id)
+                } else {
+                  continue
+                }
+              }
+
+              if (!item.chance || (item.chance && Math.random() < item.chance)) {
+                this.$store.commit('canvasDict/addCollectedItem', {
+                  id: item.id,
+                  spriteKey: itemObject.spriteKeySmall,
+                  animated: false,
+                  quantity: item.quantity
+                })
+                this.$store.commit('vueDict/addStatAddit', { id: 'points', count: itemObject.points * item.quantity })
+                this.$store.commit('canvasDict/addFoundItem', { id: item.id, quantity: item.quantity })
               }
             }
 
-            if (!item.chance || (item.chance && Math.random() < item.chance)) {
-              this.$store.commit('canvasDict/addCollectedItem', {
-                id: item.id,
-                spriteKey: itemObject.spriteKeySmall,
-                animated: false,
-                quantity: item.quantity
-              })
-              this.$store.commit('vueDict/addStatAddit', { id: 'points', count: itemObject.points * item.quantity })
-              this.$store.commit('canvasDict/addFoundItem', { id: item.id, quantity: item.quantity })
+            if (obstacleObject.items.length > 0) {
+              this.animationQueue.push(new AnimationObject('pickUpItems', true))
             }
-          }
-
-          if (obstacleObject.items.length > 0) {
-            this.animationQueue.push(new AnimationObject('pickUpItems', true))
           }
 
           this.$store.commit('canvasDict/setObstacleAhead', false)
@@ -1483,12 +1490,12 @@ export default {
   watch: {
     answer () {
       switch (this.answer) {
-        case 'buttonLeft':
+        case 'button1':
           this.$store.commit('vueDict/closeModal')
           this.loopActivated = true
           this.canvasLoop(0)
           break
-        case 'buttonRight':
+        case 'button2':
           this.$router.push({ name: 'selection' })
           this.$store.commit('vueDict/resetAdditional')
           this.$store.commit('vueDict/resetVocabs')
@@ -1518,8 +1525,8 @@ export default {
     },
     '$route' (to, from) {
       if (this.$store.state.vueDict.transitionActive) {
-        this.leaveTransition = 'animated slideOutDown faster'
-        this.enterTransition = 'animated slideInUp faster' + (from.meta.delay.includes(to.name) ? ' adventure-delay' : '')
+        this.leaveTransition = 'animate__animated animate__slideOutDown duration-c-500ms'
+        this.enterTransition = 'animate__animated animate__slideInUp duration-c-500ms' + (from.meta.delay.includes(to.name) ? ' delay-c-800ms' : '')
       } else {
         this.enterTransition = ''
         this.leaveTransition = ''
@@ -1530,30 +1537,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flexContainer {
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
+.router-view {
   align-items: center;
-  height: calc(100% - .5rem);
-  justify-content: space-between;
-
-  .routerView {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-grow: 1;
-  }
-}
-
-.animated {
-  &.adventure-delay {
-    -webkit-animation-delay: .8s;
-    animation-delay: .8s;
-  }
 }
 </style>

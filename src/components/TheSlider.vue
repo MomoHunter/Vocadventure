@@ -1,15 +1,18 @@
 <template>
-  <div class="box sliderBox">
-    <div class="icon customIcon">
-      <font-awesome-icon :icon="['fas', icon]" :size="getSizeClass('fas-special')" />
+  <div class="slider flex-column" :class="getSizeClass('general')">
+    <div class="title">
+      {{ getText(title) }}
     </div>
-    <input class="flexGrow slider" type="range" :min="min" :max="max" :step="step" :value="value"
-           @input="sendNewValue($event.target.value)">
-    <div class="box valueBox is-dark" v-if="!inputVisible" @click="showInput()">
-      {{ value }}
+    <div class="flex-row">
+      <div class="icon flex-row">
+        <font-awesome-icon :icon="['fas', icon]" />
+      </div>
+      <input class="input-slider flex-grow" type="range" :min="min" :max="max" :step="step" :value="value"
+             @input="sendNewValue($event.target.value)">
+      <div class="value text-center">
+        {{ transformedValue }}
+      </div>
     </div>
-    <input v-focus class="input inputWidth" type="number" v-else :value="value" @blur="hideInput()"
-           @input="sendNewValue($event.target.value)">
   </div>
 </template>
 
@@ -17,6 +20,7 @@
 export default {
   name: 'TheSlider',
   props: {
+    title: String,
     min: Number,
     max: Number,
     step: Number,
@@ -28,7 +32,19 @@ export default {
       inputVisible: false
     }
   },
+  computed: {
+    transformedValue () {
+      if (parseInt(this.step) === this.step) {
+        return this.value
+      } else {
+        return this.value.toFixed(2)
+      }
+    }
+  },
   methods: {
+    getText (id) {
+      return this.$store.getters.getText(id)
+    },
     getSizeClass (type) {
       return this.$store.getters.getSizeClass(type)
     },

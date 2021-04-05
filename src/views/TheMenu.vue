@@ -1,69 +1,63 @@
 <template>
-  <div class="flexContainer justifyEvenly">
+  <div class="page">
     <HeroBasic title="menuTitle" :subtitle="subtitleText" />
-    <div class="is-10 is-relative">
-      <div class="is-absolute">
+    <div class="menu-button-container width-full relative" :class="getSizeClass('general')">
+      <div class="width-full absolute">
         <transition :enter-active-class="trainingAnimation.enter"
                     :leave-active-class="trainingAnimation.leave">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-link" icon="book" text="menuButton1"
-                       @click="navToTraining()" v-show="!query" />
+          <ButtonBasic v-show="isVisible(1)" class="menu width-half" color="info" icon="book" text="menuButton1"
+                       @click="navTo('menu', 'training')" />
         </transition>
         <transition :enter-active-class="adventureAnimation.enter"
                     :leave-active-class="adventureAnimation.leave">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-primary" icon="gem" text="menuButton2"
-                       @click="$router.push({ name: 'menu', query: { sub: 'adventure' } })" v-show="!query" />
+          <ButtonBasic v-show="isVisible(1)" class="menu width-half" color="green" icon="gem" text="menuButton2"
+                       @click="navTo('menu', 'adventure')" />
         </transition>
-        <transition enter-active-class="animated fadeIn customDuration customDelay"
-                    leave-active-class="animated fadeOut customDuration">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-dark" icon="cog" text="menuButton3"
-                       @click="$router.push({ name: 'settings' })" v-show="!query" />
-        </transition>
-      </div>
-      <div class="is-absolute">
-        <transition enter-active-class="animated invisible customDuration2"
-                    leave-active-class="animated disappear customDuration2">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-link" icon="book" text="menuTrainingButton1"
-                       @click="$router.push({ name: 'category', params: { destination: 'training' } })"
-                       v-show="query === 'training'" />
-        </transition>
-        <transition enter-active-class="animated fadeIn customDuration customDelay"
-                    leave-active-class="animated fadeOut customDuration">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-success" icon="pen" text="menuTrainingButton2"
-                       @click="$router.push({ name: 'category', params: { destination: 'writeKanji' } })"
-                       v-show="query === 'training'" />
-        </transition>
-        <transition enter-active-class="animated fadeIn customDuration customDelay"
-                    leave-active-class="animated fadeOut customDuration">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-danger" icon="arrow-left"
-                       text="menuTrainingButton3" @click="$router.push({ name: 'menu' })"
-                       v-show="query === 'training'" />
+        <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms delay-c-350ms"
+                    leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+          <ButtonBasic v-show="isVisible(1)" class="menu width-full" color="color-6" icon="cog" text="menuButton3"
+                       @click="navTo('settings')" />
         </transition>
       </div>
-      <div class="is-absolute">
-        <transition enter-active-class="animated invisible customDuration2"
-                    leave-active-class="animated slideOutDownC customDuration2">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-primary" icon="gem" text="menuAdventureButton1"
-                       @click="$router.push({ name: 'category', params: { destination: 'adventure' } })"
-                       v-show="query === 'adventure'" />
+      <div class="width-full absolute">
+        <transition enter-active-class="invisible duration-c-700ms"
+                    leave-active-class="disappear duration-c-700ms">
+          <ButtonBasic v-show="isVisible(2)" class="menu width-half" color="info" icon="book"
+                       text="menuTrainingButton1" @click="navTo('category', 'training')" />
         </transition>
-        <transition enter-active-class="animated fadeIn customDuration customDelay"
-                    leave-active-class="animated fadeOut customDuration">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-warning" icon="shopping-cart"
-                       text="menuAdventureButton2" @click="$router.push({ name: 'shop' })"
-                       v-show="query === 'adventure'" />
+        <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms delay-c-350ms"
+                    leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+          <ButtonBasic v-show="isVisible(2)" class="menu width-half" color="info-2" icon="pen"
+                       text="menuTrainingButton2" @click="navTo('category', 'writeKanji')" />
         </transition>
-        <transition enter-active-class="animated fadeIn customDuration customDelay"
-                    leave-active-class="animated fadeOut customDuration">
-          <ButtonBasic class="is-relative marginBottomSmall" color="is-danger" icon="arrow-left"
-                       text="menuAdventureButton3" @click="$router.push({ name: 'menu' })"
-                       v-show="query === 'adventure'" />
+        <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms delay-c-350ms"
+                    leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+          <ButtonBasic v-show="isVisible(2)" class="menu width-full" color="red" icon="arrow-left"
+                       text="menuTrainingButton3" @click="navTo('menu')" />
+        </transition>
+      </div>
+      <div class="width-full absolute">
+        <transition enter-active-class="invisible duration-c-700ms"
+                    leave-active-class="animate__animated animate__slideOutRight duration-c-700ms">
+          <ButtonBasic v-show="isVisible(3)" class="menu width-half" color="green" icon="gem"
+                       text="menuAdventureButton1" @click="navTo('category', 'adventure')" />
+        </transition>
+        <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms delay-c-350ms"
+                    leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+          <ButtonBasic v-show="isVisible(3)" class="menu width-half" color="yellow" icon="shopping-cart"
+                       text="menuAdventureButton2" @click="navTo('shop')" />
+        </transition>
+        <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms delay-c-350ms"
+                    leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+          <ButtonBasic v-show="isVisible(3)" class="menu width-full" color="red" icon="arrow-left"
+                       text="menuAdventureButton3" @click="navTo('menu')" />
         </transition>
       </div>
     </div>
-    <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-      <TheNotification class="fullWidth" :text="updateText" color="is-success" :icon="updateIcon"
-                       :spin="updateIcon === 'cog'" hasIcon v-show="updateText !== ''"
-                       @click="hideNotification()" />
+    <transition enter-active-class="animate__animated animate__backInUp duration-c-700ms"
+                leave-active-class="animate__animated animate__backOutDown duration-c-700ms">
+      <NotificationBasic v-show="notificationVisible" title="menuNotificationTitle" :text="updateText" color="green"
+                       :icon="updateIcon" :spin="updateIcon === 'cog'" @click="hideNotification()" />
     </transition>
   </div>
 </template>
@@ -71,14 +65,14 @@
 <script>
 import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
-import TheNotification from '@/components/TheNotification.vue'
+import NotificationBasic from '@/components/NotificationBasic.vue'
 
 export default {
   name: 'TheMenu',
   components: {
     HeroBasic,
     ButtonBasic,
-    TheNotification
+    NotificationBasic
   },
   data () {
     return {
@@ -93,19 +87,19 @@ export default {
     }
   },
   computed: {
-    query () {
-      return this.$route.query.sub
-    },
     subtitleText () {
-      return this.getText('menuSubtitle', this.$store.state.targetLanguage)
+      return ['menuSubtitle', this.$store.state.targetLanguage]
+    },
+    notificationVisible () {
+      return this.$store.state.swUpdated || this.$store.state.swUpdateFound
     },
     updateText () {
       if (this.$store.state.swUpdated) {
-        return 'menuUpdated'
+        return ['menuNotificationUpdated']
       } else if (this.$store.state.swUpdateFound) {
-        return 'menuUpdateFound'
+        return ['menuNotificationUpdateFound']
       }
-      return ''
+      return ['']
     },
     updateIcon () {
       if (this.$store.state.swUpdated) {
@@ -118,11 +112,39 @@ export default {
     getText (id, ...params) {
       return this.$store.getters.getText(id, ...params)
     },
-    navToTraining () {
-      if (this.$store.state.targetLanguage !== 'japanese') {
-        this.$router.push({ name: 'category', params: { destination: 'training' } })
-      } else {
-        this.$router.push({ name: 'menu', query: { sub: 'training' } })
+    getSizeClass (type) {
+      return this.$store.getters.getSizeClass(type)
+    },
+    isVisible (id) {
+      switch (id) {
+        case 1: // main
+          return !this.$route.query.sub
+        case 2: // training
+          return this.$route.query.sub === 'training'
+        case 3: // adventure
+          return this.$route.query.sub === 'adventure'
+        default:
+          return false
+      }
+    },
+    navTo (name, additional = '') {
+      if (name === 'menu' && additional === 'training' && this.$store.state.targetLanguage !== 'japanese') {
+        name = 'category'
+      }
+
+      switch (name) {
+        case 'menu':
+          if (additional === '') {
+            this.$router.push({ name: name })
+          } else {
+            this.$router.push({ name: name, query: { sub: additional } })
+          }
+          break
+        case 'category':
+          this.$router.push({ name: name, params: { destination: additional } })
+          break
+        default:
+          this.$router.push({ name: name })
       }
     },
     hideNotification () {
@@ -133,19 +155,19 @@ export default {
     '$route' (to, from) {
       this.trainingAnimation = {
         enter: from.query.sub === 'adventure'
-          ? 'animated fadeIn customDuration customDelay'
-          : 'animated invisible customDuration2',
+          ? 'animate__animated animate__fadeIn duration-c-350ms delay-c-350ms'
+          : 'invisible duration-c-700ms',
         leave: to.query.sub === 'adventure'
-          ? 'animated fadeOutC customDuration2'
-          : 'animated disappear customDuration2'
+          ? 'fade-out-custom duration-c-700ms'
+          : 'disappear duration-c-700ms'
       }
       this.adventureAnimation = {
         enter: from.query.sub === 'training'
-          ? 'animated fadeIn customDuration customDelay'
-          : 'animated invisible customDuration2',
+          ? 'animate__animated animate__fadeIn duration-c-350ms delay-c-350ms'
+          : 'invisible duration-c-700ms',
         leave: to.query.sub === 'training'
-          ? 'animated fadeOut customDuration'
-          : 'animated slideOutUpC customDuration2'
+          ? 'animate__animated animate__fadeOut duration-c-350ms'
+          : 'animate__animated animate__slideOutLeft duration-c-700ms'
       }
     }
   }
@@ -153,49 +175,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/customAnimations.scss';
-
-.flexContainer {
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  height: calc(100% - 71px);
-
-  &.justifyEvenly {
-    justify-content: space-evenly;
-  }
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-}
-
-.animated {
-  &.customDuration {
-    -webkit-animation-duration: .35s;
-    animation-duration: .35s;
-  }
-
-  &.customDuration2 {
-    -webkit-animation-duration: .7s;
-    animation-duration: .7s;
-  }
-
-  &.customDelay {
-    -webkit-animation-delay: .35s;
-    animation-delay: .35s;
-  }
-}
-
-.is-absolute {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
+.page {
+  justify-content: space-evenly;
 }
 </style>

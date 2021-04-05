@@ -1,38 +1,47 @@
 <template>
-  <div class="box itemBox noMarginBottom" :class="[color, getSizeClass('itemBoxBasic')]" @click="$emit('click', item.id)">
-    <span class="activeIcon has-text-success" v-show="equipped">
-      <font-awesome-icon :icon="['fas', 'check-square']" :size="getSizeClass('fas')" />
-    </span>
-    <p class="content has-text-centered marginBottomSmall"
-       :class="getSizeClass('content')">{{ getText(item.id) }}</p>
-    <div class="box pictureBox flexGrow noMarginBottom">
-      <div class="fullHeight fullWidth backgroundPicture"
-           :style="{ backgroundImage: 'url(' + baseUrl + itemData.spritePath + ')' }"></div>
+  <div class="item-box flex-column" :class="[getSizeClass('general'), color]">
+    <div class="title">
+      {{ getText(item.id) }}
     </div>
-    <div class="fullWidth infoBar" v-if="hasInfoBar">
-      <div class="content noMarginBottom" :class="getSizeClass('content')">
-        x{{ item.quantity.toLocaleString() }}
+    <div class="image flex-grow">
+      <div class="image-box height-full" :style="{ backgroundImage: 'url(' + baseUrl + itemData.spritePath + ')' }"></div>
+    </div>
+    <div class="details flex-row">
+      <div v-show="equipped" class="icon selected">
+        <font-awesome-icon :icon="['fas', 'check-square']" />
       </div>
-      <progress v-show="itemData.durability" class="progress flexGrow customProgress"
-                :class="[getSizeClass('progress'), getProgressColor()]" :value="item.durability"
-                :max="itemData.durability">
-      </progress>
-      <div v-show="itemData.healing && !itemData.durability" class="flexGrow"></div>
-      <div v-show="itemData.healing" class="content noMarginBottom" :class="getSizeClass('content')">
+      <div v-show="mode !== 'shop' && itemData.healing" class="healing">
         +{{ itemData.healing }}HP
+      </div>
+      <div v-show="mode !== 'shop'" class="flex-grow"></div>
+      <ButtonBasic v-show="mode === 'shop'" class="flex-grow" icon="info-circle" color="info" text="shopButtonDetails"
+                   @click="$emit('click')" />
+      <TheProgressBar v-if="mode !== 'shop' && mode !== 'small' && itemData.durability" class="flex-grow" color="green"
+                      :value="item.durability" :maxValue="itemData.durability" />
+      <div class="amount">
+        {{ quantity }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ButtonBasic from '@/components/ButtonBasic.vue'
+import TheProgressBar from '@/components/TheProgressBar.vue'
+
 export default {
   name: 'ItemBoxBasic',
   props: {
     item: Object,
-    equipped: Boolean,
-    hasInfoBar: Boolean,
-    isSizeable: Boolean
+    mode: {
+      type: String,
+      default: ''
+    },
+    equipped: Boolean
+  },
+  components: {
+    ButtonBasic,
+    TheProgressBar
   },
   computed: {
     baseUrl () {
@@ -43,14 +52,20 @@ export default {
     },
     color () {
       if (this.itemData.categories.includes('weapon')) {
-        return 'is-weapon'
+        return 'weapons'
       } else if (this.itemData.categories.includes('consumable')) {
-        return 'is-consumable'
+        return 'consumables'
       } else if (this.itemData.categories.includes('armor')) {
-        return 'is-armor'
+        return 'armor'
       } else {
-        return 'is-basic'
+        return 'basic'
       }
+    },
+    quantity () {
+      if (this.item.quantity) {
+        return 'x' + this.item.quantity.toLocaleString()
+      }
+      return '?'
     }
   },
   methods: {
@@ -58,86 +73,8 @@ export default {
       return this.$store.getters.getText(id)
     },
     getSizeClass (type) {
-      if (type === 'itemBoxBasic' && !this.isSizeable) {
-        return ''
-      }
       return this.$store.getters.getSizeClass(type)
-    },
-    getProgressColor () {
-      if (this.item.durability < this.itemData.durability / 3) {
-        return 'is-danger'
-      } else if (this.item.durability < this.itemData.durability / 1.5) {
-        return 'is-warning'
-      } else {
-        return 'is-success'
-      }
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.flexGrow {
-  flex-grow: 1;
-}
-
-.itemBox {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  position: relative;
-  padding: .5rem;
-
-  &.is-small {
-    width: 7em;
-    height: 10.5em;
-  }
-
-  &.is-normal {
-    width: 9em;
-    height: 13.5em;
-  }
-
-  &.is-medium {
-    width: 11em;
-    height: 16.5em;
-  }
-
-  &.is-large {
-    width: 13em;
-    height: 19.5em;
-  }
-
-  .pictureBox {
-    padding: .5rem;
-  }
-
-  .activeIcon {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 2px;
-    height: 2px;
-    line-height: 0px;
-  }
-}
-
-.backgroundPicture {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-
-.infoBar {
-  display: flex;
-  flex-direction: row-reverse;
-  flex-wrap: nowrap;
-
-  .customProgress {
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-right: .5rem;
-    height: 12px;
-  }
-}
-</style>

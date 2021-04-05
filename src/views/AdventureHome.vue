@@ -1,74 +1,63 @@
 <template>
-  <div class="flexboxContainer">
-    <div class="innerFlexContainerUpgrades is-10 flexGrow marginTopSmall">
-      <ButtonBasic v-show="nextUpgradeData !== null" class="is-full marginBottomSmall" icon="angle-double-up"
-                   color="is-primary" text="adventureHomeUpgradesButton1" @click="showUpgrades()" />
-      <ButtonBasic v-show="nextUpgradeData === null" class="is-full marginBottomSmall" icon="times"
-                   color="is-danger" text="adventureHomeUpgradesButton2" disabled />
-      <ButtonIcon class="is-half marginRightSmall" :class="getInvisible(currentPoint.left)" icon="long-arrow-alt-left" color="is-link" @click="$emit('click', getClickObject(currentPoint.left))" />
-      <ButtonIcon class="is-half marginLeftSmall" :class="getInvisible(currentPoint.right)" icon="long-arrow-alt-right" color="is-link" @click="$emit('click', getClickObject(currentPoint.right))" />
-    </div>
-    <div class="innerFlexContainerButton is-10">
-      <ButtonBasic class="is-half marginBottomSmall marginRightSmall" icon="map" color="is-warning"
-                   text="adventureHomeButton1" @click="$emit('click', { type: 'backToMap' })" />
-      <ButtonBasic class="is-half marginBottomSmall marginLeftSmall" icon="arrow-right" color="is-success"
-                   text="adventureHomeButton2" :disabled="disabledEntry" />
-      <ButtonBasic class="is-full" icon="times" color="is-danger" text="adventureHomeButton3"
-                   @click="$emit('click', { type: 'abort' })" />
-    </div>
-    <transition enter-active-class="animated fadeInUp a-little-bit-faster"
-                leave-active-class="animated fadeOutDown a-little-bit-faster">
-      <div v-show="upgradesVisible" class="upgradesContainer has-background-background">
-        <h1 class="title marginTopBig" :class="getSizeClass('title')">
-          {{ getText(nextUpgradeData.id) }}
-        </h1>
-        <div class="box imageBox">
-          <div class="fullHeight fullWidth backgroundPicture"
-               :style="{ backgroundImage: 'url(' + baseUrl + nextUpgradeData.spritePath + ')' }"></div>
-        </div>
-        <div class="is-10 flexGrow overflowAuto marginBottomBig">
-          <h2 class="subtitle has-text-weight-bold marginBottomSmall" :class="getSizeClass('subtitle')">
-            {{ getText('adventureHomeUpgradesUnlocks') }}
-          </h2>
-          <div class="content" :class="getSizeClass('content')">
-            <ul>
-              <li v-for="(id, index) in nextUpgradeData.gains" :key="index">
-                {{ getText(id) }}
-              </li>
-            </ul>
+  <div class="adventure-page">
+    <HeroBasic class="mini" title="adventureHomeUpgradesButton1" :subtitle="[nextUpgradeData.id]" />
+    <div class="upgrade flex-grow overflow-auto">
+      <div class="shop-image width-full margin-bottom-medium" :class="getSizeClass('general')">
+        <div class="image-box" :style="{ backgroundImage: 'url(' + baseUrl + nextUpgradeData.spritePath + ')' }"></div>
+      </div>
+      <TheBlockquote class="margin-bottom-medium" :text="gainText" inHtml />
+      <div class="section-title" :class="getSizeClass('general')">
+        {{ getText('adventureHomeUpgradesCostsTitle') }}
+      </div>
+      <div class="costs margin-bottom-medium" :class="getSizeClass('general')">
+        <div class="entry flex-row" v-for="cost in nextUpgradeData.costs" :key="cost.id">
+          <div class="image">
+            <div class="image-box" :style="{ backgroundImage: 'url(' + baseUrl + getCostIcon(cost.id) + ')' }"></div>
           </div>
-          <table class="table fullWidth">
-            <thead>
-              <tr class="headerSticky">
-                <td class="has-background-primary" :class="getSizeClass('td')">{{ getText('adventureHomeColumn1') }}</td>
-                <td class="has-background-primary has-text-centered" :class="getSizeClass('td')">{{ getText('adventureHomeColumn2') }}</td>
-                <td class="has-background-primary has-text-centered" :class="getSizeClass('td')">{{ getText('adventureHomeColumn3') }}</td>
-              </tr>
-            </thead>
-            <tr v-for="cost in nextUpgradeData.costs" :key="cost.id">
-              <td :class="getSizeClass('td')">{{ getText(cost.id) }}</td>
-              <td class="has-text-centered" :class="[isEnough(cost), getSizeClass('td')]">{{ ownQuantity(cost.id).toLocaleString() }}</td>
-              <td class="has-text-centered" :class="getSizeClass('td')">{{ cost.quantity.toLocaleString() }}</td>
-            </tr>
-          </table>
-        </div>
-        <div class="is-10">
-          <ButtonBasic class="marginBottomSmall" icon="coins" color="is-success" text="adventureHomeUpgradesButton3"
-                       :disabled="disabledBuy" />
-          <ButtonBasic icon="times" color="is-danger" text="adventureHomeUpgradesButton4" @click="hideUpgrades()" />
+          <div class="material flex-grow">
+            {{ getText(cost.id) }}
+          </div>
+          <div class="own" :class="isEnough(cost)">
+            {{ formatValue(ownQuantity(cost.id)) }}
+          </div>
+          <div class="needed">
+            {{ formatValue(cost.quantity) }}
+          </div>
         </div>
       </div>
-    </transition>
+      <ButtonBasic class="single-2 width-full margin-bottom-small" icon="coins" color="green"
+                   text="adventureHomeUpgradesButton3" @click="buyUpgrade()" :disabled="disabledBuy" />
+    </div>
+    <div class="button-container">
+      <ButtonIcon class="width-half" icon="long-arrow-alt-left" color="action"
+                  @click="$emit('click', getClickObject(currentPoint.left))"
+                  :disabled="hasBuilding(currentPoint.left)" />
+      <ButtonIcon class="width-half" icon="long-arrow-alt-right" color="action"
+                  @click="$emit('click', getClickObject(currentPoint.right))"
+                  :disabled="hasBuilding(currentPoint.right)" />
+    </div>
+    <div class="button-container">
+      <ButtonBasic class="width-half" icon="times" color="red" text="adventureHomeButton3"
+                   @click="$emit('click', { type: 'abort' })" />
+      <ButtonBasic class="width-half" icon="arrow-right" color="green" text="adventureHomeButton2"
+                   :disabled="disabledEntry" />
+      <ButtonBasic class="width-full" icon="map" color="yellow" text="adventureHomeButton1"
+                   @click="$emit('click', { type: 'backToMap' })" />
+    </div>
   </div>
 </template>
 
 <script>
+import HeroBasic from '@/components/HeroBasic.vue'
+import TheBlockquote from '@/components/TheBlockquote.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import ButtonIcon from '@/components/ButtonIcon.vue'
 
 export default {
   name: 'AdventureHome',
   components: {
+    HeroBasic,
+    TheBlockquote,
     ButtonBasic,
     ButtonIcon
   },
@@ -91,6 +80,11 @@ export default {
     },
     collectedItems () {
       return this.$store.state.canvasDict.collectedItems
+    },
+    gainText () {
+      return this.getText('adventureHomeUpgradesUnlocks') + '<br><ul>' + this.nextUpgradeData.gains.map(id => {
+        return '<li>' + this.getText(id) + '</li>'
+      }, this).join('') + '</ul>'
     },
     disabledEntry () {
       switch (this.$store.state.canvasDict.currentBuilding) {
@@ -135,6 +129,15 @@ export default {
         value: target
       }
     },
+    getCostIcon (itemId) {
+      let itemData = this.$store.getters['vueDict/getItemObject'](itemId)
+      if (itemData) {
+        return itemData.spritePath
+      } else if (itemId === 'coins') {
+        return 'img/items/coin.png'
+      }
+      return ''
+    },
     ownQuantity (id) {
       if (id === 'coins') {
         let coins = this.$store.getters['vueDict/getCoins']
@@ -149,31 +152,18 @@ export default {
     },
     isEnough (costObject) {
       if (this.ownQuantity(costObject.id) >= costObject.quantity) {
-        return 'has-text-success'
+        return 'green'
       }
-      return 'has-text-danger'
+      return 'red'
     },
-    getInvisible (link) {
-      if (!link || !this.$store.state.canvasDict.unlockedBuildings.includes(link)) {
-        return 'invisible'
+    hasBuilding (direction) {
+      if (!direction || !this.$store.state.canvasDict.unlockedBuildings.includes(direction)) {
+        return true
       }
-      return ''
-    },
-    showUpgrades () {
-      this.upgradesVisible = true
-    },
-    hideUpgrades () {
-      this.upgradesVisible = false
+      return false
     },
     buyUpgrade () {
-      let buyable = true
-      for (let cost of this.nextUpgradeData.costs) {
-        if (cost.quantity > this.ownQuantity(cost.id)) {
-          buyable = false
-        }
-      }
-
-      if (buyable) {
+      if (!this.disabledBuy) {
         for (let cost of this.nextUpgradeData.costs) {
           if (cost.id === 'coins') {
             this.$store.commit('vueDict/commitStat', {
@@ -193,104 +183,24 @@ export default {
           newValue: this.nextUpgradeData.id
         })
       }
+    },
+    formatValue (value) {
+      if (value < 1_000_000) {
+        return value.toLocaleString()
+      } else if (value < 1_000_000_000) {
+        return (value / 1_000_000).toFixed(3) + 'M'
+      } else if (value < 1_000_000_000_000) {
+        return (value / 1_000_000_000).toFixed(3) + 'B'
+      } else {
+        return (value / 1_000_000_000_000).toFixed(3) + 'T'
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.flexboxContainer {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  padding-bottom: 71px;
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .overflowAuto {
-    overflow: auto;
-  }
-
-  .flexGrow {
-    flex-grow: 1;
-  }
-
-  .innerFlexContainerUpgrades {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    align-content: flex-start;
-
-    .is-half {
-      width: calc(50% - .25rem);
-    }
-
-    .is-full {
-      width: 100%;
-    }
-
-    .invisible {
-      opacity: .2;
-      pointer-events: none;
-    }
-  }
-
-  .innerFlexContainerButton {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-
-    .is-half {
-      width: calc(50% - .25rem);
-    }
-
-    .is-full {
-      width: 100%;
-    }
-  }
-
-  .upgradesContainer {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-    width: 100%;
-    height: calc(100% + .5rem);
-    padding-bottom: 71px;
-    top: 0px;
-    z-index: 4;
-
-    .imageBox {
-      padding: .5rem;
-      width: 10em;
-      height: 10em;
-
-      .backgroundPicture {
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
-      }
-    }
-
-    .headerSticky td {
-      position: sticky;
-      top: 0px;
-      z-index: 20;
-    }
-
-    .content ul {
-      margin-top: 0;
-    }
-
-    .table tbody tr:last-child td {
-      border-bottom-width: 1px !important;
-    }
-  }
+.upgrade {
+  height: 1rem;
 }
 </style>

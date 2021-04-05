@@ -1,8 +1,10 @@
 <template>
-  <div>
-    <progress class="progress marginBottomSmall" :class="[getSizeClass('progress'), color]" :value="value"
-              :max="maxValue"></progress>
-    <p class="content has-text-centered" :class="getSizeClass('content')">{{ text }}</p>
+  <div class="progress relative" :class="[getSizeClass('general'), color]">
+    <div class="background width-full"></div>
+    <div class="foreground absolute" :style="{ width: percentage + '%' }"></div>
+    <div class="text absolute height-full width-full text-center">
+      {{ progressText }}
+    </div>
   </div>
 </template>
 
@@ -13,7 +15,21 @@ export default {
     color: String,
     value: Number,
     maxValue: Number,
-    text: String
+    text: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    percentage () {
+      return this.value / this.maxValue * 100
+    },
+    progressText () {
+      if (this.text === '') {
+        return this.value.toString() + ' / ' + this.maxValue.toString()
+      }
+      return this.text
+    }
   },
   methods: {
     getSizeClass (type) {

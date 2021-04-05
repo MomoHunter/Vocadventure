@@ -1,7 +1,8 @@
 <template>
-  <button class="button is-rounded" @click="$emit('click')"
-          :class="[getSizeClass('button'), color, { 'is-outlined': !selected }]">
-    <span>{{ getText(text) }}</span>
+  <button class="button" :class="[getSizeClass('general'), color]" @click="$emit('click')">
+    <span class="text">
+      {{ getText(text) }}
+    </span>
   </button>
 </template>
 
@@ -10,8 +11,7 @@ export default {
   name: 'ButtonText',
   props: {
     text: [String, Number],
-    color: String,
-    selected: Boolean
+    color: String
   },
   methods: {
     getText (id) {
@@ -23,3 +23,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.button {
+  justify-content: center;
+  align-items: center;
+}
+</style>

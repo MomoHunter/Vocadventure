@@ -1,5 +1,6 @@
 @charset "utf-8";
 @import "./../../node_modules/animate.css/animate.min.css";
+@import './customAnimations.scss';
 
 @font-face {
   font-family: "KanjiStrokeOrders";
@@ -13,146 +14,209 @@ html, body {
   margin: 0px auto;
 }
 
-#app {
+#adventure-canvas {
+  width: 100%;
+}
+
+.flex {
+  &-row {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+
+    &-reverse {
+      flex-direction: row-reverse;
+    }
+  }
+
+  &-column {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+
+  &-wrap {
+    flex-wrap: wrap;
+  }
+
+  &-grow {
+    flex-grow: 1;
+  }
+
+  &-shrink {
+    flex-shrink: 0;
+  }
+
+  &-center {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+$dir: 'row' 'column';
+
+.gap {
+  @for $i from 1 through length($dir) {
+    &-#{nth($dir, $i)} {
+      &-mini {
+        #{nth($dir, $i)}-gap: .25rem;
+      }
+
+      &-small {
+        #{nth($dir, $i)}-gap: .5rem;
+      }
+
+      &-medium {
+        #{nth($dir, $i)}-gap: 1rem;
+      }
+
+      &-large {
+        #{nth($dir, $i)}-gap: 1.5rem;
+      }
+    }
+  }
+}
+
+.text {
+  &-left {
+    text-align: left;
+  }
+
+  &-center {
+    text-align: center;
+  }
+
+  &-right {
+    text-align: right;
+  }
+}
+
+.width {
+  &-full {
+    width: 100%;
+  }
+
+  &-half {
+    width: 50%;
+  }
+
+  &-third {
+    width: calc(100% / 3);
+
+    &-two {
+      width: calc(100% / 1.5);
+    }
+  }
+
+  &-fourth {
+    width: calc(100% / 4);
+  }
+
+  &-fifth {
+    width: calc(100% / 5);
+  }
+}
+
+.height {
+  &-full {
+    height: 100%;
+  }
+
+  &-half {
+    height: 50%;
+  }
+
+  &-third {
+    height: calc(100% / 3);
+  }
+
+  &-fourth {
+    height: calc(100% / 4);
+  }
+}
+
+.overflow {
+  &-auto {
+    overflow: auto;
+  }
+
+  &-y-auto {
+    overflow-y: auto;
+  }
+
+  &-x-auto {
+    overflow-x: auto;
+  }
+}
+
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.sticky {
+  position: sticky;
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  position: absolute;
+}
+
+.adventure-page {
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-#adventureCanvas {
-  width: 100%;
-}
+$pos: 'top' 'left' 'right' 'bottom';
 
-.page {
-  flex-grow: 1;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  top: 0px;
-  left: 0px;
-}
+.margin {
+  @for $i from 1 through length($pos) {
+    &-#{nth($pos, $i)} {
+      &-mini {
+        margin-#{nth($pos, $i)}: .25rem;
+      }
 
-.fullHeight {
-  height: 100%;
-}
-
-.fullWidth {
-  width: 100%;
-}
-
-.marginTopBig {
-  margin-top: 1.5rem !important;
-}
-
-.marginTopMiddle {
-  margin-top: 1rem !important;
-}
-
-.marginTopSmall {
-  margin-top: .5rem !important;
-}
-
-.marginBottomSmall {
-  margin-bottom: .5rem !important;
-}
-
-.marginBottomMiddle {
-  margin-bottom: 1rem !important;
-}
-
-.marginBottomBig {
-  margin-bottom: 1.5rem !important;
-}
-
-.marginRightSmall {
-  margin-right: .25rem;
-}
-
-.marginLeftSmall {
-  margin-left: .25rem;
-}
-
-.noMarginBottom {
-  margin-bottom: 0 !important;
-}
-
-.animated {
-  &.delay-100ms {
-    -webkit-animation-delay: .1s;
-    animation-delay: .1s;
-  }
-
-  &.delay-400ms {
-    -webkit-animation-delay: .4s;
-    animation-delay: .4s;
-  }
-
-  &.delay-500ms {
-    -webkit-animation-delay: .5s;
-    animation-delay: .5s;
-  }
-
-  &.super-fast {
-    animation-duration: .1s;
-  }
-
-  &.a-little-bit-faster {
-    animation-duration: .4s;
-  }
-}
-
-.material-design-icon {
-  &.is-small {
-    width: 1rem;
-    height: 1rem;
-
-    > .material-design-icon__svg {
-      width: 1rem;
-      height: 1rem;
-    }
-  }
-
-  &.is-normal {
-    width: 1.5rem;
-    height: 1.5rem;
-
-    > .material-design-icon__svg {
-      width: 1.5rem;
-      height: 1.5rem;
-    }
-  }
-
-  &.is-medium {
-    width: 2rem;
-    height: 2rem;
-
-    > .material-design-icon__svg {
-      width: 2rem;
-      height: 2rem;
-    }
-  }
-
-  &.is-large {
-    width: 2.5rem;
-    height: 2.5rem;
-
-    > .material-design-icon__svg {
-      width: 2.5rem;
-      height: 2.5rem;
+      &-small {
+        margin-#{nth($pos, $i)}: .5rem;
+      }
+  
+      &-medium {
+        margin-#{nth($pos, $i)}: 1rem;
+      }
+  
+      &-large {
+        margin-#{nth($pos, $i)}: 1.5rem;
+      }
     }
   }
 }
 
-td {
-  &.is-small {
-    font-size: .85em;
-  }
+.padding {
+  @for $i from 1 through length($pos) {
+    &-#{nth($pos, $i)} {
+      &-mini {
+        padding-#{nth($pos, $i)}: .25rem;
+      }
 
-  &.is-medium {
-    font-size: 1.25rem;
-  }
-
-  &.is-large {
-    font-size: 1.5rem;
+      &-small {
+        padding-#{nth($pos, $i)}: .5rem;
+      }
+  
+      &-medium {
+        padding-#{nth($pos, $i)}: 1rem;
+      }
+  
+      &-large {
+        padding-#{nth($pos, $i)}: 1.5rem;
+      }
+    }
   }
 }

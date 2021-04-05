@@ -1,76 +1,57 @@
 <template>
-  <div class="flexContainer spaceBetween">
+  <div class="page">
     <HeroBasic title="trainingTitle" />
-    <div class="field is-10 is-grouped is-grouped-multiline">
-      <div class="control fullWidth">
-        <TagBasic textOne="trainingCategoryTag" :textTwo="getCategory" colorTwo="is-info" />
+    <div class="height-full flex-column overflow-auto">
+      <div class="flex-column margin-top-mini margin-bottom-mini margin-left-mini">
+        <TagBasic class="margin-bottom-mini" title="trainingTag1Title" :text="categoryName" color="info-2" />
+        <TagBasic title="trainingTag2Title" :text="difficulty" color="info-2" />
       </div>
-      <div class="control fullWidth">
-        <div class="content">
-          <blockquote>
-            {{ words.words[currentWord][$store.state.lang] }}
-          </blockquote>
-        </div>
-      </div>
-    </div>
-    <div class="field is-10">
-      <label class="label" :class="getSizeClass('label')">
-        {{ getText(words.latinAlphabet) }}
-      </label>
-      <InputReadonly type="text" :value="getLatinWord" />
-    </div>
-    <div class="field is-full is-grouped is-grouped-multiline is-grouped-centered">
-      <label class="label is-10 marginFilling" :class="getSizeClass('label')">
-        {{ getText(words.foreignAlphabet) }}
-      </label>
-      <div class="control is-1 is-marginless centerIcon" @click="speak()">
-        <span class="icon" :class="ttsIconColor">
-          <font-awesome-icon :icon="['fas', ttsIcon]" :size="getSizeClass('fas')" />
-        </span>
-      </div>
-      <InputReadonly class="is-10 is-marginless" type="text" :value="getForeignWord" />
-      <div class="control is-1 is-marginless centerIcon" @click="navTo('writeKanji')">
-        <span class="icon has-text-success" v-show="isJapanese">
-          <font-awesome-icon :icon="['fas', 'edit']" :size="getSizeClass('fas')" />
-        </span>
+      <TheBlockquote :text="words.words[currentWord][$store.state.lang]" />
+      <div class="flex-grow flex-column space-evenly">
+        <TextWithIcon :title="words.latinAlphabet" :text="latinWord" :leftIcon="ttsIconLatin" :leftIconColor="ttsIconColor"
+                      @click-left="speak('latin')" />
+        <TextWithIcon v-if="hasForeignWords" :title="words.foreignAlphabet" :text="foreignWord" :leftIcon="ttsIconForeign"
+                      :leftIconColor="ttsIconColor" rightIcon="edit" rightIconColor="green" @click-left="speak('foreign')"
+                      @click-right="navTo('writeKanji')" />
       </div>
     </div>
-    <div class="innerFlexContainer is-10" :class="currentWord === 0 ? 'dirBackward' : 'dirForward'">
-      <ButtonBasic v-show="currentWord !== 0" class="is-half marginBottomSmall marginRightSmall" icon="arrow-left"
-                   color="is-warning" text="trainingButton1" @click="previousWord()" />
-      <ButtonBasic v-show="currentWord + 1 !== words.words.length" class="is-half marginBottomSmall marginLeftSmall"
-                   icon="arrow-right" color="is-success" text="trainingButton2" @click="nextWord()" />
-      <ButtonBasic v-show="currentWord + 1 === words.words.length" class="is-half marginBottomSmall marginLeftSmall"
-                   icon="check" color="is-success" text="trainingButton3" @click="navTo('menu')" />
-      <ButtonBasic icon="times" color="is-danger" text="trainingButton4"
-                   @click="$router.push({ name: 'category', params: { destination: 'training' } })" />
+    <TheProgressBar class="width-full border-top" color="green" :value="currentWord + 1" :maxValue="words.words.length" />
+    <div class="button-container flex-row flex-wrap">
+      <ButtonBasic v-show="!isFirstWord" class="width-half" icon="arrow-left" color="yellow" text="trainingButton1"
+                   @click="previousWord()" />
+      <ButtonBasic v-show="!isLastWord" class="width-half" icon="arrow-right" color="green" text="trainingButton2"
+                   @click="nextWord()" />
+      <ButtonBasic v-show="isLastWord" class="width-half" icon="check" color="green" text="trainingButton3"
+                   @click="navTo('menu')" />
+      <ButtonBasic class="width-full" icon="times" color="red" text="trainingButton4" @click="navTo('category')" />
     </div>
-    <TheProgressBar class="is-10" color="is-success" :value="currentWord + 1" :maxValue="words.words.length"
-                    :text="progressText" />
-    <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-      <TheNotification v-show="showNotification" class="fullWidth" color="is-danger" text="trainingNotification"
-                       @click="closeNotification()" />
+    <transition enter-active-class="animate__animated animate__backInUp duration-c-700ms"
+                leave-active-class="animate__animated animate__backOutDown duration-c-700ms">
+      <NotificationBasic v-show="notificationVisible" title="trainingNotificationTitle"
+                       :text="['trainingNotificationText']" color="red" icon="exclamation" @click="hideNotification()" />
     </transition>
   </div>
 </template>
 
 <script>
 import HeroBasic from '@/components/HeroBasic.vue'
-import TagBasic from '@/components/TagBasic.vue'
-import InputReadonly from '@/components/InputReadonly.vue'
+import TextWithIcon from '@/components/TextWithIcon.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
+import TagBasic from '@/components/TagBasic.vue'
 import TheProgressBar from '@/components/TheProgressBar.vue'
-import TheNotification from '@/components/TheNotification.vue'
+import NotificationBasic from '@/components/NotificationBasic.vue'
+import TheBlockquote from '@/components/TheBlockquote.vue'
 
 export default {
   name: 'TheTraining',
   components: {
     HeroBasic,
-    TagBasic,
-    InputReadonly,
+    TextWithIcon,
     ButtonBasic,
+    TagBasic,
     TheProgressBar,
-    TheNotification
+    NotificationBasic,
+    TheBlockquote
   },
   data () {
     return {
@@ -79,7 +60,8 @@ export default {
       synth: window.speechSynthesis,
       ttsWorking: true,
       ttsPlaying: false,
-      showNotification: false
+      ttsWordType: 'latin',
+      notificationVisible: false
     }
   },
   beforeMount () {
@@ -124,51 +106,54 @@ export default {
       }
       return vocabs
     },
-    tags () {
-      if (this.words.words.length > 0) {
-        return [
-          {
-            nameId: 'trainingCategoryTag',
-            valueId: this.words.words[this.currentWord].category
-          }
-        ]
-      }
-      return []
+    hasForeignWords () {
+      return this.words.foreignAlphabet !== ''
+    },
+    isFirstWord () {
+      return this.currentWord === 0
+    },
+    isLastWord () {
+      return this.currentWord + 1 === this.words.words.length
     },
     isJapanese () {
       return this.$store.state.targetLanguage === 'japanese'
     },
-    getCategory () {
-      return this.$store.getters['vueDict/getCategories'].find(category => {
+    categoryName () {
+      let foundCategory = this.$store.getters['vueDict/getCategories'].find(category => {
         return category.id === this.words.words[this.currentWord].category
-      }, this).categoryName
+      }, this)
+
+      if (foundCategory) {
+        return foundCategory.categoryName
+      }
+      return ''
     },
-    getLatinWord () {
+    difficulty () {
+      return 'difficulty' + this.words.words[this.currentWord].difficulty
+    },
+    latinWord () {
       return this.words.words[this.currentWord][this.words.latinAlphabet]
     },
-    getForeignWord () {
+    foreignWord () {
       return this.words.words[this.currentWord][this.words.foreignAlphabet]
     },
-    progressText () {
-      return (this.currentWord + 1) + ' / ' + this.words.words.length
-    },
-    ttsIcon () {
+    ttsIconLatin () {
       if (this.ttsWorking) {
-        return this.ttsPlaying ? 'volume-up' : 'volume-off'
+        return this.ttsPlaying && this.ttsWordType === 'latin' ? 'volume-up' : 'volume-off'
+      }
+      return 'volume-mute'
+    },
+    ttsIconForeign () {
+      if (this.ttsWorking) {
+        return this.ttsPlaying && this.ttsWordType === 'foreign' ? 'volume-up' : 'volume-off'
       }
       return 'volume-mute'
     },
     ttsIconColor () {
-      return this.ttsWorking ? 'has-text-success' : 'has-text-danger'
+      return this.ttsWorking ? 'green' : 'red'
     }
   },
   methods: {
-    getText (id) {
-      return this.$store.getters.getText(id)
-    },
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
-    },
     previousWord () {
       if (this.currentWord > 0) {
         this.currentWord--
@@ -179,16 +164,22 @@ export default {
         this.currentWord++
       }
     },
-    speak () {
+    speak (wordType) {
       if (this.ttsWorking) {
         if (!this.ttsPlaying) {
-          let speech = new SpeechSynthesisUtterance(this.getForeignWord)
+          let speech
+          this.ttsWordType = wordType
+          if (wordType === 'foreign') {
+            speech = new SpeechSynthesisUtterance(this.foreignWord)
+          } else {
+            speech = new SpeechSynthesisUtterance(this.latinWord)
+          }
           let voice = this.synth.getVoices().filter(voice => this.words.lang.includes(voice.lang))[0]
           if (!voice) {
             this.ttsWorking = false
           }
           speech.lang = this.words.lang
-          speech.volume = 50
+          speech.volume = this.$store.state.volume / 100
           speech.rate = 1
           speech.pitch = 1
           speech.voice = voice
@@ -201,26 +192,36 @@ export default {
           this.synth.speak(speech)
         }
       } else {
-        this.showNotification = true
+        this.notificationVisible = true
       }
     },
-    closeNotification () {
-      this.showNotification = false
+    showNotification () {
+      this.notificationVisible = true
     },
-    navTo (destination) {
-      if (destination === 'menu') {
-        this.$store.commit('vueDict/setCategories', [])
-        this.$router.push({ name: destination })
-      } else if (this.isJapanese) {
-        this.$store.commit('vueDict/setWriteKanji', {
-          category: this.words.words[this.currentWord].category,
-          index: this.words.words[this.currentWord].index
-        })
-        this.$store.commit('vueDict/setTrainingStash', {
-          currentWord: this.currentWord,
-          storedWords: this.words
-        })
-        this.$router.push({ name: destination })
+    hideNotification () {
+      this.notificationVisible = false
+    },
+    navTo (name) {
+      switch (name) {
+        case 'menu':
+          this.$store.commit('vueDict/setCategories', [])
+          this.$router.push({ name: name })
+          break
+        case 'category':
+          this.$router.push({ name: name, params: { destination: 'training' } })
+          break
+        default:
+          if (this.isJapanese) {
+            this.$store.commit('vueDict/setWriteKanji', {
+              category: this.words.words[this.currentWord].category,
+              index: this.words.words[this.currentWord].index
+            })
+            this.$store.commit('vueDict/setTrainingStash', {
+              currentWord: this.currentWord,
+              storedWords: this.words
+            })
+            this.$router.push({ name: name })
+          }
       }
     }
   }
@@ -228,59 +229,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flexContainer {
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  height: calc(100% - .5rem);
-
-  &.spaceBetween {
-    justify-content: space-between;
-  }
-
-  .is-full {
-    width: 100%;
-  }
-
-  .is-10 {
-    width: calc(100% / 1.2);
-  }
-
-  .is-1 {
-    width: calc(100% / 12);
-  }
-
-  .marginFilling {
-    margin-left: calc(100% / 12);
-    margin-right: calc(100% / 12);
-  }
-
-  .centerIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.space-evenly {
+  justify-content: space-evenly;
 }
 
-.innerFlexContainer {
-  display: flex;
-  flex-wrap: wrap;
-
-  &.dirForward {
-    flex-direction: row;
-  }
-
-  &.dirBackward {
-    flex-direction: row-reverse;
-  }
-
-  .is-half {
-    width: calc(50% - .25rem);
-  }
+.button-container {
+  justify-content: flex-end;
 }
 </style>

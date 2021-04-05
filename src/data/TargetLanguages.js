@@ -15,5 +15,12 @@ export default {
     'foreignAlphabet': 'euclidean',
     'lang': ['el-GR', 'el_GR'],
     'flag': 'gr'
+  },
+  'norwegian': {
+    'signs': null,
+    'latinAlphabet': 'danoNorwegian',
+    'foreignAlphabet': '',
+    'lang': ['nb-NO', 'nb_NO'],
+    'flag': 'no'
   }
 }

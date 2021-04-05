@@ -1,15 +1,21 @@
 <template>
-  <div class="control has-icons-left">
-    <span class="select is-fullwidth" :class="[getSizeClass('select'), color]">
-      <select @change="$emit('change', $event.target.value)">
-        <option v-for="option in options" :selected="isSelected(option)" :value="option" :key="option">
+  <div class="dropdown" :class="[getSizeClass('general'), color]">
+    <div v-if="hasTitle" class="title">
+      {{ getText(title) }}
+    </div>
+    <div class="relative">
+      <span class="icon">
+        <font-awesome-icon :icon="['fas', icon]" />
+      </span>
+      <select class="select" @change="$emit('change', $event.target.value)">
+        <option class="option" v-for="option in options" :selected="isSelected(option)" :value="option" :key="option">
           {{ getText(option) }}
         </option>
       </select>
-    </span>
-    <span class="icon is-left">
-      <font-awesome-icon :icon="['fas', icon]" />
-    </span>
+      <span class="arrow">
+        <font-awesome-icon :icon="['fas', 'angle-down']" />
+      </span>
+    </div>
   </div>
 </template>
 
@@ -17,10 +23,16 @@
 export default {
   name: 'DropdownBasic',
   props: {
+    title: String,
     options: Array,
     selected: String,
     icon: String,
     color: String
+  },
+  computed: {
+    hasTitle () {
+      return this.title !== ''
+    }
   },
   methods: {
     getText (id) {

@@ -1,10 +1,11 @@
 <template>
-  <button class="button is-rounded is-fullwidth"
-          :class="[getSizeClass('button'), color, { 'is-outlined': !selected }]" @click="$emit('click')">
+  <button class="button" :class="[getSizeClass('general'), color]" @click="$emit('click')">
     <span class="icon">
       <font-awesome-icon :icon="['fas', icon]" />
     </span>
-    <span>{{ getText(text) }}</span>
+    <span class="text">
+      {{ getText(text) }}
+    </span>
   </button>
 </template>
 
@@ -14,8 +15,7 @@ export default {
   props: {
     icon: String,
     text: String,
-    color: String,
-    selected: Boolean
+    color: String
   },
   methods: {
     getText (id) {
@@ -27,3 +27,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.button {
+  justify-content: center;
+  align-items: center;
+}
+</style>

@@ -1,6 +1,5 @@
 <template>
-  <button class="button is-rounded is-outlined is-fullwidth" :class="[getSizeClass('button'), color]"
-     @click="$emit('click')">
+  <button class="button" :class="[getSizeClass('general'), color]" @click="$emit('click')">
     <span class="icon">
       <font-awesome-icon :icon="['fas', icon]" :transform="{ rotate: rotation }" />
     </span>
@@ -25,3 +24,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.button {
+  justify-content: center;
+  align-items: center;
+}
+</style>
