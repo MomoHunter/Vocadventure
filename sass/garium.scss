@@ -138,6 +138,10 @@ html * {
 
   &-bottom {
     border-bottom: 3px solid $color-border;
+
+    &-2 {
+      border-bottom: 2px solid $color-border;;
+    }
   }
 }
 
@@ -214,7 +218,6 @@ html * {
   @for $i from 1 through length($sizes) {
     &.#{nth($size-classes, $i)} {
       min-height: 2.5rem * nth($sizes, $i);
-      height: 2.5rem * nth($sizes, $i);
       min-width: 2.5rem * nth($sizes, $i);
       font-size: .35cm * nth($sizes, $i);
 
@@ -297,6 +300,14 @@ html * {
         font-size: .2cm * nth($sizes, $i);
         height: 1.25rem * nth($sizes, $i);
         min-height: 1.25rem * nth($sizes, $i);
+      }
+    }
+  }
+
+  &.recommended {
+    @for $i from 1 through length($sizes) {
+      &.#{nth($size-classes, $i)} {
+        height: 2.5rem * nth($sizes, $i);
       }
     }
   }

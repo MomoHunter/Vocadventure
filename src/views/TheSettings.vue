@@ -15,6 +15,9 @@
                  v-model="newViewport" icon="glasses" />
       <TheSlider class="margin-bottom-medium" title="settingsVolume" :min="0" :max="100" :step="1" v-model="newVolume"
                  icon="volume-up" />
+      <CheckboxBasic class="border-bottom-2 margin-bottom-medium" title="settingsUpdateTitle" icon="download"
+                     text="settingsUpdate" :active="newAllowUpdates"
+                     @click="changeValue('newAllowUpdates', !newAllowUpdates)" />
       <ButtonBasic class="single-2 width-full margin-bottom-medium" color="red" icon="trash" text="settingsButtonDelete"
                    @click="$store.commit('vueDict/showModal', { name: 'areYouSure' })" />
     </div>
@@ -35,6 +38,7 @@ import HeroBasic from '@/components/HeroBasic.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import DropdownBasic from '@/components/DropdownBasic.vue'
 import TheSlider from '@/components/TheSlider.vue'
+import CheckboxBasic from '@/components/CheckboxBasic.vue'
 
 export default {
   name: 'TheSettings',
@@ -42,7 +46,14 @@ export default {
     HeroBasic,
     ButtonBasic,
     DropdownBasic,
-    TheSlider
+    TheSlider,
+    CheckboxBasic
+  },
+  created () {
+    let allowUpdates = JSON.parse(window.localStorage.getItem('allowUpdates'))
+    if (allowUpdates !== null) {
+      this.newAllowUpdates = JSON.parse(window.localStorage.getItem('allowUpdates'))
+    }
   },
   data () {
     return {
@@ -51,7 +62,8 @@ export default {
       newTheme: this.$store.state.theme,
       newSize: this.$store.state.size,
       newViewport: this.$store.state.viewport,
-      newVolume: this.$store.state.volume
+      newVolume: this.$store.state.volume,
+      newAllowUpdates: false
     }
   },
   computed: {
@@ -80,6 +92,7 @@ export default {
       this.$store.commit('changeViewport', this.newViewport)
       this.$store.commit('changeVolume', this.newVolume)
       window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
+      window.localStorage.setItem('allowUpdates', JSON.stringify(this.newAllowUpdates))
       this.$router.push({ name: 'menu' })
     }
   }

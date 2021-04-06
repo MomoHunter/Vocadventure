@@ -115,16 +115,16 @@
                       color="action" :text="name" :key="name" @click="setTab(name)" />
         </div>
         <div class="keys flex-grow flex-row flex-wrap overflow-auto">
-          <ButtonText class="width-fifth" v-for="(sign, index) in keyboardSigns" :text="sign" color="action"
+          <ButtonText class="recommended width-fifth" v-for="(sign, index) in keyboardSigns" :text="sign" color="action"
                       :key="index" @click="addLetter(sign)" />
         </div>
         <div class="button-container">
           <ButtonBasic class="width-half" icon="times" color="red" text="adventureKeyboardButton3"
                        @click="clearWord()" />
-          <ButtonBasic class="width-half" icon="backspace" color="yellow" text="adventureKeyboardButton2"
-                       @click="removeLetter()" />
-          <ButtonBasic class="width-full" icon="check" color="green" text="adventureKeyboardButton1"
+          <ButtonBasic class="width-half" icon="check" color="green" text="adventureKeyboardButton1"
                        @click="hideKeyboard()" />
+          <ButtonBasic class="width-full" icon="backspace" color="yellow" text="adventureKeyboardButton2"
+                       @click="removeLetter()" />
         </div>
       </div>
     </transition>
@@ -376,6 +376,7 @@ export default {
         })
       }
 
+      this.$store.commit('vueDict/addStatAddit', { id: 'vocabs', count: 1 })
       if (this.isLatinCorrect > 0) {
         this.$store.commit('vueDict/addStatAddit', { id: 'points', count: this.isLatinCorrect })
         this.$store.commit('vueDict/addStatAddit', { id: 'coins', count: this.isLatinCorrect })

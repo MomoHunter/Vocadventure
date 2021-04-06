@@ -2,6 +2,7 @@
   "german": {
     "points": "Punkte",
     "steps": "Schritte",
+    "vocabs": "Vokabeln",
     "coins": "Münzen",
     "menuTitle": "Vocadventure",
     "menuSubtitle": "Ein Vokabeltrainer mit Gamification für &1",
@@ -253,6 +254,8 @@
     "settingsSize": "Größe",
     "settingsViewport": "Zoomstufe (abhängig von Smartphone)",
     "settingsVolume": "Lautstärke",
+    "settingsUpdateTitle": "Updates",
+    "settingsUpdate": "Automatische Updates",
     "german": "Deutsch",
     "english": "English",
     "japanese": "Japanisch",
@@ -348,6 +351,7 @@
   "english": {
     "points": "Points",
     "steps": "Steps",
+    "vocabs": "Vocabs",
     "coins": "Coins",
     "menuTitle": "Vocadventure",
     "menuSubtitle": "A vocabulary trainer with gamification for learning &1",
@@ -599,6 +603,8 @@
     "settingsSize": "Size",
     "settingsViewport": "Zoomstep (dependent on Smartphone)",
     "settingsVolume": "Volume",
+    "settingsUpdateTitle": "Updates",
+    "settingsUpdate": "Automatic Updates",
     "german": "Deutsch",
     "english": "English",
     "japanese": "Japanese",

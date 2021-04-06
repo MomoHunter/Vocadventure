@@ -377,7 +377,6 @@ export default {
                 this.animationQueue.push(new AnimationObject('obstacleApproaches'))
               }
             }
-            this.$store.commit('vueDict/addStatAddit', { id: 'steps', count: 1 })
 
             if (nextItems.length > 0 && dynLevelData.steps + 1 === nextItems[0].field) {
               this.$store.commit('canvasDict/setItemsOnFloor', true)
@@ -475,8 +474,8 @@ export default {
           this.$store.commit('vueDict/transferAdditionalStat')
           if (object.value === 'menu') {
             this.$store.commit('vueDict/setCategories', [])
-            this.$store.commit('vueDict/setDifficulty', '')
-            this.$store.commit('vueDict/setWordCount', 0)
+            this.$store.commit('vueDict/setDifficulty', 1)
+            this.$store.commit('vueDict/setWordCount', 10)
             this.$store.commit('vueDict/setReversed', false)
             this.$router.push({ name: 'menu' })
           } else {
