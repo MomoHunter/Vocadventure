@@ -91,6 +91,15 @@ export default {
         if (data.volume) {
           this.$store.commit('changeVolume', data.volume)
         }
+        if (data.allowUpdates) {
+          this.$store.commit('changeAllowUpdates', data.allowUpdates)
+          if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+              type: 'allowUpdates',
+              value: data.allowUpdates
+            })
+          }
+        }
         if (data.status) {
           this.$store.commit('vueDict/changeStatus', data.status)
         }

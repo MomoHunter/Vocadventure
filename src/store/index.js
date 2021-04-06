@@ -17,6 +17,7 @@ export default new Vuex.Store({
     size: 'normal',
     viewport: 1,
     volume: 100,
+    allowUpdates: false,
     texts: Texts,
     swUpdateFound: false,
     swUpdated: false,
@@ -53,6 +54,7 @@ export default new Vuex.Store({
         size: state.size,
         viewport: state.viewport,
         volume: state.volume,
+        allowUpdates: state.allowUpdates,
         status: state.vueDict.status,
         categoriesPlayed: state.vueDict.categoriesPlayed,
         activeWordPacks: state.vueDict.activeWordPacks,
@@ -93,6 +95,9 @@ export default new Vuex.Store({
     },
     changeVolume (state, volume) {
       state.volume = volume
+    },
+    changeAllowUpdates (state, allowUpdates) {
+      state.allowUpdates = allowUpdates
     },
     swUpdateFound (state) {
       state.swUpdateFound = true

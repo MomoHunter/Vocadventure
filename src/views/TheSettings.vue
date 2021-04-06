@@ -63,7 +63,7 @@ export default {
       newSize: this.$store.state.size,
       newViewport: this.$store.state.viewport,
       newVolume: this.$store.state.volume,
-      newAllowUpdates: false
+      newAllowUpdates: this.$store.state.allowUpdates
     }
   },
   computed: {
@@ -91,8 +91,14 @@ export default {
       this.$store.commit('changeSize', this.newSize)
       this.$store.commit('changeViewport', this.newViewport)
       this.$store.commit('changeVolume', this.newVolume)
+      this.$store.commit('changeAllowUpdates', this.newAllowUpdates)
       window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
-      window.localStorage.setItem('allowUpdates', JSON.stringify(this.newAllowUpdates))
+      if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+          type: 'allowUpdates',
+          value: this.newAllowUpdates
+        })
+      }
       this.$router.push({ name: 'menu' })
     }
   }
