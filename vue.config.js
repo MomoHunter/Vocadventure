@@ -6,7 +6,10 @@ module.exports = {
     plugins: [
       new WebpackManifestPlugin({
         basePath: process.env.NODE_ENV === 'production' ? '/Vocadventure/' : '/',
-        fileName: 'files.json'
+        fileName: 'files.js',
+        serialize: obj => {
+          return 'var FILES = ' + JSON.stringify(obj)
+        }
       })
     ]
   }
