@@ -1,4 +1,4 @@
-var FILES = require('files.json')
+var FILES = importScripts('files.json')
 var CACHE = 'vocadventure'
 
 self.addEventListener('install', function (event) {
