@@ -58,46 +58,43 @@ giga: 200%
 $sizes: 0.8 1 1.4 2;
 $size-classes: is-small is-normal is-large is-giga;
 
-$color-background: #0a0a0a; //#363945
-$color-font: #acacac;
-$color-font-dark: #5e5e5e;
-$color-hero: #2f2f2f;
-$color-border: #444444;
-$color-green: #228b22;
-$color-green-dark: darken($color-green, 15);
-$color-yellow: #c1c631; //#f5df4d
-$color-red: #cd212a;
-$color-red-dark: darken($color-red, 15);
-$color-info: #4aada3;
-$color-info-2: #4a96ad;
-$color-info-dark: #275a55;
-$color-action: #1ccf7c;
-$color-selected: #bf8013;
-$color-armor: #DC793E;
-$color-consumables: #8eb44c;
-$color-weapons: #1271c5;
-$color-basic: #a570a8;
-$color-gold: #847217;
-$color-silver: #a2aaaa;
-
-$color-white: #ffffff;
-$color-bright: #d9d9d9;
-$color-9: color.scale($color-bright, $red: -9.8%, $green: -9.8%, $blue: -9.8%);
-$color-8: color.scale($color-bright, $red: -19.6%, $green: -19.6%, $blue: -19.6%);
-$color-7: color.scale($color-bright, $red: -29.4%, $green: -29.4%, $blue: -29.4%);
-$color-6: color.scale($color-bright, $red: -39.2%, $green: -39.2%, $blue: -39.2%);
-$color-5: color.scale($color-bright, $red: -49%, $green: -49%, $blue: -49%);
-$color-4: color.scale($color-bright, $red: -58.8%, $green: -58.8%, $blue: -58.8%);
-$color-3: color.scale($color-bright, $red: -68.6%, $green: -68.6%, $blue: -68.6%);
-$color-2: color.scale($color-bright, $red: -78.4%, $green: -78.4%, $blue: -78.4%);
-$color-1: color.scale($color-bright, $red: -88.2%, $green: -88.2%, $blue: -88.2%);
-$color-dark: color.scale($color-bright, $red: -98%, $green: -98%, $blue: -98%);
+$color-background: #0a0a0a !default; //#363945
+$color-font-bright: #ffffff !default;
+$color-font: #acacac !default;
+$color-font-dark: #5e5e5e !default;
+$color-font-very-dark: #040404 !default;
+$color-hero: #2f2f2f !default;
+$color-border: #444444 !default;
+$color-green: #228b22 !default;
+$color-green-dark: darken($color-green, 15) !default;
+$color-yellow: #c1c631 !default; //#f5df4d
+$color-red: #cd212a !default;
+$color-red-dark: darken($color-red, 15) !default;
+$color-info: #4aada3 !default;
+$color-info-2: #4a96ad !default;
+$color-info-dark: #275a55 !default;
+$color-action: #1ccf7c !default;
+$color-selected: #bf8013 !default;
+$color-armor: #DC793E !default;
+$color-consumables: #8eb44c !default;
+$color-weapons: #1271c5 !default;
+$color-basic: #a570a8 !default;
+$color-gold: #847217 !default;
+$color-silver: #a2aaaa !default;
+$color-tag: #2f2f2f !default;
+$color-blockquote-background: #1a1a1a !default;
+$color-blockquote-bar: #444444 !default;
+$color-notification-dark: #1a1a1a !default;
+$color-notification-bright: #aeaeae !default;
+$color-modal-head: #1a1a1a !default;
+$color-modal-body: #444444 !default;
+$color-modal-foot: #2f2f2f !default;
+$color-slider: #595959 !default;
+$color-settings: #6d6d6d !default;
 
 $colors: 'background' $color-background, 'green' $color-green, 'green-dark' $color-green-dark, 'yellow' $color-yellow, 'red' $color-red, 'red-dark' $color-red-dark,
  'info' $color-info, 'info-2' $color-info-2, 'info-dark' $color-info-dark, 'action' $color-action, 'selected' $color-selected,
-  'armor' $color-armor, 'consumables' $color-consumables, 'weapons' $color-weapons, 'basic' $color-basic, 'gold' $color-gold, 'silver' $color-silver, 'bright' $color-bright,
-  'color-9' $color-9, 'color-8' $color-8, 'color-7' $color-7, 'color-6' $color-6, 'color-5' $color-5,
-  'color-4' $color-4, 'color-3' $color-3, 'color-2' $color-2, 'color-1' $color-1, 'dark' $color-dark;
+  'armor' $color-armor, 'consumables' $color-consumables, 'weapons' $color-weapons, 'basic' $color-basic, 'gold' $color-gold, 'silver' $color-silver, 'settings' $color-settings;
 
 html, body {
   background: $color-background;
@@ -340,15 +337,15 @@ html * {
 }
 
 .notification {
-  background: $color-8;
-  color: $color-dark;
+  background: $color-notification-bright;
+  color: $color-font-very-dark;
 
   .title {
     font-weight: 500;
   }
 
   .text {
-    color: $color-3;
+    color: $color-font-dark;
   }
 
   .button {
@@ -374,7 +371,7 @@ html * {
   }
 
   &.items {
-    background: $color-1;
+    background: $color-notification-dark;
     color: $color-font;
     
     @for $i from 1 through length($sizes) {
@@ -415,10 +412,6 @@ html * {
     color: $color-font;
     border: none;
     width: 100%;
-
-    &::selection {
-      background: $color-bright;
-    }
 
     .option {
       background: $color-background;
@@ -617,7 +610,7 @@ html * {
 
   .content {
     > .title {
-      background: $color-1;
+      background: $color-modal-head;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -625,11 +618,11 @@ html * {
     }
 
     > .text {
-      background: $color-3;
+      background: $color-modal-body;
     }
 
     > .buttons {
-      background: $color-2;
+      background: $color-modal-foot;
     }
   }
 
@@ -671,7 +664,7 @@ html * {
 
     &::-webkit-slider-runnable-track {
       appearance: none;
-      background: $color-4;
+      background: $color-slider;
       height: 2px;
     }
 
@@ -679,7 +672,7 @@ html * {
       appearance: none;
       border-style: solid;
       border-color: $color-background;
-      background: $color-4;
+      background: $color-slider;
       border-radius: 0;
       border-width: 1px;
       cursor: pointer;
@@ -687,14 +680,14 @@ html * {
 
     &::-moz-range-track {
       appearance: none;
-      background: $color-4;
+      background: $color-slider;
     }
 
     &::-moz-range-thumb {
       appearance: none;
       border-style: solid;
       border-color: $color-background;
-      background: $color-4;
+      background: $color-slider;
       border-radius: 0;
       cursor: pointer;
     }
@@ -707,7 +700,6 @@ html * {
   @for $i from 1 through length($sizes) {
     &.#{nth($size-classes, $i)} {
       $font-size: .5cm * nth($sizes, $i);
-      // padding: 0 .5rem * nth($sizes, $i);
 
       .title {
         font-size: .2cm * nth($sizes, $i);
@@ -919,7 +911,7 @@ html * {
 }
 
 .blockquote {
-  background: $color-1;
+  background: $color-blockquote-background;
   display: flex;
   align-items: stretch;
 
@@ -927,7 +919,7 @@ html * {
     flex-shrink: 0;
     min-width: 4px;
     min-height: 100%;
-    background: $color-3;
+    background: $color-blockquote-bar;
   }
 
   @for $i from 1 through length($sizes) {
@@ -951,11 +943,11 @@ html * {
   flex-direction: row;
 
   .title {
-    background: $color-2;
+    background: $color-tag;
   }
 
   .text {
-    color: $color-white;
+    color: $color-font-bright;
   }
 
   @for $i from 1 through length($sizes) {

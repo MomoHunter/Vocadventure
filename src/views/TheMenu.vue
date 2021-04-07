@@ -15,7 +15,7 @@
         </transition>
         <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms delay-c-350ms"
                     leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
-          <ButtonBasic v-show="isVisible(1)" class="menu width-full" color="color-6" icon="cog" text="menuButton3"
+          <ButtonBasic v-show="isVisible(1)" class="menu width-full" color="settings" icon="cog" text="menuButton3"
                        @click="navTo('settings')" />
         </transition>
       </div>

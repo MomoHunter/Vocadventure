@@ -21,6 +21,7 @@ then
 #  sass sass/spacelab.bw.scss public/css/spacelab.bw.min.css --style=compressed
 #  sass sass/superhero.bw.scss public/css/superhero.bw.min.css --style=compressed
   sass sass/garium.scss public/css/garium.min.css --style=compressed
+  sass sass/surinshi.scss public/css/surinshi.min.css --style=compressed
 fi
 
 # build
