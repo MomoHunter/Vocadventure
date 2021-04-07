@@ -36,47 +36,6 @@
                        @click="hideNotification()" />
     </transition>
   </div>
-  <!-- <div class="flexboxContainer">
-    <HeroBasic class="marginBottomSmall" title="packagesEditWordTitle" />
-    <div class="is-10 overflowAuto flexGrow">
-      <input class="input marginBottomSmall" :class="getSizeClass('input')" type="text"
-             v-model="newWordData.latinAlphabet" :placeholder="getText(targetLanguageData.latinAlphabet)"
-             @click="hideNotification()" />
-      <input v-show="targetLanguageData.foreignAlphabet !== ''" class="input marginBottomSmall"
-             :class="getSizeClass('input')" type="text" v-model="newWordData.foreignAlphabet"
-             :placeholder="getText(targetLanguageData.foreignAlphabet)" @click="hideNotification()" />
-      <div class="field has-addons">
-        <div class="control is-third">
-          <ButtonMDI :selected="difficultySelected(1)" color="is-success" text="difficulty1"
-                    @click="setDifficulty(1)">
-            <SpeedometerSlow :class="getSizeClass('mdi')" />
-          </ButtonMDI>
-        </div>
-        <div class="control is-third">
-          <ButtonMDI :selected="difficultySelected(2)" color="is-warning" text="difficulty2"
-                    @click="setDifficulty(2)">
-            <SpeedometerMedium :class="getSizeClass('mdi')" />
-          </ButtonMDI>
-        </div>
-        <div class="control is-third">
-          <ButtonMDI :selected="difficultySelected(3)" color="is-danger" text="difficulty3"
-                    @click="setDifficulty(3)">
-            <Speedometer :class="getSizeClass('mdi')" />
-          </ButtonMDI>
-        </div>
-      </div>
-      <input class="input marginBottomSmall" type="text" v-for="lang in supportedLanguages" :key="lang"
-             :placeholder="getText(lang)" v-model="newWordData.languageTranslations[lang]" @click="hideNotification()" />
-    </div>
-    <div class="is-10 buttonContainer">
-      <ButtonBasic class="marginBottomSmall" icon="check" color="is-success" text="packagesEditWordButton1" @click="saveWord()" />
-      <ButtonBasic icon="times" color="is-danger" text="packagesEditWordButton2" @click="navTo()" />
-    </div>
-    <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-      <NotificationBasic v-show="notificationVisible" class="fullWidth" color="is-danger" text="packagesEditWordNotification"
-                       @click="hideNotification()" />
-    </transition>
-  </div> -->
 </template>
 
 <script>
@@ -101,6 +60,10 @@ export default {
     SpeedometerSlow,
     SpeedometerMedium,
     Speedometer
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.commit('vueDict/setSelectedWordPackWordIndex', -1)
+    next()
   },
   data () {
     return {
@@ -227,7 +190,6 @@ export default {
       this.notificationVisible = false
     },
     navTo () {
-      this.$store.commit('vueDict/setSelectedWordPackWordIndex', -1)
       this.$router.push({ name: 'packagesEditCategories' })
     }
   }
