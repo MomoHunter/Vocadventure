@@ -1135,6 +1135,7 @@ html * {
     .body {
       position: relative;
       border: 2px solid $color-font;
+      cursor: pointer;
 
       &.on {
         .head {
@@ -1189,10 +1190,10 @@ html * {
 
         .body {
           width: 2rem * nth($sizes, $i);
-          height: 1.3rem * nth($sizes, $i);
+          height: 1.1rem * nth($sizes, $i);
 
           .head {
-            $height: 1.3rem * nth($sizes, $i);
+            $height: 1.1rem * nth($sizes, $i);
             height: calc(#{$height} - 8px);
             width: calc(#{$height} - 8px);
             font-size: calc(#{$height} - 12px);
