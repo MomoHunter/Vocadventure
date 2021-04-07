@@ -215,7 +215,6 @@ export default {
       }
       if (this.wordIndex >= 0) {
         this.$store.commit('vueDict/updateWordInSelectedPack', wordObject)
-        this.$store.commit('vueDict/setSelectedWordPackWordIndex', -1)
       } else {
         this.$store.commit('vueDict/addWordToSelectedPack', wordObject)
       }
@@ -228,6 +227,7 @@ export default {
       this.notificationVisible = false
     },
     navTo () {
+      this.$store.commit('vueDict/setSelectedWordPackWordIndex', -1)
       this.$router.push({ name: 'packagesEditCategories' })
     }
   }
