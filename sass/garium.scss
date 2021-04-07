@@ -400,7 +400,6 @@ html * {
 
 .dropdown {
   position: relative;
-  cursor: pointer;
 
   .title {
     text-transform: uppercase;
@@ -412,6 +411,7 @@ html * {
     color: $color-font;
     border: none;
     width: 100%;
+    cursor: pointer;
 
     .option {
       background: $color-background;

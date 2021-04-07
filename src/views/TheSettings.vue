@@ -49,12 +49,6 @@ export default {
     TheSlider,
     CheckboxBasic
   },
-  created () {
-    let allowUpdates = JSON.parse(window.localStorage.getItem('allowUpdates'))
-    if (allowUpdates !== null) {
-      this.newAllowUpdates = JSON.parse(window.localStorage.getItem('allowUpdates'))
-    }
-  },
   data () {
     return {
       newLanguage: this.$store.state.lang,

@@ -1,10 +1,10 @@
-$color-background: #fafafa;
-$color-font-bright: #353535;
-$color-font: #777777;
+$color-background: #f1f1f1;
+$color-font-bright: #000000;
+$color-font: #303030;
 $color-font-dark: #adadad;
 $color-font-very-dark: #ebebeb;
-$color-hero: #d4d4d4;
-$color-border: #919191;
+$color-hero: #b8b8b8;
+$color-border: #414141;
 $color-green: #2bb82b;
 $color-green-dark: lighten($color-green, 15);
 $color-yellow: #c9ce32; //#f5df4d
@@ -29,6 +29,6 @@ $color-notification-bright: #1a1a1a;
 $color-modal-head: #f5f5f5;
 $color-modal-body: #c5c5c5;
 $color-modal-foot: #d4d4d4;
-$color-slider: #868686;
+$color-slider: #414141;
 
 @import "./garium.scss";
