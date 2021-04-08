@@ -12,7 +12,7 @@
         <TagBasic class="margin-bottom-mini" title="writeKanjiCategoryTag" :text="categoryName" color="info-2" />
         <TagBasic title="writeKanjiDifficultyTag" :text="difficulty" color="info-2" />
       </div>
-      <div class="special-font flex-grow flex-row flex-center" v-maxFontSize>
+      <div class="special-font flex-grow flex-row flex-center" @mousedown="setDrawOn($event, 'mouse')" @mouseup="setDrawOff()" @touchstart="setDrawOn($event, 'touch')" @touchend="setDrawOff()" v-maxFontSize>
         <div class="background" v-square>
           <div class="top left"></div>
           <div class="top right"></div>
@@ -22,20 +22,29 @@
         <div class="letter">
           {{ currentLetter }}
         </div>
+        <canvas ref="drawKana" class="canvas" @mousemove="drawLine($event, 'mouse')" @touchmove="drawLine($event, 'touch')" v-square></canvas>
       </div>
     </div>
-    <div class="button-container flex-row overflow-auto flex-shrink">
+    <div v-show="!drawActive" class="button-container flex-row overflow-auto flex-shrink">
       <ButtonText :class="{ 'single-2': currentLetterIndex === index }"
                   v-for="(letter, index) in currentWord[words.foreignAlphabet]" color="info" :text="letter"
                   :key="index" @click="setCurrentLetter(index)" />
     </div>
+    <div v-show="drawActive" class="button-container">
+      <ButtonBasic class="width-half" icon="times" color="red" text="writeKanjiButton3" @click="deactivateDraw()" />
+      <ButtonBasic class="width-half" icon="trash" color="action" text="writeKanjiButton4" @click="clearCanvas()" />
+    </div>
     <div class="button-container">
-      <ButtonBasic class="width-full" icon="arrow-left" color="red" text="writeKanjiButton1" @click="navTo()" />
+      <ButtonBasic class="width-half" icon="arrow-left" color="red" text="writeKanjiButton1" @click="navTo()" />
+      <ButtonBasic class="width-half" icon="pen" color="action" text="writeKanjiButton2" @click="activateDraw()"
+                   :disabled="drawActive" />
     </div>
   </div>
 </template>
 
 <script>
+import * as Helper from '@/canvas/helper.js'
+
 import HeroBasic from '@/components/HeroBasic.vue'
 import DropdownButton from '@/components/DropdownButton.vue'
 import DropdownMenu from '@/components/DropdownMenu.vue'
@@ -59,7 +68,12 @@ export default {
       currentlySelected: { category: '', index: 1 },
       currentCategory: '',
       currentWord: {},
-      currentLetterIndex: 0
+      currentLetterIndex: 0,
+      canvas: null,
+      context: null,
+      drawActive: false,
+      isDrawing: false,
+      lastPoint: null
     }
   },
   beforeMount () {
@@ -73,6 +87,12 @@ export default {
         this.setCurrentWord(this.$store.state.vueDict.categoriesChosen[0], 0)
       }
     }
+  },
+  mounted () {
+    this.canvas = this.$refs.drawKana
+    this.canvas.width = this.canvas.clientWidth
+    this.canvas.height = this.canvas.clientHeight
+    this.context = this.canvas.getContext('2d')
   },
   computed: {
     words () {
@@ -120,6 +140,96 @@ export default {
           return 'is-warning'
         default:
           return 'is-danger'
+      }
+    },
+    activateDraw () {
+      let theme = this.$store.state.theme
+      Helper.drawCanvasRect(0, 0, this.canvas.width, this.canvas.height, theme + 'Overlay', this.context)
+      Helper.drawCanvasLine(
+        this.canvas.width / 2, 0, theme + 'Dashed', this.context, this.canvas.width / 2,
+        this.canvas.height
+      )
+      Helper.drawCanvasLine(
+        0, this.canvas.height / 2, theme + 'Dashed', this.context, this.canvas.width,
+        this.canvas.height / 2
+      )
+      Helper.drawCanvasRectBorder(
+        2, 2, this.canvas.width - 4, this.canvas.height - 4, theme + 'Solid', this.context
+      )
+      this.drawActive = true
+    },
+    deactivateDraw () {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+      this.drawActive = false
+    },
+    setDrawOn (event, type) {
+      if (this.drawActive) {
+        this.isDrawing = true
+        let clientRect = this.canvas.getBoundingClientRect()
+        switch (type) {
+          case 'touch':
+            for (let touch of event.changedTouches) {
+              if (touch.identifier === 0) {
+                this.lastPoint = {
+                  x: touch.pageX - clientRect.left,
+                  y: touch.pageY - clientRect.top
+                }
+              }
+            }
+            break
+          case 'mouse':
+            this.lastPoint = {
+              x: event.pageX - clientRect.left,
+              y: event.pageY - clientRect.top
+            }
+            break
+          default:
+            this.lastPoint = {
+              x: 0,
+              y: 0
+            }
+        }
+      }
+    },
+    setDrawOff () {
+      this.isDrawing = false
+      this.lastPoint = null
+    },
+    clearCanvas () {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+      this.activateDraw()
+    },
+    drawLine (event, type) {
+      let pos = { x: 0, y: 0 }
+
+      if (this.isDrawing) {
+        let clientRect = this.canvas.getBoundingClientRect()
+        switch (type) {
+          case 'touch':
+            for (let touch of event.changedTouches) {
+              if (touch.identifier === 0) {
+                pos = {
+                  x: touch.pageX - clientRect.left,
+                  y: touch.pageY - clientRect.top
+                }
+              }
+            }
+            break
+          case 'mouse':
+            pos = {
+              x: event.pageX - clientRect.left,
+              y: event.pageY - clientRect.top
+            }
+            break
+          default:
+            pos = { x: 0, y: 0 }
+        }
+        Helper.drawCanvasLine(
+          this.lastPoint.x, this.lastPoint.y, this.$store.state.theme + 'Font' + this.$store.state.size, this.context,
+          pos.x, pos.y
+        )
+
+        this.lastPoint = pos
       }
     },
     toggleDropdown () {

@@ -16,6 +16,49 @@ export function drawCanvasRect (x, y, width, height, styleKey, context) {
 }
 
 /**
+ * Draws a border for a rectangle onto the used canvas.
+ * @param {number} x x-coordinate of the rectangle's top-left corner
+ * @param {number} y y-coordinate of the rectangle's top-left corner
+ * @param {number} width
+ * @param {number} height
+ * @param {string} styleKey defines the appearance of the rectangle
+ * @param {CanvasRenderingContext2D} context
+ */
+export function drawCanvasRectBorder (x, y, width, height, styleKey, context) {
+  let style = Styles.border[styleKey]
+  context.strokeStyle = `rgba(${style.borderColor})`
+  context.lineWidth = style.borderSize
+  context.setLineDash(style.lineDash)
+  context.strokeRect(x, y, width, height)
+}
+
+/**
+ * Draws a border for a rectangle onto the used canvas.
+ * @param {number} startX x-coordinate of the start point
+ * @param {number} startY y-coordinate of the start point
+ * @param {string} styleKey defines the appearance of the rectangle
+ * @param {CanvasRenderingContext2D} context
+ * @param {Array<number>} points an array of points where the line should go through
+ */
+export function drawCanvasLine (startX, startY, styleKey, context, ...points) {
+  let design = Styles.border[styleKey]
+  context.strokeStyle = `rgba(${design.borderColor})`
+  context.lineWidth = design.borderSize
+  context.lineCap = design.borderCap
+  context.setLineDash(design.lineDash)
+  context.beginPath()
+  context.moveTo(startX, startY)
+  for (let i = 0; i < points.length / 2; i++) {
+    if (points[i * 2] !== undefined && points[i * 2 + 1] !== undefined) {
+      context.lineTo(points[i * 2], points[i * 2 + 1])
+    } else {
+      break
+    }
+  }
+  context.stroke()
+}
+
+/**
  * Draw text onto the used canvas.
  * Its positioning is affected by the attributes saved inside the used Style-Key.
  * @param {number} x x-coordinate for the positioning point

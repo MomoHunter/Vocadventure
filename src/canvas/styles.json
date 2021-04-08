@@ -93,17 +93,97 @@
     },
     "darkness": {
       "backgroundColor": "0, 0, 0, 1"
+    },
+    "gariumOverlay": {
+      "backgroundColor": "10, 10, 10, .7"
+    },
+    "surinshiOverlay": {
+      "backgroundColor": "241, 241, 241, .7"
     }
   },
   "border": {
     "standard": {
       "borderColor": "0, 0, 0, 1",
       "borderSize": 2,
+      "borderCap": "butt",
       "lineDash": []
     },
     "small": {
       "borderColor": "0, 0, 0, 1",
       "borderSize": 1,
+      "borderCap": "butt",
+      "lineDash": []
+    },
+    "gariumDashed": {
+      "borderColor": "68, 68, 68, 1",
+      "borderSize": 4,
+      "borderCap": "butt",
+      "lineDash": [6, 4]
+    },
+    "gariumSolid": {
+      "borderColor": "68, 68, 68, 1",
+      "borderSize": 4,
+      "borderCap": "butt",
+      "lineDash": []
+    },
+    "surinshiDashed": {
+      "borderColor": "65, 65, 65, 1",
+      "borderSize": 4,
+      "borderCap": "butt",
+      "lineDash": [6, 4]
+    },
+    "surinshiSolid": {
+      "borderColor": "65, 65, 65, 1",
+      "borderSize": 4,
+      "borderCap": "butt",
+      "lineDash": []
+    },
+    "gariumFontsmall": {
+      "borderColor": "172, 172, 172, 1",
+      "borderSize": 5,
+      "borderCap": "round",
+      "lineDash": []
+    },
+    "gariumFontnormal": {
+      "borderColor": "172, 172, 172, 1",
+      "borderSize": 7,
+      "borderCap": "round",
+      "lineDash": []
+    },
+    "gariumFontlarge": {
+      "borderColor": "172, 172, 172, 1",
+      "borderSize": 10,
+      "borderCap": "round",
+      "lineDash": []
+    },
+    "gariumFontgiga": {
+      "borderColor": "172, 172, 172, 1",
+      "borderSize": 14,
+      "borderCap": "round",
+      "lineDash": []
+    },
+    "surinshiFontsmall": {
+      "borderColor": "48, 48, 48, 1",
+      "borderSize": 5,
+      "borderCap": "round",
+      "lineDash": []
+    },
+    "surinshiFontnormal": {
+      "borderColor": "48, 48, 48, 1",
+      "borderSize": 7,
+      "borderCap": "round",
+      "lineDash": []
+    },
+    "surinshiFontlarge": {
+      "borderColor": "48, 48, 48, 1",
+      "borderSize": 10,
+      "borderCap": "round",
+      "lineDash": []
+    },
+    "surinshiFontgiga": {
+      "borderColor": "48, 48, 48, 1",
+      "borderSize": 14,
+      "borderCap": "round",
       "lineDash": []
     }
   }

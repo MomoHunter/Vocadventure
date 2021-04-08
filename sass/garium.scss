@@ -1011,6 +1011,12 @@ html * {
   .letter {
     position: absolute;
   }
+
+  .canvas {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+  }
 }
 
 .package-list-entry {
