@@ -5,7 +5,7 @@
     </div>
     <div class="flex-row">
       <span class="icon">
-        <font-awesome-icon :icon="['fas', icon]" />
+        <i class="fas" :class="'fa-' + icon"></i>
       </span>
       <input v-focus class="input width-full" :type="type" @input="$emit('input', $event.target.value)" :value="value"
              :maxlength="maxlength" :readonly="readonly" :nofocus="noFocus" />

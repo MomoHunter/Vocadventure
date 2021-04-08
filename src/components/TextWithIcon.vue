@@ -5,13 +5,13 @@
     </div>
     <div class="relative">
       <div v-if="hasLeftIcon" class="icon left" :class="leftIconColor" @click="$emit('click-left')">
-        <font-awesome-icon :icon="['fas', leftIcon]" />
+        <i class="fas" :class="'fa-' + leftIcon"></i>
       </div>
       <div class="text flex-grow">
         {{ text }}
       </div>
       <div v-if="hasRightIcon" class="icon right" :class="rightIconColor" @click="$emit('click-right')">
-        <font-awesome-icon :icon="['fas', rightIcon]" />
+        <i class="fas" :class="'fa-' + rightIcon"></i>
       </div>
     </div>
   </div>

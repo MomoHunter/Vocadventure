@@ -5,7 +5,7 @@
     </div>
     <div class="flex-row">
       <div class="icon flex-row">
-        <font-awesome-icon :icon="['fas', icon]" />
+        <i class="fas" :class="'fa-' + icon"></i>
       </div>
       <input class="input-slider flex-grow" type="range" :min="min" :max="max" :step="step" :value="value"
              @input="sendNewValue($event.target.value)">

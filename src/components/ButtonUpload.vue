@@ -2,7 +2,7 @@
   <div class="button upload" :class="[getSizeClass('general'), color]">
     <input class="input" type="file" accept=".json" multiple @change="$emit('change', $event.target.files)">
     <span class="icon">
-      <font-awesome-icon :icon="['fas', icon]" />
+      <i class="fas" :class="'fa-' + icon"></i>
     </span>
     <span class="text">
       {{ getText(text) }}

@@ -8,7 +8,7 @@
     </div>
     <div class="details flex-row">
       <div v-show="equipped" class="icon selected">
-        <font-awesome-icon :icon="['fas', 'check-square']" />
+        <i class="fas fa-check-square"></i>
       </div>
       <div v-show="mode !== 'shop' && itemData.healing" class="healing">
         +{{ itemData.healing }}HP

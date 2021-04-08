@@ -1,7 +1,7 @@
 <template>
   <button class="button" :class="[getSizeClass('general'), color]" @click="$emit('click')">
     <span class="icon">
-      <font-awesome-icon :icon="['fas', icon]" :transform="{ rotate: rotation }" />
+      <i class="fas" :class="'fa-' + icon"></i>
     </span>
   </button>
 </template>
@@ -11,11 +11,7 @@ export default {
   name: 'ButtonIcon',
   props: {
     icon: String,
-    color: String,
-    rotation: {
-      type: Number,
-      default: 0
-    }
+    color: String
   },
   methods: {
     getSizeClass (type) {

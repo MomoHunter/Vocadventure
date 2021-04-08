@@ -38,7 +38,7 @@
         </div>
         <div class="latin flex-row">
           <div class="icon" :class="getVocabIconColor(word.latinCorrectWords.result)">
-            <font-awesome-icon :icon="['fas', getVocabIcon(word.latinCorrectWords.result)]" />
+            <i class="fas" :class="'fa-' + getVocabIcon(word.latinCorrectWords.result)"></i>
           </div>
           <div class="word flex-column flex-grow">
             <div class="own">
@@ -51,7 +51,7 @@
         </div>
         <div v-if="hasForeignAlphabet" class="foreign flex-row">
           <div class="icon" :class="getVocabIconColor(word.foreignCorrectWords.result)">
-            <font-awesome-icon :icon="['fas', getVocabIcon(word.foreignCorrectWords.result)]" />
+            <i class="fas" :class="'fa-' + getVocabIcon(word.foreignCorrectWords.result)"></i>
           </div>
           <div class="word flex-column flex-grow">
             <div class="own">

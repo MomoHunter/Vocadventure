@@ -3,15 +3,15 @@
     <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
                 leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
       <div v-show="itemsVisible.off" class="inputs flex-grow flex-column">
-        <InputTwoIcons class="border-bottom" :class="{ 'on-focus': solutionVisible.on }" :title="vocabs.latinAlphabet"
-                      type="text" :color="inputColor" :colorLeft="latinIconColor" :colorRight="latinCoinColor"
-                      :iconLeft="latinIcon" iconRight="coins" v-model="latinInput" :readonly="resultsVisible.on"
-                      :leftIconVisible="resultsVisible.on" :rightIconVisible="resultsVisible.on && isLatinCorrect > 0" />
-        <InputTwoIcons v-show="hasForeignAlphabet" class="border-bottom" :class="{ 'on-focus': solutionVisible.on }"
-                      :title="vocabs.foreignAlphabet" type="text" :color="inputColor" :colorLeft="foreignIconColor"
-                      :colorRight="foreignCoinColor" :iconLeft="foreignIcon" iconRight="coins" v-model="foreignInput"
-                      :leftIconVisible="resultsVisible.on" :rightIconVisible="resultsVisible.on && isForeignCorrect > 0"
-                      @click="showKeyboard()" readonly />
+        <InputTwoIcons class="border-bottom" :class="{ 'on-focus': inputBorderVisible }" :title="vocabs.latinAlphabet"
+                       type="text" :color="inputColor" :colorLeft="latinIconColor" :colorRight="latinCoinColor"
+                       :iconLeft="latinIcon" iconRight="coins" v-model="latinInput" :readonly="resultsVisible.on"
+                       :leftIconVisible="resultsVisible.on" :rightIconVisible="resultsVisible.on && isLatinCorrect > 0" />
+        <InputTwoIcons v-show="hasForeignAlphabet" class="border-bottom" :class="{ 'on-focus': inputBorderVisible }"
+                       :title="vocabs.foreignAlphabet" type="text" :color="inputColor" :colorLeft="foreignIconColor"
+                       :colorRight="foreignCoinColor" :iconLeft="foreignIcon" iconRight="coins" v-model="foreignInput"
+                       :leftIconVisible="resultsVisible.on" :rightIconVisible="resultsVisible.on && isForeignCorrect > 0"
+                       @click="showKeyboard()" readonly />
       </div>
     </transition>
     <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
@@ -175,6 +175,7 @@ export default {
         off: true,
         on: false
       },
+      inputBorderVisible: false,
       animationQueue: [],
       consumableUsed: false,
       latinInput: '',
@@ -274,7 +275,7 @@ export default {
       }
     },
     inputColor () {
-      if (this.solutionVisible.on) {
+      if (this.inputBorderVisible) {
         return 'info'
       }
       return 'action'
@@ -496,11 +497,13 @@ export default {
         this[variable[0]][variable[1]] = true
 
         if (variable[0] === 'solutionVisible' && variable[1] === 'on') {
+          this.inputBorderVisible = true
           this.latinInput = this.vocabs.words[this.currentWordIndex][this.vocabs.latinAlphabet]
           if (this.hasForeignAlphabet) {
             this.foreignInput = this.vocabs.words[this.currentWordIndex][this.vocabs.foreignAlphabet]
           }
         } else if (variable[0] === 'solutionVisible' && variable[1] === 'off') {
+          this.inputBorderVisible = false
           this.latinInput = this.userLatinInput
           if (this.hasForeignAlphabet) {
             this.foreignInput = this.userForeignInput
@@ -519,5 +522,9 @@ export default {
 
 .items {
   height: 1rem;
+}
+
+.keys {
+  align-content: flex-start;
 }
 </style>

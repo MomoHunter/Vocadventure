@@ -3,7 +3,7 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-import { library } from '@fortawesome/fontawesome-svg-core'
+/* import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faBook, faGem, faShoppingCart, faCog, faArrowLeft, faArrowRight, faPen, faCheck, faTrash, faTimes, faGlobe, faPalette,
   faExpandArrowsAlt, faUserGraduate, faHome, faSort, faSortUp, faSortDown, faSearch, faCoins, faBriefcase, faEye,
@@ -23,7 +23,7 @@ library.add(
   faExclamation, faSquare, faInfoCircle, faShoePrints, faBookDead, faSkullCrossbones
 )
 
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('font-awesome-icon', FontAwesomeIcon) */
 
 Vue.directive('maxFontSize', {
   inserted (el) {

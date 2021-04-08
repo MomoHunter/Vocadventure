@@ -5,7 +5,7 @@
     </div>
     <div class="relative">
       <span class="icon">
-        <font-awesome-icon :icon="['fas', icon]" />
+        <i class="fas" :class="'fa-' + icon"></i>
       </span>
       <select class="select" @change="$emit('change', $event.target.value)">
         <option class="option" v-for="option in options" :selected="isSelected(option)" :value="option" :key="option">
@@ -13,7 +13,7 @@
         </option>
       </select>
       <span class="arrow">
-        <font-awesome-icon :icon="['fas', 'angle-down']" />
+        <i class="fas fa-angle-down"></i>
       </span>
     </div>
   </div>

@@ -2,13 +2,13 @@
   <div class="dropdown special" :class="[getSizeClass('general'), color]" @click="$emit('dropdown')">
     <div class="relative">
       <span class="icon">
-        <font-awesome-icon :icon="['fas', icon]" />
+        <i class="fas" :class="'fa-' + icon"></i>
       </span>
       <div class="trigger">
         {{ getText(label) }}
       </div>
       <span class="arrow">
-        <font-awesome-icon :icon="['fas', buttonIcon]" />
+        <i class="fas" :class="'fa-' + buttonIcon"></i>
       </span>
     </div>
   </div>

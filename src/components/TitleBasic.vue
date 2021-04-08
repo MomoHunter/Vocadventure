@@ -1,7 +1,7 @@
 <template>
   <div class="section-title flex-row" :class="[getSizeClass('general'), color, { 'no-icons': !hasFAIcon && !hasMDIcon }]">
     <div v-if="hasFAIcon" class="icon">
-      <font-awesome-icon :icon="['fas', icon]" />
+      <i class="fas" :class="'fa-' + icon"></i>
     </div>
     <div v-if="hasMDIcon" class="icon">
       <slot></slot>

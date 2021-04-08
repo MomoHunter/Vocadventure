@@ -2,7 +2,7 @@
   <div class="notification items flex-row absolute at-bottom" :class="[getSizeClass('general'), color]">
     <div class="bar margin-right-small"></div>
     <div class="icon flex-column margin-right-medium">
-      <font-awesome-icon :icon="['fas', icon]" :spin="spin" />
+      <i class="fas" :class="['fa-' + icon, { 'fa-spin': spin }]"></i>
     </div>
     <div class="list flex-column flex-grow">
       <div class="title margin-bottom-small">
@@ -13,7 +13,7 @@
       </div>
     </div>
     <button class="button close" :class="getSizeClass('general')" @click="$emit('click')">
-      <font-awesome-icon :icon="['fas', 'times']" />
+      <i class="fas fa-times"></i>
     </button>
   </div>
 </template>

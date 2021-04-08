@@ -5,12 +5,12 @@
     </div>
     <div class="flex-row">
       <span class="icon" :class="colorLeft">
-        <font-awesome-icon v-show="leftIconVisible" :icon="['fas', iconLeft]" />
+        <i v-show="leftIconVisible" class="fas" :class="'fa-' + iconLeft"></i>
       </span>
       <input class="input width-full" :type="type" @input="$emit('input', $event.target.value)" :value="value"
             :maxlength="maxLength" :readonly="readonly" />
       <span class="icon" :class="colorRight">
-        <font-awesome-icon v-show="rightIconVisible" :icon="['fas', iconRight]" />
+        <i v-show="rightIconVisible" class="fas" :class="'fa-' + iconRight"></i>
       </span>
     </div>
   </div>

@@ -1,7 +1,7 @@
 <template>
   <button class="button" :class="[getSizeClass('general'), color]" @click="$emit('click')">
     <span class="icon">
-      <font-awesome-icon :icon="['fas', icon]" />
+      <i class="fas" :class="'fa-' + icon"></i>
     </span>
     <span class="text">
       {{ getText(text) }}

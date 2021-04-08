@@ -5,7 +5,7 @@
     </div>
     <div class="relative">
       <span class="icon">
-        <font-awesome-icon :icon="['fas', icon]" />
+        <i class="fas" :class="'fa-' + icon"></i>
       </span>
       <div class="text">
         {{ getText(text) }}
@@ -13,7 +13,7 @@
       <span class="check" @click="$emit('click')">
         <div class="body" :class="[triggerColor, triggerState]">
           <div class="head">
-            <font-awesome-icon :icon="['fas', headIcon]" />
+            <i class="fas" :class="'fa-' + headIcon"></i>
           </div>
         </div>
       </span>
