@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/Vocadventure/favicon.ico"><link rel="manifest" href="/Vocadventure/manifest.json"><link id="cssHook" rel="stylesheet" href="/Vocadventure/css/garium.min.css"><link rel="stylesheet" href="/Vocadventure/css/all.css"><title>Vocadventure</title><style>html, body {
+        height: 100%;
+      }
+
+      #spinner {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .self-building-square-spinner, .self-building-square-spinner * {
+        box-sizing: border-box;
+      }
+
+      .self-building-square-spinner {
+        height: 100px;
+        width: 100px;
+        top: calc(-100% * 2 / 3);
+      }
+
+      .self-building-square-spinner .square {
+        height: calc((100% - 10px) / 3);
+        width: calc((100% - 10px) / 3);
+        top: calc(-100% * 2 / 3);
+        background: #158cba;
+        float: left;
+        position: relative;
+        opacity: 0;
+        animation: self-building-square-spinner 2.5s infinite;
+      }
+
+      .self-building-square-spinner .square:not(:nth-child(3n)) {
+        margin-right: 5px;
+      }
+
+      .self-building-square-spinner .square:not(:nth-child(n+7)) {
+        margin-bottom: 5px;
+      }
+
+      .self-building-square-spinner .square:nth-child(1) {
+        animation-delay: calc(50ms * 6);
+      }
+
+      .self-building-square-spinner .square:nth-child(2) {
+        animation-delay: calc(50ms * 7);
+      }
+
+      .self-building-square-spinner .square:nth-child(3) {
+        animation-delay: calc(50ms * 8);
+      }
+
+      .self-building-square-spinner .square:nth-child(4) {
+        animation-delay: calc(50ms * 3);
+      }
+
+      .self-building-square-spinner .square:nth-child(5) {
+        animation-delay: calc(50ms * 4);
+      }
+
+      .self-building-square-spinner .square:nth-child(6) {
+        animation-delay: calc(50ms * 5);
+      }
+
+      .self-building-square-spinner .square:nth-child(7) {
+        animation-delay: calc(50ms * 0);
+      }
+
+      .self-building-square-spinner .square:nth-child(8) {
+        animation-delay: calc(50ms * 1);
+      }
+
+      .self-building-square-spinner .square:nth-child(9) {
+        animation-delay: calc(50ms * 2);
+      }
+
+      .self-building-square-spinner .clear{
+        clear: both;
+      }
+
+      @keyframes self-building-square-spinner {
+        0% {
+          opacity: 0;
+        }
+        5% {
+          opacity: 1;
+          top: 0;
+        }
+        50.9% {
+          opacity: 1;
+          top: 0;
+        }
+        55.9% {
+          opacity: 0;
+          top: inherit;
+        }
+      }</style><link href="/Vocadventure/css/app.f468bb97.css" rel="preload" as="style"><link href="/Vocadventure/css/chunk-vendors.737c64e5.css" rel="preload" as="style"><link href="/Vocadventure/js/app.74efba9e.js" rel="preload" as="script"><link href="/Vocadventure/js/chunk-vendors.a7b584a0.js" rel="preload" as="script"><link href="/Vocadventure/css/chunk-vendors.737c64e5.css" rel="stylesheet"><link href="/Vocadventure/css/app.f468bb97.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but Vocadventure doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><div id="spinner"><div class="self-building-square-spinner"><div class="square"></div><div class="square"></div><div class="square"></div><div class="square clear"></div><div class="square"></div><div class="square"></div><div class="square clear"></div><div class="square"></div><div class="square"></div></div></div><script src="/Vocadventure/js/chunk-vendors.a7b584a0.js"></script><script src="/Vocadventure/js/app.74efba9e.js"></script></body></html>
