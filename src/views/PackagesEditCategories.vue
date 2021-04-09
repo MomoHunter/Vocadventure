@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <HeroBasic title="packagesEditCategoriesTitle" :subtitle="wordPackName" />
-    <div v-show="!newCategoryVisible" class="flex-grow overflow-auto">
+    <div v-show="!newCategoryVisible" ref="categories" class="flex-grow overflow-auto">
       <PackageCategoryEntry v-for="category in categories" :category="category"
                             :expanded="expandedCategories.includes(category.index)" :key="category.index"
                             @expand="toggleExpanded(category.index)" @edit="editEntry($event, category.index)"
@@ -88,6 +88,10 @@ export default {
     if (this.$store.state.vueDict.selectedWordPackCategoryIndex >= 0) {
       this.expandedCategories.push(this.$store.state.vueDict.selectedWordPackCategoryIndex)
     }
+  },
+  mounted () {
+    this.$refs.categories.scrollTop = this.$store.state.vueDict.selectedWordPackCategoriesScroll
+    this.$store.commit('vueDict/setSelectedWordPackCategoriesScroll', 0)
   },
   computed: {
     answer () {
@@ -270,6 +274,7 @@ export default {
         case 'packagesEditWord':
           this.$store.commit('vueDict/setSelectedWordPack', wordPack)
           this.$store.commit('vueDict/setSelectedWordPackCategoryIndex', categoryIndex)
+          this.$store.commit('vueDict/setSelectedWordPackCategoriesScroll', this.$refs.categories.scrollTop)
           break
         default:
       }

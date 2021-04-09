@@ -27,6 +27,7 @@ export default {
     activeWordPacks: ['s_1', 's_2'],
     selectedWordPackKey: '',
     selectedWordPack: null,
+    selectedWordPackCategoriesScroll: 0,
     selectedWordPackCategoryIndex: -1,
     selectedWordPackWordIndex: -1,
     difficulty: 1,
@@ -344,6 +345,9 @@ export default {
     },
     setSelectedWordPackWordIndex (state, index) {
       state.selectedWordPackWordIndex = index
+    },
+    setSelectedWordPackCategoriesScroll (state, scroll) {
+      state.selectedWordPackCategoriesScroll = scroll
     },
     addWordToSelectedPack (state, wordObject) {
       state.selectedWordPack.categories.find(category => category.index === state.selectedWordPackCategoryIndex)

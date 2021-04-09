@@ -128,6 +128,7 @@ export default {
       this.currentCategory = category
       this.currentLetterIndex = 0
       this.currentWord = this.words.words[category][index]
+      this.deactivateDraw()
     },
     setCurrentLetter (index) {
       this.currentLetterIndex = index
