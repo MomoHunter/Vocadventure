@@ -58,7 +58,7 @@ giga: 200%
 $sizes: 0.8 1 1.4 2;
 $size-classes: is-small is-normal is-large is-giga;
 
-$color-background: #0a0a0a !default; //#363945
+$color-background: #0a0a0a !default;
 $color-font-bright: #ffffff !default;
 $color-font: #acacac !default;
 $color-font-dark: #5e5e5e !default;
@@ -66,35 +66,44 @@ $color-font-very-dark: #040404 !default;
 $color-hero: #2f2f2f !default;
 $color-border: #444444 !default;
 $color-green: #228b22 !default;
+// green-dark is used as a background for the checkbox, when active
 $color-green-dark: darken($color-green, 15) !default;
-$color-yellow: #c1c631 !default; //#f5df4d
+$color-yellow: #c1c631 !default;
 $color-red: #cd212a !default;
+// red-dark is used as a background for the checkbox, when not active
 $color-red-dark: darken($color-red, 15) !default;
 $color-info: #4aada3 !default;
+// info-2 is used as the color of the write kanji button and as value background for tags
 $color-info-2: #4a96ad !default;
-$color-info-dark: #275a55 !default;
 $color-action: #1ccf7c !default;
+// selected is used in the category selection and in write kanji inside the dropdown menu
 $color-selected: #bf8013 !default;
 $color-armor: #DC793E !default;
 $color-consumables: #8eb44c !default;
 $color-weapons: #1271c5 !default;
+// basic is the default color for items
 $color-basic: #a570a8 !default;
 $color-gold: #847217 !default;
 $color-silver: #a2aaaa !default;
+// tag is the background color for the label of a tag
 $color-tag: #2f2f2f !default;
 $color-blockquote-background: #1a1a1a !default;
 $color-blockquote-bar: #444444 !default;
+// notification dark and bright are two different types of notification backgrounds, bright is used with text notifications,
+// while dark is used after you purchased an item in the shop
 $color-notification-dark: #1a1a1a !default;
 $color-notification-bright: #aeaeae !default;
 $color-modal-head: #1a1a1a !default;
 $color-modal-body: #444444 !default;
 $color-modal-foot: #2f2f2f !default;
 $color-slider: #595959 !default;
+// color settings is the color of the settings button in the menu
 $color-settings: #6d6d6d !default;
 
-$colors: 'background' $color-background, 'green' $color-green, 'green-dark' $color-green-dark, 'yellow' $color-yellow, 'red' $color-red, 'red-dark' $color-red-dark,
- 'info' $color-info, 'info-2' $color-info-2, 'info-dark' $color-info-dark, 'action' $color-action, 'selected' $color-selected,
-  'armor' $color-armor, 'consumables' $color-consumables, 'weapons' $color-weapons, 'basic' $color-basic, 'gold' $color-gold, 'silver' $color-silver, 'settings' $color-settings;
+$colors: 'background' $color-background, 'green' $color-green, 'green-dark' $color-green-dark, 'yellow' $color-yellow,
+  'red' $color-red, 'red-dark' $color-red-dark, 'info' $color-info, 'info-2' $color-info-2, 'action' $color-action,
+  'selected' $color-selected, 'armor' $color-armor, 'consumables' $color-consumables, 'weapons' $color-weapons,
+  'basic' $color-basic, 'gold' $color-gold, 'silver' $color-silver, 'settings' $color-settings;
 
 html, body {
   background: $color-background;
@@ -1014,6 +1023,12 @@ html * {
 
   .letter {
     position: absolute;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 
   .canvas {
@@ -1688,6 +1703,14 @@ html * {
           font-size: .25cm * nth($sizes, $i);
         }
       }
+    }
+  }
+}
+
+.no-item-container {
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      font-size: .5cm * nth($sizes, $i);
     }
   }
 }

@@ -14,7 +14,8 @@
       <InputWithButton class="width-full" type="text" iconInput="search" iconButton="times" colorInput="action"
                        colorButton="red" @click="hideSearch()" v-model="searchString" />
     </div>
-    <div v-show="pages === 0" class="flex-grow flex-row flex-center">
+    <div v-show="pages === 0" class="no-item-container flex-grow flex-row flex-center"
+         :class="getSizeClass('general')">
       {{ getText('shopNoItems') }}
     </div>
     <div v-show="pages !== 0" class="item-container flex-grow">
@@ -103,6 +104,9 @@ export default {
   methods: {
     getText (id) {
       return this.$store.getters.getText(id)
+    },
+    getSizeClass (type) {
+      return this.$store.getters.getSizeClass(type)
     },
     sort (type) {
       if (type.endsWith('Asc')) {
