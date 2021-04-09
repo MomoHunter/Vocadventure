@@ -289,6 +289,10 @@ html * {
       height: 100%;
       opacity: 0;
     }
+
+    .text {
+      text-align: center;
+    }
   }
 
   &.small {
@@ -1046,6 +1050,9 @@ html * {
   
       .stats {
         text-transform: uppercase;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }

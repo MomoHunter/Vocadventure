@@ -167,6 +167,6 @@ export default {
 
 <style lang="scss" scoped>
 .buttons {
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 </style>
