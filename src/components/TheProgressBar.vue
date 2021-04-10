@@ -26,7 +26,7 @@ export default {
     },
     progressText () {
       if (this.text === '') {
-        return this.value.toString() + ' / ' + this.maxValue.toString()
+        return this.value.toLocaleString() + ' / ' + this.maxValue.toLocaleString()
       }
       return this.text
     }

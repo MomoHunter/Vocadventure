@@ -1,6 +1,7 @@
 import TargetLanguages from '@/data/TargetLanguages.js'
 import JapaneseVocabs from '@/data/JapaneseVocabs.json'
 import GreekVocabs from '@/data/GreekVocabs.json'
+import NorwegianVocabs from '@/data/NorwegianVocabs.json'
 import GameObjects from '@/data/GameObjects.json'
 
 export default {
@@ -22,9 +23,10 @@ export default {
     targetLanguages: TargetLanguages,
     vocabulary: [
       JapaneseVocabs,
-      GreekVocabs
+      GreekVocabs,
+      NorwegianVocabs
     ],
-    activeWordPacks: ['s_1', 's_2'],
+    activeWordPacks: ['s_1', 's_2', 's_3'],
     selectedWordPackKey: '',
     selectedWordPack: null,
     selectedWordPackCategoriesScroll: 0,

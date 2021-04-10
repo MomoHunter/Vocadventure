@@ -1,7 +1,8 @@
 {
     "index": 3,
     "tag": "NOB",
-    "targetLanguage": "danoNorwegian",
+    "name": "Standard Norwegian",
+    "targetLanguage": "norwegian",
     "supportedLanguages": [
         "english"
     ],
@@ -9,7 +10,7 @@
     "categories": [
         {
             "index": 1,
-            "danoNorwegian": "adj",
+            "english": "Adjectives",
             "words": [
                 {
                     "english": "0th",
@@ -8015,7 +8016,7 @@
         },
         {
             "index": 2,
-            "danoNorwegian": "adv",
+            "english": "Adverbs",
             "words": [
                 {
                     "english": "Monday",
@@ -9411,7 +9412,7 @@
         },
         {
             "index": 3,
-            "danoNorwegian": "article",
+            "english": "Articles",
             "words": [
                 {
                     "english": "the",
@@ -9422,7 +9423,7 @@
         },
         {
             "index": 4,
-            "danoNorwegian": "conjunction",
+            "english": "Conjunctions",
             "words": [
                 {
                     "english": "after",
@@ -9698,7 +9699,7 @@
         },
         {
             "index": 5,
-            "danoNorwegian": "determiner",
+            "english": "Determiner",
             "words": [
                 {
                     "english": "all",
@@ -9954,7 +9955,7 @@
         },
         {
             "index": 6,
-            "danoNorwegian": "interjection",
+            "english": "Interjections",
             "words": [
                 {
                     "english": "God bless you",
@@ -10590,7 +10591,7 @@
         },
         {
             "index": 7,
-            "danoNorwegian": "n",
+            "english": "Nouns",
             "words": [
                 {
                     "english": "15 minutes of fame",
@@ -40591,7 +40592,13 @@
                     "english": "slate",
                     "danoNorwegian": "skiferstein",
                     "difficulty": 1
-                },
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "Nouns 2",
+            "words": [
                 {
                     "english": "slave",
                     "danoNorwegian": "seksualslave",
@@ -46870,8 +46877,8 @@
             ]
         },
         {
-            "index": 8,
-            "danoNorwegian": "numeral",
+            "index": 9,
+            "english": "Numerals",
             "words": [
                 {
                     "english": "eight",
@@ -47196,8 +47203,8 @@
             ]
         },
         {
-            "index": 9,
-            "danoNorwegian": "particle",
+            "index": 10,
+            "english": "Particles",
             "words": [
                 {
                     "english": "-'s",
@@ -47227,8 +47234,8 @@
             ]
         },
         {
-            "index": 10,
-            "danoNorwegian": "phraseologicalUnit",
+            "index": 11,
+            "english": "Phraseological Units",
             "words": [
                 {
                     "english": "God knows",
@@ -48148,8 +48155,8 @@
             ]
         },
         {
-            "index": 11,
-            "danoNorwegian": "pn",
+            "index": 12,
+            "english": "Personal Names",
             "words": [
                 {
                     "english": "Aachen",
@@ -54609,8 +54616,8 @@
             ]
         },
         {
-            "index": 12,
-            "danoNorwegian": "postposition",
+            "index": 13,
+            "english": "Postposition",
             "words": [
                 {
                     "english": "ago",
@@ -54620,8 +54627,8 @@
             ]
         },
         {
-            "index": 13,
-            "danoNorwegian": "prefix",
+            "index": 14,
+            "english": "Prefix",
             "words": [
                 {
                     "english": "HNMS",
@@ -54706,8 +54713,8 @@
             ]
         },
         {
-            "index": 14,
-            "danoNorwegian": "preposition",
+            "index": 15,
+            "english": "Prepositions",
             "words": [
                 {
                     "english": "abaft",
@@ -55072,8 +55079,8 @@
             ]
         },
         {
-            "index": 15,
-            "danoNorwegian": "pronoun",
+            "index": 16,
+            "english": "Pronouns",
             "words": [
                 {
                     "english": "His Imperial Majesty",
@@ -55298,8 +55305,8 @@
             ]
         },
         {
-            "index": 16,
-            "danoNorwegian": "proverb",
+            "index": 17,
+            "english": "Proverbs",
             "words": [
                 {
                     "english": "Rome wasn't built in a day",
@@ -55604,8 +55611,8 @@
             ]
         },
         {
-            "index": 17,
-            "danoNorwegian": "suffix",
+            "index": 18,
+            "english": "Suffix",
             "words": [
                 {
                     "english": "able",
@@ -55710,8 +55717,8 @@
             ]
         },
         {
-            "index": 18,
-            "danoNorwegian": "v",
+            "index": 19,
+            "english": "Verbs",
             "words": [
                 {
                     "english": "abandon",
