@@ -561,39 +561,6 @@
       "words": [
         { "german": "Natur", "english": "nature", "romaji": "shizen", "kana": "自然", "difficulty": 3 }
       ]
-    },
-    {
-      "index": 34,
-      "german": "Test",
-      "english": "Test",
-      "words": [
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 },
-        { "german": "Test 1", "english": "Test 1", "romaji": "testo 1", "kana": "testo 1", "difficulty": 1 }
-      ]
     }
   ]
 }

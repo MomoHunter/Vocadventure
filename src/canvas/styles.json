@@ -55,6 +55,20 @@
       "align": "center",
       "baseline": "middle",
       "borderKey": ""
+    },
+    "writeKanjigarium": {
+      "font": " KanjiStrokeOrders",
+      "color": "172, 172, 172, 1",
+      "align": "center",
+      "baseline": "middle",
+      "borderKey": ""
+    },
+    "writeKanjisurinshi": {
+      "font": " KanjiStrokeOrders",
+      "color": "172, 172, 172, 1",
+      "align": "center",
+      "baseline": "middle",
+      "borderKey": ""
     }
   },
   "rect": {

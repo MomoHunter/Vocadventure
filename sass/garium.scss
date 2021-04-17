@@ -998,6 +998,17 @@ html * {
     display: grid;
     grid-template-columns: 10% auto auto 10%;
     grid-template-rows: 10% auto auto 10%;
+    z-index: 1;
+
+    .score {
+      grid-row: 1 / 1;
+      grid-column: 1 / 5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Nunito;
+      font-weight: 300;
+    }
 
     .top {
       grid-row: 2 / 2;
@@ -1022,6 +1033,10 @@ html * {
       border-left: 2px dashed $color-border;
       border-right: 4px solid $color-border;
     }
+
+    .has-alpha {
+      background: transparentize($color-background, 0.3);
+    }
   }
 
   .letter {
@@ -1032,12 +1047,28 @@ html * {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    z-index: 2;
   }
 
   .canvas {
     position: absolute;
     width: 80%;
     height: 80%;
+
+    &.in-front {
+      z-index: 2;
+    }
+  }
+  
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      .background {
+        .score {
+          font-size: .5cm * nth($sizes, $i);
+          line-height: .5cm * nth($sizes, $i);
+        }
+      }
+    }
   }
 }
 

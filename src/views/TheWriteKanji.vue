@@ -12,17 +12,21 @@
         <TagBasic class="margin-bottom-mini" title="writeKanjiCategoryTag" :text="categoryName" color="info-2" />
         <TagBasic title="writeKanjiDifficultyTag" :text="difficulty" color="info-2" />
       </div>
-      <div class="special-font flex-grow flex-row flex-center" @mousedown="setDrawOn($event, 'mouse')" @mouseup="setDrawOff()" @touchstart="setDrawOn($event, 'touch')" @touchend="setDrawOff()" v-maxFontSize>
+      <div ref="letter" class="special-font flex-grow flex-row flex-center" :class="getSizeClass('general')" @mousedown="setDrawOn($event, 'mouse')"
+           @mouseup="setDrawOff()" @touchstart="setDrawOn($event, 'touch')" @touchend="setDrawOff()" v-maxFontSize>
+        <canvas ref="checkKana" class="canvas" v-square></canvas>
         <div class="background" v-square>
-          <div class="top left"></div>
-          <div class="top right"></div>
-          <div class="bottom left"></div>
-          <div class="bottom right"></div>
+          <div v-show="drawActive" class="score">{{ drawScore }}%</div>
+          <div class="top left has-alpha"></div>
+          <div class="top right has-alpha"></div>
+          <div class="bottom left has-alpha"></div>
+          <div class="bottom right has-alpha"></div>
         </div>
-        <div class="letter">
+        <div v-show="!drawActive" class="letter">
           {{ currentLetter }}
         </div>
-        <canvas ref="drawKana" class="canvas" @mousemove="drawLine($event, 'mouse')" @touchmove="drawLine($event, 'touch')" v-square></canvas>
+        <canvas ref="drawKana" class="canvas in-front" @mousemove="drawLine($event, 'mouse')"
+                @touchmove="drawLine($event, 'touch')" v-square></canvas>
       </div>
     </div>
     <div v-show="!drawActive" class="button-container flex-row overflow-auto flex-shrink">
@@ -71,9 +75,13 @@ export default {
       currentLetterIndex: 0,
       canvas: null,
       context: null,
+      checkCanvas: null,
+      checkContext: null,
       drawActive: false,
       isDrawing: false,
-      lastPoint: null
+      lastPoint: null,
+      startResult: 0,
+      drawScore: '0.00'
     }
   },
   beforeMount () {
@@ -93,6 +101,10 @@ export default {
     this.canvas.width = this.canvas.clientWidth
     this.canvas.height = this.canvas.clientHeight
     this.context = this.canvas.getContext('2d')
+    this.checkCanvas = this.$refs.checkKana
+    this.checkCanvas.width = this.checkCanvas.clientWidth
+    this.checkCanvas.height = this.checkCanvas.clientHeight
+    this.checkContext = this.checkCanvas.getContext('2d')
   },
   computed: {
     words () {
@@ -119,6 +131,9 @@ export default {
     }
   },
   methods: {
+    getSizeClass (type) {
+      return this.$store.getters.getSizeClass(type)
+    },
     newCurrentWord (wordDetails) {
       this.setCurrentWord(wordDetails.category, wordDetails.index)
       this.hideDropdown()
@@ -133,34 +148,28 @@ export default {
     setCurrentLetter (index) {
       this.currentLetterIndex = index
     },
-    getDifficultyColor (difficulty) {
-      switch (difficulty) {
-        case 1:
-          return 'is-success'
-        case 2:
-          return 'is-warning'
-        default:
-          return 'is-danger'
-      }
-    },
     activateDraw () {
       let theme = this.$store.state.theme
-      Helper.drawCanvasRect(0, 0, this.canvas.width, this.canvas.height, theme + 'Overlay', this.context)
-      Helper.drawCanvasLine(
-        this.canvas.width / 2, 0, theme + 'Dashed', this.context, this.canvas.width / 2,
-        this.canvas.height
+      Helper.drawCanvasTextSpecial(
+        this.checkCanvas.width / 2, this.checkCanvas.height / 2.08, this.currentLetter, 'writeKanji' + theme,
+        this.$refs.letter.style.fontSize, this.checkContext
       )
-      Helper.drawCanvasLine(
-        0, this.canvas.height / 2, theme + 'Dashed', this.context, this.canvas.width,
-        this.canvas.height / 2
-      )
-      Helper.drawCanvasRectBorder(
-        2, 2, this.canvas.width - 4, this.canvas.height - 4, theme + 'Solid', this.context
-      )
+
+      this.startResult = 0
+      let imageTwo = this.checkContext.getImageData(0, 0, this.checkCanvas.width, this.checkCanvas.height)
+      for (let i = 0; i < imageTwo.data.length; i += 4) {
+        if (imageTwo.data[i + 3] === 255) {
+          this.startResult += 1
+        }
+      }
       this.drawActive = true
     },
     deactivateDraw () {
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+      if (this.context && this.checkContext) {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+        this.checkContext.clearRect(0, 0, this.checkCanvas.width, this.checkCanvas.height)
+      }
+      this.drawScore = '0.00'
       this.drawActive = false
     },
     setDrawOn (event, type) {
@@ -195,9 +204,22 @@ export default {
     setDrawOff () {
       this.isDrawing = false
       this.lastPoint = null
+      let imageDraw = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height)
+      let imageCheck = this.checkContext.getImageData(0, 0, this.checkCanvas.width, this.checkCanvas.height)
+      let result = 0
+      for (let i = 0; i < imageDraw.data.length; i += 4) {
+        if (imageDraw.data[i + 3] !== 0 && imageCheck.data[i + 3] !== 0) {
+          result += 1
+        } else if (imageDraw.data[i + 3] !== 0 && imageCheck.data[i + 3] === 0) {
+          result -= 0.29
+        }
+      }
+      this.drawScore = Math.max(Math.min((result / (this.startResult * 0.7)) * 100, 100), 0).toFixed(2)
     },
     clearCanvas () {
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+      this.checkContext.clearRect(0, 0, this.checkCanvas.width, this.checkCanvas.height)
+      this.drawScore = '0.00'
       this.activateDraw()
     },
     drawLine (event, type) {

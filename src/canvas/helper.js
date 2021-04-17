@@ -79,6 +79,18 @@ export function drawCanvasText (x, y, text, styleKey, context) {
   }
 }
 
+export function drawCanvasTextSpecial (x, y, text, styleKey, size, context) {
+  let style = Styles.text[styleKey]
+  context.textAlign = style.align
+  context.textBaseline = style.baseline
+  context.font = size + style.font
+  context.fillStyle = `rgba(${style.color})`
+  context.fillText(text, x, y)
+  if (style.borderKey !== '') {
+    drawCanvasTextBorder(x, y, text, style.borderKey, context)
+  }
+}
+
 /**
  * Draw a border for text onto the used canvas.
  * Its positioning is affected by the attributes saved inside the used Style-Key.

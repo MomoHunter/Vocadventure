@@ -126,7 +126,7 @@ export default new Vuex.Store({
       state.updateSuccessful = true
     },
     updateSuccess (state) {
-      state.updateSuccess = true;
+      state.updateSuccess = true
     },
     resetMissedUpdates (state) {
       state.missedUpdates = false
