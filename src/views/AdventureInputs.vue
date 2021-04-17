@@ -7,7 +7,7 @@
                        type="text" :color="inputColor" :colorLeft="latinIconColor" :colorRight="latinCoinColor"
                        :iconLeft="latinIcon" iconRight="coins" v-model="latinInput" :readonly="resultsVisible.on"
                        :leftIconVisible="resultsVisible.on" :rightIconVisible="resultsVisible.on && isLatinCorrect > 0" />
-        <InputTwoIcons v-show="hasForeignAlphabet" class="border-bottom" :class="{ 'on-focus': inputBorderVisible }"
+        <InputTwoIcons v-if="hasForeignAlphabet" class="border-bottom" :class="{ 'on-focus': inputBorderVisible }"
                        :title="vocabs.foreignAlphabet" type="text" :color="inputColor" :colorLeft="foreignIconColor"
                        :colorRight="foreignCoinColor" :iconLeft="foreignIcon" iconRight="coins" v-model="foreignInput"
                        :leftIconVisible="resultsVisible.on" :rightIconVisible="resultsVisible.on && isForeignCorrect > 0"
@@ -287,26 +287,34 @@ export default {
       return this.currentWordIndex
     },
     keyboardNames () {
-      let names = Object.keys(this.vocabs.signs)
-      if (this.vocabs.signs.other) {
-        for (let extra of this.vocabs.signs.other) {
-          names = names.filter(name => name !== extra.id)
-          names.splice(extra.position, 0, extra.id)
+      if (this.vocabs.signs) {
+        let names = Object.keys(this.vocabs.signs)
+        if (this.vocabs.signs.other) {
+          for (let extra of this.vocabs.signs.other) {
+            names = names.filter(name => name !== extra.id)
+            names.splice(extra.position, 0, extra.id)
+          }
+          names = names.filter(name => name !== 'other')
         }
-        names = names.filter(name => name !== 'other')
+        return names
+      } else {
+        return []
       }
-      return names
     },
     keyboardSigns () {
-      if (this.vocabs.signs.other) {
-        for (let extra of this.vocabs.signs.other) {
-          if (extra.id === this.currentKeyboardTab && !this.vocabs.signs[extra.id]) {
-            this.$store.commit('vueDict/setKeyboardSigns', { name: extra.id, signs: this[extra.function] })
-            break
+      if (this.vocabs.signs) {
+        if (this.vocabs.signs.other) {
+          for (let extra of this.vocabs.signs.other) {
+            if (extra.id === this.currentKeyboardTab && !this.vocabs.signs[extra.id]) {
+              this.$store.commit('vueDict/setKeyboardSigns', { name: extra.id, signs: this[extra.function] })
+              break
+            }
           }
         }
+        return this.vocabs.signs[this.currentKeyboardTab]
+      } else {
+        return []
       }
-      return this.vocabs.signs[this.currentKeyboardTab]
     },
     getKanji () {
       let kanji = []

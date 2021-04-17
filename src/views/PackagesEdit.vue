@@ -177,7 +177,7 @@ export default {
               if (!this.$store.state.vueDict.selectedWordPackKey.startsWith('s')) {
                 this.$store.commit('vueDict/removeWordPack', this.$store.state.vueDict.selectedWordPackKey)
               }
-              this.$store.dispatch('savePack', this.wordPack)
+              this.$store.dispatch('saveEntry', { name: 'wordpackdb', store: 'wordPacks', entry: this.wordPack })
               this.$store.commit('vueDict/setSelectedWordPackKey', '')
               this.$store.commit('vueDict/setSelectedWordPack', null)
               this.$router.push({ name: destination })

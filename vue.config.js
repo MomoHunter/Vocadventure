@@ -8,7 +8,12 @@ module.exports = {
         basePath: process.env.NODE_ENV === 'production' ? '/Vocadventure/' : '/',
         fileName: 'files.js',
         filter: file => {
-          return !file.name.endsWith('.map')
+          let nameParts = file.name.split('/')
+          if (nameParts.length > 0) {
+            let fileName = nameParts[nameParts.length - 1]
+            return !((fileName.startsWith('app') || fileName.startsWith('chunk')) && fileName.endsWith('map'))
+          }
+          return true
         },
         serialize: obj => {
           return 'var FILES = ' + JSON.stringify(obj)

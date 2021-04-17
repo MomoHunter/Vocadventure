@@ -86,13 +86,15 @@ export default {
       this.$store.commit('changeViewport', this.newViewport)
       this.$store.commit('changeVolume', this.newVolume)
       this.$store.commit('changeAllowUpdates', this.newAllowUpdates)
-      window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
-      if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-        navigator.serviceWorker.controller.postMessage({
-          type: 'allowUpdates',
+      this.$store.dispatch('saveEntry', {
+        name: 'updatedb',
+        store: 'allow',
+        entry: {
+          index: 1,
           value: this.newAllowUpdates
-        })
-      }
+        }
+      })
+      window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
       this.$router.push({ name: 'menu' })
     }
   }

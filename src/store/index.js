@@ -17,11 +17,15 @@ export default new Vuex.Store({
     size: 'normal',
     viewport: 1,
     volume: 100,
-    allowUpdates: false,
+    allowUpdates: true,
     texts: Texts,
-    swUpdateFound: false,
-    swUpdated: false,
-    db: null
+    newUpdate: false,
+    updateAvailable: false,
+    updateFinished: false,
+    updatesWillInstall: false,
+    updateSuccess: false, // will be used in menu
+    updateSuccessful: false, // will be saved in localStorage
+    missedUpdates: false
   },
   getters: {
     getText: (state, getters) => (id, ...params) => {
@@ -55,6 +59,8 @@ export default new Vuex.Store({
         viewport: state.viewport,
         volume: state.volume,
         allowUpdates: state.allowUpdates,
+        missedUpdates: state.missedUpdates,
+        updateSuccessful: state.updateSuccessful,
         status: state.vueDict.status,
         categoriesPlayed: state.vueDict.categoriesPlayed,
         activeWordPacks: state.vueDict.activeWordPacks,
@@ -97,30 +103,46 @@ export default new Vuex.Store({
       state.volume = volume
     },
     changeAllowUpdates (state, allowUpdates) {
+      if (allowUpdates && state.missedUpdates) {
+        state.updatesWillInstall = true
+      }
       state.allowUpdates = allowUpdates
     },
-    swUpdateFound (state) {
-      state.swUpdateFound = true
+    changeMissedUpdates (state, missedUpdates) {
+      state.missedUpdates = missedUpdates
     },
-    swUpdated (state) {
-      state.swUpdated = true
+    newUpdate (state) {
+      if (state.allowUpdates) {
+        state.newUpdate = true
+      } else {
+        state.updateAvailable = true
+        state.missedUpdates = true
+      }
+    },
+    updateFinished (state) {
+      state.updateFinished = true
+    },
+    updateSuccessful (state) {
+      state.updateSuccessful = true
+    },
+    updateSuccess (state) {
+      state.updateSuccess = true;
+    },
+    resetMissedUpdates (state) {
+      state.missedUpdates = false
     },
     swReset (state) {
-      state.swUpdateFound = false
-      state.swUpdated = false
-    },
-    setDb (state, db) {
-      state.db = db
+      state.newUpdate = false
+      state.updateAvailable = false
+      state.updateFinished = false
+      state.updatesWillInstall = false
+      state.updateSuccess = false
     }
   },
   actions: {
-    async getDb (context) {
+    async getDb (context, data) {
       return new Promise((resolve, reject) => {
-        if (context.state.db) {
-          return resolve(context.state.db)
-        }
-
-        let request = window.indexedDB.open('wordpackdb', 1)
+        let request = window.indexedDB.open(data.name, 1)
 
         request.onerror = e => {
           console.error('Error opening db', e)
@@ -128,42 +150,46 @@ export default new Vuex.Store({
         }
 
         request.onsuccess = e => {
-          context.commit('setDb', e.target.result)
           resolve(e.target.result)
         }
 
         request.onupgradeneeded = e => {
           console.log('New DB will be created')
           let db = e.target.result
-          db.createObjectStore('wordPacks', { autoIncrement: false, keyPath: 'index' })
+          db.createObjectStore(data.store, { autoIncrement: false, keyPath: 'index' })
         }
       })
     },
-    async savePack (context, pack) {
-      let db = await context.dispatch('getDb')
+    async saveEntry (context, data) {
+      let db = await context.dispatch('getDb', data)
 
       await new Promise(resolve => {
-        let trans = db.transaction(['wordPacks'], 'readwrite')
+        let trans = db.transaction([data.store], 'readwrite')
         trans.oncomplete = () => {
-          resolve(pack)
+          resolve(data.entry)
         }
 
-        let store = trans.objectStore('wordPacks')
-        store.put(pack)
-      }).then(wordPack => {
-        context.commit('vueDict/addWordPack', wordPack)
+        let store = trans.objectStore(data.store)
+        store.put(data.entry)
+      }).then(entry => {
+        switch (data.name) {
+          case 'wordpackdb':
+            context.commit('vueDict/addWordPack', entry)
+            break
+          default:
+        }
       })
     },
-    async getPacks (context) {
-      let db = await context.dispatch('getDb')
+    async getEntries (context, data) {
+      let db = await context.dispatch('getDb', data)
 
       await new Promise(resolve => {
-        let trans = db.transaction(['wordPacks'], 'readonly')
+        let trans = db.transaction([data.store], 'readonly')
         trans.oncomplete = () => {
           resolve(wordPacks)
         }
 
-        let store = trans.objectStore('wordPacks')
+        let store = trans.objectStore(data.store)
         let wordPacks = []
 
         store.openCursor().onsuccess = e => {
@@ -179,17 +205,17 @@ export default new Vuex.Store({
         })
       })
     },
-    async deletePack (context, pack) {
-      let db = await context.dispatch('getDb')
+    async deleteEntry (context, data) {
+      let db = await context.dispatch('getDb', data)
 
       await new Promise(resolve => {
-        let trans = db.transaction(['wordPacks'], 'readwrite')
+        let trans = db.transaction([data.store], 'readwrite')
         trans.oncomplete = () => {
-          resolve(pack)
+          resolve(data.pack)
         }
 
-        let store = trans.objectStore('wordPacks')
-        store.delete(pack.index)
+        let store = trans.objectStore(data.store)
+        store.delete(data.pack.index)
       }).then(wordPack => {
         context.commit('vueDict/removeWordPack', (wordPack.isCustom ? 'c' : 's') + '_' + wordPack.index.toString())
       })

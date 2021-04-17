@@ -213,7 +213,7 @@ export default {
         loadedPack.isCustom = true
         loadedPack.index = index
 
-        this.$store.dispatch('savePack', loadedPack)
+        this.$store.dispatch('saveEntry', { name: 'wordpackdb', store: 'wordPacks', entry: loadedPack })
         this.handleEntryToggle(loadedPack, true)
       })
       fileReader.readAsText(file)
@@ -252,7 +252,7 @@ export default {
           break
         case 'button2':
           for (let key of this.selectedPacks) {
-            this.$store.dispatch('deletePack', this.getWordPack(key))
+            this.$store.dispatch('deleteEntry', { name: 'wordpackdb', store: 'wordPacks', pack: this.getWordPack(key) })
           }
           this.$store.commit('vueDict/closeModal')
           this.switchMode('standard')

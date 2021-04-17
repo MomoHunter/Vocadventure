@@ -17,14 +17,11 @@ if (process.env.NODE_ENV === 'production') {
     },
     updatefound (serviceWorker) {
       console.log('New content is downloading.')
-      document.dispatchEvent(
-        new CustomEvent('swUpdateFound', { detail: serviceWorker })
-      )
     },
     updated (serviceWorker) {
       console.log('New content is available; please refresh.')
       document.dispatchEvent(
-        new CustomEvent('swUpdated', { detail: serviceWorker })
+        new CustomEvent('swWaiting')
       )
     },
     offline () {

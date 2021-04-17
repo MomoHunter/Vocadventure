@@ -40,8 +40,30 @@ export default {
     }
   },
   created () {
-    document.addEventListener('swUpdateFound', this.swUpdateFound, { once: true })
-    document.addEventListener('swUpdated', this.swUpdated, { once: true })
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.onmessage = (event) => {
+        if (event.data) {
+          switch (event.data.type) {
+            case 'newUpdate':
+              this.newUpdate()
+              break
+            case 'updateFinished':
+              if (this.$store.state.missedUpdates && this.$store.state.allowUpdates) {
+                this.$store.commit('resetMissedUpdates')
+                this.$store.commit('updateSuccessful')
+                window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
+                location.reload()
+              } else {
+                this.$store.commit('updateSuccessful')
+                window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
+                this.updateFinished()
+              }
+              break
+            default:
+          }
+        }
+      }
+    }
   },
   mounted () {
     let spinner = document.getElementById('spinner')
@@ -56,6 +78,19 @@ export default {
     if (spinner && spinner.parentNode) {
       spinner.parentNode.removeChild(spinner)
     }
+
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.getRegistration().then((registration) => {
+        if (registration && !registration.waiting && this.$store.state.allowUpdates && this.$store.state.missedUpdates) {
+          this.$store.commit('newUpdate')
+          setTimeout(() => {
+            navigator.serviceWorker.controller.postMessage({
+              type: 'update'
+            })
+          }, 3000)
+        }
+      })
+    }
   },
   computed: {
     modalName () {
@@ -63,11 +98,12 @@ export default {
     }
   },
   methods: {
-    swUpdateFound (event) {
-      this.$store.commit('swUpdateFound')
+    newUpdate () {
+      this.$store.commit('newUpdate')
+      window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
     },
-    swUpdated (event) {
-      this.$store.commit('swUpdated')
+    updateFinished () {
+      this.$store.commit('updateFinished')
     },
     loadData () {
       let data = JSON.parse(window.localStorage.getItem('globalDict'))
@@ -91,14 +127,11 @@ export default {
         if (data.volume) {
           this.$store.commit('changeVolume', data.volume)
         }
-        if (data.allowUpdates) {
+        if (typeof data.allowUpdates === 'boolean') {
           this.$store.commit('changeAllowUpdates', data.allowUpdates)
-          if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-            navigator.serviceWorker.controller.postMessage({
-              type: 'allowUpdates',
-              value: data.allowUpdates
-            })
-          }
+        }
+        if (typeof data.missedUpdates === 'boolean') {
+          this.$store.commit('changeMissedUpdates', data.missedUpdates)
         }
         if (data.status) {
           this.$store.commit('vueDict/changeStatus', data.status)
@@ -147,13 +180,25 @@ export default {
         if (data.dynamicLevelData) {
           this.$store.commit('canvasDict/changeDynamicLevelData', data.dynamicLevelData)
         }
+        if (data.updateSuccessful) {
+          if (navigator.serviceWorker) {
+            navigator.serviceWorker.getRegistration().then((registration) => {
+              if (registration && registration.waiting) {
+                this.$store.commit('updateSuccessful')
+              } else {
+                this.$store.commit('updateSuccess')
+                window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
+              }
+            })
+          }
+        }
 
         if (data.version !== this.$store.state.version) {
           window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
         }
       }
 
-      this.$store.dispatch('getPacks')
+      this.$store.dispatch('getEntries', { name: 'wordpackdb', store: 'wordPacks' })
     },
     toggleTransitionActive (bool) {
       this.$store.commit('vueDict/changeTransitionActive', bool)
