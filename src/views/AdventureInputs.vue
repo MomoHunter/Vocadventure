@@ -199,7 +199,9 @@ export default {
       return this.vocabs.foreignAlphabet !== ''
     },
     isLatinCorrect () {
-      if (this.userLatinInput.toLowerCase() ===
+      if (this.userLatinInput === '') {
+        return 0
+      } else if (this.userLatinInput.toLowerCase() ===
           this.vocabs.words[this.currentWordIndex][this.vocabs.latinAlphabet].toLowerCase()) {
         return 2
       } else if (this.streamline(this.userLatinInput) ===
@@ -237,6 +239,8 @@ export default {
     },
     isForeignCorrect () {
       if (!this.hasForeignAlphabet) {
+        return 0
+      } else if (this.userForeignInput === '') {
         return 0
       } else if (this.userForeignInput.toLowerCase() ===
           this.vocabs.words[this.currentWordIndex][this.vocabs.foreignAlphabet].toLowerCase()) {
