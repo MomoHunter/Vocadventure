@@ -73,7 +73,7 @@ export default {
     }
 
     this.loadData()
-    this.$store.commit('canvasDict/setSpritesheet')
+    // this.$store.commit('canvasDict/setSpritesheet')
 
     if (spinner && spinner.parentNode) {
       spinner.parentNode.removeChild(spinner)
@@ -150,7 +150,7 @@ export default {
             this.$store.commit('vueDict/unlockItem', item)
           }
         }
-        if (data.watchedIntro) {
+        /* if (data.watchedIntro) {
           this.$store.commit('canvasDict/setWatchedIntro')
         }
         if (data.gameState) {
@@ -179,7 +179,7 @@ export default {
         }
         if (data.dynamicLevelData) {
           this.$store.commit('canvasDict/changeDynamicLevelData', data.dynamicLevelData)
-        }
+        } */
         if (data.updateSuccessful) {
           if (navigator.serviceWorker) {
             navigator.serviceWorker.getRegistration().then((registration) => {

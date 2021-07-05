@@ -471,10 +471,10 @@ export default {
     itemBoxAction (item, type) {
       switch (type) {
         case 'weapons':
-          this.$store.commit('canvasDict/setEquippedItem', item.id)
+          // this.$store.commit('canvasDict/setEquippedItem', item.id)
           break
         case 'armor':
-          this.$store.commit('canvasDict/setEquippedArmor', item.id)
+          // this.$store.commit('canvasDict/setEquippedArmor', item.id)
           break
         case 'consumables':
           if (!this.consumableUsed) {
@@ -482,7 +482,7 @@ export default {
 
             if (itemData.healing) {
               if (this.$store.state.canvasDict.playerHealth < 100) {
-                this.$store.commit('canvasDict/changePlayerHealth', itemData.healing)
+                // this.$store.commit('canvasDict/changePlayerHealth', itemData.healing)
                 this.$store.commit('vueDict/addToInventory', { id: item.id, quantity: -1 })
               }
             }
@@ -496,9 +496,9 @@ export default {
     itemEquipped (itemId, type) {
       switch (type) {
         case 'weapons':
-          return itemId === this.$store.state.canvasDict.character.hand
+          return false // itemId === this.$store.state.canvasDict.character.hand
         case 'armor':
-          return itemId === this.$store.state.canvasDict.character.armor
+          return false // itemId === this.$store.state.canvasDict.character.armor
         default:
           return false
       }

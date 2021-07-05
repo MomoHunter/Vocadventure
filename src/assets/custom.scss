@@ -16,6 +16,11 @@ html, body {
 
 #adventure-canvas {
   width: 100%;
+
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
 }
 
 .flex {

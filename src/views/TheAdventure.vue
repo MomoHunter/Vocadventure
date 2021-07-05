@@ -2,7 +2,8 @@
   <div class="page">
     <div class="width-full flex-column">
       <HeroBasic title="adventureTitle" />
-      <canvas id="adventure-canvas" width="600" height="300"></canvas>
+      <div id="adventure-canvas"></div>
+      <!-- <canvas id="adventure-canvas" width="600" height="300"></canvas> -->
     </div>
     <div class="router-view width-full flex-column flex-grow">
       <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition" mode="out-in">
@@ -13,6 +14,11 @@
 </template>
 
 <script>
+import * as THREE from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js'
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+
 import * as Helper from '@/canvas/helper.js'
 import { AnimationObject } from '@/canvas/elements.js'
 import HeroBasic from '@/components/HeroBasic.vue'
@@ -25,6 +31,7 @@ export default {
   data () {
     return {
       loopActivated: false,
+      glbLoader: new GLTFLoader(),
       currentIntroPart: 1,
       stepWidth: 100,
       oldMapOffset: null,
@@ -53,7 +60,7 @@ export default {
     }
   },
   beforeRouteEnter (to, from, next) {
-    next(component => {
+    /* next(component => {
       if (!component.noRouting) {
         let dynLevelData = component.$store.getters['canvasDict/getDynamicLevelData'](component.currentLevel)
         if (!component.$store.state.canvasDict.watchedIntro) {
@@ -71,13 +78,14 @@ export default {
           component.$store.commit('canvasDict/setQuestionKey', 'adventureChooseQuestion2')
         }
       }
-    })
+    }) */
+    next()
   },
   beforeRouteUpdate (to, from, next) {
     next()
   },
   beforeRouteLeave (to, from, next) {
-    if (this.answer === '') {
+    /* if (this.answer === '') {
       if (!this.loopActivated) {
         this.$store.commit('vueDict/resetAdditional')
         this.$store.commit('vueDict/resetVocabs')
@@ -103,18 +111,20 @@ export default {
       this.$store.commit('vueDict/setAdventureCopies', this.vueDictCopy)
       this.$store.commit('canvasDict/setAdventureCopies', this.canvasDictCopy)
       next()
-    }
+    } */
+    next()
   },
   created () {
     this.createWords()
-    this.vueDictCopy = this.$store.getters['vueDict/getAdventureCopies']
-    this.canvasDictCopy = this.$store.getters['canvasDict/getAdventureCopies']
+    // this.vueDictCopy = this.$store.getters['vueDict/getAdventureCopies']
+    // this.canvasDictCopy = this.$store.getters['canvasDict/getAdventureCopies']
   },
   mounted () {
     this.$store.commit('canvasDict/initCanvas')
-    this.transition.progress = Math.hypot(this.canvasWidth / 2, this.canvasHeight / 2)
+    // this.transition.progress = Math.hypot(this.canvasWidth / 2, this.canvasHeight / 2)
     this.loopActivated = true
-    this.canvasLoop(0)
+    this.setCube()
+    this.canvasLoop()
   },
   beforeDestroy () {
     this.loopActivated = false
@@ -123,7 +133,7 @@ export default {
     this.$store.commit('vueDict/resetCorrectForeign')
   },
   computed: {
-    tags () {
+    /* tags () {
       if (this.gameState.startsWith('intro')) {
         return [
           {
@@ -161,8 +171,8 @@ export default {
           color: this.difficultyColor
         }
       ]
-    },
-    difficultyColor () {
+    }, */
+    /* difficultyColor () {
       switch (this.$store.state.vueDict.difficulty) {
         case 1:
           return 'is-success'
@@ -171,14 +181,26 @@ export default {
         default:
           return 'is-danger'
       }
+    }, */
+    scene () {
+      return this.$store.state.canvasDict.scene
+    },
+    camera () {
+      return this.$store.state.canvasDict.camera
+    },
+    renderer () {
+      return this.$store.state.canvasDict.renderer
+    },
+    stats () {
+      return this.$store.state.canvasDict.stats
     },
     currentWord () {
       return this.$store.getters['vueDict/getCurrentWord']
     },
     answer () {
       return this.$store.state.vueDict.currentModalAnswer
-    },
-    ctx () {
+    }
+    /* ctx () {
       return this.$store.state.canvasDict.context
     },
     canvasWidth () {
@@ -216,7 +238,7 @@ export default {
     },
     collectedItems () {
       return this.$store.state.canvasDict.collectedItems
-    }
+    } */
   },
   methods: {
     getText (id) {
@@ -587,10 +609,127 @@ export default {
 
       this.animationQueue.push(new AnimationObject('pickUpItems', true))
     },
-    canvasLoop (timestamp) {
+    setCube () {
+      this.loadNewBackground('exparebrium_1')
+      const light = new THREE.AmbientLight(0x050505)
+      this.$store.commit('canvasDict/addToScene', light)
+      this.$store.commit('canvasDict/moveCamera', { x: 0, y: 2.45, z: 1.4 }) // { x: 0, y: 2, z: 50 })
+      this.camera.rotation.x -= 0.4
+      // this.geometry = new THREE.BoxGeometry()
+      // this.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+      // this.cube = new THREE.Mesh(this.geometry, this.material)
+      // this.$store.commit('canvasDict/addToScene', this.cube)
+      // RectAreaLightUniformsLib.init()
+      // this.glbLoader.load('/assets/objects/player.glb', (glb) => {
+      //   this.$store.commit('canvasDict/addToScene', glb.scene)
+      //   glb.scene.rotation.y = Math.PI
+      //   glb.scene.scale.set(0.5, 0.5, 0.5)
+      //   glb.scene.position.set(-3, 0.1, 0.3)
+      // }, undefined, (error) => {
+      //   console.error(error)
+      // })
+      // const loader = new GLTFLoader()
+      // // loader.load('/assets/objects/player.glb', (gltf) => {
+      // //   this.$store.commit('canvasDict/addToScene', gltf.scene)
+      // //   gltf.scene.rotation.y = Math.PI / 2
+      // // }, undefined, (error) => {
+      // //   console.error(error)
+      // // })
+      // loader.load('/assets/objects/exparebrium_1.glb', (gltf) => {
+      //   this.$store.commit('canvasDict/addToScene', gltf.scene)
+      //   // gltf.scene.rotation.y = Math.PI / 2
+      // }, undefined, (error) => {
+      //   console.error(error)
+      // })
+
+      // // const dirLight = new THREE.DirectionalLight(0xffffff, 0.1)
+      // // dirLight.position.set(0, 1, 1)
+      // // // dirLight.rotation.z += Math.PI / 4
+      // // // dirLight.rotation.y += Math.PI / 4
+      // // // dirLight.rotation.x += Math.PI / 2
+      // // dirLight.castShadow = true
+      // // this.$store.commit('canvasDict/addToScene', dirLight)
+
+      // let rectLight1 = new THREE.RectAreaLight(0xd4f7ff, 5, 1, 0.1)
+      // rectLight1.position.set(2.9, 0.3, -0.65)
+      // rectLight1.lookAt(2.9, 1, -0.65)
+      // let rectLight2 = new THREE.RectAreaLight(0xd4f7ff, 5, 1, 0.1)
+      // rectLight2.position.set(2.9, 0.25, -0.6)
+      // rectLight2.lookAt(2.9, 0.25, 1)
+      // let rectLight3 = new THREE.RectAreaLight(0xd4f7ff, 5, 1, 0.1)
+      // rectLight3.position.set(2.9, 0.2, -0.55)
+      // rectLight3.lookAt(2.9, 1, -0.55)
+      // let rectLight4 = new THREE.RectAreaLight(0xd4f7ff, 5, 1, 0.1)
+      // rectLight4.position.set(2.9, 0.15, -0.5)
+      // rectLight4.lookAt(2.9, 0.15, 1)
+      // this.$store.commit('canvasDict/addToScene', rectLight1)
+      // this.$store.commit('canvasDict/addToScene', rectLight2)
+      // this.$store.commit('canvasDict/addToScene', rectLight3)
+      // this.$store.commit('canvasDict/addToScene', rectLight4)
+      // let rectLightHelper1 = new RectAreaLightHelper(rectLight1)
+      // this.$store.commit('canvasDict/addToScene', rectLightHelper1)
+      // let rectLightHelper2 = new RectAreaLightHelper(rectLight2)
+      // this.$store.commit('canvasDict/addToScene', rectLightHelper2)
+      // let rectLightHelper3 = new RectAreaLightHelper(rectLight3)
+      // this.$store.commit('canvasDict/addToScene', rectLightHelper3)
+      // let rectLightHelper4 = new RectAreaLightHelper(rectLight4)
+      // this.$store.commit('canvasDict/addToScene', rectLightHelper4)
+
+      // let rectLight5 = new THREE.RectAreaLight(0xd4f7ff, 10, 1, Math.hypot(0.1, 0.1) * 2)
+      // rectLight5.position.set(-2.9, 0.2, -0.6)
+      // rectLight5.lookAt(-2.9, 1.2, 0.4)
+      // this.$store.commit('canvasDict/addToScene', rectLight5)
+      // // let rectLightHelper5 = new RectAreaLightHelper(rectLight5)
+      // rectLight5.add(new RectAreaLightHelper(rectLight5))
+      // // this.$store.commit('canvasDict/addToScene', rectLightHelper5)
+
+      // let buttonLight1 = new THREE.RectAreaLight(0x70ff32, 3, 0.1, 0.1)
+      // buttonLight1.position.set(-0.25, 1.35, -0.6999)
+      // buttonLight1.lookAt(-0.25, 1.35, 0)
+      // this.$store.commit('canvasDict/addToScene', buttonLight1)
+      // buttonLight1.add(new RectAreaLightHelper(buttonLight1))
+
+      // let buttonLight2 = new THREE.RectAreaLight(0xff1919, 3, 0.1, 0.1)
+      // buttonLight2.position.set(0.25, 1.35, -0.6999)
+      // buttonLight2.lookAt(0.25, 1.35, 0)
+      // this.$store.commit('canvasDict/addToScene', buttonLight2)
+      // buttonLight2.add(new RectAreaLightHelper(buttonLight2))
+
+      // const controls = new OrbitControls(this.camera, this.renderer.domElement)
+      // controls.target.copy({ x: 0, y: 2, z: 0 })
+      // controls.update()
+    },
+    loadNewBackground (id) {
+      let backgroundData = this.$store.getters['canvasDict/getBackgroundData'](id)
+
+      this.glbLoader.load(backgroundData.glb, (glb) => {
+        this.$store.commit('canvasDict/addToScene', glb.scene)
+        glb.scene.rotation.set(backgroundData.rotation.x, backgroundData.rotation.y, backgroundData.rotation.z)
+      }, undefined, (error) => {
+        console.error(error)
+      })
+
+      for (let light of backgroundData.lights) {
+        let lightObj = null
+        switch (light.type) {
+          case 'rect':
+            let constr = light.constr
+            lightObj = new THREE.RectAreaLight(constr.color, constr.intensity, constr.width, constr.height)
+            lightObj.position.set(light.pos.x, light.pos.y, light.pos.z)
+            lightObj.lookAt(light.pos.x + light.lookAt.x, light.pos.y + light.lookAt.y, light.pos.z + light.lookAt.z)
+            this.$store.commit('canvasDict/addToScene', lightObj)
+            lightObj.add(new RectAreaLightHelper(lightObj))
+            break
+          default:
+        }
+      }
+    },
+    canvasLoop () {
       if (this.loopActivated) {
-        let raf = requestAnimationFrame(newTs => this.canvasLoop(newTs))
-        this.$store.commit('canvasDict/setRaf', raf)
+        requestAnimationFrame(() => this.canvasLoop())
+        this.renderer.render(this.scene, this.camera)
+        this.stats.update()
+        /* this.$store.commit('canvasDict/setRaf', raf)
         this.$store.commit('canvasDict/addLag', timestamp - this.$store.state.canvasDict.startTS)
 
         while (this.$store.state.canvasDict.lag > this.$store.state.canvasDict.refreshrate) {
@@ -609,7 +748,7 @@ export default {
         this.clearCanvas()
         this.canvasDraw()
 
-        this.$store.commit('canvasDict/setStartTS', timestamp)
+        this.$store.commit('canvasDict/setStartTS', timestamp) */
       }
     },
     clearCanvas () {
