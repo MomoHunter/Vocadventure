@@ -3,7 +3,7 @@
        :class="[getSizeClass('general'), { 'special': mode !== 'standard', 'inactive': !active }, color]">
     <ButtonIcon v-show="active" class="single-1" icon="check" color="green" @click="$emit('toggle', false)" />
     <ButtonIcon v-show="!active" class="single-1" icon="times" color="red" @click="$emit('toggle', true)" />
-    <div class="details flex-grow">
+    <div class="details flex-grow" @click="$emit('toggle', !active)">
       <svg class="flag">
         <image class="flag-image" :href="baseUrl + 'img/flags/' + getFlagName(wordPack.targetLanguage) + '.svg'"
                preserveAspectRatio="none" />

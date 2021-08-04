@@ -68,6 +68,7 @@ $color-border: #444444 !default;
 $color-green: #228b22 !default;
 // green-dark is used as a background for the checkbox, when active
 $color-green-dark: darken($color-green, 15) !default;
+$color-green-light: #62be62 !default;
 $color-yellow: #c1c631 !default;
 $color-red: #cd212a !default;
 // red-dark is used as a background for the checkbox, when not active
@@ -100,10 +101,11 @@ $color-slider: #595959 !default;
 // color settings is the color of the settings button in the menu
 $color-settings: #6d6d6d !default;
 
-$colors: 'background' $color-background, 'green' $color-green, 'green-dark' $color-green-dark, 'yellow' $color-yellow,
-  'red' $color-red, 'red-dark' $color-red-dark, 'info' $color-info, 'info-2' $color-info-2, 'action' $color-action,
-  'selected' $color-selected, 'armor' $color-armor, 'consumables' $color-consumables, 'weapons' $color-weapons,
-  'basic' $color-basic, 'gold' $color-gold, 'silver' $color-silver, 'settings' $color-settings;
+$colors: 'background' $color-background, 'green' $color-green, 'green-dark' $color-green-dark,
+  'green-light' $color-green-light, 'yellow' $color-yellow, 'red' $color-red, 'red-dark' $color-red-dark,
+  'info' $color-info, 'info-2' $color-info-2, 'action' $color-action, 'selected' $color-selected, 'armor' $color-armor,
+  'consumables' $color-consumables, 'weapons' $color-weapons, 'basic' $color-basic, 'gold' $color-gold,
+  'silver' $color-silver, 'settings' $color-settings;
 
 html, body {
   background: $color-background;
@@ -178,6 +180,10 @@ html * {
 
   .title {
     font-weight: 700;
+  }
+
+  .subtitle {
+    width: 90%;
   }
 
   @for $i from 1 through length($sizes) {
@@ -1090,6 +1096,8 @@ html * {
       height: 100%;
       border-top: 1px solid $color-border;
       border-bottom: 1px solid $color-border;
+      cursor: pointer;
+      user-select: none;
 
       .title {
         white-space: nowrap;
@@ -1745,6 +1753,59 @@ html * {
   @for $i from 1 through length($sizes) {
     &.#{nth($size-classes, $i)} {
       font-size: .5cm * nth($sizes, $i);
+    }
+  }
+}
+
+.dictionary-list {
+  .word {
+    display: flex;
+    align-content: stretch;
+
+    .index {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-top: 1px solid $color-border;
+      border-bottom: 1px solid $color-border;
+    }
+
+    .details {
+      border-top: 1px solid $color-border;
+      border-bottom: 1px solid $color-border;
+
+      .category {
+        @each $color in $colors {
+          &.#{nth($color, 1)} {
+            color: nth($color, 2);
+          }
+        }
+      }
+    }
+  }
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      font-size: .5cm * nth($sizes, $i);
+
+      .word {
+        min-height: 2.5rem * nth($sizes, $i);
+
+        .index {
+          min-width: 3.5rem * nth($sizes, $i);
+        }
+
+        .details {
+          .label {
+            padding: .1rem * nth($sizes, $i) .5rem * nth($sizes, $i);
+          }
+
+          .info, .category {
+            font-size: .25cm * nth($sizes, $i);
+            padding: .05rem * nth($sizes, $i) .5rem * nth($sizes, $i);
+          }
+        }
+      }
     }
   }
 }

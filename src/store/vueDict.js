@@ -2,6 +2,7 @@ import TargetLanguages from '@/data/TargetLanguages.js'
 import JapaneseVocabs from '@/data/JapaneseVocabs.json'
 import GreekVocabs from '@/data/GreekVocabs.json'
 import NorwegianVocabs from '@/data/NorwegianVocabs.json'
+import GermanVocabs from '@/data/GermanVocabs.json'
 import GameObjects from '@/data/GameObjects.json'
 
 export default {
@@ -24,9 +25,10 @@ export default {
     vocabulary: [
       JapaneseVocabs,
       GreekVocabs,
-      NorwegianVocabs
+      NorwegianVocabs,
+      GermanVocabs
     ],
-    activeWordPacks: ['s_1', 's_2', 's_3'],
+    activeWordPacks: ['s_1', 's_2', 's_3', 's_4'],
     selectedWordPackKey: '',
     selectedWordPack: null,
     selectedWordPackCategoriesScroll: 0,
@@ -221,6 +223,63 @@ export default {
         foreignAlphabet: vocabs.foreignAlphabet,
         lang: vocabs.lang
       }
+    },
+    getSearchedWords: (state, getters, rootState) => (type, searchString) => {
+      let foundWords = []
+      state.vocabulary.forEach((wordPack) => {
+        if (wordPack.targetLanguage === rootState.targetLanguage &&
+            state.activeWordPacks.includes(getters.getWordPackKey(wordPack))) {
+          wordPack.categories.forEach((category) => {
+            category.words.forEach((word) => {
+              let regex = new RegExp('.*' + searchString.toLowerCase().split('').join('.{0,3}') + '.*')
+              if (word[type] && word[rootState.lang] && regex.test(word[type].toLowerCase())) {
+                foundWords.push({
+                  category: '[' + wordPack.tag + '] ' + category[rootState.lang],
+                  word: JSON.parse(JSON.stringify(word)),
+                  weight: getters.getLevenshteinDistance(searchString.toLowerCase(), word[type].toLowerCase())
+                })
+              }
+            })
+          })
+        }
+      })
+
+      return foundWords.sort((a, b) => {
+        if (a.weight > b.weight) {
+          return 1
+        } else if (a.weight < b.weight) {
+          return -1
+        }
+        return 0
+      })
+    },
+    getLevenshteinDistance: (state) => (word1, word2) => {
+      let d = new Array(word1.length + 1).fill(0).map(() => new Array(word2.length + 1).fill(0))
+
+      for (let i = 0; i <= word1.length; i++) {
+        d[i][0] = i
+      }
+      for (let j = 0; j <= word2.length; j++) {
+        d[0][j] = j
+      }
+
+      for (let i = 1; i <= word1.length; i++) {
+        for (let j = 1; j <= word2.length; j++) {
+          let cost = 0
+          if (word1[i] !== word2[j]) {
+            cost = 5
+          }
+
+          // this is where the magic happens
+          d[i][j] = Math.min(d[i - 1][j] + 5, d[i][j - 1] + 1, d[i - 1][j - 1] + cost)
+
+          if (i > 1 && j > 1 && word1[i] === word2[j - 1] && word1[i - 1] === word2[j]) {
+            d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 0.5)
+          }
+        }
+      }
+
+      return d[word1.length][word2.length]
     },
     getCategoryPlayed: (state) => (id) => {
       let data = state.categoriesPlayed.find(entry => entry.id === id)

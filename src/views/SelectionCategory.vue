@@ -261,11 +261,7 @@ export default {
             destination = 'training'
           }
 
-          if (destination === 'training' && this.$store.state.targetLanguage !== 'japanese') {
-            this.$router.push({ name: name })
-          } else {
-            this.$router.push({ name: name, query: { sub: destination } })
-          }
+          this.$router.push({ name: name, query: { sub: destination } })
           break
         case 'packages':
           this.$store.commit('vueDict/setDestination', this.destination)

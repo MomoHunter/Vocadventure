@@ -18,7 +18,7 @@
                    @click="showModal()" :disabled="selectedPacks.length === 0" />
     </div>
     <div class="button-container flex-row flex-wrap">
-      <ButtonBasic class="width-half" icon="arrow-left" color="red" text="packagesButton3" @click="navTo('category')" />
+      <ButtonBasic class="width-half" icon="arrow-left" color="red" text="packagesButton3" @click="navTo('back')" />
       <ButtonBasic class="width-half" icon="plus" color="green" text="packagesButton4"
                    @click="navTo('edit', getNewPackKey())" />
       <ButtonBasic class="width-full" icon="trash" color="red" text="packagesButton7" @click="switchMode('delete')" />
@@ -234,12 +234,13 @@ export default {
           this.selectedWordPack = wordPack
           this.showNotification()
         }
-      } else {
+      } else { // back
         window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
         if (this.$store.state.vueDict.destination !== '') {
           this.$router.push({ name: 'category', params: { destination: this.$store.state.vueDict.destination } })
+          this.$store.commit('vueDict/setDestination', '')
         } else {
-          this.$router.push({ name: 'category', params: { destination: 'training' } })
+          this.$router.push({ name: 'dictionary' })
         }
       }
     }

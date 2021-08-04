@@ -1,0 +1,59 @@
+{
+  "index": 4,
+  "tag": "GER",
+  "name": "Standard German",
+  "targetLanguage": "german",
+  "supportedLanguages": [
+      "english"
+  ],
+  "isCustom": false,
+  "categories": [
+    {
+      "index": 1,
+      "english": "Greetings",
+      "words": [
+        {
+          "english": "Hello",
+          "german": "Hallo",
+          "difficulty": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "english": "Fruits",
+      "words": [
+        {
+          "english": "Apple",
+          "german": "Apfel",
+          "difficulty": 1
+        },
+        {
+          "english": "Banana",
+          "german": "Banane",
+          "difficulty": 1
+        },
+        {
+          "english": "Pear",
+          "german": "Birne",
+          "difficulty": 1
+        },
+        {
+          "english": "Orange",
+          "german": "Orange",
+          "difficulty": 1
+        },
+        {
+          "english": "Cherry",
+          "german": "Kirsche",
+          "difficulty": 1
+        },
+        {
+          "english": "Dragonfruit",
+          "german": "Drachenfrucht",
+          "difficulty": 2
+        }
+      ]
+    }
+  ]
+}

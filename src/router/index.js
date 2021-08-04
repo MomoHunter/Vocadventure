@@ -9,6 +9,7 @@ import PackagesEditCategories from '@/views/PackagesEditCategories.vue'
 import PackagesEditWord from '@/views/PackagesEditWord.vue'
 import TheTraining from '@/views/TheTraining.vue'
 import TheWriteKanji from '@/views/TheWriteKanji.vue'
+import TheDictionary from '@/views/TheDictionary.vue'
 import TheAdventure from '@/views/TheAdventure.vue'
 import AdventureIntro from '@/views/AdventureIntro.vue'
 import AdventureMapNavigation from '@/views/AdventureMapNavigation.vue'
@@ -33,6 +34,7 @@ const routes = [
       forward: [
         'settings',
         'category',
+        'dictionary',
         'shop'
       ]
     }
@@ -115,6 +117,17 @@ const routes = [
     component: TheWriteKanji,
     meta: {
       forward: []
+    }
+  },
+  {
+    path: '/dictionary',
+    name: 'dictionary',
+    component: TheDictionary,
+    meta: {
+      forward: [
+        'packages',
+        'dictionaryDetails'
+      ]
     }
   },
   {

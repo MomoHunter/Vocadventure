@@ -22,5 +22,12 @@ export default {
     'foreignAlphabet': '',
     'lang': ['nb-NO', 'nb_NO'],
     'flag': 'no'
+  },
+  'german': {
+    'signs': null,
+    'latinAlphabet': 'german',
+    'foreignAlphabet': '',
+    'lang': ['de-DE', 'de_DE'],
+    'flag': 'de'
   }
 }

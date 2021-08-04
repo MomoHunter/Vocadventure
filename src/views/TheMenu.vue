@@ -27,12 +27,22 @@
         </transition>
         <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms delay-c-350ms"
                     leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
-          <ButtonBasic v-show="isVisible(2)" class="menu width-half" color="info-2" icon="pen"
+          <ButtonBasic v-show="isVisible(2) && isJapanese" class="menu width-half" color="info-2" icon="pen"
                        text="menuTrainingButton2" @click="navTo('category', 'writeKanji')" />
         </transition>
         <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms delay-c-350ms"
                     leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
-          <ButtonBasic v-show="isVisible(2)" class="menu width-full" color="red" icon="arrow-left"
+          <ButtonBasic v-show="isVisible(2) && isJapanese" class="menu width-half" color="red" icon="arrow-left"
+                       text="menuTrainingButton3" @click="navTo('menu')" />
+        </transition>
+        <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms delay-c-350ms"
+                    leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+          <ButtonBasic v-show="isVisible(2)" class="menu width-half" color="green-light" icon="search"
+                       text="menuTrainingButton4" @click="navTo('dictionary')" />
+        </transition>
+        <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms delay-c-350ms"
+                    leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
+          <ButtonBasic v-show="isVisible(2) && !isJapanese" class="menu width-full" color="red" icon="arrow-left"
                        text="menuTrainingButton3" @click="navTo('menu')" />
         </transition>
       </div>
@@ -96,6 +106,9 @@ export default {
     }
   },
   computed: {
+    isJapanese () {
+      return this.$store.state.targetLanguage === 'japanese'
+    },
     subtitleText () {
       return ['menuSubtitle', this.$store.state.targetLanguage]
     },
@@ -151,10 +164,6 @@ export default {
       }
     },
     navTo (name, additional = '') {
-      if (name === 'menu' && additional === 'training' && this.$store.state.targetLanguage !== 'japanese') {
-        name = 'category'
-      }
-
       switch (name) {
         case 'menu':
           if (additional === '') {
