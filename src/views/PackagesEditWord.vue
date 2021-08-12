@@ -182,6 +182,7 @@ export default {
         this.$store.commit('vueDict/addWordToSelectedPack', wordObject)
       }
       this.navTo()
+      this.$store.commit('vueDict/setSelectedWordPackChanged', true)
     },
     showNotification () {
       this.notificationVisible = true

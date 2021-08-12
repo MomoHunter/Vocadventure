@@ -154,6 +154,7 @@ export default {
           this.categories.push(this.newCategoryData)
         }
         this.hideNewCategory()
+        this.$store.commit('vueDict/setSelectedWordPackChanged', true)
       }
     },
     removeEntry (data, categoryIndex) {
@@ -200,6 +201,7 @@ export default {
     deleteCategory (categoryIndex) {
       this.categories = this.categories.filter(category => category.index !== categoryIndex)
       this.expandedCategories = this.expandedCategories.filter(index => index !== categoryIndex)
+      this.$store.commit('vueDict/setSelectedWordPackChanged', true)
     },
     confirmRemoveWord (categoryIndex, index) {
       let wordName = ''
@@ -235,6 +237,7 @@ export default {
     deleteWord (categoryIndex, index) {
       let category = this.categories.find(category => category.index === categoryIndex)
       category.words.splice(index, 1)
+      this.$store.commit('vueDict/setSelectedWordPackChanged', true)
     },
     showNewCategory (categoryIndex = -1) {
       this.newCategoryData = {}

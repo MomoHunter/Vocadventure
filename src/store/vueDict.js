@@ -34,6 +34,7 @@ export default {
     selectedWordPackCategoriesScroll: 0,
     selectedWordPackCategoryIndex: -1,
     selectedWordPackWordIndex: -1,
+    selectedWordPackChanged: false,
     difficulty: 1,
     wordCount: 10,
     reversed: false,
@@ -409,6 +410,9 @@ export default {
     },
     setSelectedWordPackCategoriesScroll (state, scroll) {
       state.selectedWordPackCategoriesScroll = scroll
+    },
+    setSelectedWordPackChanged (state, changed) {
+      state.selectedWordPackChanged = changed
     },
     addWordToSelectedPack (state, wordObject) {
       state.selectedWordPack.categories.find(category => category.index === state.selectedWordPackCategoryIndex)

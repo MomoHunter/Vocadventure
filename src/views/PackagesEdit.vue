@@ -14,7 +14,8 @@
                      :active="wordPack.supportedLanguages.includes(key)" :key="key" @click="toggleSupportedLang(key)" />
     </div>
     <div class="button-container flex-row flex-wrap">
-      <ButtonBasic class="width-half" icon="times" color="red" text="packagesEditButton2" @click="showModal()" />
+      <ButtonBasic class="width-half" icon="times" color="red" text="packagesEditButton2"
+                   @click="checkForChanges(true)" />
       <ButtonBasic class="width-half" icon="check" color="green" text="packagesEditButton3"
                    @click="navTo('packages', true)" />
       <ButtonBasic class="width-full" icon="list" color="info" text="packagesEditButton1"
@@ -65,13 +66,18 @@ export default {
     if (to.name === 'packages') {
       if (this.$store.state.vueDict.selectedWordPackKey === '') {
         next()
-      } else if (!this.modalVisible) {
+        return
+      }
+
+      this.checkForChanges()
+      if (!this.modalVisible && this.$store.state.vueDict.selectedWordPackChanged) {
         this.showModal()
         next(false)
       } else {
         this.$store.commit('vueDict/closeModal')
         this.$store.commit('vueDict/setSelectedWordPackKey', '')
         this.$store.commit('vueDict/setSelectedWordPack', null)
+        this.$store.commit('vueDict/setSelectedWordPackChanged', false)
         next()
       }
     } else {
@@ -142,6 +148,30 @@ export default {
     },
     hideNotification () {
       this.notificationVisible = false
+    },
+    checkForChanges (navigation = false) {
+      let changed = false
+      if (this.currentWordPack) {
+        if (this.wordPack.tag !== this.currentWordPack.tag || this.wordPack.name !== this.currentWordPack.name ||
+            this.wordPack.targetLanguage !== this.currentWordPack.targetLanguage ||
+            this.wordPack.supportedLanguages.length !== this.currentWordPack.supportedLanguages.length) {
+          changed = true
+        }
+        for (let lang of this.currentWordPack.supportedLanguages) {
+          if (!this.wordPack.supportedLanguages.includes(lang)) {
+            changed = true
+            break
+          }
+        }
+      }
+
+      if (changed) {
+        this.$store.commit('vueDict/setSelectedWordPackChanged', true)
+      }
+
+      if (navigation) {
+        this.navTo('packages')
+      }
     },
     showModal () {
       this.$store.commit('vueDict/showModal', {

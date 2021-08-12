@@ -27,8 +27,12 @@
       </div>
     </div>
     <div class="flex-grow flex-column overflow-auto">
-      <ButtonText v-for="category in categoriesAvailable" class="single-1 width-full" color="info"
-                  :text="category.categoryName" :key="category.id" @click="addCategory(category)" />
+      <div v-for="category in categoriesAvailable" class="flex-row width-full" :key="category.id">
+        <ButtonText class="single-1 flex-grow" color="info" :text="category.categoryName"
+                    @click="addCategory(category)" />
+        <ButtonText v-if="getCategoryInfo(category.id) !== ''" class="single-1" color="info-2"
+                    :text="getCategoryInfo(category.id)" @click="addCategory(category)" />
+      </div>
     </div>
     <div class="button-container flex-row flex-wrap">
       <ButtonBasic class="width-half" color="red" icon="arrow-left" text="categoryButton6" @click="navTo('menu')" />
@@ -78,6 +82,7 @@ export default {
       notificationVisible: false,
       searchString: '',
       sortIcon: 'sort',
+      sortType: 'sortStandard',
       sortFunction (that) {
         return (a, b) => { return 0 }
       }
@@ -123,6 +128,14 @@ export default {
     },
     getCategoryName (id) {
       return this.$store.getters['vueDict/getCategories'].find(entry => entry.id === id).categoryName
+    },
+    getCategoryInfo (id) {
+      if (this.sortType.startsWith('sortDiff')) {
+        return this.getDifficulty(id).toFixed(2).toLocaleString()
+      } else if (this.sortType.startsWith('sortPlayed')) {
+        return this.getCategoryPlayed(id).count.toLocaleString()
+      }
+      return ''
     },
     addCategory (category) {
       this.$store.commit('vueDict/addCategory', category.id)
@@ -249,6 +262,8 @@ export default {
           break
         default:
       }
+
+      this.sortType = type
     },
     getDifficulty (id) {
       return this.$store.getters['vueDict/getCategoryDifficulty'](id)
