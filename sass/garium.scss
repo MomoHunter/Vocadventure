@@ -1275,7 +1275,7 @@ html * {
 }
 
 .package-category-entry {
-  .details {
+  .title, .details {
     display: flex;
     align-items: center;
     border-top: 1px solid $color-border;
@@ -1290,11 +1290,22 @@ html * {
     }
   }
 
+  .index {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   @for $i from 1 through length($sizes) {
     &.#{nth($size-classes, $i)} {
-      .details {
-        font-size: .5cm * nth($sizes, $i);
+      font-size: .5cm * nth($sizes, $i);
+
+      .word, .title {
         padding: .15rem * nth($sizes, $i) .45rem * nth($sizes, $i);
+      }
+      
+      .index {
+        min-width: 2.5rem * nth($sizes, $i);
       }
     }
   }
