@@ -11,8 +11,8 @@
         <TextWithIcon :title="words.latinAlphabet" :text="latinWord" :leftIcon="ttsIconLatin" :leftIconColor="ttsIconColor"
                       @click-left="speak('latin')" />
         <TextWithIcon v-if="hasForeignWords" :title="words.foreignAlphabet" :text="foreignWord" :leftIcon="ttsIconForeign"
-                      :leftIconColor="ttsIconColor" rightIcon="edit" rightIconColor="green" @click-left="speak('foreign')"
-                      @click-right="navTo('writeKanji')" />
+                      :leftIconColor="ttsIconColor" :rightIcon="isJapanese ? 'edit' : ''" rightIconColor="green"
+                      @click-left="speak('foreign')" @click-right="navTo('writeKanji')" />
       </div>
     </div>
     <TheProgressBar class="width-full border-top" color="green" :value="currentWord + 1" :maxValue="words.words.length" />
