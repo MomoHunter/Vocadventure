@@ -7,7 +7,7 @@ import Styles from '@/canvas/styles.json'
  * @param {number} width
  * @param {number} height
  * @param {string} styleKey defines the appearance of the rectangle
- * @param {CanvasRenderingContext2D} context
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
  */
 export function drawCanvasRect (x, y, width, height, styleKey, context) {
   let style = Styles.rect[styleKey]
@@ -22,7 +22,7 @@ export function drawCanvasRect (x, y, width, height, styleKey, context) {
  * @param {number} width
  * @param {number} height
  * @param {string} styleKey defines the appearance of the rectangle
- * @param {CanvasRenderingContext2D} context
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
  */
 export function drawCanvasRectBorder (x, y, width, height, styleKey, context) {
   let style = Styles.border[styleKey]
@@ -37,7 +37,7 @@ export function drawCanvasRectBorder (x, y, width, height, styleKey, context) {
  * @param {number} startX x-coordinate of the start point
  * @param {number} startY y-coordinate of the start point
  * @param {string} styleKey defines the appearance of the rectangle
- * @param {CanvasRenderingContext2D} context
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
  * @param {Array<number>} points an array of points where the line should go through
  */
 export function drawCanvasLine (startX, startY, styleKey, context, ...points) {
@@ -65,7 +65,7 @@ export function drawCanvasLine (startX, startY, styleKey, context, ...points) {
  * @param {number} y y-coordinate for the positioning point
  * @param {string} text text to be written
  * @param {string} styleKey defines the appearance of the text
- * @param {CanvasRenderingContext2D} context
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
  */
 export function drawCanvasText (x, y, text, styleKey, context) {
   let style = Styles.text[styleKey]
@@ -79,7 +79,17 @@ export function drawCanvasText (x, y, text, styleKey, context) {
   }
 }
 
-export function drawCanvasTextSpecial (x, y, text, styleKey, size, context) {
+/**
+ * Draw text onto the used canvas with the option to resize it without changing the style.
+ * Its positioning is affected by the attributes saved inside the used Style-Key.
+ * @param {number} x x-coordinate for the positioning point
+ * @param {number} y y-coordinate for the positioning point
+ * @param {string} text text to be written
+ * @param {string} styleKey defines the appearance of the text
+ * @param {string} size the size of the text
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
+ */
+export function drawCanvasTextResizable (x, y, text, styleKey, size, context) {
   let style = Styles.text[styleKey]
   context.textAlign = style.align
   context.textBaseline = style.baseline
@@ -98,7 +108,7 @@ export function drawCanvasTextSpecial (x, y, text, styleKey, size, context) {
  * @param {number} y y-coordinate for the positioning point
  * @param {string} text text for witch the outline should be drawn
  * @param {string} styleKey defines the appearance of the text
- * @param {CanvasRenderingContext2D} context
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
  */
 export function drawCanvasTextBorder (x, y, text, styleKey, context) {
   let style = Styles.border[styleKey]
@@ -194,7 +204,7 @@ export function drawCanvasImagePart (x, y, spriteKey, cD, optWidth = 0, optHeigh
  * Return the width of text that will be on the canvas
  * @param {string} styleKey key of the used style
  * @param {string} text measured text
- * @param {CanvasRenderingContext2D} context context of the used canvas
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
  * @returns {TextMetrics} returns the width of the text
  */
 export function getTextWidth (text, styleKey, context) {
@@ -203,7 +213,7 @@ export function getTextWidth (text, styleKey, context) {
   context.textBaseline = style.baseline
   context.font = style.font
   context.fillStyle = `rgba(${style.color})`
-  return context.measureText(text)
+  return context.measureText(text).width
 }
 
 /**
@@ -211,7 +221,7 @@ export function getTextWidth (text, styleKey, context) {
  * @param {number} centerX x-center of the circle
  * @param {number} centerY y-center of the circle
  * @param {number} radius radius of the circle
- * @param {CanvasRenderingContext2D} context context of the used canvas
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
  */
 export function clipCanvasCircle (centerX, centerY, radius, context) {
   context.beginPath()
@@ -224,7 +234,7 @@ export function clipCanvasCircle (centerX, centerY, radius, context) {
  * @param {number} centerY y-center of the circle
  * @param {number} radius radius of the circle
  * @param {string} styleKey defines the appearance of the circle
- * @param {CanvasRenderingContext2D} context context of the used canvas
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
  */
 export function drawCanvasCircle (centerX, centerY, radius, styleKey, context) {
   let design = Styles.rect[styleKey]

@@ -496,9 +496,9 @@ export default {
     itemEquipped (itemId, type) {
       switch (type) {
         case 'weapons':
-          return itemId === this.$store.state.canvasDict.character.hand
+          return itemId === '' // this.$store.state.canvasDict.character.hand
         case 'armor':
-          return itemId === this.$store.state.canvasDict.character.armor
+          return itemId === '' // this.$store.state.canvasDict.character.armor
         default:
           return false
       }

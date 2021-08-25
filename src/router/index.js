@@ -11,7 +11,7 @@ import TheTraining from '@/views/TheTraining.vue'
 import TheWriteKanji from '@/views/TheWriteKanji.vue'
 import TheDictionary from '@/views/TheDictionary.vue'
 import TheAdventure from '@/views/TheAdventure.vue'
-import AdventureIntro from '@/views/AdventureIntro.vue'
+import AdventureStory from '@/views/AdventureStory.vue'
 import AdventureMapNavigation from '@/views/AdventureMapNavigation.vue'
 import AdventureHome from '@/views/AdventureHome.vue'
 import AdventureInputs from '@/views/AdventureInputs.vue'
@@ -146,9 +146,9 @@ const routes = [
         }
       },
       {
-        path: 'intro',
-        name: 'adventureIntro',
-        component: AdventureIntro,
+        path: 'story',
+        name: 'adventureStory',
+        component: AdventureStory,
         meta: {
           forward: [],
           delay: [

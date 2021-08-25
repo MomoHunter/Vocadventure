@@ -150,36 +150,36 @@ export default {
             this.$store.commit('vueDict/unlockItem', item)
           }
         }
-        if (data.watchedIntro) {
-          this.$store.commit('canvasDict/setWatchedIntro')
-        }
-        if (data.gameState) {
-          this.$store.commit('canvasDict/changeGameState', data.gameState)
-        }
-        if (data.mapOffset) {
-          this.$store.commit('canvasDict/setMapOffset', data.mapOffset)
-        }
-        if (data.currentLevel) {
-          this.$store.commit('canvasDict/setLevel', data.currentLevel)
-        }
-        if (data.currentBuilding) {
-          this.$store.commit('canvasDict/setBuilding', data.currentBuilding)
-        }
-        if (data.character) {
-          this.$store.commit('canvasDict/setCharacter', data.character)
-        }
-        if (data.unlockedBuildings) {
-          this.$store.commit('canvasDict/changeUnlockedBuilding', data.unlockedBuildings)
-        }
-        if (data.collectables) {
-          this.$store.commit('canvasDict/changeCollectables', data.collectables)
-        }
-        if (data.playerHealth) {
-          this.$store.commit('canvasDict/setPlayerHealth', data.playerHealth)
-        }
-        if (data.dynamicLevelData) {
-          this.$store.commit('canvasDict/changeDynamicLevelData', data.dynamicLevelData)
-        }
+        // if (data.watchedIntro) {
+        //   this.$store.commit('canvasDict/setWatchedIntro')
+        // }
+        // if (data.gameState) {
+        //   this.$store.commit('canvasDict/changeGameState', data.gameState)
+        // }
+        // if (data.mapOffset) {
+        //   this.$store.commit('canvasDict/setMapOffset', data.mapOffset)
+        // }
+        // if (data.currentLevel) {
+        //   this.$store.commit('canvasDict/setLevel', data.currentLevel)
+        // }
+        // if (data.currentBuilding) {
+        //   this.$store.commit('canvasDict/setBuilding', data.currentBuilding)
+        // }
+        // if (data.character) {
+        //   this.$store.commit('canvasDict/setCharacter', data.character)
+        // }
+        // if (data.unlockedBuildings) {
+        //   this.$store.commit('canvasDict/changeUnlockedBuilding', data.unlockedBuildings)
+        // }
+        // if (data.collectables) {
+        //   this.$store.commit('canvasDict/changeCollectables', data.collectables)
+        // }
+        // if (data.playerHealth) {
+        //   this.$store.commit('canvasDict/setPlayerHealth', data.playerHealth)
+        // }
+        // if (data.dynamicLevelData) {
+        //   this.$store.commit('canvasDict/changeDynamicLevelData', data.dynamicLevelData)
+        // }
         if (data.updateSuccessful) {
           if (navigator.serviceWorker) {
             navigator.serviceWorker.getRegistration().then((registration) => {

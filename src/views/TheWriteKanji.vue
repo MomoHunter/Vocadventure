@@ -150,7 +150,7 @@ export default {
     },
     activateDraw () {
       let theme = this.$store.state.theme
-      Helper.drawCanvasTextSpecial(
+      Helper.drawCanvasTextResizable(
         this.checkCanvas.width / 2, this.checkCanvas.height / 2.08, this.currentLetter, 'writeKanji' + theme,
         this.$refs.letter.style.fontSize, this.checkContext
       )

@@ -1,5 +1,19 @@
 {
   "text": {
+    "storyF0P1Text": {
+      "font": "600 13pt Nunito",
+      "color": "0, 0, 0, 1",
+      "align": "left",
+      "baseline": "middle",
+      "borderKey": ""
+    },
+    "storyF0P2StarMap": {
+      "font": "bold 12pt Nunito",
+      "color": "222, 51, 51, 1",
+      "align": "center",
+      "baseline": "middle",
+      "borderKey": ""
+    },
     "standard": {
       "font": "12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
       "color": "0, 0, 0, 1",

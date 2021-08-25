@@ -29,5 +29,12 @@ export default {
     'foreignAlphabet': '',
     'lang': ['de-DE', 'de_DE'],
     'flag': 'de'
+  },
+  'spanish': {
+    'signs': null,
+    'latinAlphabet': 'spanish',
+    'foreignAlphabet': '',
+    'lang': ['es-ES', 'es_ES'],
+    'flag': 'es'
   }
 }
