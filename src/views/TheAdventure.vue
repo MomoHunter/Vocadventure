@@ -15,7 +15,6 @@
 <script>
 // import * as Helper from '@/canvas/helper.js'
 // import { AnimationObject } from '@/canvas/elements.js'
-import * as Fragment0 from '@/canvas/fragments/fragment0.js'
 import HeroBasic from '@/components/HeroBasic.vue'
 
 export default {
@@ -28,10 +27,7 @@ export default {
       loopActivated: false,
       noRouting: false,
       enterTransition: '',
-      leaveTransition: '',
-      fragments: [
-        Fragment0
-      ]
+      leaveTransition: ''
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -63,6 +59,9 @@ export default {
     },
     canvasHeight () {
       return this.$store.getters['canvasDict/canvasHeight']
+    },
+    fragments () {
+      return this.$store.state.canvasDict.fragments
     }
   },
   methods: {

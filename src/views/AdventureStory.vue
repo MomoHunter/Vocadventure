@@ -31,6 +31,9 @@ export default {
     }
   },
   computed: {
+    fragments () {
+      return this.$store.state.canvasDict.fragments
+    },
     storyFragment () {
       return this.$store.state.canvasDict.storyFragment
     },
@@ -53,12 +56,9 @@ export default {
     },
     continueAction () {
       if (this.displayedStoryText === this.storyText) {
-        let nextKey = `adventureStoryF${this.storyFragment}P${this.storyPart + 1}`
-        if (nextKey !== this.getText(nextKey)) {
+        if (this.fragments[this.storyFragment].updateCalls.length > this.storyPart) {
           this.$store.commit('canvasDict/setStoryPart', this.storyPart + 1)
           this.$emit('click', { type: 'continueStory' })
-        } else {
-          this.$emit('click', { type: 'skipStoryPart' })
         }
         this.displayedStoryText = ''
         this.currentTextIndex = 0

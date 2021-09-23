@@ -1,93 +1,112 @@
 import * as Helper from '@/canvas/helper.js'
 
+export const updateCalls = [
+  eyeUpdate,
+  arrowUpdate,
+  eyeUpdate
+]
+
+export const drawCalls = [
+  videoDraw,
+  mapDraw,
+  videoDraw
+]
+
 let data = {
   arrowPos: {
     earth: 0,
     destination: 0
   },
-  textPos: 0
+  eye: {
+    counter: 100,
+    startFrame: 0,
+    finished: false
+  }
 }
 
 export function update (that) {
-  switch (that.$store.state.canvasDict.storyPart) {
-    case 1:
-    case 3:
-      textUpdate(that)
-      break
-    case 2:
-      arrowUpdate(that)
-      break
-    default:
+  if (updateCalls[that.$store.state.canvasDict.storyPart - 1] !== null) {
+    updateCalls[that.$store.state.canvasDict.storyPart - 1].call(that)
   }
 }
 
 export function draw (that) {
-  switch (that.$store.state.canvasDict.storyPart) {
-    case 1:
-    case 3:
-      videoDraw(that)
-      break
-    case 2:
-      mapDraw(that)
-      break
-    default:
+  if (drawCalls[that.$store.state.canvasDict.storyPart - 1] !== null) {
+    drawCalls[that.$store.state.canvasDict.storyPart - 1].call(that)
   }
 }
 
 /**
- * updates the position of the text on the bottom of the screen
- * @param {Object} that The Vue-Adventure object
+ * updates the counter for the eye animation
  */
-function textUpdate (that) {
-  let textLength = Helper.getTextWidth(
-    that.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', that.$store.state.canvasDict.context
-  )
-
-  data.textPos -= 1
-
-  if (Math.abs(data.textPos) >= textLength) {
-    data.textPos = 0
+function eyeUpdate () {
+  data.eye.counter -= 1
+  if (data.eye.counter === 0) {
+    data.eye.startFrame = this.$store.state.canvasDict.frameNo
+  }
+  if (data.eye.finished) {
+    data.eye.finished = false
+    data.eye.counter = Math.floor(Math.random() * 120) + 60
   }
 }
 
-function arrowUpdate (that) {
-  data.arrowPos.earth = 120 + Math.sin(that.$store.state.canvasDict.frameNo / 20) * 3
-  data.arrowPos.destination = 35 + Math.sin(that.$store.state.canvasDict.frameNo / 20) * 3
+/**
+ * updates the arrow position for the star map
+ */
+function arrowUpdate () {
+  data.arrowPos.earth = 120 + Math.sin(this.$store.state.canvasDict.frameNo / 20) * 3
+  data.arrowPos.destination = 35 + Math.sin(this.$store.state.canvasDict.frameNo / 20) * 3
 }
 
-function videoDraw (that) {
-  const cD = that.$store.state.canvasDict
-  let textLength = Helper.getTextWidth(
-    that.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', cD.context
-  )
+/**
+ * draws the video with the guy speaking
+ */
+function videoDraw () {
+  const cD = this.$store.state.canvasDict
+  // let textLength = Helper.getTextWidth(
+  //   that.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', cD.context
+  // )
+
+  Helper.drawCanvasImage(0, 0, 'story_video_background', cD)
+  Helper.drawCanvasSmallImage(40, 30, 0.378, 'story_star_map', cD)
+  Helper.drawCanvasImage(0, 0, 'story_video_foreground', cD)
+
+  if (data.eye.counter <= 0) {
+    data.eye.finished = Helper.drawCanvasImageOnce(283, 63, 'story_video_moderator_eyes', cD, data.eye.startFrame, 4)
+  } else {
+    Helper.drawCanvasImage(283, 63, 'story_video_moderator_eyes_open', cD)
+  }
 
   if (cD.storyWritesText) {
-    Helper.drawCanvasImage(0, 0, 'story_videobackground_anim', cD, 8)
+    Helper.drawCanvasImage(292, 90, 'story_video_moderator_mouth', cD, 8)
   } else {
-    Helper.drawCanvasImage(0, 0, 'story_videobackground_1', cD)
+    Helper.drawCanvasImage(292, 90, 'story_video_moderator_mouth_closed', cD)
   }
 
-  Helper.drawCanvasText(
-    data.textPos, 260, that.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', cD.context
-  )
-  Helper.drawCanvasText(
-    data.textPos + Math.ceil(textLength), 260, that.$store.getters.getText('adventureStoryF0P1Text'),
-    'storyF0P1Text', cD.context
-  )
+  // Helper.drawCanvasText(
+  //   data.textPos, 260, that.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', cD.context
+  // )
+  // Helper.drawCanvasText(
+  //   data.textPos + Math.ceil(textLength), 260, that.$store.getters.getText('adventureStoryF0P1Text'),
+  //   'storyF0P1Text', cD.context
+  // )
 }
 
-function mapDraw (that) {
-  const cD = that.$store.state.canvasDict
+/**
+ * draws the star map with two arrows
+ */
+function mapDraw () {
+  const cD = this.$store.state.canvasDict
 
   Helper.drawCanvasImage(0, 0, 'story_star_map', cD)
   Helper.drawCanvasImage(30, data.arrowPos.earth, 'story_red_arrow', cD)
   Helper.drawCanvasText(
-    42.5, data.arrowPos.earth - 10, that.$store.getters.getText('adventureStoryF0P2Label1'),
+    42.5, data.arrowPos.earth - 10, this.$store.getters.getText('adventureStoryF0P2Label1'),
     'storyF0P2StarMap', cD.context
   )
   Helper.drawCanvasImage(530, data.arrowPos.destination, 'story_red_arrow', cD)
   Helper.drawCanvasText(
-    542.5, data.arrowPos.destination - 10, that.$store.getters.getText('adventureStoryF0P2Label2'),
+    542.5, data.arrowPos.destination - 10, this.$store.getters.getText('adventureStoryF0P2Label2'),
     'storyF0P2StarMap', cD.context
   )
 }

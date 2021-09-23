@@ -1,4 +1,5 @@
 import Spritesheet from '@/assets/Spritesheet.png'
+import * as Fragment0 from '@/canvas/fragments/fragment0.js'
 // import GameObjects from '@/data/GameObjects.json'
 
 export default {
@@ -15,6 +16,9 @@ export default {
     animationStartFrame: 0,
 
     // watchedIntro: false,
+    fragments: [
+      Fragment0
+    ],
     storyFragment: 0,
     storyPart: 1,
     storyWritesText: true, // is active, when text is progressed in story
@@ -28,11 +32,21 @@ export default {
      * If isAnimated is true, y-pos is an array, otherwise just a single number.
      */
     spriteDict: {
-      'story_red_arrow': [false, 0, 0, 25, 30],
-      'story_star_map': [false, 0, 31, 600, 300],
-      'story_videobackground_0': [false, 0, 332, 600, 300],
-      'story_videobackground_1': [false, 0, 633, 600, 300],
-      'story_videobackground_anim': [true, 0, [934, 1235], 600, 300]
+      'other_exparebrium_logo': [false, 0, 0, 100, 100],
+      'story_red_arrow': [false, 101, 0, 25, 30],
+      'story_star_map': [false, 101, 31, 600, 300],
+      'story_video_background': [false, 101, 332, 600, 300],
+      'story_video_foreground': [false, 101, 633, 600, 300],
+      'story_video_moderator_eyes': [true, 101, [934, 950, 966, 982], 43, 15],
+      'story_video_moderator_eyes_open': [false, 101, 998, 43, 15],
+      'story_video_moderator_mouth': [true, 101, [1014, 1023], 23, 8],
+      'story_video_moderator_mouth_closed': [false, 101, 1032, 23, 8],
+      'story_old_moderator_eyes_0': [false, 702, 0, 55, 10],
+      'story_old_moderator_eyes_1': [false, 702, 11, 55, 10],
+      'story_old_red_arrow': [false, 702, 22, 25, 30],
+      'story_old_star_map': [false, 702, 53, 600, 300],
+      'story_old_videobackground': [false, 702, 354, 600, 300],
+      'story_old_videobackground_anim': [true, 702, [655, 956], 600, 300]
     },
     // end spriteDict
     gameState: 'story',

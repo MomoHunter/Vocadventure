@@ -142,19 +142,17 @@ export function getSpriteData (spriteKey, cD) {
  * @param {CanvasDict} cD
  * @param {number} animationSpeed the speed of the animation, default: 12
  * @param {boolean} useCustomStart if animation should count from cD.animationStartFrame
- * @param {number} rotation  gives the rotation in degree
+ * @param {number} rotation gives the rotation in degree
  */
-export function drawCanvasImage (x, y, spriteKey, cD, animationSpeed = 12, useCustomStart = false, rotation = 0) {
+export function drawCanvasImage (x, y, spriteKey, cD, animationSpeed = 12, customStart = 0, rotation = 0) {
   let { full: spriteData } = getSpriteData(spriteKey, cD)
   let [isAnim, spriteX, spriteY, spriteWidth, spriteHeight] = spriteData
 
-  if (isAnim && useCustomStart) {
-    let frameNo = Math.floor((cD.frameNo - cD.animationStartFrame) / animationSpeed) % spriteY.length
-    spriteY = spriteY[frameNo]
-  } else if (isAnim) {
-    let frameNo = Math.floor(cD.frameNo / animationSpeed) % spriteY.length
+  if (isAnim) {
+    let frameNo = Math.floor((cD.frameNo - customStart) / animationSpeed) % spriteY.length
     spriteY = spriteY[frameNo]
   }
+
   if (rotation !== 0) {
     cD.context.translate(x + spriteWidth / 2, y + spriteHeight / 2)
     cD.context.rotate(rotation / 180 * Math.PI)
@@ -172,6 +170,33 @@ export function drawCanvasImage (x, y, spriteKey, cD, animationSpeed = 12, useCu
       x, y, spriteWidth, spriteHeight
     )
   }
+}
+
+/**
+ * Draws an animation once and then returns true
+ * @param {number} x x-coordinate of the top-left corner
+ * @param {number} y y-coordinate of the top-left corner
+ * @param {string} spriteKey defines thich sprite should be drawn
+ * @param {number} startFrame sets the startframe of the animation
+ * @param {CanvasDict} cD
+ * @param {number} animationSpeed the speed of the animation, default: 12
+ * @returns {boolean} is animation finished
+ */
+export function drawCanvasImageOnce (x, y, spriteKey, cD, startFrame, animationSpeed = 12) {
+  let { full: spriteData } = getSpriteData(spriteKey, cD)
+  let [, spriteX, spriteY, spriteWidth, spriteHeight] = spriteData
+  let frames = spriteY.length
+
+  let frameNo = Math.floor((cD.frameNo - startFrame) / animationSpeed) % frames
+  spriteY = spriteY[frameNo]
+
+  cD.context.drawImage(
+    cD.spritesheet,
+    spriteX, spriteY, spriteWidth, spriteHeight,
+    x, y, spriteWidth, spriteHeight
+  )
+
+  return frameNo > 0 && Math.floor(((cD.frameNo + 1) - startFrame) / animationSpeed) % frames === 0
 }
 
 /**
@@ -201,11 +226,37 @@ export function drawCanvasImagePart (x, y, spriteKey, cD, optWidth = 0, optHeigh
 }
 
 /**
+ * Draw a Sprite-Image onto the used canvas.
+ * Its size is determined by the defined data of the given Sprite.
+ * @param {number} x          x-coordinate of the top-left corner
+ * @param {number} y          y-coordinate of the top-left corner
+ * @param {number} percentage percentage for the new size from the old size between 0 and 1
+ * @param {string} spriteKey  defines which sprite should be drawn
+ * @param {CanvasDict} cD
+ * @param {number} animationSpeed the speed of the animation, default: 12
+ */
+export function drawCanvasSmallImage (x, y, percentage, spriteKey, cD, animationSpeed = 12) {
+  let { full: spriteData } = getSpriteData(spriteKey, cD)
+  let [isAnim, spriteX, spriteY, spriteWidth, spriteHeight] = spriteData
+
+  if (isAnim) {
+    let frameNo = Math.floor(cD.frameNo / animationSpeed) % spriteY.length
+    spriteY = spriteY[frameNo]
+  }
+
+  cD.context.drawImage(
+    cD.spritesheet,
+    spriteX, spriteY, spriteWidth, spriteHeight,
+    x, y, spriteWidth * percentage, spriteHeight * percentage
+  )
+}
+
+/**
  * Return the width of text that will be on the canvas
- * @param {string} styleKey key of the used style
- * @param {string} text measured text
+ * @param {string} styleKey                  key of the used style
+ * @param {string} text                      measured text
  * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
- * @returns {TextMetrics} returns the width of the text
+ * @returns {TextMetrics}                    returns the width of the text
  */
 export function getTextWidth (text, styleKey, context) {
   let style = Styles.text[styleKey]
