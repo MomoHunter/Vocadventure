@@ -541,6 +541,7 @@ html * {
       display: flex;
       justify-content: center;
       align-items: center;
+      z-index: 1;
     }
 
     .word {
@@ -568,6 +569,10 @@ html * {
           display: flex;
           align-items: center;
         }
+      }
+
+      &.disabled {
+        opacity: .4;
       }
 
       @each $color in $colors {

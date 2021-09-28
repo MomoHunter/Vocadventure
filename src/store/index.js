@@ -63,6 +63,7 @@ export default new Vuex.Store({
         updateSuccessful: state.updateSuccessful,
         status: state.vueDict.status,
         categoriesPlayed: state.vueDict.categoriesPlayed,
+        deactivatedWords: state.vueDict.deactivatedWords,
         activeWordPacks: state.vueDict.activeWordPacks,
         inventory: state.vueDict.inventory,
         unlockedItems: state.vueDict.unlockedItems,

@@ -17,6 +17,7 @@ export default {
     categoriesPlayed: [],
     writeKanji: null,
     trainingStash: null,
+    deactivatedWords: [],
     destination: '',
     boughtItems: [],
     currentShopPage: 1,
@@ -176,7 +177,7 @@ export default {
         lang: targetLangInfo.lang
       }
     },
-    getVocabsWithCategories: (state, getters, rootState) => {
+    getVocabsWithCategories: (state, getters, rootState) => (isShuffled) => {
       let objects = {}
       let targetLangInfo = TargetLanguages[rootState.targetLanguage]
 
@@ -193,25 +194,29 @@ export default {
         }).words))
       }
 
+      if (isShuffled) {
+        for (let category in objects) {
+          let wordsShuffled = []
+
+          for (let i = 0; i < objects[category].length; i++) {
+            objects[category][i].index = i
+          }
+
+          while (objects[category].length > 0) {
+            let random = Math.floor(Math.random() * objects[category].length)
+            wordsShuffled.push(objects[category].splice(random, 1)[0])
+          }
+
+          objects[category] = wordsShuffled
+        }
+      }
+
       return {
         words: objects,
         latinAlphabet: targetLangInfo.latinAlphabet,
         foreignAlphabet: targetLangInfo.foreignAlphabet,
         lang: targetLangInfo.lang
       }
-    },
-    getShuffledVocabs: (state, getters) => {
-      let vocabs = getters.getFullVocabs
-      let wordsShuffled = []
-
-      while (vocabs.words.length > 0) {
-        let random = Math.floor(Math.random() * vocabs.words.length)
-        wordsShuffled.push(vocabs.words.splice(random, 1)[0])
-      }
-
-      vocabs.words = wordsShuffled
-
-      return vocabs
     },
     getVocabsWithDifficulty: (state, getters) => {
       let vocabs = getters.getFullVocabs
@@ -286,6 +291,10 @@ export default {
       let data = state.categoriesPlayed.find(entry => entry.id === id)
       return data || { id: id, count: 0 }
     },
+    isWordDeactivated: (state) => (category, index) => {
+      let foundIndex = state.deactivatedWords.findIndex(word => word.category === category && word.index === index)
+      return foundIndex !== -1
+    },
     getCoins: (state) => {
       return state.status.find(status => status.id === 'coins')
     },
@@ -356,6 +365,24 @@ export default {
     },
     setTrainingStash (state, object) {
       state.trainingStash = object
+    },
+    changeDeactivatedWords (state, deactivatedWords) {
+      state.deactivatedWords = deactivatedWords
+    },
+    addDeactivatedWord (state, object) {
+      state.deactivatedWords.push(object)
+    },
+    removeDeactivatedWord (state, object) {
+      let foundIndex = state.deactivatedWords.findIndex(
+        word => word.category === object.category && word.index === object.index
+      )
+
+      if (foundIndex !== -1) {
+        state.deactivatedWords.splice(foundIndex, 1)
+      }
+    },
+    removeDeactivatedWordsByCategory (state, category) {
+      state.deactivatedWords = state.deactivatedWords.filter(word => !word.category.startsWith(category))
     },
     setDestination (state, destination) {
       state.destination = destination

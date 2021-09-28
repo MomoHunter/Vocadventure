@@ -108,7 +108,7 @@ export default {
   },
   computed: {
     words () {
-      return this.$store.getters['vueDict/getVocabsWithCategories']
+      return this.$store.getters['vueDict/getVocabsWithCategories'](false)
     },
     currentLetter () {
       if (this.currentWord[this.words.foreignAlphabet]) {
