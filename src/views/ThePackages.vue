@@ -254,7 +254,9 @@ export default {
         case 'button2':
           for (let key of this.selectedPacks) {
             this.$store.dispatch('deleteEntry', { name: 'wordpackdb', store: 'wordPacks', pack: this.getWordPack(key) })
+            this.$store.commit('vueDict/removeDeactivatedWordsByCategory', key)
           }
+          window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
           this.$store.commit('vueDict/closeModal')
           this.switchMode('standard')
           break

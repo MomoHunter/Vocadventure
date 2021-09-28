@@ -139,6 +139,9 @@ export default {
         if (data.categoriesPlayed) {
           this.$store.commit('vueDict/changeCategoriesPlayed', data.categoriesPlayed)
         }
+        if (data.deactivatedWords) {
+          this.$store.commit('vueDict/changeDeactivatedWords', data.deactivatedWords)
+        }
         if (data.activeWordPacks) {
           this.$store.commit('vueDict/changeActiveWordPacks', data.activeWordPacks)
         }

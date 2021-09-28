@@ -4,7 +4,7 @@
       <div class="category">
         {{ getText(getCategory(key)) }}
       </div>
-      <div class="word" :class="{ 'selected': key === selected.category && index === selected.index }"
+      <div class="word" :class="{ 'selected': isSelected(key, index), 'disabled': isDisabled(key, index) }"
            v-for="(word, index) in words" :key="index">
         <div class="index">
           {{ index + 1 }}
@@ -17,7 +17,7 @@
             {{ word[vocabs.foreignAlphabet] }}
           </div>
         </div>
-        <ButtonIcon class="single-1" icon="arrow-right" color="green"
+        <ButtonIcon class="single-1" :icon="getIcon(key, index)" :color="getColor(key, index)"
                     @click="$emit('click', { category: key, index: index })" />
       </div>
     </div>
@@ -32,7 +32,11 @@ export default {
   props: {
     color: String,
     selected: Object,
-    vocabs: Object
+    vocabs: Object,
+    mode: {
+      type: String,
+      default: 'select'
+    }
   },
   components: {
     ButtonIcon
@@ -48,6 +52,34 @@ export default {
       return this.$store.getters['vueDict/getCategories'].find(category => {
         return category.id === id
       }, this).categoryName
+    },
+    getIcon (category, index) {
+      if (this.mode === 'select') {
+        return 'arrow-right'
+      } else {
+        if (this.$store.getters['vueDict/isWordDeactivated'](category, index)) {
+          return 'times'
+        } else {
+          return 'check'
+        }
+      }
+    },
+    getColor (category, index) {
+      if (this.mode === 'select') {
+        return 'green'
+      } else {
+        if (this.$store.getters['vueDict/isWordDeactivated'](category, index)) {
+          return 'red'
+        } else {
+          return 'green'
+        }
+      }
+    },
+    isSelected (category, index) {
+      return category === this.selected.category && index === this.selected.index
+    },
+    isDisabled (category, index) {
+      return this.$store.getters['vueDict/isWordDeactivated'](category, index)
     }
   }
 }
