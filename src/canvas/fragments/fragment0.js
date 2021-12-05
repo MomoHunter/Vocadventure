@@ -202,7 +202,8 @@ function videoDraw (zoom = 1, yShift = 0) {
 
   if (data.eye.counter <= 0) {
     data.eye.finished = Helper.drawCanvasSmallImageOnce(
-      halfWidth - (17 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes', cD, data.eye.startFrame, 4
+      halfWidth - (17 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes', cD,
+      data.eye.startFrame, 4
     )
   } else {
     Helper.drawCanvasSmallImage(
@@ -266,6 +267,11 @@ function phoneZoomDraw () {
 
     Helper.drawCanvasSmallImage(
       -107 + data.handShift, 300 - data.handShift + data.phone.shift.y, 6 - zoom * 2, 'story_f0_hand', cD
+    )
+    Helper.drawCanvasTextResizable(
+      halfWidth * (1 - videoZoom) + 10 * videoZoom, halfHeight * (1 - videoZoom) + data.phone.shift.y + 10 * videoZoom,
+      this.$store.getters.getText('adventureStoryF0P10Title'), 'storyF0P10VideoTitle', (14 * videoZoom).toString(),
+      cD.context
     )
   }
 }

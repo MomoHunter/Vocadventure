@@ -14,6 +14,13 @@
       "baseline": "middle",
       "borderKey": ""
     },
+    "storyF0P10VideoTitle": {
+      "font": "pt Nunito",
+      "color": "184, 184, 193, 1",
+      "align": "left",
+      "baseline": "top",
+      "borderKey": ""
+    },
     "standard": {
       "font": "12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
       "color": "0, 0, 0, 1",
