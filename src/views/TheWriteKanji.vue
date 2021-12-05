@@ -79,6 +79,7 @@ export default {
       checkContext: null,
       drawActive: false,
       isDrawing: false,
+      currentIdentifier: null,
       lastPoint: null,
       startResult: 0,
       drawScore: '0.00'
@@ -179,7 +180,10 @@ export default {
         switch (type) {
           case 'touch':
             for (let touch of event.changedTouches) {
-              if (touch.identifier === 0) {
+              if (this.currentIdentifier === null) {
+                this.currentIdentifier = touch.identifier
+              }
+              if (this.currentIdentifier === touch.identifier) {
                 this.lastPoint = {
                   x: touch.pageX - clientRect.left,
                   y: touch.pageY - clientRect.top
@@ -204,6 +208,7 @@ export default {
     setDrawOff () {
       this.isDrawing = false
       this.lastPoint = null
+      this.currentIdentifier = null
       let imageDraw = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height)
       let imageCheck = this.checkContext.getImageData(0, 0, this.checkCanvas.width, this.checkCanvas.height)
       let result = 0
@@ -230,7 +235,7 @@ export default {
         switch (type) {
           case 'touch':
             for (let touch of event.changedTouches) {
-              if (touch.identifier === 0) {
+              if (this.currentIdentifier === touch.identifier) {
                 pos = {
                   x: touch.pageX - clientRect.left,
                   y: touch.pageY - clientRect.top

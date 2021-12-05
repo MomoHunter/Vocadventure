@@ -221,6 +221,7 @@ export default {
         }
         this.currentlySelected.category = this.words.words[this.currentWord].category
         this.currentlySelected.index = this.words.words[this.currentWord].index
+        this.ttsPlaying = false
       }
     },
     nextWord () {
@@ -234,6 +235,7 @@ export default {
         }
         this.currentlySelected.category = this.words.words[this.currentWord].category
         this.currentlySelected.index = this.words.words[this.currentWord].index
+        this.ttsPlaying = false
       }
     },
     toggleDropdown () {

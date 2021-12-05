@@ -123,6 +123,10 @@ html * {
   }
 }
 
+button {
+  margin: 0px;
+}
+
 .text {
   @each $color in $colors {
     &-#{nth($color, 1)} {
@@ -426,6 +430,7 @@ html * {
   }
 
   .select {
+    -webkit-appearance: none;
     appearance: none;
     background: transparent;
     color: $color-font;

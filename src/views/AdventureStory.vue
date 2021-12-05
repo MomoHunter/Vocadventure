@@ -40,8 +40,11 @@ export default {
     storyPart () {
       return this.$store.state.canvasDict.storyPart
     },
+    storyTextId () {
+      return `adventureStoryF${this.storyFragment}P${this.storyPart}`
+    },
     storyText () {
-      return this.getText(`adventureStoryF${this.storyFragment}P${this.storyPart}`)
+      return this.getText(this.storyTextId)
     },
     storyTextCharacter () {
       return this.storyText.split('')
@@ -55,14 +58,14 @@ export default {
       return this.$store.getters.getText(id)
     },
     continueAction () {
-      if (this.displayedStoryText === this.storyText) {
+      if (this.displayedStoryText === this.storyText || this.storyText === this.storyTextId) {
         if (this.fragments[this.storyFragment].updateCalls.length > this.storyPart) {
           this.$store.commit('canvasDict/setStoryPart', this.storyPart + 1)
           this.$emit('click', { type: 'continueStory' })
         }
-        this.displayedStoryText = ''
-        this.currentTextIndex = 0
-        this.$store.commit('canvasDict/setStoryWritesText', true)
+        // this.displayedStoryText = ''
+        // this.currentTextIndex = 0
+        // this.$store.commit('canvasDict/setStoryWritesText', true)
       } else {
         this.displayedStoryText = this.storyText
         this.$store.commit('canvasDict/setStoryWritesText', false)
@@ -71,13 +74,22 @@ export default {
   },
   watch: {
     newCharacterTrigger () {
-      if (this.$store.state.canvasDict.storyWritesText) {
+      if (this.$store.state.canvasDict.storyWritesText && this.storyText !== this.storyTextId) {
         this.displayedStoryText += this.storyTextCharacter[this.currentTextIndex]
         if (this.currentTextIndex < this.storyText.length - 1) {
           this.currentTextIndex += 1
         } else {
           this.$store.commit('canvasDict/setStoryWritesText', false)
         }
+      }
+    },
+    storyPart () {
+      this.displayedStoryText = ''
+      this.currentTextIndex = 0
+      if (this.storyText === this.storyTextId) {
+        this.$store.commit('canvasDict/setStoryWritesText', false)
+      } else {
+        this.$store.commit('canvasDict/setStoryWritesText', true)
       }
     }
   }

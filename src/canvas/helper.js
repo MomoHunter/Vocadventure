@@ -252,6 +252,34 @@ export function drawCanvasSmallImage (x, y, percentage, spriteKey, cD, animation
 }
 
 /**
+ * Draws an animation once and then returns true
+ * @param {number} x x-coordinate of the top-left corner
+ * @param {number} y y-coordinate of the top-left corner
+ * @param {number} percentage percentage for the new size from the old size between 0 and 1
+ * @param {string} spriteKey defines thich sprite should be drawn
+ * @param {number} startFrame sets the startframe of the animation
+ * @param {CanvasDict} cD
+ * @param {number} animationSpeed the speed of the animation, default: 12
+ * @returns {boolean} is animation finished
+ */
+export function drawCanvasSmallImageOnce (x, y, percentage, spriteKey, cD, startFrame, animationSpeed = 12) {
+  let { full: spriteData } = getSpriteData(spriteKey, cD)
+  let [, spriteX, spriteY, spriteWidth, spriteHeight] = spriteData
+  let frames = spriteY.length
+
+  let frameNo = Math.floor((cD.frameNo - startFrame) / animationSpeed) % frames
+  spriteY = spriteY[frameNo]
+
+  cD.context.drawImage(
+    cD.spritesheet,
+    spriteX, spriteY, spriteWidth, spriteHeight,
+    x, y, spriteWidth * percentage, spriteHeight * percentage
+  )
+
+  return frameNo > 0 && Math.floor(((cD.frameNo + 1) - startFrame) / animationSpeed) % frames === 0
+}
+
+/**
  * Return the width of text that will be on the canvas
  * @param {string} styleKey                  key of the used style
  * @param {string} text                      measured text
