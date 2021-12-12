@@ -144,7 +144,7 @@ export function getSpriteData (spriteKey, cD) {
  * @param {boolean} useCustomStart if animation should count from cD.animationStartFrame
  * @param {number} rotation gives the rotation in degree
  */
-export function drawCanvasImage (x, y, spriteKey, cD, animationSpeed = 12, customStart = 0, rotation = 0) {
+export function drawCanvasImage (x, y, spriteKey, cD, animationSpeed = 12, customStart = 0, rotation = 0, rotationMode = 0) {
   let { full: spriteData } = getSpriteData(spriteKey, cD)
   let [isAnim, spriteX, spriteY, spriteWidth, spriteHeight] = spriteData
 
@@ -154,15 +154,43 @@ export function drawCanvasImage (x, y, spriteKey, cD, animationSpeed = 12, custo
   }
 
   if (rotation !== 0) {
-    cD.context.translate(x + spriteWidth / 2, y + spriteHeight / 2)
-    cD.context.rotate(rotation / 180 * Math.PI)
-    cD.context.drawImage(
-      cD.spritesheet,
-      spriteX, spriteY, spriteWidth, spriteHeight,
-      -spriteWidth / 2, -spriteHeight / 2, spriteWidth, spriteHeight
-    )
-    cD.context.rotate(-(rotation / 180 * Math.PI))
-    cD.context.translate(-(x + spriteWidth / 2), -(y + spriteHeight / 2))
+    switch (rotationMode) {
+      case 0:
+
+        cD.context.translate(x + spriteWidth / 2, y + spriteHeight / 2)
+        cD.context.rotate(rotation / 180 * Math.PI)
+        cD.context.drawImage(
+          cD.spritesheet,
+          spriteX, spriteY, spriteWidth, spriteHeight,
+          -spriteWidth / 2, -spriteHeight / 2, spriteWidth, spriteHeight
+        )
+        cD.context.rotate(-(rotation / 180 * Math.PI))
+        cD.context.translate(-(x + spriteWidth / 2), -(y + spriteHeight / 2))
+        break
+
+      case 1:
+
+        cD.context.translate(x + spriteWidth / 2, y)
+        cD.context.rotate(rotation / 180 * Math.PI)
+        cD.context.drawImage(
+          cD.spritesheet,
+          spriteX, spriteY, spriteWidth, spriteHeight,
+          -spriteWidth / 2, 0, spriteWidth, spriteHeight
+        )
+        cD.context.rotate(-(rotation / 180 * Math.PI))
+        cD.context.translate(-(x + spriteWidth / 2), -y)
+        break
+
+      default:
+
+        cD.context.rotate(rotation / 180 * Math.PI)
+        cD.context.drawImage(
+          cD.spritesheet,
+          spriteX, spriteY, spriteWidth, spriteHeight,
+          -spriteWidth / 2, -spriteHeight / 2, spriteWidth, spriteHeight
+        )
+        cD.context.rotate(-(rotation / 180 * Math.PI))
+    }
   } else {
     cD.context.drawImage(
       cD.spritesheet,

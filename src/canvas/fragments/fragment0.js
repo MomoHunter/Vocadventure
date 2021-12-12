@@ -10,7 +10,10 @@ export const updateCalls = [
   ceilingUpdate,
   pictureUpdate,
   ceilingUpdate,
-  standUpUpdate
+  standUpUpdate,
+  clockUpdate,
+  clock2Update,
+  woogleUpdate
 ]
 
 export const drawCalls = [
@@ -23,7 +26,10 @@ export const drawCalls = [
   phoneZoomDraw,
   pictureDraw,
   phoneZoomDraw,
-  phoneZoomDraw
+  phoneZoomDraw,
+  clockDraw,
+  clockDraw,
+  woogleDraw
 ]
 
 let data = {
@@ -42,11 +48,31 @@ let data = {
       x: 0,
       y: 0
     },
-    shake: 0
+    shake: 0,
+    textShift: 0
   },
   pictureZoom: 0,
   handShift: 0,
-  pause: 0
+  pause: 0,
+  clock: {
+    multiplicator: 1,
+    hour: 180,
+    minute: 180,
+    second: 180,
+    years: 0,
+    manipulated: false
+  },
+  woogle: {
+    cars: [
+      {
+        x: 450,
+        y: 200,
+        spriteKey: 'story_f0_woogle_truck',
+        directionUp: true
+      }
+    ],
+    newCarCountdown: 100
+  }
 }
 
 export function update (that) {
@@ -179,6 +205,99 @@ function standUpUpdate () {
     if (data.phone.zoom < 0) {
       data.phone.zoom = 0
     }
+  } else if (data.pause < 60) {
+    data.pause += 1
+  } else if (data.phone.textShift < 60) {
+    data.phone.textShift += 1
+    if (data.phone.textShift === 60) {
+      this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
+    }
+  }
+}
+
+function clockUpdate () {
+  if (data.pause < 60) {
+    data.pause = 60
+  }
+  if (data.pause < 90) {
+    data.pause += 1
+  } else {
+    data.clock.hour = (data.clock.hour - (data.clock.multiplicator * 0.008)) % 360
+    data.clock.minute = (data.clock.minute - (data.clock.multiplicator * 0.1)) % 360
+    data.clock.second = (data.clock.second - (data.clock.multiplicator * 6)) % 360
+    if (data.clock.years <= 24.5) {
+      data.clock.multiplicator *= 1.02
+    } else if (data.clock.multiplicator > 1) {
+      if (!data.clock.manipulated) {
+        data.clock.hour -= 113.5
+        data.clock.minute += 23.5
+        data.clock.second -= 36
+        data.clock.manipulated = true
+      }
+      data.clock.multiplicator /= 1.02
+    } else {
+      data.clock.multiplicator = 0
+      data.clock.hour = 180
+      data.clock.minute = 180
+      data.clock.second = 180
+      data.clock.years = 50
+      this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
+    }
+    data.clock.years += data.clock.multiplicator / 7000
+  }
+}
+
+function clock2Update () {
+  if (data.clock.years !== 50) {
+    data.clock.hour = 180
+    data.clock.minute = 180
+    data.clock.second = 180
+    data.clock.years = 50
+    data.pause = 90
+  }
+}
+
+function woogleUpdate () {
+  for (let car of data.woogle.cars) {
+    if (car.directionUp) {
+      car.x += 4
+      car.y -= 1
+    } else {
+      car.x -= 4
+      car.y += 1
+    }
+  }
+
+  data.woogle.cars = data.woogle.cars.filter(car =>
+    (car.directionUp && car.x < this.canvasWidth) || (!car.directionUp && car.y < this.canvasHeight)
+  )
+
+  data.woogle.newCarCountdown -= 1
+
+  if (data.woogle.newCarCountdown <= 0) {
+    if (Math.random() < 0.5) {
+      const spriteKeys = ['story_f0_woogle_truck']
+
+      let spriteData = Helper.getSpriteData(
+        spriteKeys[Math.floor(spriteKeys.length * Math.random())], this.$store.state.canvasDict
+      )
+      data.woogle.cars.push({
+        x: 180 - spriteData.spriteWidth,
+        y: 300,
+        spriteKey: spriteData.key,
+        directionUp: true
+      })
+    } else {
+      const spriteKeys = ['story_f0_woogle_car']
+
+      data.woogle.cars.unshift({
+        x: 600,
+        y: 170,
+        spriteKey: spriteKeys[Math.floor(spriteKeys.length * Math.random())],
+        directionUp: false
+      })
+    }
+    data.woogle.newCarCountdown = Math.floor(60 * Math.random()) + 40
   }
 }
 
@@ -262,14 +381,21 @@ function phoneZoomDraw () {
 
     Helper.drawCanvasSmallImage(
       halfWidth * (1 - videoZoom), halfHeight * (1 - videoZoom) + data.phone.shift.y, videoZoom,
-      'story_f0_video_start', cD
+      'story_f0_video_start_background', cD
     )
+    if (data.pause < 30) {
+      Helper.drawCanvasSmallImage(
+        halfWidth - 50 * videoZoom, halfHeight - 50 * videoZoom + data.phone.shift.y, videoZoom,
+        'story_f0_video_start_button', cD
+      )
+    }
 
     Helper.drawCanvasSmallImage(
       -107 + data.handShift, 300 - data.handShift + data.phone.shift.y, 6 - zoom * 2, 'story_f0_hand', cD
     )
     Helper.drawCanvasTextResizable(
-      halfWidth * (1 - videoZoom) + 10 * videoZoom, halfHeight * (1 - videoZoom) + data.phone.shift.y + 10 * videoZoom,
+      halfWidth * (1 - videoZoom) + 10 * videoZoom,
+      halfHeight * (1 - videoZoom) + data.phone.shift.y + 10 * videoZoom - data.phone.textShift,
       this.$store.getters.getText('adventureStoryF0P10Title'), 'storyF0P10VideoTitle', (14 * videoZoom).toString(),
       cD.context
     )
@@ -284,4 +410,37 @@ function pictureDraw () {
   let zoom = (Math.sin(data.pictureZoom / 750) + 1) / 2
 
   Helper.drawCanvasSmallImage(-zoom * 40, -zoom * 20, 1 - ((1 - zoom) * (2 / 17)), 'story_f0_parents', cD)
+}
+
+function clockDraw () {
+  const cD = this.$store.state.canvasDict
+
+  Helper.drawCanvasImage(0, 0, 'story_f0_video_clock_base', cD)
+  Helper.drawCanvasImage(this.canvasWidth / 2 - 5, 175, 'story_f0_video_clock_hour', cD, 12, 0, data.clock.hour, 1)
+  Helper.drawCanvasImage(this.canvasWidth / 2 - 4, 175, 'story_f0_video_clock_minute', cD, 12, 0, data.clock.minute, 1)
+  Helper.drawCanvasImage(this.canvasWidth / 2 - 1, 175, 'story_f0_video_clock_second', cD, 12, 0, data.clock.second, 1)
+  Helper.drawCanvasImage(this.canvasWidth / 2 - 5, 170, 'story_f0_video_clock_center', cD)
+
+  if (data.clock.years > 0.5) {
+    Helper.drawCanvasText(
+      this.canvasWidth / 2, 40,
+      this.$store.getters.getText('adventureStoryF0P11Before', Math.floor(data.clock.years)),
+      'storyF0P11VideoText', cD.context
+    )
+  } else {
+    Helper.drawCanvasText(
+      this.canvasWidth / 2, 40, this.$store.getters.getText('adventureStoryF0P11Today'), 'storyF0P11VideoText',
+      cD.context
+    )
+  }
+}
+
+function woogleDraw () {
+  const cD = this.$store.state.canvasDict
+
+  Helper.drawCanvasImage(0, 0, 'story_f0_woogle', cD)
+
+  for (let car of data.woogle.cars) {
+    Helper.drawCanvasImage(car.x, car.y, car.spriteKey, cD)
+  }
 }
