@@ -66,13 +66,14 @@ export function drawCanvasLine (startX, startY, styleKey, context, ...points) {
  * @param {string} text text to be written
  * @param {string} styleKey defines the appearance of the text
  * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
+ * @param {number} opacity defines the opacity of the text
  */
-export function drawCanvasText (x, y, text, styleKey, context) {
+export function drawCanvasText (x, y, text, styleKey, context, opacity = 1) {
   let style = Styles.text[styleKey]
   context.textAlign = style.align
   context.textBaseline = style.baseline
   context.font = style.font
-  context.fillStyle = `rgba(${style.color})`
+  context.fillStyle = `rgba(${style.color}, ${opacity})`
   context.fillText(text, x, y)
   if (style.borderKey !== '') {
     drawCanvasTextBorder(x, y, text, style.borderKey, context)
@@ -144,13 +145,17 @@ export function getSpriteData (spriteKey, cD) {
  * @param {boolean} useCustomStart if animation should count from cD.animationStartFrame
  * @param {number} rotation gives the rotation in degree
  */
-export function drawCanvasImage (x, y, spriteKey, cD, animationSpeed = 12, customStart = 0, rotation = 0, rotationMode = 0) {
+export function drawCanvasImage (x, y, spriteKey, cD, animationSpeed = 12, customStart = 0, rotation = 0, rotationMode = 0, opacity = 1) {
   let { full: spriteData } = getSpriteData(spriteKey, cD)
   let [isAnim, spriteX, spriteY, spriteWidth, spriteHeight] = spriteData
 
   if (isAnim) {
     let frameNo = Math.floor((cD.frameNo - customStart) / animationSpeed) % spriteY.length
     spriteY = spriteY[frameNo]
+  }
+
+  if (opacity !== 1) {
+    cD.context.globalAlpha = opacity
   }
 
   if (rotation !== 0) {
@@ -197,6 +202,10 @@ export function drawCanvasImage (x, y, spriteKey, cD, animationSpeed = 12, custo
       spriteX, spriteY, spriteWidth, spriteHeight,
       x, y, spriteWidth, spriteHeight
     )
+  }
+
+  if (opacity !== 1) {
+    cD.context.globalAlpha = 1.0
   }
 }
 

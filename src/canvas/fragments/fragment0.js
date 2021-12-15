@@ -13,7 +13,11 @@ export const updateCalls = [
   standUpUpdate,
   clockUpdate,
   clock2Update,
-  woogleUpdate
+  woogleUpdate,
+  chromanderUpdate,
+  chromander2Update,
+  chromeParkUpdate,
+  constructionUpdate
 ]
 
 export const drawCalls = [
@@ -29,7 +33,11 @@ export const drawCalls = [
   phoneZoomDraw,
   clockDraw,
   clockDraw,
-  woogleDraw
+  woogleDraw,
+  chromanderDraw,
+  chromanderDraw,
+  chromeParkDraw,
+  constructionDraw
 ]
 
 let data = {
@@ -72,6 +80,38 @@ let data = {
       }
     ],
     newCarCountdown: 100
+  },
+  chromander: {
+    pause: 0,
+    opacity: {
+      nowNew: 0,
+      headline: 0,
+      logo: 0,
+      bottomText: 0,
+      eye: 0
+    },
+    logoRotation: 0
+  },
+  chromePark: {
+    pause: 0,
+    shift: 0,
+    opacity: 0
+  },
+  construction: {
+    roller: {
+      shift: 150,
+      startFrame: 0,
+      pause: 0
+    },
+    crane: {
+      rope: 0,
+      shift: 0,
+      pause: 0
+    },
+    tree: {
+      x: 0,
+      y: 0
+    }
   }
 }
 
@@ -301,6 +341,151 @@ function woogleUpdate () {
   }
 }
 
+function chromanderUpdate () {
+  if (data.chromander.pause < 30) {
+    data.chromander.pause += 1
+  } else if (data.chromander.opacity.nowNew < 1 && data.chromander.pause === 30) {
+    data.chromander.opacity.nowNew += 0.05
+  } else if (data.chromander.pause < 90) {
+    data.chromander.pause += 1
+  } else if (data.chromander.opacity.nowNew > 0 && data.chromander.pause === 90) {
+    data.chromander.opacity.nowNew -= 0.05
+  } else if (data.chromander.opacity.headline < 1) {
+    data.chromander.opacity.headline += 0.05
+  } else if (data.chromander.pause < 120) {
+    data.chromander.pause += 1
+  } else if (data.chromander.opacity.logo < 1) {
+    data.chromander.opacity.logo += 0.05
+    if (data.chromander.opacity.logo > 1) {
+      data.chromander.opacity.logo = 1
+    }
+  } else if (data.chromander.pause < 150) {
+    data.chromander.pause += 1
+  } else if (data.chromander.opacity.bottomText < 1) {
+    data.chromander.opacity.bottomText += 0.05
+  } else if (data.chromander.pause < 300) {
+    data.chromander.pause += 1
+  } else if (data.chromander.opacity.eye < 1) {
+    data.chromander.opacity.eye += 0.005
+    if (data.chromander.opacity.eye > 1) {
+      data.chromander.opacity.eye = 1
+    }
+  } else {
+    this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
+  }
+
+  if (data.chromander.opacity.logo > 0) {
+    data.chromander.logoRotation += 1
+    data.chromander.logoRotation %= 360
+  }
+}
+
+function chromander2Update () {
+  if (data.chromander.opacity.nowNew > 0) {
+    data.chromander.opacity.nowNew = 0
+  }
+  if (data.chromander.opacity.headline < 1) {
+    data.chromander.opacity.headline = 1
+  }
+  if (data.chromander.opacity.logo < 1) {
+    data.chromander.opacity.logo = 1
+  }
+  if (data.chromander.opacity.bottomText < 1) {
+    data.chromander.opacity.bottomText = 1
+  }
+  if (data.chromander.opacity.eye < 1) {
+    data.chromander.opacity.eye = 1
+  }
+
+  if (data.chromander.opacity.logo > 0) {
+    data.chromander.logoRotation += 1
+    data.chromander.logoRotation %= 360
+  }
+}
+
+function chromeParkUpdate () {
+  if (data.chromePark.pause < 60) {
+    data.chromePark.pause += 1
+  } else if (data.chromePark.shift < 150) {
+    data.chromePark.shift += 2
+  } else if (data.chromePark.opacity < 1) {
+    data.chromePark.opacity += 0.01
+    if (data.chromePark.opacity > 1) {
+      data.chromePark.opacity = 1
+    }
+  }
+}
+
+function constructionUpdate () {
+  let frames = this.$store.state.canvasDict.frameNo - data.construction.roller.startFrame
+
+  if (frames / 200 < Math.PI * 2) {
+    data.construction.roller.shift = Math.cos(frames / 200) * 150
+  } else if (data.construction.roller.pause < 240) {
+    data.construction.roller.pause += 1
+  } else {
+    data.construction.roller.pause = 0
+    data.construction.roller.startFrame = this.$store.state.canvasDict.frameNo
+  }
+
+  if (data.construction.crane.shift < 55 && data.construction.crane.pause === 0) {
+    data.construction.crane.shift += 0.3
+    if (data.construction.crane.shift > 55) {
+      data.construction.crane.shift = 55
+    }
+    data.construction.tree.x = data.construction.crane.shift
+  } else if (data.construction.crane.rope < 20 && data.construction.crane.pause === 0) {
+    data.construction.crane.rope += 0.3
+    if (data.construction.crane.rope > 20) {
+      data.construction.crane.rope = 20
+    }
+    data.construction.tree.y = data.construction.crane.rope
+  } else if (data.construction.crane.pause < 60) {
+    data.construction.crane.pause += 1
+  } else if (data.construction.crane.rope > 0 && data.construction.crane.pause === 60) {
+    data.construction.crane.rope -= 0.3
+    if (data.construction.crane.rope < 0) {
+      data.construction.crane.rope = 0
+    }
+  } else if (data.construction.crane.shift > 0 && data.construction.crane.pause === 60) {
+    data.construction.crane.shift -= 0.3
+    if (data.construction.crane.shift < 0) {
+      data.construction.crane.shift = 0
+    }
+  } else if (data.construction.crane.pause < 180) {
+    data.construction.crane.pause += 1
+  } else if (data.construction.crane.shift < 55 && data.construction.crane.pause === 180) {
+    data.construction.crane.shift += 0.3
+    if (data.construction.crane.shift > 55) {
+      data.construction.crane.shift = 55
+    }
+  } else if (data.construction.crane.rope < 20 && data.construction.crane.pause === 180) {
+    data.construction.crane.rope += 0.3
+    if (data.construction.crane.rope > 20) {
+      data.construction.crane.rope = 20
+    }
+  } else if (data.construction.crane.pause < 240) {
+    data.construction.crane.pause += 1
+  } else if (data.construction.crane.rope > 0 && data.construction.crane.pause === 240) {
+    data.construction.crane.rope -= 0.3
+    if (data.construction.crane.rope < 0) {
+      data.construction.crane.rope = 0
+    }
+    data.construction.tree.y = data.construction.crane.rope
+  } else if (data.construction.crane.shift > 0 && data.construction.crane.pause === 240) {
+    data.construction.crane.shift -= 0.3
+    if (data.construction.crane.shift < 0) {
+      data.construction.crane.shift = 0
+    }
+    data.construction.tree.x = data.construction.crane.shift
+  } else if (data.construction.crane.pause < 300) {
+    data.construction.crane.pause += 1
+    if (data.construction.crane.pause === 300) {
+      data.construction.crane.pause = 0
+    }
+  }
+}
+
 /**
  * draws the video with the guy speaking
  */
@@ -443,4 +628,60 @@ function woogleDraw () {
   for (let car of data.woogle.cars) {
     Helper.drawCanvasImage(car.x, car.y, car.spriteKey, cD)
   }
+}
+
+function chromanderDraw () {
+  const cD = this.$store.state.canvasDict
+  const logoData = Helper.getSpriteData('story_f0_chromander', cD)
+  const eyeData = Helper.getSpriteData('story_f0_chromander_eye', cD)
+
+  Helper.drawCanvasText(
+    this.canvasWidth / 2, this.canvasHeight / 2, this.$store.getters.getText('adventureStoryF0P14NowNew'),
+    'storyF0P11VideoText', cD.context, data.chromander.opacity.nowNew
+  )
+  Helper.drawCanvasText(
+    this.canvasWidth / 2, 50, this.$store.getters.getText('adventureStoryF0P14Headline'), 'storyF0P11VideoText',
+    cD.context, data.chromander.opacity.headline
+  )
+  Helper.drawCanvasImage(
+    this.canvasWidth / 2 - eyeData.spriteWidth / 2, this.canvasHeight / 2 - eyeData.spriteHeight / 2,
+    'story_f0_chromander_eye', cD, 12, 0, 0, 0, data.chromander.opacity.eye
+  )
+  Helper.drawCanvasImage(
+    this.canvasWidth / 2 - logoData.spriteWidth / 2, this.canvasHeight / 2 - logoData.spriteHeight / 2,
+    'story_f0_chromander', cD, 12, 0, data.chromander.logoRotation, 0, data.chromander.opacity.logo
+  )
+  Helper.drawCanvasText(
+    this.canvasWidth / 2, 250, this.$store.getters.getText('adventureStoryF0P14BottomText'), 'storyF0P11VideoText',
+    cD.context, data.chromander.opacity.bottomText
+  )
+}
+
+function chromeParkDraw () {
+  const cD = this.$store.state.canvasDict
+
+  Helper.drawCanvasImage(
+    150 + data.chromePark.shift, 0, 'story_f0_park_chrome', cD, 12, 0, 0, 0, data.chromePark.opacity
+  )
+  Helper.drawCanvasImage(150 + data.chromePark.shift, 0, 'story_f0_park', cD, 12, 0, 0, 0, 1 - data.chromePark.opacity)
+  Helper.drawCanvasImage(150 - data.chromePark.shift, 0, 'story_f0_park', cD)
+
+  if (data.chromePark.shift === 150) {
+    Helper.drawCanvasLine(300, 0, 'standard', cD.context, 300, 300)
+  }
+}
+
+function constructionDraw () {
+  const cD = this.$store.state.canvasDict
+
+  Helper.drawCanvasImage(0, 0, 'story_f0_construction_site', cD)
+  Helper.drawCanvasImage(0 + data.construction.roller.shift, 150, 'story_f0_construction_site_roller', cD)
+  Helper.drawCanvasLine(
+    123 + data.construction.crane.shift, 40, 'thick', cD.context,
+    123 + data.construction.crane.shift, 70 + data.construction.crane.rope
+  )
+  Helper.drawCanvasImage(0, 20, 'story_f0_construction_site_crane', cD)
+  Helper.drawCanvasImage(
+    100 + data.construction.tree.x, 60 + data.construction.tree.y, 'story_f0_construction_site_tree', cD
+  ) // start: 100-60; end: 155-80
 }
