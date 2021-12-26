@@ -106,6 +106,12 @@
     "standardBlur": {
       "backgroundColor": "255, 255, 255, .6"
     },
+    "storyF0P18Chromander": {
+      "backgroundColor": "4, 165, 173, 1"
+    },
+    "storyF0P18InsideExplorer": {
+      "backgroundColor": "173, 165, 4, 1"
+    },
     "bar": {
       "backgroundColor": "155, 155, 155, .7"
     },

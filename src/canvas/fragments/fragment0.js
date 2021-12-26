@@ -17,7 +17,8 @@ export const updateCalls = [
   chromanderUpdate,
   chromander2Update,
   chromeParkUpdate,
-  constructionUpdate
+  constructionUpdate,
+  diagramUpdate
 ]
 
 export const drawCalls = [
@@ -37,7 +38,8 @@ export const drawCalls = [
   chromanderDraw,
   chromanderDraw,
   chromeParkDraw,
-  constructionDraw
+  constructionDraw,
+  diagramDraw
 ]
 
 let data = {
@@ -112,6 +114,9 @@ let data = {
       x: 0,
       y: 0
     }
+  },
+  diagram: {
+    factor: 0
   }
 }
 
@@ -486,6 +491,15 @@ function constructionUpdate () {
   }
 }
 
+function diagramUpdate () {
+  if (data.diagram.factor < 1) {
+    data.diagram.factor += 0.002
+    if (data.diagram.factor > 1) {
+      data.diagram.factor = 1
+    }
+  }
+}
+
 /**
  * draws the video with the guy speaking
  */
@@ -675,7 +689,10 @@ function constructionDraw () {
   const cD = this.$store.state.canvasDict
 
   Helper.drawCanvasImage(0, 0, 'story_f0_construction_site', cD)
-  Helper.drawCanvasImage(0 + data.construction.roller.shift, 150, 'story_f0_construction_site_roller', cD)
+  Helper.drawCanvasImage(
+    0 + data.construction.roller.shift, 150 + Math.sin(this.$store.state.canvasDict.frameNo) * 0.6,
+    'story_f0_construction_site_roller', cD
+  )
   Helper.drawCanvasLine(
     123 + data.construction.crane.shift, 40, 'thick', cD.context,
     123 + data.construction.crane.shift, 70 + data.construction.crane.rope
@@ -684,4 +701,25 @@ function constructionDraw () {
   Helper.drawCanvasImage(
     100 + data.construction.tree.x, 60 + data.construction.tree.y, 'story_f0_construction_site_tree', cD
   ) // start: 100-60; end: 155-80
+}
+
+function diagramDraw () {
+  const cD = this.$store.state.canvasDict
+
+  let logo1Data = Helper.getSpriteData('story_f0_inside_explorer', cD)
+  let logo2Data = Helper.getSpriteData('story_f0_chromander', cD)
+
+  Helper.drawCanvasImage(0, 0, 'story_f0_video_start_background', cD)
+  Helper.drawCanvasImage(
+    150 - logo1Data.spriteWidth / 2, 60 * data.diagram.factor + 75, logo1Data.key, cD
+  )
+  Helper.drawCanvasRect(
+    100, 180 + 60 * data.diagram.factor, 100, 60 + 60 * (1 - data.diagram.factor), 'storyF0P18InsideExplorer', cD.context
+  )
+  Helper.drawCanvasImage(
+    450 - logo2Data.spriteWidth / 2, 195 * (1 - data.diagram.factor), logo2Data.key, cD
+  )
+  Helper.drawCanvasRect(
+    400, 105 + 195 * (1 - data.diagram.factor), 100, 195 * data.diagram.factor, 'storyF0P18Chromander', cD.context
+  )
 }
