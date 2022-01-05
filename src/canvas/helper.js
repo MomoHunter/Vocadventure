@@ -76,7 +76,7 @@ export function drawCanvasText (x, y, text, styleKey, context, opacity = 1) {
   context.fillStyle = `rgba(${style.color}, ${opacity})`
   context.fillText(text, x, y)
   if (style.borderKey !== '') {
-    drawCanvasTextBorder(x, y, text, style.borderKey, context)
+    drawCanvasTextBorder(x, y, text, style.borderKey, context, opacity)
   }
 }
 
@@ -89,16 +89,73 @@ export function drawCanvasText (x, y, text, styleKey, context, opacity = 1) {
  * @param {string} styleKey defines the appearance of the text
  * @param {string} size the size of the text
  * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
+ * @param {number} opacity defines the opacity of the text
  */
-export function drawCanvasTextResizable (x, y, text, styleKey, size, context) {
+export function drawCanvasTextResizable (x, y, text, styleKey, size, context, opacity = 1) {
   let style = Styles.text[styleKey]
   context.textAlign = style.align
   context.textBaseline = style.baseline
   context.font = size + style.font
-  context.fillStyle = `rgba(${style.color})`
+  context.fillStyle = `rgba(${style.color}, ${opacity})`
   context.fillText(text, x, y)
   if (style.borderKey !== '') {
-    drawCanvasTextBorder(x, y, text, style.borderKey, context)
+    drawCanvasTextBorder(x, y, text, style.borderKey, context, opacity)
+  }
+}
+
+/**
+ * Draws text in a round shape
+ * @param {number} centerX center x-coordinate of the circle
+ * @param {number} centerY center y-coordinate of the circle
+ * @param {number} refDeg reference degrees for positioning of the text
+ * @param {number} radius radius of the circle
+ * @param {string} text text to be written
+ * @param {string} styleKey defines the appearance of the text
+ * @param {CanvasDict} cD
+ * @param {number} opacity defines the opacity of the text
+ */
+export function drawCanvasTextRound (centerX, centerY, refDeg, radius, text, styleKey, cD, opacity = 1, animationSpeed = 8) {
+  let style = Styles.text[styleKey]
+  let letters = text.split('')
+  let currentDeg = refDeg
+  let perimeter = Math.PI * 2 * Math.abs(radius)
+
+  cD.context.textAlign = style.align
+  cD.context.textBaseline = style.baseline
+  cD.context.font = style.font
+  if (typeof style.color === 'string') {
+    cD.context.fillStyle = `rgba(${style.color}, ${opacity})`
+  }
+
+  if (cD.context.textAlign === 'center') {
+    currentDeg = refDeg - ((cD.context.measureText(text).width / perimeter) * 360) / 2
+  } else if (cD.context.textAlign === 'right') {
+    currentDeg = refDeg - (cD.context.measureText(text).width / perimeter) * 360
+  }
+
+  cD.context.translate(centerX, centerY)
+  letters.forEach((letter, index) => {
+    let letterDeg = (cD.context.measureText(letter).width / perimeter) * 360
+    let rotateDeg = 0
+    if (cD.context.textAlign === 'center') {
+      rotateDeg = letterDeg / 2
+    } else if (cD.context.textAlign === 'right') {
+      rotateDeg = letterDeg
+    }
+    cD.context.rotate((currentDeg + rotateDeg) / 180 * Math.PI)
+    if (Array.isArray(style.color)) {
+      cD.context.fillStyle = `rgba(${
+        style.color[(Math.floor(cD.frameNo / animationSpeed) - index) % style.color.length]
+      }, ${opacity})`
+    }
+    cD.context.fillText(letter, 0, -radius)
+    cD.context.rotate(-((currentDeg + rotateDeg) / 180 * Math.PI))
+    currentDeg += letterDeg
+  })
+  cD.context.translate(-centerX, -centerY)
+
+  if (style.borderKey !== '') {
+    drawCanvasTextRoundBorder(centerX, centerY, refDeg, radius, text, style.borderKey, cD.context, opacity)
   }
 }
 
@@ -110,13 +167,58 @@ export function drawCanvasTextResizable (x, y, text, styleKey, size, context) {
  * @param {string} text text for witch the outline should be drawn
  * @param {string} styleKey defines the appearance of the text
  * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
+ * @param {number} opacity defines the opacity of the text
  */
-export function drawCanvasTextBorder (x, y, text, styleKey, context) {
+export function drawCanvasTextBorder (x, y, text, styleKey, context, opacity = 1) {
   let style = Styles.border[styleKey]
-  context.strokeStyle = `rgba(${style.borderColor})`
+  context.strokeStyle = `rgba(${style.borderColor}, ${opacity})`
   context.lineWidth = style.borderSize
   context.setLineDash(style.lineDash)
   context.strokeText(text, x, y)
+}
+
+/**
+ * Draws a border for text drawn in a round shape
+ * @param {number} centerX center x-coordinate of the circle
+ * @param {number} centerY center y-coordinate of the circle
+ * @param {number} refDeg reference degrees for positioning of the text
+ * @param {number} radius radius of the circle
+ * @param {string} text text to be written
+ * @param {string} styleKey defines the appearance of the text
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
+ * @param {number} opacity defines the opacity of the text
+ */
+export function drawCanvasTextRoundBorder (centerX, centerY, refDeg, radius, text, styleKey, context, opacity = 1) {
+  let style = Styles.border[styleKey]
+  let letters = text.split('')
+  let currentDeg = refDeg
+  let perimeter = Math.PI * 2 * Math.abs(radius)
+
+  if (context.textAlign === 'center') {
+    currentDeg = refDeg - ((context.measureText(text).width / perimeter) * 360) / 2
+  } else if (context.textAlign === 'right') {
+    currentDeg = refDeg - (context.measureText(text).width / perimeter) * 360
+  }
+
+  context.strokeStyle = `rgba(${style.borderColor}, ${opacity})`
+  context.lineWidth = style.borderSize
+  context.setLineDash(style.lineDash)
+
+  context.translate(centerX, centerY)
+  letters.forEach(letter => {
+    let letterDeg = (context.measureText(letter).width / perimeter) * 360
+    let rotateDeg = 0
+    if (context.textAlign === 'center') {
+      rotateDeg = letterDeg / 2
+    } else if (context.textAlign === 'right') {
+      rotateDeg = letterDeg
+    }
+    context.rotate((currentDeg + rotateDeg) / 180 * Math.PI)
+    context.strokeText(letter, 0, -radius)
+    context.rotate(-((currentDeg + rotateDeg) / 180 * Math.PI))
+    currentDeg += letterDeg
+  })
+  context.translate(-centerX, -centerY)
 }
 
 /**

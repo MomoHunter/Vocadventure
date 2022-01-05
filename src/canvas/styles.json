@@ -28,58 +28,9 @@
       "baseline": "middle",
       "borderKey": ""
     },
-    "standard": {
-      "font": "12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-      "color": "0, 0, 0, 1",
-      "align": "center",
-      "baseline": "middle",
-      "borderKey": ""
-    },
-    "infoTextLeft": {
-      "font": "bold 12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-      "color": "255, 255, 255, 1",
-      "align": "left",
-      "baseline": "middle",
-      "borderKey": "small"
-    },
-    "infoTextLeftNegative": {
-      "font": "bold 12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-      "color": "193, 69, 69, 1",
-      "align": "left",
-      "baseline": "middle",
-      "borderKey": "small"
-    },
-    "infoTextRight": {
-      "font": "bold 12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-      "color": "255, 255, 255, 1",
-      "align": "right",
-      "baseline": "middle",
-      "borderKey": "small"
-    },
-    "infoTextRightNegative": {
-      "font": "bold 12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-      "color": "193, 69, 69, 1",
-      "align": "right",
-      "baseline": "middle",
-      "borderKey": "small"
-    },
-    "errorText": {
-      "font": "bold 12pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-      "color": "193, 69, 69, 1",
-      "align": "left",
-      "baseline": "middle",
-      "borderKey": "small"
-    },
-    "intro": {
-      "font": "17pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-      "color": "0, 0, 0, 1",
-      "align": "center",
-      "baseline": "middle",
-      "borderKey": ""
-    },
-    "deathScreen": {
-      "font": "17pt 'BlinkMacSystemFont', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-      "color": "220, 220, 220, 1",
+    "storyF0P19Sign": {
+      "font": "bold 22pt Nunito",
+      "color": "0, 0, 0",
       "align": "center",
       "baseline": "middle",
       "borderKey": ""
@@ -94,6 +45,26 @@
     "writeKanjisurinshi": {
       "font": " KanjiStrokeOrders",
       "color": "172, 172, 172",
+      "align": "center",
+      "baseline": "middle",
+      "borderKey": ""
+    },
+    "rainbow": {
+      "font": "12pt Nunito",
+      "color": [
+        "200, 0, 0",
+        "200, 100, 0",
+        "200, 200, 0",
+        "100, 200, 0",
+        "0, 200, 0",
+        "0, 200, 100",
+        "0, 200, 200",
+        "0, 100, 200",
+        "0, 0, 200",
+        "100, 0, 200",
+        "200, 0, 200",
+        "200, 0, 100"
+      ],
       "align": "center",
       "baseline": "middle",
       "borderKey": ""

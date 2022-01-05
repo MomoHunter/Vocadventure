@@ -18,7 +18,8 @@ export const updateCalls = [
   chromander2Update,
   chromeParkUpdate,
   constructionUpdate,
-  diagramUpdate
+  diagramUpdate,
+  entryChromeleonUpdate
 ]
 
 export const drawCalls = [
@@ -39,7 +40,8 @@ export const drawCalls = [
   chromanderDraw,
   chromeParkDraw,
   constructionDraw,
-  diagramDraw
+  diagramDraw,
+  entryChromeleonDraw
 ]
 
 let data = {
@@ -500,6 +502,8 @@ function diagramUpdate () {
   }
 }
 
+function entryChromeleonUpdate () {}
+
 /**
  * draws the video with the guy speaking
  */
@@ -721,5 +725,14 @@ function diagramDraw () {
   )
   Helper.drawCanvasRect(
     400, 105 + 195 * (1 - data.diagram.factor), 100, 195 * data.diagram.factor, 'storyF0P18Chromander', cD.context
+  )
+}
+
+function entryChromeleonDraw () {
+  const cD = this.$store.state.canvasDict
+
+  Helper.drawCanvasImage(0, 0, 'story_f0_entry_chromeleon', cD)
+  Helper.drawCanvasTextRound(
+    300, 800, 0, 755, this.$store.getters.getText('adventureStoryF0P19Sign'), 'storyF0P19Sign', cD, 1, 30
   )
 }
