@@ -18,6 +18,8 @@
       <CheckboxBasic class="border-bottom-2 margin-bottom-medium" title="settingsUpdateTitle" icon="download"
                      text="settingsUpdate" :active="newAllowUpdates"
                      @click="changeValue('newAllowUpdates', !newAllowUpdates)" />
+      <ButtonBasic class="single-2 width-full margin-bottom-large" color="info" icon="tasks"
+                   text="settingsButtonWordpacks" @click="navTo('packages')" />
       <ButtonBasic class="single-2 width-full margin-bottom-medium" color="red" icon="trash" text="settingsButtonDelete"
                    @click="$store.commit('vueDict/showModal', { name: 'areYouSure' })" />
     </div>
@@ -96,6 +98,15 @@ export default {
       })
       window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
       this.$router.push({ name: 'menu' })
+    },
+    navTo (name) {
+      switch (name) {
+        case 'packages':
+          this.$store.commit('vueDict/setDestination', this.$route.name)
+          break
+        default:
+      }
+      this.$router.push({ name: name })
     }
   }
 }

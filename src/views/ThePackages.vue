@@ -236,11 +236,18 @@ export default {
         }
       } else { // back
         window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
-        if (this.$store.state.vueDict.destination !== '') {
-          this.$router.push({ name: 'category', params: { destination: this.$store.state.vueDict.destination } })
-          this.$store.commit('vueDict/setDestination', '')
-        } else {
-          this.$router.push({ name: 'dictionary' })
+        switch (this.$store.state.vueDict.destination) {
+          case 'adventure':
+          case 'training':
+            this.$router.push({ name: 'category', params: { destination: this.$store.state.vueDict.destination } })
+            this.$store.commit('vueDict/setDestination', '')
+            break
+          default:
+            if (this.$store.state.vueDict.destination !== '') {
+              this.$router.push({ name: this.$store.state.vueDict.destination })
+            } else {
+              this.$router.push({ name: 'menu' })
+            }
         }
       }
     }

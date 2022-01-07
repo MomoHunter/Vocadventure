@@ -109,6 +109,7 @@ export default {
       if (destination === 'menu') {
         this.$router.push({ name: destination, query: { sub: 'training' } })
       } else {
+        this.$store.commit('vueDict/setDestination', this.$route.name)
         this.$router.push({ name: destination })
       }
     }

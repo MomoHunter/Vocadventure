@@ -234,7 +234,9 @@ const routes = [
     name: 'settings',
     component: TheSettings,
     meta: {
-      forward: []
+      forward: [
+        'packages'
+      ]
     }
   },
   {
