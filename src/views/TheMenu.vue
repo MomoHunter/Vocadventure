@@ -54,8 +54,8 @@
         </transition>
         <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms delay-c-350ms"
                     leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
-          <ButtonBasic v-show="isVisible(3)" class="menu width-half" color="yellow" icon="shopping-cart"
-                       text="menuAdventureButton2" @click="navTo('shop')" />
+          <ButtonBasic v-show="isVisible(3)" class="menu width-half" color="yellow" icon="award"
+                       text="menuAdventureButton2" @click="navTo('achievements')" />
         </transition>
         <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms delay-c-350ms"
                     leave-active-class="animate__animated animate__fadeOut duration-c-350ms">

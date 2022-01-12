@@ -17,6 +17,7 @@ import AdventureHome from '@/views/AdventureHome.vue'
 import AdventureInputs from '@/views/AdventureInputs.vue'
 import AdventureChoose from '@/views/AdventureChoose.vue'
 import AdventureStatistics from '@/views/AdventureStatistics.vue'
+import TheAchievements from '@/views/TheAchievements.vue'
 import TheShop from '@/views/TheShop.vue'
 import TheDetails from '@/views/TheDetails.vue'
 import TheInventory from '@/views/TheInventory.vue'
@@ -35,6 +36,7 @@ const routes = [
         'settings',
         'category',
         'dictionary',
+        'achievements',
         'shop'
       ]
     }
@@ -198,6 +200,14 @@ const routes = [
         }
       }
     ],
+    meta: {
+      forward: []
+    }
+  },
+  {
+    path: '/achievements',
+    name: 'achievements',
+    component: TheAchievements,
     meta: {
       forward: []
     }
