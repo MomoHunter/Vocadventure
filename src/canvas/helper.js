@@ -87,7 +87,7 @@ export function drawCanvasText (x, y, text, styleKey, context, opacity = 1) {
  * @param {number} y y-coordinate for the positioning point
  * @param {string} text text to be written
  * @param {string} styleKey defines the appearance of the text
- * @param {string} size the size of the text
+ * @param {number} size the size of the text
  * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
  * @param {number} opacity defines the opacity of the text
  */
@@ -95,7 +95,7 @@ export function drawCanvasTextResizable (x, y, text, styleKey, size, context, op
   let style = Styles.text[styleKey]
   context.textAlign = style.align
   context.textBaseline = style.baseline
-  context.font = size + style.font
+  context.font = `${style.strength ?? ''} ${size}` + style.font
   context.fillStyle = `rgba(${style.color}, ${opacity})`
   context.fillText(text, x, y)
   if (style.borderKey !== '') {
@@ -432,6 +432,36 @@ export function getTextWidth (text, styleKey, context) {
   context.font = style.font
   context.fillStyle = `rgba(${style.color})`
   return context.measureText(text).width
+}
+
+/**
+ * Return the width of text that will be on the canvas
+ * @param {string} styleKey                  key of the used style
+ * @param {string} text                      measured text
+ * @param {number} size                      size of text
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
+ * @returns {TextMetrics}                    returns the width of the text
+ */
+export function getTextWidthResizable (text, styleKey, size, context) {
+  let style = Styles.text[styleKey]
+  context.textAlign = style.align
+  context.textBaseline = style.baseline
+  context.font = `${style.strength ?? ''} ${size}` + style.font
+  context.fillStyle = `rgba(${style.color})`
+  return context.measureText(text).width
+}
+
+/**
+ * forms a rectangle to be clipped with corresponding functions
+ * @param {number} x x-coordinate of the top-left corner
+ * @param {number} y y-coordinate of the top-left corner
+ * @param {number} width width of the rectangle
+ * @param {number} height height of the rectangle
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
+ */
+export function clipCanvasRect (x, y, width, height, context) {
+  context.beginPath()
+  context.rect(x, y, width, height)
 }
 
 /**

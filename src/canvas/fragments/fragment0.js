@@ -45,14 +45,17 @@ export const drawCalls = [
 ]
 
 let data = {
+  video: {
+    eye: {
+      counter: 100,
+      startFrame: 0,
+      finished: false
+    },
+    text: 0
+  },
   arrowPos: {
     earth: 0,
     destination: 0
-  },
-  eye: {
-    counter: 100,
-    startFrame: 0,
-    finished: false
   },
   phone: {
     zoom: 0,
@@ -137,14 +140,25 @@ export function draw (that) {
 /**
  * updates the counter for the eye animation
  */
-function eyeUpdate () {
-  data.eye.counter -= 1
-  if (data.eye.counter === 0) {
-    data.eye.startFrame = this.$store.state.canvasDict.frameNo
+function eyeUpdate (zoom = 1) {
+  const textLength = Helper.getTextWidthResizable(
+    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', 20 * zoom,
+    this.$store.state.canvasDict.context
+  )
+
+  data.video.eye.counter -= 1
+  if (data.video.eye.counter === 0) {
+    data.video.eye.startFrame = this.$store.state.canvasDict.frameNo
   }
-  if (data.eye.finished) {
-    data.eye.finished = false
-    data.eye.counter = Math.floor(Math.random() * 120) + 60
+  if (data.video.eye.finished) {
+    data.video.eye.finished = false
+    data.video.eye.counter = Math.floor(Math.random() * 120) + 60
+  }
+
+  data.video.text -= zoom
+
+  if (Math.abs(data.video.text) >= textLength) {
+    data.video.text = 0
   }
 }
 
@@ -166,7 +180,7 @@ function phoneZoomUpdate () {
     if (data.phone.zoom > 300) {
       data.phone.zoom = 300
     }
-    eyeUpdate.call(this)
+    eyeUpdate.call(this, 1 - (data.phone.zoom * ((5 / 6) / 300)))
   } else {
     this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
   }
@@ -179,7 +193,7 @@ function phoneUpdate () {
   if (data.phone.zoom < 300) {
     data.phone.zoom = 300
   }
-  eyeUpdate.call(this)
+  eyeUpdate.call(this, 1 - (data.phone.zoom * ((5 / 6) / 300)))
 }
 
 /**
@@ -509,6 +523,9 @@ function entryChromeleonUpdate () {}
  */
 function videoDraw (zoom = 1, yShift = 0) {
   const cD = this.$store.state.canvasDict
+  const textLength = Helper.getTextWidthResizable(
+    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', 20 * zoom, cD.context
+  )
   let halfWidth = this.canvasWidth / 2
   let halfHeight = this.canvasHeight / 2
 
@@ -522,26 +539,41 @@ function videoDraw (zoom = 1, yShift = 0) {
     halfWidth * (1 - zoom), halfHeight * (1 - zoom) + yShift, zoom, 'story_f0_video_foreground', cD
   )
 
-  if (data.eye.counter <= 0) {
-    data.eye.finished = Helper.drawCanvasSmallImageOnce(
-      halfWidth - (17 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes', cD,
-      data.eye.startFrame, 4
+  if (data.video.eye.counter <= 0) {
+    data.video.eye.finished = Helper.drawCanvasSmallImageOnce(
+      halfWidth + (127 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes', cD,
+      data.video.eye.startFrame, 4
     )
   } else {
     Helper.drawCanvasSmallImage(
-      halfWidth - (17 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes_open', cD
+      halfWidth + (127 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes_open', cD
     )
   }
 
   if (cD.storyWritesText) {
     Helper.drawCanvasSmallImage(
-      halfWidth - (8 * zoom), halfHeight - (60 * zoom) + yShift, zoom, 'story_f0_video_moderator_mouth', cD, 8
+      halfWidth + (136 * zoom), halfHeight - (60 * zoom) + yShift, zoom, 'story_f0_video_moderator_mouth', cD, 8
     )
   } else {
     Helper.drawCanvasSmallImage(
-      halfWidth - (8 * zoom), halfHeight - (60 * zoom) + yShift, zoom, 'story_f0_video_moderator_mouth_closed', cD
+      halfWidth + (136 * zoom), halfHeight - (60 * zoom) + yShift, zoom, 'story_f0_video_moderator_mouth_closed', cD
     )
   }
+
+  cD.context.save()
+  Helper.clipCanvasRect(halfWidth * (1 - zoom), halfHeight * (1 - zoom) + yShift, this.canvasWidth * zoom, this.canvasHeight * zoom, cD.context)
+  cD.context.clip()
+
+  Helper.drawCanvasTextResizable(
+    data.video.text + halfWidth * (1 - zoom), halfHeight + (116 * zoom) + yShift, this.$store.getters.getText('adventureStoryF0P1Text'),
+    'storyF0P1Text', 20 * zoom, cD.context
+  )
+  Helper.drawCanvasTextResizable(
+    data.video.text + Math.ceil(textLength) + halfWidth * (1 - zoom), halfHeight + (116 * zoom) + yShift,
+    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', 20 * zoom, cD.context
+  )
+
+  cD.context.restore()
 }
 
 /**
@@ -599,7 +631,7 @@ function phoneZoomDraw () {
     Helper.drawCanvasTextResizable(
       halfWidth * (1 - videoZoom) + 10 * videoZoom,
       halfHeight * (1 - videoZoom) + data.phone.shift.y + 10 * videoZoom - data.phone.textShift,
-      this.$store.getters.getText('adventureStoryF0P10Title'), 'storyF0P10VideoTitle', (14 * videoZoom).toString(),
+      this.$store.getters.getText('adventureStoryF0P10Title'), 'storyF0P10VideoTitle', 14 * videoZoom,
       cD.context
     )
   }

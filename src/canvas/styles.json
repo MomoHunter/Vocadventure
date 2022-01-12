@@ -1,8 +1,9 @@
 {
   "text": {
     "storyF0P1Text": {
-      "font": "600 13pt Nunito",
-      "color": "0, 0, 0",
+      "font": "pt Nunito",
+      "strength": "600",
+      "color": "222, 222, 222",
       "align": "left",
       "baseline": "middle",
       "borderKey": ""

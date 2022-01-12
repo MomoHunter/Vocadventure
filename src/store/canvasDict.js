@@ -46,7 +46,7 @@ export default {
       'story_f0_park': [false, 101, 1708, 300, 300],
       'story_f0_park_chrome': [false, 101, 2009, 300, 300],
       'story_f0_picture': [false, 101, 2310, 600, 300],
-      'story_f0_red_arrow': [false, 101, 2611, 25, 30],
+      'story_f0_red_arrow': [false, 101, 2611, 24, 30],
       'story_f0_smartphone': [false, 101, 2642, 620, 720],
       'story_f0_star_map': [false, 101, 3363, 600, 300],
       'story_f0_video_background': [false, 101, 3664, 600, 300],
