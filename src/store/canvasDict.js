@@ -20,7 +20,7 @@ export default {
       Fragment0
     ],
     storyFragment: 0,
-    storyPart: 19,
+    storyPart: 1,
     storyWritesText: true, // is active, when text is progressed in story
     spritesheet: new Image(),
     // start spriteDict
