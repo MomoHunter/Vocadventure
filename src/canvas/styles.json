@@ -78,6 +78,9 @@
     "standardBlur": {
       "backgroundColor": "255, 255, 255, .6"
     },
+    "storyF0P4Space": {
+      "backgroundColor": "11, 8, 14, 1"
+    },
     "storyF0P18Chromander": {
       "backgroundColor": "4, 165, 173, 1"
     },

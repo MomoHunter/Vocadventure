@@ -64,7 +64,8 @@ let data = {
       y: 0
     },
     shake: 0,
-    textShift: 0
+    textShift: 0,
+    stars: []
   },
   pictureZoom: 0,
   handShift: 0,
@@ -171,9 +172,13 @@ function arrowUpdate () {
 }
 
 /**
- * updates the zooming of the phone scene
+ * updates the zooming of the phone scene (center of window 222, 824)
  */
 function phoneZoomUpdate () {
+  addStars()
+  for (let star of data.phone.stars) {
+    star.x -= 0.1
+  }
   if (data.phone.zoom < 300) {
     data.phone.zoom += 1
     data.phone.zoom *= 1.01
@@ -193,30 +198,34 @@ function phoneUpdate () {
   if (data.phone.zoom < 300) {
     data.phone.zoom = 300
   }
+  addStars()
   eyeUpdate.call(this, 1 - (data.phone.zoom * ((5 / 6) / 300)))
+  for (let star of data.phone.stars) {
+    star.x -= 0.1
+  }
 }
 
 /**
  * updates shift to the top
  */
 function phoneShiftUpdate () {
-  if (data.phone.shift.y < 400) {
+  if (data.phone.shift.y < 651) {
     data.phone.shift.y += 1
     data.phone.shift.y *= 1.045
-    if (data.phone.shift.y > 400) {
-      data.phone.shift.y = 400
+    if (data.phone.shift.y > 651) {
+      data.phone.shift.y = 651
     }
   } else if (data.phone.shake <= 9) {
     if (data.phone.shake < 3) {
       data.phone.shift.x = 10
     } else if (data.phone.shake < 6) {
-      data.phone.shift.y = 410
+      data.phone.shift.y = 661
       data.phone.shift.x = 0
     } else if (data.phone.shake < 9) {
-      data.phone.shift.y = 400
+      data.phone.shift.y = 651
       data.phone.shift.x = -10
     } else {
-      data.phone.shift.y = 400
+      data.phone.shift.y = 651
       data.phone.shift.x = 0
     }
     data.phone.shake += 1
@@ -228,8 +237,8 @@ function phoneShiftUpdate () {
 }
 
 function ceilingUpdate () {
-  if (data.phone.shift.y !== 400) {
-    data.phone.shift.y = 400
+  if (data.phone.shift.y !== 651) {
+    data.phone.shift.y = 651
   }
   if (data.phone.shift.x !== 0) {
     data.phone.shift.x = 0
@@ -244,6 +253,10 @@ function pictureUpdate () {
 }
 
 function standUpUpdate () {
+  addStars()
+  for (let star of data.phone.stars) {
+    star.x -= 0.1
+  }
   if (data.phone.shift.y > 0) {
     data.phone.shift.y -= 1
     data.phone.shift.y *= 0.98
@@ -600,18 +613,34 @@ function mapDraw () {
  */
 function phoneZoomDraw () {
   const cD = this.$store.state.canvasDict
+  const referenceY = 163
   let zoom = data.phone.zoom * (2.5 / 300)
+  let halfWidth = this.canvasWidth / 2
+  let halfHeight = this.canvasHeight / 2
 
+  Helper.drawCanvasRect(0, 0, this.canvasWidth, this.canvasHeight, 'storyF0P4Space', cD.context)
+  for (let star of data.phone.stars) {
+    let spriteData = Helper.getSpriteData(star.spriteKey, cD)
+    let spriteZoom = ((star.x - 222) / 378)
+
+    let distFromCenter = (star.startY - referenceY) * spriteZoom * (3.5 - zoom)
+    let halfSpriteHeight = (spriteData.spriteHeight * spriteZoom) / 2
+
+    Helper.drawCanvasSmallImage(
+      halfWidth + (star.x - halfWidth) * (3.5 - zoom) - ((spriteData.spriteWidth * spriteZoom) / 2),
+      referenceY + distFromCenter - halfSpriteHeight + data.phone.shift.y,
+      spriteZoom * (3.5 - zoom), star.spriteKey, cD
+    )
+  }
   Helper.drawCanvasSmallImage(
     -(this.canvasWidth * ((61 / 24) - zoom * (61 / 60))) - ((10 - data.phone.shift.x) * (3.5 - zoom)),
-    -(this.canvasHeight * ((71 / 12) - zoom * (71 / 30))) - ((410 - data.phone.shift.y) * (3.5 - zoom)),
+    -(this.canvasHeight * ((961 / 120) - zoom * (961 / 300))) - ((661 - data.phone.shift.y) * (3.5 - zoom)),
     6 - zoom * 2, 'story_f0_smartphone', cD
   )
+
   if (this.$store.state.canvasDict.storyPart < 8) {
     videoDraw.call(this, 1 - (data.phone.zoom * ((5 / 6) / 300)), data.phone.shift.y)
   } else {
-    let halfWidth = this.canvasWidth / 2
-    let halfHeight = this.canvasHeight / 2
     let videoZoom = 1 - (data.phone.zoom * ((5 / 6) / 300))
 
     Helper.drawCanvasSmallImage(
@@ -685,6 +714,7 @@ function chromanderDraw () {
   const logoData = Helper.getSpriteData('story_f0_chromander', cD)
   const eyeData = Helper.getSpriteData('story_f0_chromander_eye', cD)
 
+  Helper.drawCanvasImage(0, 0, 'story_f0_video_start_background', cD)
   Helper.drawCanvasText(
     this.canvasWidth / 2, this.canvasHeight / 2, this.$store.getters.getText('adventureStoryF0P14NowNew'),
     'storyF0P11VideoText', cD.context, data.chromander.opacity.nowNew
@@ -767,4 +797,35 @@ function entryChromeleonDraw () {
   Helper.drawCanvasTextRound(
     300, 800, 0, 755, this.$store.getters.getText('adventureStoryF0P19Sign'), 'storyF0P19Sign', cD, 1, 30
   )
+}
+
+function addStars () {
+  data.phone.stars = data.phone.stars.filter(star => star.x > 300)
+  if (data.phone.stars.length === 0) {
+    for (let i = 0; i < 50; i++) {
+      let spriteKey = ''
+      if (Math.random() < 0.8) {
+        spriteKey = 'story_f0_smartphone_star_small_' + Math.floor(Math.random() * 8)
+      } else {
+        spriteKey = 'story_f0_smartphone_star_big_' + Math.floor(Math.random() * 8)
+      }
+      data.phone.stars.push({
+        spriteKey: spriteKey,
+        x: 300 + Math.random() * 300,
+        startY: (Math.random() * 550) - 220
+      })
+    }
+  } else if (Math.random() < 0.03) {
+    let spriteKey = ''
+    if (Math.random() < 0.8) {
+      spriteKey = 'story_f0_smartphone_star_small_' + Math.floor(Math.random() * 8)
+    } else {
+      spriteKey = 'story_f0_smartphone_star_big_' + Math.floor(Math.random() * 8)
+    }
+    data.phone.stars.push({
+      spriteKey: spriteKey,
+      x: 620,
+      startY: (Math.random() * 550) - 220
+    })
+  }
 }
