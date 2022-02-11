@@ -8,6 +8,13 @@
       "baseline": "middle",
       "borderKey": ""
     },
+    "storyF0P1Title": {
+      "font": "pt Nunito",
+      "color": "22, 0, 22",
+      "align": "left",
+      "baseline": "top",
+      "borderKey": ""
+    },
     "storyF0P2StarMap": {
       "font": "bold 12pt Nunito",
       "color": "222, 51, 51",

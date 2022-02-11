@@ -1,10 +1,10 @@
 import * as Helper from '@/canvas/helper.js'
 
 export const updateCalls = [
-  eyeUpdate,
-  arrowUpdate,
-  eyeUpdate,
-  phoneZoomUpdate,
+  p1Update,
+  p2Update,
+  p1Update,
+  p4Update,
   phoneUpdate,
   phoneShiftUpdate,
   ceilingUpdate,
@@ -19,20 +19,21 @@ export const updateCalls = [
   chromeParkUpdate,
   constructionUpdate,
   diagramUpdate,
-  entryChromeleonUpdate
+  entryChromeleonUpdate,
+  p20Update
 ]
 
 export const drawCalls = [
-  videoDraw,
-  mapDraw,
-  videoDraw,
-  phoneZoomDraw,
-  phoneZoomDraw,
-  phoneZoomDraw,
-  phoneZoomDraw,
+  p1Draw,
+  p2Draw,
+  p1Draw,
+  p4Draw,
+  p4Draw,
+  p4Draw,
+  p4Draw,
   pictureDraw,
-  phoneZoomDraw,
-  phoneZoomDraw,
+  p4Draw,
+  p4Draw,
   clockDraw,
   clockDraw,
   woogleDraw,
@@ -41,21 +42,46 @@ export const drawCalls = [
   chromeParkDraw,
   constructionDraw,
   diagramDraw,
-  entryChromeleonDraw
+  entryChromeleonDraw,
+  p20Draw
 ]
 
 let data = {
-  video: {
-    eye: {
-      counter: 100,
-      startFrame: 0,
-      finished: false
+  p1: {
+    con: {
+      textSize: 12
     },
-    text: 0
+    dyn: {
+      eye: {
+        counter: 100,
+        startFrame: 0,
+        finished: false
+      },
+      textPos: 0
+    }
   },
-  arrowPos: {
-    earth: 0,
-    destination: 0
+  p2: {
+    dyn: {
+      arrowPos: {
+        earth: 0,
+        destination: 0
+      }
+    }
+  },
+  p4: {
+    con: {
+      starSpeed: 0.1,
+      maxZoom: 300,
+      referenceY: 163
+    },
+    dyn: {
+      stars: [],
+      zoom: 0,
+      shift: {
+        x: 0,
+        y: 0
+      }
+    }
   },
   phone: {
     zoom: 0,
@@ -139,55 +165,243 @@ export function draw (that) {
 }
 
 /**
- * updates the counter for the eye animation
+ * lets the eye of the speaker blink, scrolls the text at the bottom
+ * @param {number} zoom zoom factor for screen
  */
-function eyeUpdate (zoom = 1) {
+function p1Update (zoom = 1) {
+  const cD = this.$store.state.canvasDict
   const textLength = Helper.getTextWidthResizable(
-    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', 20 * zoom,
-    this.$store.state.canvasDict.context
+    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.p1.con.textSize * zoom, cD.context
   )
 
-  data.video.eye.counter -= 1
-  if (data.video.eye.counter === 0) {
-    data.video.eye.startFrame = this.$store.state.canvasDict.frameNo
+  data.p1.dyn.eye.counter -= 1
+  if (data.p1.dyn.eye.counter === 0) {
+    data.p1.dyn.eye.startFrame = cD.frameNo
   }
-  if (data.video.eye.finished) {
-    data.video.eye.finished = false
-    data.video.eye.counter = Math.floor(Math.random() * 120) + 60
+  if (data.p1.dyn.eye.finished) {
+    data.p1.dyn.eye.finished = false
+    data.p1.dyn.eye.counter = Math.floor(Math.random() * 120) + 60
   }
 
-  data.video.text -= zoom
+  data.p1.dyn.textPos -= zoom
 
-  if (Math.abs(data.video.text) >= textLength) {
-    data.video.text = 0
+  if (Math.abs(data.p1.dyn.textPos) >= textLength) {
+    data.p1.dyn.textPos = 0
   }
 }
 
 /**
- * updates the arrow position for the star map
+ * draws the video with the guy speaking and everything that belongs to it
+ * @param {number} zoom zoom factor for screen
+ * @param {number} yShift shift distance of the screen in negative y-direction
  */
-function arrowUpdate () {
-  data.arrowPos.earth = 100 + Math.sin(this.$store.state.canvasDict.frameNo / 20) * 3
-  data.arrowPos.destination = 35 + Math.sin(this.$store.state.canvasDict.frameNo / 20) * 3
+function p1Draw (zoom = 1, yShift = 0) {
+  const cD = this.$store.state.canvasDict
+  const textLength = Helper.getTextWidthResizable(
+    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.con.textSize * zoom, cD.context
+  )
+  const negZoom = 1 - zoom
+
+  let halfWidth = this.canvasWidth / 2
+  let halfHeight = this.canvasHeight / 2
+
+  Helper.drawCanvasSmallImage(
+    halfWidth * negZoom, halfHeight * negZoom + yShift, zoom, 'story_f0_video_background', cD
+  )
+  Helper.drawCanvasSmallImage(
+    halfWidth - (260 * zoom), halfHeight - (120 * zoom) + yShift, 0.378 * zoom, 'story_f0_star_map', cD
+  )
+  Helper.drawCanvasSmallImage(
+    halfWidth * negZoom, halfHeight * negZoom + yShift, zoom, 'story_f0_video_foreground', cD
+  )
+
+  if (data.p1.dyn.eye.counter <= 0) {
+    data.p1.dyn.eye.finished = Helper.drawCanvasSmallImageOnce(
+      halfWidth + (127 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes', cD,
+      data.p1.dyn.eye.startFrame, 4
+    )
+  } else {
+    Helper.drawCanvasSmallImage(
+      halfWidth + (127 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes_open', cD
+    )
+  }
+
+  if (cD.storyWritesText) {
+    Helper.drawCanvasSmallImage(
+      halfWidth + (136 * zoom), halfHeight - (60 * zoom) + yShift, zoom, 'story_f0_video_moderator_mouth', cD, 8
+    )
+  } else {
+    Helper.drawCanvasSmallImage(
+      halfWidth + (136 * zoom), halfHeight - (60 * zoom) + yShift, zoom, 'story_f0_video_moderator_mouth_closed', cD
+    )
+  }
+
+  Helper.drawCanvasTextResizable(
+    halfWidth - (259 * zoom), halfHeight + (-4 * zoom) + yShift,
+    this.$store.getters.getText('adventureStoryF0P1TitleSmall'), 'storyF0P1Title', 9 * zoom, cD.context
+  )
+  Helper.drawCanvasTextResizable(
+    halfWidth - (260 * zoom), halfHeight + (5 * zoom) + yShift, this.$store.getters.getText('adventureStoryF0P1Title'),
+    'storyF0P1Title', 20 * zoom, cD.context
+  )
+
+  cD.context.save()
+
+  Helper.clipCanvasRect(
+    halfWidth * negZoom, halfHeight * negZoom + yShift, this.canvasWidth * zoom, this.canvasHeight * zoom, cD.context
+  )
+
+  cD.context.clip()
+
+  Helper.drawCanvasTextResizable(
+    data.p1.dyn.textPos + halfWidth * negZoom, halfHeight + (120 * zoom) + yShift,
+    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.p1.con.textSize * zoom, cD.context
+  )
+  Helper.drawCanvasTextResizable(
+    data.p1.dyn.textPos + Math.ceil(textLength) + halfWidth * negZoom, halfHeight + (120 * zoom) + yShift,
+    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.p1.con.textSize * zoom, cD.context
+  )
+
+  cD.context.restore()
 }
 
 /**
- * updates the zooming of the phone scene (center of window 222, 824)
+ * moves the arrow position on the star map
  */
-function phoneZoomUpdate () {
-  addStars()
-  for (let star of data.phone.stars) {
-    star.x -= 0.1
+function p2Update () {
+  data.p2.dyn.arrowPos.earth = 100 + Math.sin(this.$store.state.canvasDict.frameNo / 20) * 3
+  data.p2.dyn.arrowPos.destination = 35 + Math.sin(this.$store.state.canvasDict.frameNo / 20) * 3
+}
+
+/**
+ * draws the star map with two arrows
+ */
+function p2Draw () {
+  const cD = this.$store.state.canvasDict
+
+  Helper.drawCanvasImage(0, 0, 'story_f0_star_map', cD)
+  Helper.drawCanvasImage(49, data.p2.dyn.arrowPos.earth, 'story_f0_red_arrow', cD)
+  Helper.drawCanvasText(
+    61.5, data.p2.dyn.arrowPos.earth - 10, this.$store.getters.getText('adventureStoryF0P2Label1'),
+    'storyF0P2StarMap', cD.context
+  )
+  Helper.drawCanvasImage(530, data.p2.dyn.arrowPos.destination, 'story_f0_red_arrow', cD)
+  Helper.drawCanvasText(
+    542.5, data.p2.dyn.arrowPos.destination - 10, this.$store.getters.getText('adventureStoryF0P2Label2'),
+    'storyF0P2StarMap', cD.context
+  )
+}
+
+/**
+ * zooms out of the screen (center of window 222, 824)
+ */
+function p4Update () {
+  p4addStars()
+  for (let star of data.p4.dyn.stars) {
+    star.x -= data.p4.con.starSpeed
   }
-  if (data.phone.zoom < 300) {
-    data.phone.zoom += 1
-    data.phone.zoom *= 1.01
-    if (data.phone.zoom > 300) {
-      data.phone.zoom = 300
+  if (data.p4.dyn.zoom < data.p4.con.maxZoom) {
+    data.p4.dyn.zoom += 1
+    data.p4.dyn.zoom *= 1.01
+    if (data.p4.dyn.zoom > data.p4.con.maxZoom) {
+      data.p4.dyn.zoom = data.p4.con.maxZoom
     }
-    eyeUpdate.call(this, 1 - (data.phone.zoom * ((5 / 6) / 300)))
+    p1Update.call(this, 1 - (data.p4.dyn.zoom * ((5 / 6) / data.p4.con.maxZoom)))
   } else {
     this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
+  }
+}
+
+/**
+ * draws the phone and the extra screen while they zoom out, also shifting to the ceiling and back and into the phone again
+ */
+function p4Draw () {
+  const cD = this.$store.state.canvasDict
+
+  let zoom = data.p4.dyn.zoom * (2.5 / data.p4.con.maxZoom)
+  let actualZoom = (3.5 - zoom)
+  let halfWidth = this.canvasWidth / 2
+  let halfHeight = this.canvasHeight / 2
+
+  Helper.drawCanvasRect(0, 0, this.canvasWidth, this.canvasHeight, 'storyF0P4Space', cD.context)
+  for (let star of data.p4.dyn.stars) {
+    let spriteData = Helper.getSpriteData(star.spriteKey, cD)
+    let spriteZoom = ((star.x - 222) / 378)
+
+    let distFromCenter = (star.startY - data.p4.con.referenceY) * spriteZoom * actualZoom
+    let halfSpriteHeight = (spriteData.spriteHeight * spriteZoom) / 2
+
+    Helper.drawCanvasSmallImage(
+      halfWidth + (star.x - halfWidth) * actualZoom - ((spriteData.spriteWidth * spriteZoom) / 2),
+      data.p4.con.referenceY + distFromCenter - halfSpriteHeight + data.p4.dyn.shift.y,
+      spriteZoom * actualZoom, star.spriteKey, cD
+    )
+  }
+  Helper.drawCanvasSmallImage(
+    -(this.canvasWidth * ((61 / 24) - zoom * (61 / 60))) - ((10 - data.p4.dyn.shift.x) * actualZoom),
+    -(this.canvasHeight * ((961 / 120) - zoom * (961 / 300))) - ((661 - data.p4.dyn.shift.y) * actualZoom),
+    6 - zoom * 2, 'story_f0_smartphone', cD
+  )
+
+  if (this.$store.state.canvasDict.storyPart < 8) {
+    p1Draw.call(this, 1 - (data.p4.dyn.zoom * ((5 / 6) / data.p4.con.maxZoom)), data.p4.dyn.shift.y)
+  } else {
+    let videoZoom = 1 - (data.p4.dyn.zoom * ((5 / 6) / data.p4.con.maxZoom))
+
+    Helper.drawCanvasSmallImage(
+      halfWidth * (1 - videoZoom), halfHeight * (1 - videoZoom) + data.p4.dyn.shift.y, videoZoom,
+      'story_f0_video_start_background', cD
+    )
+    if (data.pause < 30) {
+      Helper.drawCanvasSmallImage(
+        halfWidth - 50 * videoZoom, halfHeight - 50 * videoZoom + data.p4.dyn.shift.y, videoZoom,
+        'story_f0_video_start_button', cD
+      )
+    }
+
+    Helper.drawCanvasSmallImage(
+      -139 + data.handShift, 300 - data.handShift + data.p4.dyn.shift.y, 6 - zoom * 2, 'story_f0_hand', cD
+    )
+    Helper.drawCanvasTextResizable(
+      halfWidth * (1 - videoZoom) + 10 * videoZoom,
+      halfHeight * (1 - videoZoom) + data.p4.dyn.shift.y + 10 * videoZoom - data.p4.dyn.textShift,
+      this.$store.getters.getText('adventureStoryF0P10Title'), 'storyF0P10VideoTitle', 14 * videoZoom,
+      cD.context
+    )
+  }
+}
+
+/**
+ * adds stars to the sky outside the window
+ */
+function p4addStars () {
+  data.p4.dyn.stars = data.p4.dyn.stars.filter(star => star.x > 300)
+  if (data.p4.dyn.stars.length === 0) {
+    for (let i = 0; i < 50; i++) {
+      let spriteKey = ''
+      if (Math.random() < 0.8) {
+        spriteKey = 'story_f0_smartphone_star_small_' + Math.floor(Math.random() * 8)
+      } else {
+        spriteKey = 'story_f0_smartphone_star_big_' + Math.floor(Math.random() * 8)
+      }
+      data.p4.dyn.stars.push({
+        spriteKey: spriteKey,
+        x: 300 + Math.random() * 300,
+        startY: (Math.random() * 550) - 220
+      })
+    }
+  } else if (Math.random() < 0.03) {
+    let spriteKey = ''
+    if (Math.random() < 0.8) {
+      spriteKey = 'story_f0_smartphone_star_small_' + Math.floor(Math.random() * 8)
+    } else {
+      spriteKey = 'story_f0_smartphone_star_big_' + Math.floor(Math.random() * 8)
+    }
+    data.p4.dyn.stars.push({
+      spriteKey: spriteKey,
+      x: 620,
+      startY: (Math.random() * 550) - 220
+    })
   }
 }
 
@@ -195,11 +409,11 @@ function phoneZoomUpdate () {
  * updates the size, if skipped, and the eyes
  */
 function phoneUpdate () {
-  if (data.phone.zoom < 300) {
-    data.phone.zoom = 300
+  if (data.phone.zoom < data.p4.con.maxZoom) {
+    data.phone.zoom = data.p4.con.maxZoom
   }
   addStars()
-  eyeUpdate.call(this, 1 - (data.phone.zoom * ((5 / 6) / 300)))
+  p1Update.call(this, 1 - (data.phone.zoom * ((5 / 6) / 300)))
   for (let star of data.phone.stars) {
     star.x -= 0.1
   }
@@ -531,140 +745,7 @@ function diagramUpdate () {
 
 function entryChromeleonUpdate () {}
 
-/**
- * draws the video with the guy speaking
- */
-function videoDraw (zoom = 1, yShift = 0) {
-  const cD = this.$store.state.canvasDict
-  const textLength = Helper.getTextWidthResizable(
-    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', 20 * zoom, cD.context
-  )
-  let halfWidth = this.canvasWidth / 2
-  let halfHeight = this.canvasHeight / 2
-
-  Helper.drawCanvasSmallImage(
-    halfWidth * (1 - zoom), halfHeight * (1 - zoom) + yShift, zoom, 'story_f0_video_background', cD
-  )
-  Helper.drawCanvasSmallImage(
-    halfWidth - (260 * zoom), halfHeight - (120 * zoom) + yShift, 0.378 * zoom, 'story_f0_star_map', cD
-  )
-  Helper.drawCanvasSmallImage(
-    halfWidth * (1 - zoom), halfHeight * (1 - zoom) + yShift, zoom, 'story_f0_video_foreground', cD
-  )
-
-  if (data.video.eye.counter <= 0) {
-    data.video.eye.finished = Helper.drawCanvasSmallImageOnce(
-      halfWidth + (127 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes', cD,
-      data.video.eye.startFrame, 4
-    )
-  } else {
-    Helper.drawCanvasSmallImage(
-      halfWidth + (127 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes_open', cD
-    )
-  }
-
-  if (cD.storyWritesText) {
-    Helper.drawCanvasSmallImage(
-      halfWidth + (136 * zoom), halfHeight - (60 * zoom) + yShift, zoom, 'story_f0_video_moderator_mouth', cD, 8
-    )
-  } else {
-    Helper.drawCanvasSmallImage(
-      halfWidth + (136 * zoom), halfHeight - (60 * zoom) + yShift, zoom, 'story_f0_video_moderator_mouth_closed', cD
-    )
-  }
-
-  cD.context.save()
-  Helper.clipCanvasRect(halfWidth * (1 - zoom), halfHeight * (1 - zoom) + yShift, this.canvasWidth * zoom, this.canvasHeight * zoom, cD.context)
-  cD.context.clip()
-
-  Helper.drawCanvasTextResizable(
-    data.video.text + halfWidth * (1 - zoom), halfHeight + (116 * zoom) + yShift, this.$store.getters.getText('adventureStoryF0P1Text'),
-    'storyF0P1Text', 20 * zoom, cD.context
-  )
-  Helper.drawCanvasTextResizable(
-    data.video.text + Math.ceil(textLength) + halfWidth * (1 - zoom), halfHeight + (116 * zoom) + yShift,
-    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', 20 * zoom, cD.context
-  )
-
-  cD.context.restore()
-}
-
-/**
- * draws the star map with two arrows
- */
-function mapDraw () {
-  const cD = this.$store.state.canvasDict
-
-  Helper.drawCanvasImage(0, 0, 'story_f0_star_map', cD)
-  Helper.drawCanvasImage(49, data.arrowPos.earth, 'story_f0_red_arrow', cD)
-  Helper.drawCanvasText(
-    61.5, data.arrowPos.earth - 10, this.$store.getters.getText('adventureStoryF0P2Label1'),
-    'storyF0P2StarMap', cD.context
-  )
-  Helper.drawCanvasImage(530, data.arrowPos.destination, 'story_f0_red_arrow', cD)
-  Helper.drawCanvasText(
-    542.5, data.arrowPos.destination - 10, this.$store.getters.getText('adventureStoryF0P2Label2'),
-    'storyF0P2StarMap', cD.context
-  )
-}
-
-/**
- * draws the phone and the extra screen while they zoom out, also shifting to the ceiling
- */
-function phoneZoomDraw () {
-  const cD = this.$store.state.canvasDict
-  const referenceY = 163
-  let zoom = data.phone.zoom * (2.5 / 300)
-  let halfWidth = this.canvasWidth / 2
-  let halfHeight = this.canvasHeight / 2
-
-  Helper.drawCanvasRect(0, 0, this.canvasWidth, this.canvasHeight, 'storyF0P4Space', cD.context)
-  for (let star of data.phone.stars) {
-    let spriteData = Helper.getSpriteData(star.spriteKey, cD)
-    let spriteZoom = ((star.x - 222) / 378)
-
-    let distFromCenter = (star.startY - referenceY) * spriteZoom * (3.5 - zoom)
-    let halfSpriteHeight = (spriteData.spriteHeight * spriteZoom) / 2
-
-    Helper.drawCanvasSmallImage(
-      halfWidth + (star.x - halfWidth) * (3.5 - zoom) - ((spriteData.spriteWidth * spriteZoom) / 2),
-      referenceY + distFromCenter - halfSpriteHeight + data.phone.shift.y,
-      spriteZoom * (3.5 - zoom), star.spriteKey, cD
-    )
-  }
-  Helper.drawCanvasSmallImage(
-    -(this.canvasWidth * ((61 / 24) - zoom * (61 / 60))) - ((10 - data.phone.shift.x) * (3.5 - zoom)),
-    -(this.canvasHeight * ((961 / 120) - zoom * (961 / 300))) - ((661 - data.phone.shift.y) * (3.5 - zoom)),
-    6 - zoom * 2, 'story_f0_smartphone', cD
-  )
-
-  if (this.$store.state.canvasDict.storyPart < 8) {
-    videoDraw.call(this, 1 - (data.phone.zoom * ((5 / 6) / 300)), data.phone.shift.y)
-  } else {
-    let videoZoom = 1 - (data.phone.zoom * ((5 / 6) / 300))
-
-    Helper.drawCanvasSmallImage(
-      halfWidth * (1 - videoZoom), halfHeight * (1 - videoZoom) + data.phone.shift.y, videoZoom,
-      'story_f0_video_start_background', cD
-    )
-    if (data.pause < 30) {
-      Helper.drawCanvasSmallImage(
-        halfWidth - 50 * videoZoom, halfHeight - 50 * videoZoom + data.phone.shift.y, videoZoom,
-        'story_f0_video_start_button', cD
-      )
-    }
-
-    Helper.drawCanvasSmallImage(
-      -107 + data.handShift, 300 - data.handShift + data.phone.shift.y, 6 - zoom * 2, 'story_f0_hand', cD
-    )
-    Helper.drawCanvasTextResizable(
-      halfWidth * (1 - videoZoom) + 10 * videoZoom,
-      halfHeight * (1 - videoZoom) + data.phone.shift.y + 10 * videoZoom - data.phone.textShift,
-      this.$store.getters.getText('adventureStoryF0P10Title'), 'storyF0P10VideoTitle', 14 * videoZoom,
-      cD.context
-    )
-  }
-}
+function p20Update () {}
 
 /**
  * draw the phone and the extra screen zoomed out
@@ -799,33 +880,8 @@ function entryChromeleonDraw () {
   )
 }
 
-function addStars () {
-  data.phone.stars = data.phone.stars.filter(star => star.x > 300)
-  if (data.phone.stars.length === 0) {
-    for (let i = 0; i < 50; i++) {
-      let spriteKey = ''
-      if (Math.random() < 0.8) {
-        spriteKey = 'story_f0_smartphone_star_small_' + Math.floor(Math.random() * 8)
-      } else {
-        spriteKey = 'story_f0_smartphone_star_big_' + Math.floor(Math.random() * 8)
-      }
-      data.phone.stars.push({
-        spriteKey: spriteKey,
-        x: 300 + Math.random() * 300,
-        startY: (Math.random() * 550) - 220
-      })
-    }
-  } else if (Math.random() < 0.03) {
-    let spriteKey = ''
-    if (Math.random() < 0.8) {
-      spriteKey = 'story_f0_smartphone_star_small_' + Math.floor(Math.random() * 8)
-    } else {
-      spriteKey = 'story_f0_smartphone_star_big_' + Math.floor(Math.random() * 8)
-    }
-    data.phone.stars.push({
-      spriteKey: spriteKey,
-      x: 620,
-      startY: (Math.random() * 550) - 220
-    })
-  }
+function p20Draw () {
+  const cD = this.$store.state.canvasDict
+
+  Helper.drawCanvasImage(0, 0, 'story_f0_picture', cD)
 }
