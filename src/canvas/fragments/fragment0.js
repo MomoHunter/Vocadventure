@@ -5,17 +5,17 @@ export const updateCalls = [
   p2Update,
   p1Update,
   p4Update,
-  phoneUpdate,
-  phoneShiftUpdate,
-  ceilingUpdate,
-  pictureUpdate,
-  ceilingUpdate,
-  standUpUpdate,
-  clockUpdate,
-  clock2Update,
-  woogleUpdate,
-  chromanderUpdate,
-  chromander2Update,
+  p5Update,
+  p6Update,
+  p7Update,
+  p8Update,
+  p7Update,
+  p10Update,
+  p11Update,
+  p12Update,
+  p13Update,
+  p14Update,
+  p15Update,
   chromeParkUpdate,
   constructionUpdate,
   diagramUpdate,
@@ -31,14 +31,14 @@ export const drawCalls = [
   p4Draw,
   p4Draw,
   p4Draw,
-  pictureDraw,
+  p8Draw,
   p4Draw,
   p4Draw,
-  clockDraw,
-  clockDraw,
-  woogleDraw,
-  chromanderDraw,
-  chromanderDraw,
+  p11Draw,
+  p11Draw,
+  p13Draw,
+  p14Draw,
+  p14Draw,
   chromeParkDraw,
   constructionDraw,
   diagramDraw,
@@ -72,7 +72,8 @@ let data = {
     con: {
       starSpeed: 0.1,
       maxZoom: 300,
-      referenceY: 163
+      referenceY: 163,
+      maxShiftY: 651
     },
     dyn: {
       stars: [],
@@ -80,40 +81,59 @@ let data = {
       shift: {
         x: 0,
         y: 0
+      },
+      shake: 0,
+      textShift: 0,
+      handShift: 0,
+      pause: 0
+    }
+  },
+  p8: {
+    dyn: {
+      picZoom: 0
+    }
+  },
+  p11: {
+    dyn: {
+      pause: 0,
+      clock: {
+        multiplicator: 1,
+        hour: 180,
+        minute: 180,
+        second: 180,
+        years: 0,
+        manipulated: false
       }
     }
   },
-  phone: {
-    zoom: 0,
-    shift: {
-      x: 0,
-      y: 0
+  p13: {
+    dyn: {
+      cars: [
+        {
+          x: 450,
+          y: 200,
+          spriteKey: 'story_f0_woogle_truck',
+          directionUp: true
+        }
+      ],
+      newCarCountdown: 100
+    }
+  },
+  p14: {
+    con: {
+      opacitySpeed: 0.05
     },
-    shake: 0,
-    textShift: 0,
-    stars: []
-  },
-  pictureZoom: 0,
-  handShift: 0,
-  pause: 0,
-  clock: {
-    multiplicator: 1,
-    hour: 180,
-    minute: 180,
-    second: 180,
-    years: 0,
-    manipulated: false
-  },
-  woogle: {
-    cars: [
-      {
-        x: 450,
-        y: 200,
-        spriteKey: 'story_f0_woogle_truck',
-        directionUp: true
-      }
-    ],
-    newCarCountdown: 100
+    dyn: {
+      pause: 0,
+      opacity: {
+        nowNew: 0,
+        headline: 0,
+        logo: 0,
+        bottomText: 0,
+        eye: 0
+      },
+      logoRotation: 0
+    }
   },
   chromander: {
     pause: 0,
@@ -198,7 +218,7 @@ function p1Update (zoom = 1) {
 function p1Draw (zoom = 1, yShift = 0) {
   const cD = this.$store.state.canvasDict
   const textLength = Helper.getTextWidthResizable(
-    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.con.textSize * zoom, cD.context
+    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.p1.con.textSize * zoom, cD.context
   )
   const negZoom = 1 - zoom
 
@@ -360,7 +380,7 @@ function p4Draw () {
     }
 
     Helper.drawCanvasSmallImage(
-      -139 + data.handShift, 300 - data.handShift + data.p4.dyn.shift.y, 6 - zoom * 2, 'story_f0_hand', cD
+      -139 + data.p4.dyn.handShift, 300 - data.p4.dyn.handShift + data.p4.dyn.shift.y, 6 - zoom * 2, 'story_f0_hand', cD
     )
     Helper.drawCanvasTextResizable(
       halfWidth * (1 - videoZoom) + 10 * videoZoom,
@@ -406,147 +426,201 @@ function p4addStars () {
 }
 
 /**
- * updates the size, if skipped, and the eyes
+ * updates the size of the screen, if skipped, and the whole part 1
  */
-function phoneUpdate () {
-  if (data.phone.zoom < data.p4.con.maxZoom) {
-    data.phone.zoom = data.p4.con.maxZoom
+function p5Update () {
+  if (data.p4.dyn.zoom < data.p4.con.maxZoom) {
+    data.p4.dyn.zoom = data.p4.con.maxZoom
   }
-  addStars()
-  p1Update.call(this, 1 - (data.phone.zoom * ((5 / 6) / 300)))
-  for (let star of data.phone.stars) {
+  p4addStars()
+  p1Update.call(this, 1 - (data.p4.dyn.zoom * ((5 / 6) / 300)))
+  for (let star of data.p4.dyn.stars) {
     star.x -= 0.1
   }
 }
 
 /**
- * updates shift to the top
+ * updates shift of the screen to emulate rumble
  */
-function phoneShiftUpdate () {
-  if (data.phone.shift.y < 651) {
-    data.phone.shift.y += 1
-    data.phone.shift.y *= 1.045
-    if (data.phone.shift.y > 651) {
-      data.phone.shift.y = 651
+function p6Update () {
+  if (data.p4.dyn.shift.y < data.p4.con.maxShiftY) {
+    data.p4.dyn.shift.y += 1
+    data.p4.dyn.shift.y *= 1.045
+    if (data.p4.dyn.shift.y > data.p4.con.maxShiftY) {
+      data.p4.dyn.shift.y = data.p4.con.maxShiftY
     }
-  } else if (data.phone.shake <= 9) {
-    if (data.phone.shake < 3) {
-      data.phone.shift.x = 10
-    } else if (data.phone.shake < 6) {
-      data.phone.shift.y = 661
-      data.phone.shift.x = 0
-    } else if (data.phone.shake < 9) {
-      data.phone.shift.y = 651
-      data.phone.shift.x = -10
+  } else if (data.p4.dyn.shake <= 9) {
+    if (data.p4.dyn.shake < 3) {
+      data.p4.dyn.shift.x = 10
+    } else if (data.p4.dyn.shake < 6) {
+      data.p4.dyn.shift.y = data.p4.con.maxShiftY + 10
+      data.p4.dyn.shift.x = 0
+    } else if (data.p4.dyn.shake < 9) {
+      data.p4.dyn.shift.y = data.p4.con.maxShiftY
+      data.p4.dyn.shift.x = -10
     } else {
-      data.phone.shift.y = 651
-      data.phone.shift.x = 0
+      data.p4.dyn.shift.y = data.p4.con.maxShiftY
+      data.p4.dyn.shift.x = 0
     }
-    data.phone.shake += 1
+    data.p4.dyn.shake += 1
   } else {
     this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
   }
 
-  phoneUpdate.call(this)
+  p5Update.call(this)
 }
 
-function ceilingUpdate () {
-  if (data.phone.shift.y !== 651) {
-    data.phone.shift.y = 651
+/**
+ * if previous scene was skipped, jumps to ceiling view
+ */
+function p7Update () {
+  if (data.p4.dyn.shift.y !== data.p4.con.maxShiftY) {
+    data.p4.dyn.shift.y = data.p4.con.maxShiftY
   }
-  if (data.phone.shift.x !== 0) {
-    data.phone.shift.x = 0
+  if (data.p4.dyn.shift.x !== 0) {
+    data.p4.dyn.shift.x = 0
   }
 }
 
 /**
  * updates the zooming on the picture of the parents
  */
-function pictureUpdate () {
-  data.pictureZoom += 1
+function p8Update () {
+  data.p8.dyn.picZoom += 1
 }
 
-function standUpUpdate () {
-  addStars()
-  for (let star of data.phone.stars) {
-    star.x -= 0.1
+/**
+ * draw the phone and the extra screen zoomed out
+ */
+function p8Draw () {
+  const cD = this.$store.state.canvasDict
+  let zoom = (Math.sin(data.p8.dyn.picZoom / 750) + 1) / 2
+
+  Helper.drawCanvasSmallImage(-zoom * 40, -zoom * 20, 1 - ((1 - zoom) * (2 / 17)), 'story_f0_parents', cD)
+}
+
+/**
+ * updates standing up while on bed
+ */
+function p10Update () {
+  p4addStars()
+  for (let star of data.p4.dyn.stars) {
+    star.x -= data.p4.con.starSpeed
   }
-  if (data.phone.shift.y > 0) {
-    data.phone.shift.y -= 1
-    data.phone.shift.y *= 0.98
-    if (data.phone.shift.y < 0) {
-      data.phone.shift.y = 0
+  if (data.p4.dyn.shift.y > 0) {
+    data.p4.dyn.shift.y -= 1
+    data.p4.dyn.shift.y *= 0.98
+    if (data.p4.dyn.shift.y < 0) {
+      data.p4.dyn.shift.y = 0
     }
-  } else if (data.handShift < 167 && data.phone.zoom === 300 && data.pause === 0) {
-    data.handShift += 4
-    if (data.handShift > 167) {
-      data.handShift = 167
+  } else if (data.p4.dyn.handShift < 167 && data.p4.dyn.zoom === 300 && data.p4.dyn.pause === 0) {
+    data.p4.dyn.handShift += 4
+    if (data.p4.dyn.handShift > 167) {
+      data.p4.dyn.handShift = 167
     }
-  } else if (data.pause < 20) {
-    data.pause += 1
-  } else if (data.handShift > 60) {
-    data.handShift -= 4
-  } else if (data.phone.zoom > 0) {
-    data.phone.zoom -= 1
-    data.phone.zoom = 300 - ((300 - data.phone.zoom) * 1.1)
-    data.handShift -= 12
-    if (data.phone.zoom < 0) {
-      data.phone.zoom = 0
+  } else if (data.p4.dyn.pause < 20) {
+    data.p4.dyn.pause += 1
+  } else if (data.p4.dyn.handShift > 60) {
+    data.p4.dyn.handShift -= 4
+  } else if (data.p4.dyn.zoom > 0) {
+    data.p4.dyn.zoom -= 1
+    data.p4.dyn.zoom = 300 - ((300 - data.p4.dyn.zoom) * 1.1)
+    data.p4.dyn.handShift -= 12
+    if (data.p4.dyn.zoom < 0) {
+      data.p4.dyn.zoom = 0
     }
-  } else if (data.pause < 60) {
-    data.pause += 1
-  } else if (data.phone.textShift < 60) {
-    data.phone.textShift += 1
-    if (data.phone.textShift === 60) {
+  } else if (data.p4.dyn.pause < 60) {
+    data.p4.dyn.pause += 1
+  } else if (data.p4.dyn.textShift < 60) {
+    data.p4.dyn.textShift += 1
+    if (data.p4.dyn.textShift === 60) {
       this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
     }
   }
 }
 
-function clockUpdate () {
-  if (data.pause < 60) {
-    data.pause = 60
-  }
-  if (data.pause < 90) {
-    data.pause += 1
+/**
+ * updates the hands of the clock
+ */
+function p11Update () {
+  if (data.p11.dyn.pause < 30) {
+    data.p11.dyn.pause += 1
   } else {
-    data.clock.hour = (data.clock.hour - (data.clock.multiplicator * 0.008)) % 360
-    data.clock.minute = (data.clock.minute - (data.clock.multiplicator * 0.1)) % 360
-    data.clock.second = (data.clock.second - (data.clock.multiplicator * 6)) % 360
-    if (data.clock.years <= 24.5) {
-      data.clock.multiplicator *= 1.02
-    } else if (data.clock.multiplicator > 1) {
-      if (!data.clock.manipulated) {
-        data.clock.hour -= 113.5
-        data.clock.minute += 23.5
-        data.clock.second -= 36
-        data.clock.manipulated = true
+    data.p11.dyn.clock.hour = (data.p11.dyn.clock.hour - (data.p11.dyn.clock.multiplicator * 0.008)) % 360
+    data.p11.dyn.clock.minute = (data.p11.dyn.clock.minute - (data.p11.dyn.clock.multiplicator * 0.1)) % 360
+    data.p11.dyn.clock.second = (data.p11.dyn.clock.second - (data.p11.dyn.clock.multiplicator * 6)) % 360
+    if (data.p11.dyn.clock.years <= 24.5) {
+      data.p11.dyn.clock.multiplicator *= 1.02
+    } else if (data.p11.dyn.clock.multiplicator > 1) {
+      if (!data.p11.dyn.clock.manipulated) {
+        data.p11.dyn.clock.hour -= 113.5
+        data.p11.dyn.clock.minute += 23.5
+        data.p11.dyn.clock.second -= 36
+        data.p11.dyn.clock.manipulated = true
       }
-      data.clock.multiplicator /= 1.02
+      data.p11.dyn.clock.multiplicator /= 1.02
     } else {
-      data.clock.multiplicator = 0
-      data.clock.hour = 180
-      data.clock.minute = 180
-      data.clock.second = 180
-      data.clock.years = 50
+      data.p11.dyn.clock.multiplicator = 0
+      data.p11.dyn.clock.hour = 180
+      data.p11.dyn.clock.minute = 180
+      data.p11.dyn.clock.second = 180
+      data.p11.dyn.clock.years = 50
       this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
     }
-    data.clock.years += data.clock.multiplicator / 7000
+    data.p11.dyn.clock.years += data.p11.dyn.clock.multiplicator / 7000
   }
 }
 
-function clock2Update () {
-  if (data.clock.years !== 50) {
-    data.clock.hour = 180
-    data.clock.minute = 180
-    data.clock.second = 180
-    data.clock.years = 50
-    data.pause = 90
+/**
+ * draws the clock and the text above
+ */
+function p11Draw () {
+  const cD = this.$store.state.canvasDict
+
+  Helper.drawCanvasImage(0, 0, 'story_f0_video_clock_base', cD)
+  Helper.drawCanvasImage(
+    this.canvasWidth / 2 - 5, 175, 'story_f0_video_clock_hour', cD, 12, 0, data.p11.dyn.clock.hour, 1
+  )
+  Helper.drawCanvasImage(
+    this.canvasWidth / 2 - 4, 175, 'story_f0_video_clock_minute', cD, 12, 0, data.p11.dyn.clock.minute, 1
+  )
+  Helper.drawCanvasImage(
+    this.canvasWidth / 2 - 1, 175, 'story_f0_video_clock_second', cD, 12, 0, data.p11.dyn.clock.second, 1
+  )
+  Helper.drawCanvasImage(this.canvasWidth / 2 - 5, 170, 'story_f0_video_clock_center', cD)
+
+  if (data.p11.dyn.clock.years > 0.5) {
+    Helper.drawCanvasText(
+      this.canvasWidth / 2, 40,
+      this.$store.getters.getText('adventureStoryF0P11Before', Math.floor(data.p11.dyn.clock.years)),
+      'storyF0P11VideoText', cD.context
+    )
+  } else {
+    Helper.drawCanvasText(
+      this.canvasWidth / 2, 40, this.$store.getters.getText('adventureStoryF0P11Today'), 'storyF0P11VideoText',
+      cD.context
+    )
   }
 }
 
-function woogleUpdate () {
-  for (let car of data.woogle.cars) {
+/**
+ * if before part was skipped, sets values
+ */
+function p12Update () {
+  if (data.p11.dyn.clock.years !== 50) {
+    data.p11.dyn.clock.hour = 180
+    data.p11.dyn.clock.minute = 180
+    data.p11.dyn.clock.second = 180
+    data.p11.dyn.clock.years = 50
+    data.p11.dyn.pause = 30
+  }
+}
+
+/**
+ * updates position of cars and spawns new ones
+ */
+function p13Update () {
+  for (let car of data.p13.dyn.cars) {
     if (car.directionUp) {
       car.x += 4
       car.y -= 1
@@ -556,20 +630,20 @@ function woogleUpdate () {
     }
   }
 
-  data.woogle.cars = data.woogle.cars.filter(car =>
+  data.p13.dyn.cars = data.p13.dyn.cars.filter(car =>
     (car.directionUp && car.x < this.canvasWidth) || (!car.directionUp && car.y < this.canvasHeight)
   )
 
-  data.woogle.newCarCountdown -= 1
+  data.p13.dyn.newCarCountdown -= 1
 
-  if (data.woogle.newCarCountdown <= 0) {
+  if (data.p13.dyn.newCarCountdown <= 0) {
     if (Math.random() < 0.5) {
       const spriteKeys = ['story_f0_woogle_truck']
 
       let spriteData = Helper.getSpriteData(
         spriteKeys[Math.floor(spriteKeys.length * Math.random())], this.$store.state.canvasDict
       )
-      data.woogle.cars.push({
+      data.p13.dyn.cars.push({
         x: 180 - spriteData.spriteWidth,
         y: 300,
         spriteKey: spriteData.key,
@@ -578,76 +652,126 @@ function woogleUpdate () {
     } else {
       const spriteKeys = ['story_f0_woogle_car']
 
-      data.woogle.cars.unshift({
+      data.p13.dyn.cars.unshift({
         x: 600,
         y: 170,
         spriteKey: spriteKeys[Math.floor(spriteKeys.length * Math.random())],
         directionUp: false
       })
     }
-    data.woogle.newCarCountdown = Math.floor(60 * Math.random()) + 40
+    data.p13.dyn.newCarCountdown = Math.floor(60 * Math.random()) + 40
   }
 }
 
-function chromanderUpdate () {
-  if (data.chromander.pause < 30) {
-    data.chromander.pause += 1
-  } else if (data.chromander.opacity.nowNew < 1 && data.chromander.pause === 30) {
-    data.chromander.opacity.nowNew += 0.05
-  } else if (data.chromander.pause < 90) {
-    data.chromander.pause += 1
-  } else if (data.chromander.opacity.nowNew > 0 && data.chromander.pause === 90) {
-    data.chromander.opacity.nowNew -= 0.05
-  } else if (data.chromander.opacity.headline < 1) {
-    data.chromander.opacity.headline += 0.05
-  } else if (data.chromander.pause < 120) {
-    data.chromander.pause += 1
-  } else if (data.chromander.opacity.logo < 1) {
-    data.chromander.opacity.logo += 0.05
-    if (data.chromander.opacity.logo > 1) {
-      data.chromander.opacity.logo = 1
+/**
+ * draw the woogle headquarters and driving cars
+ */
+function p13Draw () {
+  const cD = this.$store.state.canvasDict
+
+  Helper.drawCanvasImage(0, 0, 'story_f0_woogle', cD)
+
+  for (let car of data.p13.dyn.cars) {
+    Helper.drawCanvasImage(car.x, car.y, car.spriteKey, cD)
+  }
+}
+
+/**
+ * updates woogle chromander ad with opacity etc
+ */
+function p14Update () {
+  if (data.p14.dyn.pause < 30) {
+    data.p14.dyn.pause += 1
+  } else if (data.p14.dyn.opacity.nowNew < 1 && data.p14.dyn.pause === 30) {
+    data.p14.dyn.opacity.nowNew += data.p14.con.opacitySpeed
+  } else if (data.p14.dyn.pause < 90) {
+    data.p14.dyn.pause += 1
+  } else if (data.p14.dyn.opacity.nowNew > 0 && data.p14.dyn.pause === 90) {
+    data.p14.dyn.opacity.nowNew -= data.p14.con.opacitySpeed
+  } else if (data.p14.dyn.opacity.headline < 1) {
+    data.p14.dyn.opacity.headline += data.p14.con.opacitySpeed
+  } else if (data.p14.dyn.pause < 120) {
+    data.p14.dyn.pause += 1
+  } else if (data.p14.dyn.opacity.logo < 1) {
+    data.p14.dyn.opacity.logo += data.p14.con.opacitySpeed
+    if (data.p14.dyn.opacity.logo > 1) {
+      data.p14.dyn.opacity.logo = 1
     }
-  } else if (data.chromander.pause < 150) {
-    data.chromander.pause += 1
-  } else if (data.chromander.opacity.bottomText < 1) {
-    data.chromander.opacity.bottomText += 0.05
-  } else if (data.chromander.pause < 300) {
-    data.chromander.pause += 1
-  } else if (data.chromander.opacity.eye < 1) {
-    data.chromander.opacity.eye += 0.005
-    if (data.chromander.opacity.eye > 1) {
-      data.chromander.opacity.eye = 1
+  } else if (data.p14.dyn.pause < 150) {
+    data.p14.dyn.pause += 1
+  } else if (data.p14.dyn.opacity.bottomText < 1) {
+    data.p14.dyn.opacity.bottomText += data.p14.con.opacitySpeed
+  } else if (data.p14.dyn.pause < 300) {
+    data.p14.dyn.pause += 1
+  } else if (data.p14.dyn.opacity.eye < 1) {
+    data.p14.dyn.opacity.eye += 0.005
+    if (data.p14.dyn.opacity.eye > 1) {
+      data.p14.dyn.opacity.eye = 1
     }
   } else {
     this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
   }
 
-  if (data.chromander.opacity.logo > 0) {
-    data.chromander.logoRotation += 1
-    data.chromander.logoRotation %= 360
+  if (data.p14.dyn.opacity.logo > 0) {
+    data.p14.dyn.logoRotation += 1
+    data.p14.dyn.logoRotation %= 360
   }
 }
 
-function chromander2Update () {
-  if (data.chromander.opacity.nowNew > 0) {
-    data.chromander.opacity.nowNew = 0
+/**
+ * shows the ad of woogle chromander
+ */
+function p14Draw () {
+  const cD = this.$store.state.canvasDict
+  const logoData = Helper.getSpriteData('story_f0_chromander', cD)
+  const eyeData = Helper.getSpriteData('story_f0_chromander_eye', cD)
+
+  Helper.drawCanvasImage(0, 0, 'story_f0_video_start_background', cD)
+  Helper.drawCanvasText(
+    this.canvasWidth / 2, this.canvasHeight / 2, this.$store.getters.getText('adventureStoryF0P14NowNew'),
+    'storyF0P11VideoText', cD.context, data.p14.dyn.opacity.nowNew
+  )
+  Helper.drawCanvasText(
+    this.canvasWidth / 2, 50, this.$store.getters.getText('adventureStoryF0P14Headline'), 'storyF0P11VideoText',
+    cD.context, data.p14.dyn.opacity.headline
+  )
+  Helper.drawCanvasImage(
+    this.canvasWidth / 2 - eyeData.spriteWidth / 2, this.canvasHeight / 2 - eyeData.spriteHeight / 2,
+    'story_f0_chromander_eye', cD, 12, 0, 0, 0, data.p14.dyn.opacity.eye
+  )
+  Helper.drawCanvasImage(
+    this.canvasWidth / 2 - logoData.spriteWidth / 2, this.canvasHeight / 2 - logoData.spriteHeight / 2,
+    'story_f0_chromander', cD, 12, 0, data.p14.dyn.logoRotation, 0, data.p14.dyn.opacity.logo
+  )
+  Helper.drawCanvasText(
+    this.canvasWidth / 2, 250, this.$store.getters.getText('adventureStoryF0P14BottomText'), 'storyF0P11VideoText',
+    cD.context, data.p14.dyn.opacity.bottomText
+  )
+}
+
+/**
+ * sets the opacity values of the chromander ad if skipped
+ */
+function p15Update () {
+  if (data.p14.dyn.opacity.nowNew > 0) {
+    data.p14.dyn.opacity.nowNew = 0
   }
-  if (data.chromander.opacity.headline < 1) {
-    data.chromander.opacity.headline = 1
+  if (data.p14.dyn.opacity.headline < 1) {
+    data.p14.dyn.opacity.headline = 1
   }
-  if (data.chromander.opacity.logo < 1) {
-    data.chromander.opacity.logo = 1
+  if (data.p14.dyn.opacity.logo < 1) {
+    data.p14.dyn.opacity.logo = 1
   }
-  if (data.chromander.opacity.bottomText < 1) {
-    data.chromander.opacity.bottomText = 1
+  if (data.p14.dyn.opacity.bottomText < 1) {
+    data.p14.dyn.opacity.bottomText = 1
   }
-  if (data.chromander.opacity.eye < 1) {
-    data.chromander.opacity.eye = 1
+  if (data.p14.dyn.opacity.eye < 1) {
+    data.p14.dyn.opacity.eye = 1
   }
 
-  if (data.chromander.opacity.logo > 0) {
-    data.chromander.logoRotation += 1
-    data.chromander.logoRotation %= 360
+  if (data.p14.dyn.opacity.logo > 0) {
+    data.p14.dyn.logoRotation += 1
+    data.p14.dyn.logoRotation %= 360
   }
 }
 
@@ -746,77 +870,6 @@ function diagramUpdate () {
 function entryChromeleonUpdate () {}
 
 function p20Update () {}
-
-/**
- * draw the phone and the extra screen zoomed out
- */
-function pictureDraw () {
-  const cD = this.$store.state.canvasDict
-  let zoom = (Math.sin(data.pictureZoom / 750) + 1) / 2
-
-  Helper.drawCanvasSmallImage(-zoom * 40, -zoom * 20, 1 - ((1 - zoom) * (2 / 17)), 'story_f0_parents', cD)
-}
-
-function clockDraw () {
-  const cD = this.$store.state.canvasDict
-
-  Helper.drawCanvasImage(0, 0, 'story_f0_video_clock_base', cD)
-  Helper.drawCanvasImage(this.canvasWidth / 2 - 5, 175, 'story_f0_video_clock_hour', cD, 12, 0, data.clock.hour, 1)
-  Helper.drawCanvasImage(this.canvasWidth / 2 - 4, 175, 'story_f0_video_clock_minute', cD, 12, 0, data.clock.minute, 1)
-  Helper.drawCanvasImage(this.canvasWidth / 2 - 1, 175, 'story_f0_video_clock_second', cD, 12, 0, data.clock.second, 1)
-  Helper.drawCanvasImage(this.canvasWidth / 2 - 5, 170, 'story_f0_video_clock_center', cD)
-
-  if (data.clock.years > 0.5) {
-    Helper.drawCanvasText(
-      this.canvasWidth / 2, 40,
-      this.$store.getters.getText('adventureStoryF0P11Before', Math.floor(data.clock.years)),
-      'storyF0P11VideoText', cD.context
-    )
-  } else {
-    Helper.drawCanvasText(
-      this.canvasWidth / 2, 40, this.$store.getters.getText('adventureStoryF0P11Today'), 'storyF0P11VideoText',
-      cD.context
-    )
-  }
-}
-
-function woogleDraw () {
-  const cD = this.$store.state.canvasDict
-
-  Helper.drawCanvasImage(0, 0, 'story_f0_woogle', cD)
-
-  for (let car of data.woogle.cars) {
-    Helper.drawCanvasImage(car.x, car.y, car.spriteKey, cD)
-  }
-}
-
-function chromanderDraw () {
-  const cD = this.$store.state.canvasDict
-  const logoData = Helper.getSpriteData('story_f0_chromander', cD)
-  const eyeData = Helper.getSpriteData('story_f0_chromander_eye', cD)
-
-  Helper.drawCanvasImage(0, 0, 'story_f0_video_start_background', cD)
-  Helper.drawCanvasText(
-    this.canvasWidth / 2, this.canvasHeight / 2, this.$store.getters.getText('adventureStoryF0P14NowNew'),
-    'storyF0P11VideoText', cD.context, data.chromander.opacity.nowNew
-  )
-  Helper.drawCanvasText(
-    this.canvasWidth / 2, 50, this.$store.getters.getText('adventureStoryF0P14Headline'), 'storyF0P11VideoText',
-    cD.context, data.chromander.opacity.headline
-  )
-  Helper.drawCanvasImage(
-    this.canvasWidth / 2 - eyeData.spriteWidth / 2, this.canvasHeight / 2 - eyeData.spriteHeight / 2,
-    'story_f0_chromander_eye', cD, 12, 0, 0, 0, data.chromander.opacity.eye
-  )
-  Helper.drawCanvasImage(
-    this.canvasWidth / 2 - logoData.spriteWidth / 2, this.canvasHeight / 2 - logoData.spriteHeight / 2,
-    'story_f0_chromander', cD, 12, 0, data.chromander.logoRotation, 0, data.chromander.opacity.logo
-  )
-  Helper.drawCanvasText(
-    this.canvasWidth / 2, 250, this.$store.getters.getText('adventureStoryF0P14BottomText'), 'storyF0P11VideoText',
-    cD.context, data.chromander.opacity.bottomText
-  )
-}
 
 function chromeParkDraw () {
   const cD = this.$store.state.canvasDict
