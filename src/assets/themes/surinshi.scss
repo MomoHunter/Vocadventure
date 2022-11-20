@@ -1,0 +1,36 @@
+// sass src/assets/themes/surinshi.scss public/assets/themes/surinshi.min.css --style=compressed
+
+$color-background: #f1f1f1;
+$color-font-bright: #000000;
+$color-font: #303030;
+$color-font-dark: #adadad;
+$color-font-very-dark: #ebebeb;
+$color-hero: #d2d2d2;
+$color-border: #414141;
+$color-green: #2bb82b;
+$color-green-dark: lighten($color-green, 15);
+$color-yellow: #c9ce32; //#f5df4d
+$color-red: #c92b33;
+$color-red-dark: lighten($color-red, 15);
+$color-info: #4aada3;
+$color-info-2: #4a96ad;
+$color-action: #1ccf7c;
+$color-selected: #bf8013;
+$color-armor: #DC793E;
+$color-consumables: #8eb44c;
+$color-weapons: #1271c5;
+$color-basic: #a570a8;
+$color-gold: #847217;
+$color-silver: #a2aaaa;
+$color-tag: #e6e6e6;
+$color-blockquote-background: #e0e0e0;
+$color-blockquote-bar: #9b9b9b;
+$color-notification-dark: #aeaeae;
+$color-notification-bright: #1a1a1a;
+$color-modal-head: #c5c5c5;
+$color-modal-body: #f5f5f5;
+$color-modal-foot: #d4d4d4;
+$color-slider: #414141;
+$color-settings: #6d6d6d;
+
+@import "./garium.scss";

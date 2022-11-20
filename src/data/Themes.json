@@ -1,4 +1,4 @@
 {
-  "garium": "css/garium.min.css",
-  "surinshi": "css/surinshi.min.css"
+  "garium": "/assets/themes/garium.min.css",
+  "surinshi": "/assets/themes/surinshi.min.css"
 }

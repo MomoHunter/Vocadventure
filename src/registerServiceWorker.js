@@ -1,28 +1,22 @@
-/* eslint-disable no-console */
-
 import { register } from 'register-service-worker'
 
 if (process.env.NODE_ENV === 'production') {
-  register(`${process.env.BASE_URL}service-worker.js`, {
-    ready () {
-      console.log(
-        'App is being served from cache by a service worker.'
-      )
+  register('./service-worker.js', {
+    registrationOptions: { scope: './' },
+    ready (registration) {
+      console.log('Service worker is active.')
     },
-    registered () {
+    registered (registration) {
       console.log('Service worker has been registered.')
     },
-    cached () {
+    cached (registration) {
       console.log('Content has been cached for offline use.')
     },
-    updatefound (serviceWorker) {
+    updatefound (registration) {
       console.log('New content is downloading.')
     },
-    updated (serviceWorker) {
+    updated (registration) {
       console.log('New content is available; please refresh.')
-      document.dispatchEvent(
-        new CustomEvent('swWaiting')
-      )
     },
     offline () {
       console.log('No internet connection found. App is running in offline mode.')

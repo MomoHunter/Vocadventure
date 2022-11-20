@@ -1,31 +1,33 @@
 <template>
-  <div class="button upload" :class="[getSizeClass('general'), color]">
+  <div class="button upload" :class="[getSizeClass('general'), props.color]">
     <input class="input" type="file" accept=".json" multiple @change="$emit('change', $event.target.files)">
     <span class="icon">
-      <i class="fas" :class="'fa-' + icon"></i>
+      <i class="fas" :class="'fa-' + props.icon"></i>
     </span>
     <span class="text">
-      {{ getText(text) }}
+      {{ getText(props.text) }}
     </span>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ButtonUpload',
-  props: {
-    icon: String,
-    text: String,
-    color: String
-  },
-  methods: {
-    getText (id) {
-      return this.$store.getters.getText(id)
-    },
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
-    }
-  }
+<script setup>
+import { useAppConstStore } from '@/stores/appconst'
+
+const appConst = useAppConstStore()
+
+const props = defineProps({
+  icon: String,
+  text: String,
+  color: String
+})
+defineEmits(['change'])
+
+function getText (id) {
+  return appConst.getText(id)
+}
+
+function getSizeClass (type) {
+  return appConst.getSizeClass(type)
 }
 </script>
 

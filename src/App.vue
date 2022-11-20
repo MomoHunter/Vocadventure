@@ -1,223 +1,168 @@
 <template>
-  <div ref="app" id="app" class="height-full flex-column">
-    <TheStatus :status="$store.state.vueDict.status" />
+  <div class="height-full flex-column">
+    <TheStatus :status="savestate.app.status" @click="toggleCalendar()" />
     <div class="flex-grow width-full relative">
-      <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition"
-                  @after-enter="toggleTransitionActive(true)" @before-enter="toggleTransitionActive(false)">
-        <router-view></router-view>
-      </transition>
+      <router-view v-slot="{ Component }">
+        <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition"
+                    @after-enter="toggleTransitionActive(true)" @before-enter="toggleTransitionActive(false)">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+      <TheCalendar :visible="calendarVisible" @click="toggleCalendar()" />
     </div>
     <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
                 leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
       <ModalAreYouSure v-show="modalName === 'areYouSure'" />
     </transition>
     <transition enter-active-class="animate__animated animate__fadeIn duration-c-350ms"
-                leave-active-class="animate__animated animate__fadeOut duration-c-350ms">
-      <ModalMessage v-if="$store.state.vueDict.showModals.name === 'message'" :options="$store.state.vueDict.showModals"
-                    @click="$store.commit('vueDict/modalAnswer', $event)" />
+                leave-active-class="animate__animated animate__fadeOut duration-c-350ms"
+                @after-leave="setModalAnswer('')">
+      <ModalMessage v-if="modalName === 'message'" :options="appDyn.activeModal"
+                    @click="setModalAnswer($event)" />
     </transition>
   </div>
 </template>
 
-<script>
-import Store from '@/store/index.js'
+<script setup>
+import { ref, watch, onBeforeMount, onMounted, computed } from 'vue'
+import { RouterView, useRoute } from 'vue-router'
+
 import TheStatus from '@/components/TheStatus.vue'
+import TheCalendar from '@/components/TheCalendar.vue'
 import ModalAreYouSure from '@/components/ModalAreYouSure.vue'
 import ModalMessage from '@/components/ModalMessage.vue'
 
-export default {
-  name: 'App',
-  store: Store,
-  components: {
-    TheStatus,
-    ModalAreYouSure,
-    ModalMessage
-  },
-  data () {
-    return {
-      enterTransition: '',
-      leaveTransition: ''
-    }
-  },
-  created () {
-    if (navigator.serviceWorker) {
-      navigator.serviceWorker.onmessage = (event) => {
-        if (event.data) {
-          switch (event.data.type) {
-            case 'newUpdate':
-              this.newUpdate()
-              break
-            case 'updateFinished':
-              if (this.$store.state.missedUpdates && this.$store.state.allowUpdates) {
-                this.$store.commit('resetMissedUpdates')
-                this.$store.commit('updateSuccessful')
-                window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
-                location.reload()
-              } else {
-                this.$store.commit('updateSuccessful')
-                window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
-                this.updateFinished()
-              }
-              break
-            default:
-          }
+import { useSavestateStore } from './stores/savestate'
+import { useIndexedDBStore } from './stores/indexeddb'
+import { useAppDynStore } from './stores/appdyn'
+import { useAppConstStore } from './stores/appconst'
+import { useGameDynStore } from './stores/gamedyn'
+import { useGameConstStore } from './stores/gameconst'
+
+import { initStores } from '@/canvas/storeref.js'
+import KanaVGs from '@/assets/kanji.svg'
+
+const route = useRoute()
+const savestate = useSavestateStore()
+const indexedDBStore = useIndexedDBStore()
+const appDyn = useAppDynStore()
+const appConst = useAppConstStore()
+const gameDyn = useGameDynStore()
+const gameConst = useGameConstStore()
+
+onBeforeMount(() => {
+  if (navigator.serviceWorker) {
+    navigator.serviceWorker.onmessage = (event) => {
+      if (event.data) {
+        switch (event.data.type) {
+          case 'newUpdate':
+            appDyn.newUpdate = true
+            savestate.saveData()
+            break
+          case 'updateFinished':
+            if (savestate.app.missedUpdates && savestate.app.allowUpdates) {
+              savestate.app.missedUpdates = false
+              savestate.app.updateSuccessful = true
+              savestate.saveData()
+              location.reload()
+            } else {
+              savestate.app.updateSuccessful = true
+              savestate.saveData()
+              appDyn.updateFinished = true
+            }
+            break
+          default:
         }
       }
     }
-  },
-  mounted () {
+  }
+  Snap.load(KanaVGs, (fragment) => {
+    appConst.kanaSvg = fragment
     let spinner = document.getElementById('spinner')
-
-    if (window.screen.width * window.devicePixelRatio < 1150) {
-      this.$store.commit('changeViewport', 0.75)
-    }
-
-    this.loadData()
-    this.$store.commit('canvasDict/setSpritesheet')
 
     if (spinner && spinner.parentNode) {
       spinner.parentNode.removeChild(spinner)
     }
+  })
+})
 
-    if (navigator.serviceWorker) {
-      navigator.serviceWorker.getRegistration().then((registration) => {
-        if (registration && !registration.waiting && this.$store.state.allowUpdates && this.$store.state.missedUpdates) {
-          this.$store.commit('newUpdate')
-          setTimeout(() => {
-            navigator.serviceWorker.controller.postMessage({
-              type: 'update'
-            })
-          }, 3000)
-        }
-      })
-    }
-  },
-  computed: {
-    modalName () {
-      return this.$store.state.vueDict.showModals.name
-    }
-  },
-  methods: {
-    newUpdate () {
-      this.$store.commit('newUpdate')
-      window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
-    },
-    updateFinished () {
-      this.$store.commit('updateFinished')
-    },
-    loadData () {
-      let data = JSON.parse(window.localStorage.getItem('globalDict'))
+onMounted(() => {
+  if (window.screen.width * window.devicePixelRatio < 1150) {
+    savestate.changeViewport(0.75)
+  }
 
-      if (data && data.version) {
-        if (data.lang) {
-          this.$store.commit('changeLanguage', data.lang)
-        }
-        if (data.targetLanguage) {
-          this.$store.commit('changeTargetLanguage', data.targetLanguage)
-        }
-        if (data.theme) {
-          this.$store.commit('changeTheme', data.theme)
-        }
-        if (data.size) {
-          this.$store.commit('changeSize', data.size)
-        }
-        if (data.viewport) {
-          this.$store.commit('changeViewport', data.viewport)
-        }
-        if (data.volume) {
-          this.$store.commit('changeVolume', data.volume)
-        }
-        if (typeof data.allowUpdates === 'boolean') {
-          this.$store.commit('changeAllowUpdates', data.allowUpdates)
-        }
-        if (typeof data.missedUpdates === 'boolean') {
-          this.$store.commit('changeMissedUpdates', data.missedUpdates)
-        }
-        if (data.status) {
-          this.$store.commit('vueDict/changeStatus', data.status)
-        }
-        if (data.categoriesPlayed) {
-          this.$store.commit('vueDict/changeCategoriesPlayed', data.categoriesPlayed)
-        }
-        if (data.deactivatedWords) {
-          this.$store.commit('vueDict/changeDeactivatedWords', data.deactivatedWords)
-        }
-        if (data.activeWordPacks) {
-          this.$store.commit('vueDict/changeActiveWordPacks', data.activeWordPacks)
-        }
-        if (data.inventory) {
-          this.$store.commit('vueDict/changeInventory', data.inventory)
-        }
-        if (data.unlockedItems) {
-          for (let item of data.unlockedItems) {
-            this.$store.commit('vueDict/unlockItem', item)
-          }
-        }
-        // if (data.watchedIntro) {
-        //   this.$store.commit('canvasDict/setWatchedIntro')
-        // }
-        // if (data.gameState) {
-        //   this.$store.commit('canvasDict/changeGameState', data.gameState)
-        // }
-        // if (data.mapOffset) {
-        //   this.$store.commit('canvasDict/setMapOffset', data.mapOffset)
-        // }
-        // if (data.currentLevel) {
-        //   this.$store.commit('canvasDict/setLevel', data.currentLevel)
-        // }
-        // if (data.currentBuilding) {
-        //   this.$store.commit('canvasDict/setBuilding', data.currentBuilding)
-        // }
-        // if (data.character) {
-        //   this.$store.commit('canvasDict/setCharacter', data.character)
-        // }
-        // if (data.unlockedBuildings) {
-        //   this.$store.commit('canvasDict/changeUnlockedBuilding', data.unlockedBuildings)
-        // }
-        // if (data.collectables) {
-        //   this.$store.commit('canvasDict/changeCollectables', data.collectables)
-        // }
-        // if (data.playerHealth) {
-        //   this.$store.commit('canvasDict/setPlayerHealth', data.playerHealth)
-        // }
-        // if (data.dynamicLevelData) {
-        //   this.$store.commit('canvasDict/changeDynamicLevelData', data.dynamicLevelData)
-        // }
-        if (data.updateSuccessful) {
-          if (navigator.serviceWorker) {
-            navigator.serviceWorker.getRegistration().then((registration) => {
-              if (registration && registration.waiting) {
-                this.$store.commit('updateSuccessful')
-              } else {
-                this.$store.commit('updateSuccess')
-                window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
-              }
-            })
-          }
-        }
+  savestate.loadData()
+  indexedDBStore.getEntries({ name: 'wordpackdb', store: 'wordpacks' })
+  gameConst.initSpritesheet()
+  initStores(savestate, appDyn, appConst, gameDyn, gameConst)
 
-        if (data.version !== this.$store.state.version) {
-          window.localStorage.setItem('globalDict', JSON.stringify(this.$store.getters.getSaveData))
+  if (navigator.serviceWorker) {
+    navigator.serviceWorker.getRegistration().then((registration) => {
+      if (registration && !registration.waiting && savestate.app.allowUpdates && savestate.app.missedUpdates) {
+        if (savestate.app.allowUpdates) {
+          appDyn.newUpdate = true
+        } else {
+          appDyn.updateAvailable = true
+          savestate.app.missedUpdates = true
         }
+        setTimeout(() => {
+          navigator.serviceWorker.controller.postMessage({
+            type: 'update'
+          })
+        }, 3000)
       }
+    })
+  }
+})
 
-      this.$store.dispatch('getEntries', { name: 'wordpackdb', store: 'wordPacks' })
-    },
-    toggleTransitionActive (bool) {
-      this.$store.commit('vueDict/changeTransitionActive', bool)
-    }
-  },
-  watch: {
-    '$route' (to, from) {
-      this.enterTransition = 'animate__animated ' +
-        (from.meta.forward.includes(to.name) ? 'animate__slideInRight' : 'animate__slideInLeft') +
-        ' duration-c-500ms delay-c-100ms'
-      this.leaveTransition = 'animate__animated ' +
-        (from.meta.forward.includes(to.name) ? 'animate__slideOutLeft' : 'animate__slideOutRight') +
-        ' duration-c-500ms'
+const enterTransition = ref('')
+const leaveTransition = ref('')
+
+watch(
+  () => [route.name, route.meta.forward],
+  (to, from) => {
+    if (from[0] && to[0]) {
+      let enterAnim = 'animate__slideInLeft'
+      let leaveAnim = 'animate__slideOutRight'
+      if (from[1].includes(to[0])) {
+        enterAnim = 'animate__slideInRight'
+        leaveAnim = 'animate__slideOutLeft'
+      }
+      enterTransition.value = `animate__animated ${enterAnim} duration-c-500ms delay-c-100ms`
+      leaveTransition.value = `animate__animated ${leaveAnim} duration-c-500ms`
     }
   }
+)
+
+function toggleTransitionActive (isActive) {
+  appDyn.transitionActive = isActive
+}
+
+const calendarVisible = ref(false)
+
+function showCalendar () {
+  calendarVisible.value = true
+}
+
+function hideCalendar () {
+  calendarVisible.value = false
+}
+
+function toggleCalendar () {
+  calendarVisible.value = !calendarVisible.value
+}
+
+const modalName = computed(() => {
+  if (appDyn.activeModal !== null) {
+    return appDyn.activeModal.name
+  }
+  return ''
+})
+
+function setModalAnswer (answer) {
+  appDyn.modalAnswer = answer
 }
 </script>
 
 <style lang="scss" src="@/assets/custom.scss"></style>
+<style lang="css" src="@/assets/fontawesome/css/all.min.css"></style>

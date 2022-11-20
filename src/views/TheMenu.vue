@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <HeroBasic title="menuTitle" :subtitle="subtitleText" />
+    <TheHero title="menuTitle" :subtitle="subtitleText" />
     <div class="menu-button-container width-full relative" :class="getSizeClass('general')">
       <div class="width-full absolute">
         <transition :enter-active-class="trainingAnimation.enter"
@@ -74,152 +74,158 @@
   </div>
 </template>
 
-<script>
-import HeroBasic from '@/components/HeroBasic.vue'
+<script setup>
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+import TheHero from '@/components/TheHero.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 import NotificationBasic from '@/components/NotificationBasic.vue'
 
-export default {
-  name: 'TheMenu',
-  components: {
-    HeroBasic,
-    ButtonBasic,
-    NotificationBasic
-  },
-  data () {
-    return {
-      notificationVisible: false,
-      blockReset: false,
-      trainingAnimation: {
-        enter: '',
-        leave: ''
-      },
-      adventureAnimation: {
-        enter: '',
-        leave: ''
-      }
-    }
-  },
-  mounted () {
-    if (this.updateText[0] !== '') {
-      this.showNotification()
-    }
-  },
-  computed: {
-    isJapanese () {
-      return this.$store.state.targetLanguage === 'japanese'
-    },
-    subtitleText () {
-      return ['menuSubtitle', this.$store.state.targetLanguage]
-    },
-    updateText () {
-      if (this.$store.state.updateFinished) {
-        return ['menuNotificationUpdateFinished']
-      } else if (this.$store.state.newUpdate) {
-        return ['menuNotificationNewUpdate']
-      } else if (this.$store.state.updatesWillInstall) {
-        return ['menuNotificationUpdatesWillInstall']
-      } else if (this.$store.state.updateAvailable) {
-        return ['menuNotificationUpdateAvailable']
-      } else if (this.$store.state.updateSuccess) {
-        return ['menuNotificationUpdateSuccess']
-      }
-      return ['']
-    },
-    updateIcon () {
-      if (this.$store.state.updateFinished || this.$store.state.updateSuccess) {
-        return 'check-square'
-      } else if (this.$store.state.updateAvailable || this.$store.state.updatesWillInstall) {
-        return 'info'
-      }
-      return 'cog'
-    },
-    updateColor () {
-      if (this.$store.state.updateAvailable || this.$store.state.updatesWillInstall) {
-        return 'yellow'
-      }
-      return 'green'
-    },
-    buttonsDisabled () {
-      return this.$store.state.newUpdate && this.$store.state.missedUpdates
-    }
-  },
-  methods: {
-    getText (id, ...params) {
-      return this.$store.getters.getText(id, ...params)
-    },
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
-    },
-    isVisible (id) {
-      switch (id) {
-        case 1: // main
-          return !this.$route.query.sub
-        case 2: // training
-          return this.$route.query.sub === 'training'
-        case 3: // adventure
-          return this.$route.query.sub === 'adventure'
-        default:
-          return false
-      }
-    },
-    navTo (name, additional = '') {
-      switch (name) {
-        case 'menu':
-          if (additional === '') {
-            this.$router.push({ name: name })
-          } else {
-            this.$router.push({ name: name, query: { sub: additional } })
-          }
-          break
-        case 'category':
-          this.$router.push({ name: name, params: { destination: additional } })
-          break
-        default:
-          this.$router.push({ name: name })
-      }
-    },
-    showNotification () {
-      this.notificationVisible = true
-    },
-    hideNotification () {
-      this.notificationVisible = false
-    },
-    resetNotification () {
-      if (!this.blockReset) {
-        this.$store.commit('swReset')
+import { useSavestateStore } from '@/stores/savestate'
+import { useAppDynStore } from '@/stores/appdyn'
+import { useAppConstStore } from '@/stores/appconst'
+
+const route = useRoute()
+const router = useRouter()
+const savestate = useSavestateStore()
+const appDyn = useAppDynStore()
+const appConst = useAppConstStore()
+
+onMounted(() => {
+  if (updateText.value[0] !== '') {
+    showNotification()
+  }
+})
+
+const subtitleText = computed(() => {
+  return ['menuSubtitle', savestate.app.targetLanguage]
+})
+const buttonsDisabled = computed(() => {
+  return appDyn.newUpdate && savestate.app.missedUpdates
+})
+const isJapanese = computed(() => {
+  return savestate.app.targetLanguage === 'japanese'
+})
+
+const trainingAnimation = reactive({
+  enter: '',
+  leave: ''
+})
+const adventureAnimation = reactive({
+  enter: '',
+  leave: ''
+})
+watch(
+  () => route.query.sub || '',
+  (to, from) => {
+    trainingAnimation.enter = from === 'adventure' ?
+      'animate__animated animate__fadeIn duration-c-350ms delay-c-350ms' :
+      'invisible duration-c-700ms'
+    trainingAnimation.leave = to === 'adventure' ?
+      'fade-out-custom duration-c-700ms':
+      'disappear duration-c-700ms'
+    adventureAnimation.enter = from === 'training' ?
+      'animate__animated animate__fadeIn duration-c-350ms delay-c-350ms' :
+      'invisible duration-c-700ms'
+    adventureAnimation.leave = to === 'training' ?
+      'animate__animated animate__fadeOut duration-c-350ms' :
+      'animate__animated animate__slideOutLeft duration-c-700ms'
+  }
+)
+
+function navTo (name, additional = '') {
+  switch (name) {
+    case 'menu':
+      if (additional === '') {
+        router.push({ name: name })
       } else {
-        this.blockReset = false
+        router.push({ name: name, query: { sub: additional } })
       }
+      break
+    case 'category':
+      router.push({ name: name, params: { destination: additional } })
+      break
+    default:
+      router.push({ name: name })
+  }
+}
+
+const notificationVisible = ref(false)
+const blockNotificationReset = ref(false)
+
+const updateText = computed(() => {
+  if (appDyn.updateFinished) {
+    return ['menuNotificationUpdateFinished']
+  } else if (appDyn.newUpdate) {
+    return ['menuNotificationNewUpdate']
+  } else if (appDyn.updatesWillInstall) {
+    return ['menuNotificationUpdatesWillInstall']
+  } else if (appDyn.updateAvailable) {
+    return ['menuNotificationUpdateAvailable']
+  } else if (appDyn.updateSuccess) {
+    return ['menuNotificationUpdateSuccess']
+  }
+  return ['']
+})
+watch(
+  () => updateText.value,
+  (to, from) => {
+    if (to[0] !== '') {
+      if (from[0] !== '' && !notificationVisible.value) {
+        blockNotificationReset.value = true
+      }
+      showNotification()
     }
-  },
-  watch: {
-    '$route' (to, from) {
-      this.trainingAnimation = {
-        enter: from.query.sub === 'adventure'
-          ? 'animate__animated animate__fadeIn duration-c-350ms delay-c-350ms'
-          : 'invisible duration-c-700ms',
-        leave: to.query.sub === 'adventure'
-          ? 'fade-out-custom duration-c-700ms'
-          : 'disappear duration-c-700ms'
-      }
-      this.adventureAnimation = {
-        enter: from.query.sub === 'training'
-          ? 'animate__animated animate__fadeIn duration-c-350ms delay-c-350ms'
-          : 'invisible duration-c-700ms',
-        leave: to.query.sub === 'training'
-          ? 'animate__animated animate__fadeOut duration-c-350ms'
-          : 'animate__animated animate__slideOutLeft duration-c-700ms'
-      }
-    },
-    updateText (to, from) {
-      if (to[0] !== '') {
-        if (from[0] !== '' && !this.notificationVisible) {
-          this.blockReset = true
-        }
-        this.showNotification()
-      }
-    }
+  }
+)
+
+const updateColor = computed(() => {
+  if (appDyn.updateAvailable || appDyn.updatesWillInstall) {
+    return 'yellow'
+  }
+  return 'green'
+})
+
+const updateIcon = computed(() => {
+  if (appDyn.updateFinished || appDyn.updateSuccess) {
+    return 'check-square'
+  } else if (appDyn.updateAvailable || appDyn.updatesWillInstall) {
+    return 'info'
+  }
+  return 'cog'
+})
+
+function showNotification () {
+  notificationVisible.value = true
+}
+
+function hideNotification () {
+  notificationVisible.value = false
+}
+
+function resetNotification () {
+  if (!blockNotificationReset.value) {
+    appDyn.resetSWNotifications()
+  } else {
+    blockNotificationReset.value = false
+  }
+}
+
+function getSizeClass (type) {
+  return appConst.getSizeClass(type)
+}
+
+function isVisible (page) {
+  switch (page) {
+    case 1: // main
+      return !route.query.sub
+    case 2: // training
+      return route.query.sub === 'training'
+    case 3: // adventure
+      return route.query.sub === 'adventure'
+    default:
+      return false
   }
 }
 </script>

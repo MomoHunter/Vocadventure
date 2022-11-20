@@ -2,11 +2,11 @@
   <div class="modal width-full height-full flex-column" :class="getSizeClass('general')">
     <div class="content">
       <div class="title">
-        {{ getText(options.title) }}
+        {{ getText(props.options.title) }}
       </div>
-      <div class="text overflow-auto" v-html="getText(...options.text)"></div>
+      <div class="text overflow-auto" v-html="getText(...props.options.text)"></div>
       <div class="buttons flex-row">
-        <ButtonBasic class="width-full" v-for="(button, index) in options.buttons" :icon="button.icon"
+        <ButtonBasic class="width-full" v-for="(button, index) in props.options.buttons" :icon="button.icon"
                      :text="button.text" :color="button.color" :key="index"
                      @click="$emit('click', 'button' + (index + 1))" />
       </div>
@@ -14,25 +14,23 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import ButtonBasic from '@/components/ButtonBasic.vue'
 
-export default {
-  name: 'ModalMessage',
-  components: {
-    ButtonBasic
-  },
-  props: {
-    options: Object
-  },
-  methods: {
-    getText (id, ...params) {
-      return this.$store.getters.getText(id, ...params)
-    },
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
-    }
-  }
+import { useAppConstStore } from '@/stores/appconst'
+
+const appConst = useAppConstStore()
+const props = defineProps({
+  options: Object
+})
+defineEmits(['click'])
+
+function getText (id, ...params) {
+  return appConst.getText(id, ...params)
+}
+
+function getSizeClass (type) {
+  return appConst.getSizeClass(type)
 }
 </script>
 

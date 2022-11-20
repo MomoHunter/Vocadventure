@@ -31,7 +31,14 @@
     },
     "storyF0P11VideoText": {
       "font": "20pt Nunito",
-      "color":"255, 255, 255",
+      "color":"208, 203, 228",
+      "align": "center",
+      "baseline": "middle",
+      "borderKey": ""
+    },
+    "storyF0P11ClockName": {
+      "font": "7pt Nunito",
+      "color": "178, 173, 198",
       "align": "center",
       "baseline": "middle",
       "borderKey": ""
@@ -88,6 +95,12 @@
     "storyF0P4Space": {
       "backgroundColor": "11, 8, 14, 1"
     },
+    "storyF0P10Handle": {
+      "backgroundColor": "114, 114, 123"
+    },
+    "storyF0P11Text": {
+      "backgroundColor": "208, 203, 228, .3"
+    },
     "storyF0P18Chromander": {
       "backgroundColor": "4, 165, 173, 1"
     },
@@ -133,91 +146,103 @@
   },
   "border": {
     "standard": {
-      "borderColor": "0, 0, 0, 1",
+      "borderColor": "0, 0, 0",
       "borderSize": 2,
       "borderCap": "butt",
       "lineDash": []
     },
     "small": {
-      "borderColor": "0, 0, 0, 1",
+      "borderColor": "0, 0, 0",
       "borderSize": 1,
       "borderCap": "butt",
       "lineDash": []
     },
     "thick": {
-      "borderColor": "0, 0, 0, 1",
+      "borderColor": "0, 0, 0",
       "borderSize": 4,
       "borderCap": "butt",
       "lineDash": []
     },
+    "storyF0P10Bar": {
+      "borderColor": "64, 64, 73",
+      "borderSize": 4,
+      "borderCap": "butt",
+      "lineDash": []
+    },
+    "storyF0P11Text": {
+      "borderColor": "208, 203, 228",
+      "borderSize": 4,
+      "borderCap": "round",
+      "lineDash": []
+    },
     "gariumDashed": {
-      "borderColor": "68, 68, 68, 1",
+      "borderColor": "68, 68, 68",
       "borderSize": 4,
       "borderCap": "butt",
       "lineDash": [6, 4]
     },
     "gariumSolid": {
-      "borderColor": "68, 68, 68, 1",
+      "borderColor": "68, 68, 68",
       "borderSize": 4,
       "borderCap": "butt",
       "lineDash": []
     },
     "surinshiDashed": {
-      "borderColor": "65, 65, 65, 1",
+      "borderColor": "65, 65, 65",
       "borderSize": 4,
       "borderCap": "butt",
       "lineDash": [6, 4]
     },
     "surinshiSolid": {
-      "borderColor": "65, 65, 65, 1",
+      "borderColor": "65, 65, 65",
       "borderSize": 4,
       "borderCap": "butt",
       "lineDash": []
     },
     "gariumFontsmall": {
-      "borderColor": "172, 172, 172, 1",
+      "borderColor": "172, 172, 172",
       "borderSize": 5,
       "borderCap": "round",
       "lineDash": []
     },
     "gariumFontnormal": {
-      "borderColor": "172, 172, 172, 1",
+      "borderColor": "172, 172, 172",
       "borderSize": 7,
       "borderCap": "round",
       "lineDash": []
     },
     "gariumFontlarge": {
-      "borderColor": "172, 172, 172, 1",
+      "borderColor": "172, 172, 172",
       "borderSize": 10,
       "borderCap": "round",
       "lineDash": []
     },
     "gariumFontgiga": {
-      "borderColor": "172, 172, 172, 1",
+      "borderColor": "172, 172, 172",
       "borderSize": 14,
       "borderCap": "round",
       "lineDash": []
     },
     "surinshiFontsmall": {
-      "borderColor": "48, 48, 48, 1",
+      "borderColor": "48, 48, 48",
       "borderSize": 5,
       "borderCap": "round",
       "lineDash": []
     },
     "surinshiFontnormal": {
-      "borderColor": "48, 48, 48, 1",
+      "borderColor": "48, 48, 48",
       "borderSize": 7,
       "borderCap": "round",
       "lineDash": []
     },
     "surinshiFontlarge": {
-      "borderColor": "48, 48, 48, 1",
+      "borderColor": "48, 48, 48",
       "borderSize": 10,
       "borderCap": "round",
       "lineDash": []
     },
     "surinshiFontgiga": {
-      "borderColor": "48, 48, 48, 1",
+      "borderColor": "48, 48, 48",
       "borderSize": 14,
       "borderCap": "round",
       "lineDash": []

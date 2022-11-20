@@ -1,29 +1,24 @@
 <template>
   <div class="flex-row">
-    <InputBasic class="flex-grow" :color="colorInput" :type="type" :icon="iconInput" @input="$emit('input', $event)"
-                :value="value" :maxlength="maxlength" />
-    <ButtonIcon :icon="iconButton" :color="colorButton" @click="$emit('click')" />
+    <InputBasic class="flex-grow" :color="props.colorInput" :type="props.type" :icon="props.iconInput"
+                @update:modelValue="$emit('update:modelValue', $event)" :model-value="props.modelValue"
+                :maxlength="props.maxlength" />
+    <ButtonIcon :icon="props.iconButton" :color="props.colorButton" @click="$emit('click')" />
   </div>
 </template>
 
-<script>
+<script setup>
 import InputBasic from '@/components/InputBasic.vue'
 import ButtonIcon from '@/components/ButtonIcon.vue'
 
-export default {
-  name: 'InputWithButton',
-  props: {
-    colorInput: String,
-    colorButton: String,
-    type: String,
-    iconInput: String,
-    iconButton: String,
-    maxlength: Number,
-    value: String
-  },
-  components: {
-    InputBasic,
-    ButtonIcon
-  }
-}
+const props = defineProps({
+  colorInput: String,
+  colorButton: String,
+  type: String,
+  iconInput: String,
+  iconButton: String,
+  maxlength: Number,
+  modelValue: String
+})
+defineEmits(['update:modelValue', 'click'])
 </script>

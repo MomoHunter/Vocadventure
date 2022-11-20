@@ -1,29 +1,30 @@
 <template>
-  <button class="button" :class="[getSizeClass('general'), color]" @click="$emit('click')">
+  <button class="button" :class="[getSizeClass('general'), props.color]" @click="$emit('click')">
     <span class="icon">
       <slot></slot>
     </span>
     <span class="text">
-      {{ getText(text) }}
+      {{ getText(props.text) }}
     </span>
   </button>
 </template>
 
-<script>
-export default {
-  name: 'ButtonMDI',
-  props: {
+<script setup>
+import { useAppConstStore } from '@/stores/appconst'
+
+const appConst = useAppConstStore()
+const props = defineProps({
     color: String,
     text: String
-  },
-  methods: {
-    getText (id) {
-      return this.$store.getters.getText(id)
-    },
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
-    }
-  }
+})
+defineEmits(['click'])
+
+function getText (id) {
+  return appConst.getText(id)
+}
+
+function getSizeClass (type) {
+  return appConst.getSizeClass(type)
 }
 </script>
 

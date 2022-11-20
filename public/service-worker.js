@@ -73,9 +73,9 @@ function renewCache () {
 function cacheAll (cacheName) {
   return new Promise((resolve, reject) => {
     CACHE.open(cacheName).then((cache) => {
-      let amount = Object.values(FILES).length;
+      let amount = FILES.length;
       let finished = 0;
-      for (let url of Object.values(FILES)) {
+      for (let url of FILES) {
         cache.match(url).then((response) => {
           if (!response || !response.ok) {
             cache.add(url).then(() => {

@@ -5,95 +5,83 @@
     </div>
     <div class="button-container">
       <ButtonBasic class="width-half" icon="times" text="adventureStoryButton2" color="red"
-                  @click="$emit('click', { type: 'abort' })" />
+                  @click="abort()" />
       <ButtonBasic class="width-half" icon="check" text="adventureStoryButton1" color="green"
-                  @click="continueAction()" />
+                  @click="continueStory()" />
       <ButtonBasic class="width-full" icon="arrow-right" text="adventureStoryButton3" color="yellow"
-                  @click="$emit('click', { type: 'skipStoryPart' })" />
+                  @click="skipStoryPart()" />
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, ref, watch } from 'vue'
+
 import TheBlockquote from '@/components/TheBlockquote.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 
-export default {
-  name: 'AdventureStory',
-  components: {
-    TheBlockquote,
-    ButtonBasic
-  },
-  data () {
-    return {
-      displayedStoryText: '',
-      currentTextIndex: 0
-    }
-  },
-  computed: {
-    fragments () {
-      return this.$store.state.canvasDict.fragments
-    },
-    storyFragment () {
-      return this.$store.state.canvasDict.storyFragment
-    },
-    storyPart () {
-      return this.$store.state.canvasDict.storyPart
-    },
-    storyTextId () {
-      return `adventureStoryF${this.storyFragment}P${this.storyPart}`
-    },
-    storyText () {
-      return this.getText(this.storyTextId)
-    },
-    storyTextCharacter () {
-      return this.storyText.split('')
-    },
-    newCharacterTrigger () {
-      return Math.floor(this.$store.state.canvasDict.frameNo / 3)
-    }
-  },
-  methods: {
-    getText (id) {
-      return this.$store.getters.getText(id)
-    },
-    continueAction () {
-      if (this.displayedStoryText === this.storyText || this.storyText === this.storyTextId) {
-        if (this.fragments[this.storyFragment].updateCalls.length > this.storyPart) {
-          this.$store.commit('canvasDict/setStoryPart', this.storyPart + 1)
-          this.$emit('click', { type: 'continueStory' })
-        }
-        // this.displayedStoryText = ''
-        // this.currentTextIndex = 0
-        // this.$store.commit('canvasDict/setStoryWritesText', true)
-      } else {
-        this.displayedStoryText = this.storyText
-        this.$store.commit('canvasDict/setStoryWritesText', false)
-      }
-    }
-  },
-  watch: {
-    newCharacterTrigger () {
-      if (this.$store.state.canvasDict.storyWritesText && this.storyText !== this.storyTextId) {
-        this.displayedStoryText += this.storyTextCharacter[this.currentTextIndex]
-        if (this.currentTextIndex < this.storyText.length - 1) {
-          this.currentTextIndex += 1
-        } else {
-          this.$store.commit('canvasDict/setStoryWritesText', false)
-        }
-      }
-    },
-    storyPart () {
-      this.displayedStoryText = ''
-      this.currentTextIndex = 0
-      if (this.storyText === this.storyTextId) {
-        this.$store.commit('canvasDict/setStoryWritesText', false)
-      } else {
-        this.$store.commit('canvasDict/setStoryWritesText', true)
-      }
+import { useSavestateStore } from '@/stores/savestate'
+import { useAppConstStore } from '@/stores/appconst'
+import { useGameDynStore } from '@/stores/gamedyn'
+import { useGameConstStore } from '@/stores/gameconst'
+
+const savestate = useSavestateStore()
+const appConst = useAppConstStore()
+const gameDyn = useGameDynStore()
+const gameConst = useGameConstStore()
+
+const displayedStoryText = ref('')
+const currentTextIndex = ref(0)
+const newCharacterTrigger = computed(() => {
+  return Math.floor(gameDyn.frameNo / 3)
+})
+const storyTextId = computed(() => {
+  return `adventureStoryF${savestate.game.storyFragment}P${savestate.game.storyPart}`
+})
+const storyText = computed(() => {
+  return getText(storyTextId.value)
+})
+watch(storyText, () => {
+  displayedStoryText.value = ''
+  currentTextIndex.value = 0
+  if (storyText.value === storyTextId.value) {
+    gameDyn.storyWritesText = false
+  } else {
+    gameDyn.storyWritesText = true
+  }
+})
+const storyTextCharacter = computed(() => {
+  return storyText.value.split('')
+})
+watch(newCharacterTrigger, () => {
+  if (gameDyn.storyWritesText && storyText.value !== storyTextId.value) {
+    displayedStoryText.value += storyTextCharacter.value[currentTextIndex.value]
+    if (currentTextIndex.value < storyText.value.length - 1) {
+      currentTextIndex.value += 1
+    } else {
+      gameDyn.storyWritesText = false
     }
   }
+})
+
+function getText (id) {
+  return appConst.getText(id)
 }
+
+function abort () {}
+
+function continueStory () {
+  if (displayedStoryText.value === storyText.value || storyText.value === storyTextId.value) {
+    if (gameConst.fragments[savestate.game.storyFragment].updateCalls.length > savestate.game.storyPart) {
+      savestate.game.storyPart += 1
+    }
+  } else {
+    displayedStoryText.value = storyText.value
+    gameDyn.storyWritesText = false
+  }
+}
+
+function skipStoryPart() {}
 </script>
 
 <style lang="scss" scoped>

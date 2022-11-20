@@ -2,16 +2,36 @@
 @import "./../../node_modules/animate.css/animate.min.css";
 @import './customAnimations.scss';
 
-@font-face {
-  font-family: "KanjiStrokeOrders";
-  src: url("KanjiStrokeOrders_v4.002.ttf") format("truetype");
-}
-
 html, body {
   overflow: hidden;
   height: 100%;
   max-width: 700px;
   margin: 0px auto;
+}
+
+* {
+	scrollbar-width: thin;
+	scrollbar-color: #333 transparent;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+    position: absolute;
+    transition-property: width, height;
+    transition-duration: 350ms;
+  }
+	&::-webkit-scrollbar-track {
+		background: transparent;
+  }
+	&::-webkit-scrollbar-thumb {
+		background-color: #333;
+		border-radius: 6px;
+		border: 3px solid transparent;
+  }
+}
+
+#app {
+  height: 100%;
 }
 
 #adventure-canvas {
@@ -50,6 +70,14 @@ html, body {
   &-center {
     justify-content: center;
     align-items: center;
+  }
+
+  &-center-h {
+    align-items: center;
+  }
+
+  &-center-v {
+    justify-content: center;
   }
 }
 
@@ -114,6 +142,14 @@ $dir: 'row' 'column';
 
   &-fifth {
     width: calc(100% / 5);
+
+    &-four {
+      width: calc(100% / 1.25);
+    }
+  }
+
+  &-eighth {
+    width: calc(100% / 8);
   }
 }
 
@@ -133,6 +169,22 @@ $dir: 'row' 'column';
   &-fourth {
     height: calc(100% / 4);
   }
+
+  &-fifth {
+    height: calc(100% / 5);
+
+    &-four {
+      height: calc(100% / 1.25);
+    }
+  }
+
+  &-eighth {
+    height: calc(100% / 8);
+  }
+
+  &-none {
+    height: 0;
+  }
 }
 
 .overflow {
@@ -140,12 +192,28 @@ $dir: 'row' 'column';
     overflow: auto;
   }
 
-  &-y-auto {
-    overflow-y: auto;
+  &-hidden {
+    overflow: hidden;
   }
 
-  &-x-auto {
-    overflow-x: auto;
+  &-y- {
+    &auto {
+      overflow-y: auto;
+    }
+
+    &hidden {
+      overflow-y: hidden;
+    }
+  }
+
+  &-x- {
+    &auto {
+      overflow-x: auto;
+    }
+
+    &hidden {
+      overflow-x: hidden;
+    }
   }
 }
 
@@ -197,6 +265,22 @@ $pos: 'top' 'left' 'right' 'bottom';
       }
     }
   }
+
+  &-mini {
+    margin: .25rem;
+  }
+
+  &-small {
+    margin: .5rem;
+  }
+
+  &-medium {
+    margin: 1rem;
+  }
+
+  &-large {
+    margin: 1.5rem;
+  }
 }
 
 .padding {
@@ -218,5 +302,21 @@ $pos: 'top' 'left' 'right' 'bottom';
         padding-#{nth($pos, $i)}: 1.5rem;
       }
     }
+  }
+
+  &-mini {
+    padding: .25rem;
+  }
+
+  &-small {
+    padding: .5rem;
+  }
+
+  &-medium {
+    padding: 1rem;
+  }
+
+  &-large {
+    padding: 1.5rem;
   }
 }

@@ -1,160 +1,295 @@
 <template>
   <div class="page">
     <div class="width-full flex-column">
-      <HeroBasic title="adventureTitle" />
+      <TheHero title="adventureTitle" />
       <canvas id="adventure-canvas" width="600" height="300"></canvas>
     </div>
     <div class="router-view width-full flex-column flex-grow">
-      <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition" mode="out-in">
-        <router-view @click="viewClickHandler($event)"></router-view>
-      </transition>
+      <router-view v-slot="{ Component }">
+        <transition :enter-active-class="enterTransition" :leave-active-class="leaveTransition" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </div>
   </div>
 </template>
 
-<script>
-// import * as Helper from '@/canvas/helper.js'
-// import { AnimationObject } from '@/canvas/elements.js'
-import HeroBasic from '@/components/HeroBasic.vue'
+<script setup>
+import { onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
-export default {
-  name: 'TheAdventure',
-  components: {
-    HeroBasic
-  },
-  data () {
-    return {
-      loopActivated: false,
-      noRouting: false,
-      enterTransition: '',
-      leaveTransition: ''
-    }
-  },
-  beforeRouteEnter (to, from, next) {
-    next(component => {
-      if (!component.noRouting) {
-        if (component.$store.state.canvasDict.gameState === 'story') {
-          component.$router.replace({ name: 'adventureStory' })
-        }
-      }
-    })
-  },
-  created () {
-    this.createWords()
-  },
-  mounted () {
-    this.$store.commit('canvasDict/initCanvas')
-    this.loopActivated = true
-    this.canvasLoop(0)
-  },
-  beforeDestroy () {
-    this.loopActivated = false
-  },
-  computed: {
-    ctx () {
-      return this.$store.state.canvasDict.context
-    },
-    canvasWidth () {
-      return this.$store.getters['canvasDict/canvasWidth']
-    },
-    canvasHeight () {
-      return this.$store.getters['canvasDict/canvasHeight']
-    },
-    fragments () {
-      return this.$store.state.canvasDict.fragments
-    }
-  },
-  methods: {
-    createWords () {
-      let vocabs = JSON.parse(JSON.stringify(this.$store.getters['vueDict/getFullVocabs']))
-      let length = this.$store.state.vueDict.wordCount
-      let wordObjects = []
+import TheHero from '@/components/TheHero.vue'
 
-      if (vocabs.words.length === 0) {
-        this.noRouting = true
-        this.$router.push({ name: 'category', params: { destination: 'adventure' } })
-      } else if (vocabs.words.length === length) {
-        while (vocabs.words.length > 0) {
-          let random = Math.floor(Math.random() * vocabs.words.length)
+import { useSavestateStore } from '@/stores/savestate'
+import { useAppDynStore } from '@/stores/appdyn'
+import { useAppConstStore } from '@/stores/appconst'
+import { useGameDynStore } from '@/stores/gamedyn'
+import { useGameConstStore } from '@/stores/gameconst'
 
-          if (vocabs.words[random].difficulty <= this.$store.state.vueDict.difficulty) {
-            wordObjects.push(vocabs.words.splice(random, 1)[0])
-          } else {
-            vocabs.words.splice(random, 1)
-          }
-        }
-      } else {
-        vocabs.words = vocabs.words.filter(word => word.difficulty <= this.$store.state.vueDict.difficulty)
+const route = useRoute()
+const router = useRouter()
+const savestate = useSavestateStore()
+const appDyn = useAppDynStore()
+const appConst = useAppConstStore()
+const gameDyn = useGameDynStore()
+const gameConst = useGameConstStore()
 
-        while (wordObjects.length < length) {
-          let i = wordObjects.length
-          let random = Math.floor(Math.random() * vocabs.words.length)
-
-          if (wordObjects.length === 0) {
-            wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
-          } else if (wordObjects[i - 1][vocabs.latinAlphabet] !== vocabs.words[random][vocabs.latinAlphabet]) {
-            wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
-          } else if (vocabs.words.length === 1) {
-            wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
-          }
-        }
-      }
-      vocabs.words = wordObjects
-
-      this.$store.commit('vueDict/setVocabs', vocabs)
-    },
-    viewClickHandler (object) {
-      switch (object.type) {
-        default:
-      }
-    },
-    canvasLoop (timestamp) {
-      if (this.loopActivated) {
-        let raf = requestAnimationFrame(newTs => this.canvasLoop(newTs))
-        this.$store.commit('canvasDict/setRaf', raf)
-        this.$store.commit('canvasDict/addLag', timestamp - this.$store.state.canvasDict.startTS)
-
-        while (this.$store.state.canvasDict.lag > this.$store.state.canvasDict.refreshrate) {
-          this.$store.commit('canvasDict/increaseFrameNo')
-
-          this.canvasUpdate()
-
-          if (this.$store.state.canvasDict.lag > this.$store.state.canvasDict.refreshrate * 5) {
-            this.$store.commit('canvasDict/eliminateLag')
-          } else {
-            this.$store.commit('canvasDict/reduceLag')
-          }
-        }
-
-        // this.$store.commit('canvasDict/checkGameState')
-        this.clearCanvas()
-        this.canvasDraw()
-
-        this.$store.commit('canvasDict/setStartTS', timestamp)
-      }
-    },
-    clearCanvas () {
-      this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
-    },
-    canvasUpdate () {
-      this.fragments[this.$store.state.canvasDict.storyFragment].update(this)
-    },
-    canvasDraw () {
-      this.fragments[this.$store.state.canvasDict.storyFragment].draw(this)
-    }
-  },
-  watch: {
-    '$route' (to, from) {
-      if (this.$store.state.vueDict.transitionActive) {
-        this.leaveTransition = 'animate__animated animate__slideOutDown duration-c-500ms'
-        this.enterTransition = 'animate__animated animate__slideInUp duration-c-500ms' + (from.meta.delay.includes(to.name) ? ' delay-c-800ms' : '')
-      } else {
-        this.enterTransition = ''
-        this.leaveTransition = ''
-      }
+onBeforeMount(() => {
+  createWords()
+  if (!noRouting.value) {
+    if (savestate.game.gameState === 'story') {
+      router.replace({ name: 'adventureStory' })
     }
   }
+})
+
+onMounted(() => {
+  gameDyn.initCanvas()
+  gameDyn.loopActivated = true
+  canvasLoop(0)
+})
+
+onBeforeUnmount(() => {
+  gameDyn.loopActivated = false
+})
+
+const enterTransition = ref('')
+const leaveTransition = ref('')
+
+watch(
+  () => [route.name, route.meta.delay],
+  (to, from) => {
+    if (appDyn.transitionActive) {
+      leaveTransition.value = 'animate__animated animate__slideOutDown duration-c-500ms'
+      enterTransition.value = 'animate__animated animate__slideInUp duration-c-500ms' +
+        (from[1].includes(to[0]) ? ' delay-c-800ms' : '')
+    } else {
+      enterTransition.value = ''
+      leaveTransition.value = ''
+    }
+  }
+)
+
+const noRouting = ref(false) // prevents wrong routing when no vocabs set
+
+function createWords () {
+  let vocabs = appConst.getFullVocabs()
+
+  if (vocabs.words.length === 0) {
+    noRouting.value = true
+    navTo('category')
+  } else if (vocabs.words.length === appDyn.wordCount) {
+    let words = []
+    while (vocabs.words.length > 0) {
+      const random = Math.floor(Math.random() * vocabs.words.length)
+
+      words.push(vocabs.words.splice(random, 1)[0])
+    }
+    vocabs.words = words
+  } else {
+    let words = []
+    while (words.length < appDyn.wordCount) {
+      const random = Math.floor(Math.random() * vocabs.words.length)
+
+      if (words.length === 0 || vocabs.words.length === 1) {
+        words.push(JSON.parse(JSON.stringify(vocabs.words[random])))
+      } else if (words[words.length - 1][vocabs.latinAlphabet] !== vocabs.words[random][vocabs.latinAlphabet]) {
+        words.push(JSON.parse(JSON.stringify(vocabs.words[random])))
+      }
+    }
+    vocabs.words = words
+  }
+  gameDyn.vocabs = vocabs
 }
+
+function canvasLoop (timestamp) {
+  if (gameDyn.loopActivated) {
+    const raf = requestAnimationFrame((newTS) => canvasLoop(newTS))
+    gameDyn.raf = raf
+    gameDyn.lag += timestamp - gameDyn.startTS
+
+    while (gameDyn.lag > gameConst.refreshrate) {
+      gameDyn.frameNo += 1
+
+      canvasUpdate()
+
+      if (gameDyn.lag > gameConst.refreshrate * 5) {
+        gameDyn.lag %= gameConst.refreshrate
+      } else {
+        gameDyn.lag -= gameConst.refreshrate
+      }
+    }
+
+    canvasClear()
+    canvasDraw()
+
+    gameDyn.startTS = timestamp
+  }
+}
+
+function canvasClear () {
+  gameDyn.context.clearRect(0, 0, gameDyn.getCanvasWidth, gameDyn.getCanvasHeight)
+}
+
+function canvasUpdate () {
+  gameConst.fragments[savestate.game.storyFragment].update()
+}
+
+function canvasDraw () {
+  gameConst.fragments[savestate.game.storyFragment].draw()
+}
+
+function navTo (name) {
+  switch (name) {
+    case 'category':
+      router.push({ name: name, params: { destination: 'adventure' } })
+      break
+    default:
+      router.push({ name: name })
+  }
+}
+// import * as Helper from '@/canvas/helper.js'
+// import { AnimationObject } from '@/canvas/elements.js'
+    // import HeroBasic from '@/components/HeroBasic.vue'
+
+    // export default {
+    //   name: 'TheAdventure',
+    //   components: {
+    //     HeroBasic
+    //   },
+    //   data () {
+    //     return {
+    //       loopActivated: false,
+    //       noRouting: false,
+    //       enterTransition: '',
+    //       leaveTransition: ''
+    //     }
+    //   },
+    //   beforeRouteEnter (to, from, next) {
+    //     next(component => {
+    //       if (!component.noRouting) {
+    //         if (component.$store.state.canvasDict.gameState === 'story') {
+    //           component.$router.replace({ name: 'adventureStory' })
+    //         }
+    //       }
+    //     })
+    //   },
+    //   created () {
+    //     this.createWords()
+    //   },
+    //   mounted () {
+    //     this.$store.commit('canvasDict/initCanvas')
+    //     this.loopActivated = true
+    //     this.canvasLoop(0)
+    //   },
+    //   beforeDestroy () {
+    //     this.loopActivated = false
+    //   },
+    //   computed: {
+    //     ctx () {
+    //       return this.$store.state.canvasDict.context
+    //     },
+    //     canvasWidth () {
+    //       return this.$store.getters['canvasDict/canvasWidth']
+    //     },
+    //     canvasHeight () {
+    //       return this.$store.getters['canvasDict/canvasHeight']
+    //     },
+    //     fragments () {
+    //       return this.$store.state.canvasDict.fragments
+    //     }
+    //   },
+    //   methods: {
+    //     createWords () {
+    //       let vocabs = JSON.parse(JSON.stringify(this.$store.getters['vueDict/getFullVocabs']))
+    //       let length = this.$store.state.vueDict.wordCount
+    //       let wordObjects = []
+
+    //       if (vocabs.words.length === 0) {
+    //         this.noRouting = true
+    //         this.$router.push({ name: 'category', params: { destination: 'adventure' } })
+    //       } else if (vocabs.words.length === length) {
+    //         while (vocabs.words.length > 0) {
+    //           let random = Math.floor(Math.random() * vocabs.words.length)
+
+    //           if (vocabs.words[random].difficulty <= this.$store.state.vueDict.difficulty) {
+    //             wordObjects.push(vocabs.words.splice(random, 1)[0])
+    //           } else {
+    //             vocabs.words.splice(random, 1)
+    //           }
+    //         }
+    //       } else {
+    //         vocabs.words = vocabs.words.filter(word => word.difficulty <= this.$store.state.vueDict.difficulty)
+
+    //         while (wordObjects.length < length) {
+    //           let i = wordObjects.length
+    //           let random = Math.floor(Math.random() * vocabs.words.length)
+
+    //           if (wordObjects.length === 0) {
+    //             wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
+    //           } else if (wordObjects[i - 1][vocabs.latinAlphabet] !== vocabs.words[random][vocabs.latinAlphabet]) {
+    //             wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
+    //           } else if (vocabs.words.length === 1) {
+    //             wordObjects.push(JSON.parse(JSON.stringify(vocabs.words[random])))
+    //           }
+    //         }
+    //       }
+    //       vocabs.words = wordObjects
+
+    //       this.$store.commit('vueDict/setVocabs', vocabs)
+    //     },
+    //     viewClickHandler (object) {
+    //       switch (object.type) {
+    //         default:
+    //       }
+    //     },
+    //     canvasLoop (timestamp) {
+    //       if (this.loopActivated) {
+    //         let raf = requestAnimationFrame(newTs => this.canvasLoop(newTs))
+    //         this.$store.commit('canvasDict/setRaf', raf)
+    //         this.$store.commit('canvasDict/addLag', timestamp - this.$store.state.canvasDict.startTS)
+
+    //         while (this.$store.state.canvasDict.lag > this.$store.state.canvasDict.refreshrate) {
+    //           this.$store.commit('canvasDict/increaseFrameNo')
+
+    //           this.canvasUpdate()
+
+    //           if (this.$store.state.canvasDict.lag > this.$store.state.canvasDict.refreshrate * 5) {
+    //             this.$store.commit('canvasDict/eliminateLag')
+    //           } else {
+    //             this.$store.commit('canvasDict/reduceLag')
+    //           }
+    //         }
+
+    //         // this.$store.commit('canvasDict/checkGameState')
+    //         this.clearCanvas()
+    //         this.canvasDraw()
+
+    //         this.$store.commit('canvasDict/setStartTS', timestamp)
+    //       }
+    //     },
+    //     clearCanvas () {
+    //       this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
+    //     },
+    //     canvasUpdate () {
+    //       this.fragments[this.$store.state.canvasDict.storyFragment].update(this)
+    //     },
+    //     canvasDraw () {
+    //       this.fragments[this.$store.state.canvasDict.storyFragment].draw(this)
+    //     }
+    //   },
+    //   watch: {
+    //     '$route' (to, from) {
+    //       if (this.$store.state.vueDict.transitionActive) {
+    //         this.leaveTransition = 'animate__animated animate__slideOutDown duration-c-500ms'
+    //         this.enterTransition = 'animate__animated animate__slideInUp duration-c-500ms' + (from.meta.delay.includes(to.name) ? ' delay-c-800ms' : '')
+    //       } else {
+    //         this.enterTransition = ''
+    //         this.leaveTransition = ''
+    //       }
+    //     }
+    //   }
+    // }
 
 // export default {
 //   name: 'TheAdventure',
@@ -1619,6 +1754,7 @@ export default {
 //     // }
 //   }
 // }
+
 </script>
 
 <style lang="scss" scoped>

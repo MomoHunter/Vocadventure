@@ -1,33 +1,33 @@
 <template>
   <div class="page">
-    <HeroBasic title="selectionCountTitle" :subtitle="['selectionCountSubtitle']" />
+    <TheHero title="selectionCountTitle" :subtitle="['selectionCountSubtitle']" />
     <div class="buttons flex-grow flex-column overflow-auto">
       <div class="flex-row">
-        <ButtonMDI class="width-third" :class="{ 'single-2': difficultySelected(1) }" color="green" text="difficulty1"
-                  @click="setDifficulty(1)">
-          <SpeedometerSlow :class="getSizeClass('general')" />
+        <ButtonMDI class="width-third" :class="{ 'single-2': isDifficultySelected(1) }" color="green"
+                      text="difficulty1" @click="setDifficulty(1)">
+          <MDIIconSpeedometerSlow :class="getSizeClass('general')" />
         </ButtonMDI>
-        <ButtonMDI class="width-third" :class="{ 'single-2': difficultySelected(2) }" color="yellow" text="difficulty2"
-                  @click="setDifficulty(2)">
-          <SpeedometerMedium :class="getSizeClass('general')" />
+        <ButtonMDI class="width-third" :class="{ 'single-2': isDifficultySelected(2) }" color="yellow"
+                   text="difficulty2" @click="setDifficulty(2)">
+          <MDIIconSpeedometerMedium :class="getSizeClass('general')" />
         </ButtonMDI>
-        <ButtonMDI class="width-third" :class="{ 'single-2': difficultySelected(3) }" color="red" text="difficulty3"
-                  @click="setDifficulty(3)">
-          <Speedometer :class="getSizeClass('general')" />
+        <ButtonMDI class="width-third" :class="{ 'single-2': isDifficultySelected(3) }" color="red"
+                   text="difficulty3" @click="setDifficulty(3)">
+          <MDIIconSpeedometer :class="getSizeClass('general')" />
         </ButtonMDI>
       </div>
       <div class="flex-row flex-wrap">
-        <ButtonText class="width-third" :class="{ 'single-2': wordCountSelected(option) }"
-                    v-for="option in availableOptions" color="action" :text="option" :key="option"
-                    @click="setWordCount(option)" />
-        <ButtonText v-show="!inputVisible" class="width-full" :class="{ 'single-2': customCountSet }" color="action"
+        <ButtonText class="width-third" :class="{ 'single-2': isWordCountSelected(wordCount) }"
+                    v-for="wordCount in availableWordCounts" color="action" :text="wordCount" :key="wordCount"
+                    @click="setWordCount(wordCount)" />
+        <ButtonText v-show="!inputVisible" class="width-full" :class="{ 'single-2': isCustomCountSet }" color="action"
                     :text="customCountText" @click="showInput()" />
-        <InputWithButton v-if="inputVisible" class="width-full" v-model="customCount" type="number" colorInput="action"
-                         colorButton="green" iconInput="pen" iconButton="check" :maxlength="4" @click="hideInput()" />
-        <ButtonText class="width-full" :class="{ 'single-2': wordCountSelected(countAllWords) }" color="action"
-                    text="selectionCountAll" @click="setWordCount(countAllWords)" />
+        <InputWithButton v-if="inputVisible" class="width-full" v-model="customCount" type="number" color-input="action"
+                         color-button="green" icon-input="pen" icon-button="check" :maxlength="4" @click="hideInput()" />
+        <ButtonText class="width-full" :class="{ 'single-2': isWordCountSelected(allWordsCount) }" color="action"
+                    text="selectionCountAll" @click="setWordCount(allWordsCount)" />
       </div>
-      <ButtonBasic class="width-full" :class="{ 'single-2': $store.state.vueDict.reversed }" icon="sync-alt"
+      <ButtonBasic class="width-full" :class="{ 'single-2': appDyn.reversedType }" icon="sync-alt"
                    color="action" text="selectionCountReverse" @click="toggleWordsReversed()" />
     </div>
     <div class="button-container">
@@ -44,123 +44,127 @@
   </div>
 </template>
 
-<script>
-import HeroBasic from '@/components/HeroBasic.vue'
-import ButtonBasic from '@/components/ButtonBasic.vue'
+<script setup>
+import { computed, ref, onBeforeMount, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+import TheHero from '@/components/TheHero.vue'
 import ButtonMDI from '@/components/ButtonMDI.vue'
+import MDIIconSpeedometerSlow from '@/components/MDIIconSpeedometerSlow.vue'
+import MDIIconSpeedometerMedium from '@/components/MDIIconSpeedometerMedium.vue'
+import MDIIconSpeedometer from '@/components/MDIIconSpeedometer.vue'
 import ButtonText from '@/components/ButtonText.vue'
 import InputWithButton from '@/components/InputWithButton.vue'
+import ButtonBasic from '@/components/ButtonBasic.vue'
 import NotificationBasic from '@/components/NotificationBasic.vue'
 
-import SpeedometerSlow from 'vue-material-design-icons/SpeedometerSlow.vue'
-import SpeedometerMedium from 'vue-material-design-icons/SpeedometerMedium.vue'
-import Speedometer from 'vue-material-design-icons/Speedometer.vue'
+import { useAppDynStore } from '@/stores/appdyn'
+import { useAppConstStore } from '@/stores/appconst'
 
-export default {
-  name: 'SelectionCount',
-  components: {
-    HeroBasic,
-    ButtonBasic,
-    ButtonMDI,
-    ButtonText,
-    InputWithButton,
-    NotificationBasic,
-    SpeedometerSlow,
-    SpeedometerMedium,
-    Speedometer
-  },
-  data () {
-    return {
-      inputVisible: false,
-      customCount: '',
-      availableOptions: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200],
-      notificationVisible: false
+const router = useRouter()
+const appDyn = useAppDynStore()
+const appConst = useAppConstStore()
+
+onBeforeMount(() => {
+  if (appDyn.categoriesChosen.length === 0) {
+    navTo('category', 'adventure')
+  }
+})
+
+onMounted(() => {
+  let wordCount = appDyn.wordCount
+  if (!availableWordCounts.includes(wordCount) && wordCount !== 0 && wordCount !== allWordsCount.value) {
+    customCount.value = wordCount.toString()
+  }
+})
+
+function isDifficultySelected (difficulty) {
+  return appDyn.wordDifficulty === difficulty
+}
+
+function setDifficulty (difficulty) {
+  appDyn.wordDifficulty = difficulty
+  hideNotification()
+}
+
+const availableWordCounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200]
+const customCount = ref('')
+const inputVisible = ref(false)
+
+const isCustomCountSet = computed(() => {
+  return customCount.value !== ''
+})
+
+const customCountText = computed(() => {
+  return isCustomCountSet.value ? customCount.value : 'selectionCountCustom'
+})
+
+const allWordsCount = computed(() => {
+  return appConst.getFullVocabs().words.length
+})
+
+function isWordCountSelected (wordCount) {
+  if (isCustomCountSet.value) {
+    return false
+  }
+  return appDyn.wordCount === wordCount
+}
+
+function setWordCount (wordCount) {
+  appDyn.wordCount = wordCount
+  customCount.value = ''
+  hideNotification()
+}
+
+function showInput () {
+  inputVisible.value = true
+}
+
+function hideInput () {
+  inputVisible.value = false
+  if (isCustomCountSet.value) {
+    if (parseInt(customCount.value) > 9001) { // it's over 9000
+      customCount.value = '9001'
     }
-  },
-  created () {
-    if (this.$store.state.vueDict.categoriesChosen.length === 0) {
-      this.navTo('category', 'adventure')
+    appDyn.wordCount = parseInt(customCount.value)
+  } else {
+    if (!availableWordCounts.includes(appDyn.wordCount)) {
+      appDyn.wordCount = 10
     }
-  },
-  mounted () {
-    let wordCount = this.$store.state.vueDict.wordCount
-    if (!this.availableOptions.includes(wordCount) && wordCount !== 0 && wordCount !== this.countAllWords) {
-      this.customCount = wordCount.toString()
-    }
-  },
-  computed: {
-    customCountSet () {
-      return this.customCount !== ''
-    },
-    customCountText () {
-      return this.customCount === '' ? 'selectionCountCustom' : this.customCount
-    },
-    countAllWords () {
-      return this.$store.getters['vueDict/getFullVocabs'].words.length
-    }
-  },
-  methods: {
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
-    },
-    difficultySelected (difficulty) {
-      return this.$store.state.vueDict.difficulty === difficulty
-    },
-    setDifficulty (difficulty) {
-      this.$store.commit('vueDict/setDifficulty', difficulty)
-      this.showNotification = false
-    },
-    wordCountSelected (count) {
-      if (this.customCountSet) {
-        return false
-      }
-      return this.$store.state.vueDict.wordCount === count
-    },
-    setWordCount (count) {
-      this.$store.commit('vueDict/setWordCount', count)
-      this.customCount = ''
-      this.hideNotification()
-    },
-    showInput () {
-      this.inputVisible = true
-    },
-    hideInput () {
-      this.inputVisible = false
-      if (this.customCountSet) {
-        if (parseInt(this.customCount) > 9001) {
-          this.customCount = '9001'
-        }
-        this.$store.commit('vueDict/setWordCount', parseInt(this.customCount))
+  }
+}
+
+function toggleWordsReversed () {
+  appDyn.reversedType = !appDyn.reversedType
+}
+
+const notificationVisible = ref(false)
+
+function showNotification () {
+  notificationVisible.value = true
+}
+
+function hideNotification () {
+  notificationVisible.value = false
+}
+
+function getSizeClass (type) {
+  return appConst.getSizeClass(type)
+}
+
+function navTo (name, params = '') {
+  switch (name) {
+    case 'category':
+      router.push({ name: name, params: { destination: params } })
+      break
+    case 'adventure':
+      if (appConst.getFullVocabs().words.length === 0) {
+        showNotification()
       } else {
-        if (!this.availableOptions.includes(this.$store.state.vueDict.wordCount)) {
-          this.$store.commit('vueDict/setWordCount', 10)
-        }
+        router.push({ name: name })
       }
-    },
-    toggleWordsReversed () {
-      this.$store.commit('vueDict/setReversed', !this.$store.state.vueDict.reversed)
-    },
-    navTo (name, params = '') {
-      switch (name) {
-        case 'category':
-          this.$router.push({ name: name, params: { destination: params } })
-          break
-        case 'adventure':
-          if (this.$store.getters['vueDict/getVocabsWithDifficulty'].words.length === 0) {
-            this.showNotification()
-          } else {
-            this.$router.push({ name: name })
-          }
-          break
-        default:
-      }
-    },
-    showNotification () {
-      this.notificationVisible = true
-    },
-    hideNotification () {
-      this.notificationVisible = false
-    }
+      break
+    default:
   }
 }
 </script>

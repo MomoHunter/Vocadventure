@@ -1,6 +1,6 @@
-import JapaneseSigns from '@/data/JapaneseSigns.json'
-import GreekSigns from '@/data/GreekSigns.json'
-import RussianSigns from '@/data/RussianSigns.json'
+import JapaneseSigns from '@/data/signs/JapaneseSigns.json'
+import GreekSigns from '@/data/signs/GreekSigns.json'
+import RussianSigns from '@/data/signs/RussianSigns.json'
 
 export default {
   'japanese': {
@@ -44,5 +44,12 @@ export default {
     'foreignAlphabet': 'cyrillic',
     'lang': ['ru-RU', 'ru_RU'],
     'flag': 'ru'
+  },
+  'italian': {
+    'signs': null,
+    'latinAlphabet': 'italian',
+    'foreignAlphabet': '',
+    'lang': ['it-IT', 'it_IT'],
+    'flag': 'it'
   }
 }

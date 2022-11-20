@@ -1,17 +1,17 @@
 <template>
   <div class="page">
-    <HeroBasic title="packagesEditTitle" />
+    <TheHero title="packagesEditTitle" />
     <div class="flex-grow overflow-auto">
-      <InputBasic class="border-bottom margin-top-medium margin-bottom-medium" v-model="wordPack.tag"
-                  title="packagesEditTag" type="text" icon="tag" :maxlength="3" noFocus />
-      <InputBasic class="border-bottom margin-bottom-medium" v-model="wordPack.name" title="packagesEditName"
-                  type="text" icon="font" noFocus />
+      <InputBasic class="border-bottom margin-top-medium margin-bottom-medium" v-model="wordpack.tag"
+                  title="packagesEditTag" type="text" icon="tag" :maxlength="3" no-focus />
+      <InputBasic class="border-bottom margin-bottom-medium" v-model="wordpack.name" title="packagesEditName"
+                  type="text" icon="font" no-focus />
       <DropdownBasic class="border-bottom margin-bottom-medium" title="packagesEditTargetLanguage"
-                     :options="targetLanguageOptions" icon="user-graduate" :selected="wordPack.targetLanguage"
+                     :options="targetLanguageOptions" icon="user-graduate" :selected="wordpack.targetLanguage"
                      @change="setTargetLanguage($event)" />
-      <CheckboxBasic class="border-bottom margin-bottom-medium" v-for="key in Object.keys($store.state.texts)"
+      <TheCheckbox class="border-bottom margin-bottom-medium" v-for="key in Object.keys(appConst.texts)"
                      title="packagesEditSupportedLanguages" icon="globe" :text="key"
-                     :active="wordPack.supportedLanguages.includes(key)" :key="key" @click="toggleSupportedLang(key)" />
+                     :active="wordpack.supportedLanguages.includes(key)" :key="key" @click="toggleSupportedLang(key)" />
     </div>
     <div class="button-container flex-row flex-wrap">
       <ButtonBasic class="width-half" icon="times" color="red" text="packagesEditButton2"
@@ -24,216 +24,215 @@
     <transition enter-active-class="animate__animated animate__backInUp duration-c-700ms"
                 leave-active-class="animate__animated animate__backOutDown duration-c-700ms">
       <NotificationBasic v-show="notificationVisible" title="packagesEditNotificationTitle"
-                       :text="['packagesEditNotificationText']" color="red" icon="exclamation"
-                       @click="hideNotification()" />
+                         :text="['packagesEditNotificationText']" color="red" icon="exclamation"
+                         @click="hideNotification()" />
     </transition>
   </div>
 </template>
 
-<script>
-import HeroBasic from '@/components/HeroBasic.vue'
-import ButtonBasic from '@/components/ButtonBasic.vue'
+<script setup>
+import { onBeforeMount, reactive, ref, watch, computed } from 'vue'
+import { onBeforeRouteLeave, useRouter } from 'vue-router'
+
+import TheHero from '@/components/TheHero.vue'
 import InputBasic from '@/components/InputBasic.vue'
 import DropdownBasic from '@/components/DropdownBasic.vue'
-import CheckboxBasic from '@/components/CheckboxBasic.vue'
+import TheCheckbox from '@/components/TheCheckbox.vue'
+import ButtonBasic from '@/components/ButtonBasic.vue'
 import NotificationBasic from '@/components/NotificationBasic.vue'
 
-export default {
-  name: 'PackagesEdit',
-  components: {
-    HeroBasic,
-    ButtonBasic,
-    InputBasic,
-    DropdownBasic,
-    CheckboxBasic,
-    NotificationBasic
-  },
-  data () {
-    return {
-      wordPack: {
-        index: 1,
-        tag: '',
-        name: '',
-        targetLanguage: 'japanese',
-        supportedLanguages: [],
-        isCustom: true,
-        categories: []
+import { useAppDynStore } from '@/stores/appdyn'
+import { useAppConstStore } from '@/stores/appconst'
+import { useIndexedDBStore } from '@/stores/indexeddb'
+
+const router = useRouter()
+const appDyn = useAppDynStore()
+const appConst = useAppConstStore()
+const indexedDBStore = useIndexedDBStore()
+
+onBeforeRouteLeave((to, from) => {
+  if (to.name === 'packages') {
+    if (appDyn.packages.wordpackKey === '') {
+      return
+    }
+
+    checkForChanges()
+    if (appDyn.activeModal === null && appDyn.packages.changed) {
+      showModal()
+      return false
+    } else {
+      appDyn.activeModal = null
+      appDyn.packages.wordpackKey = ''
+      appDyn.packages.wordpack = null
+      appDyn.packages.changed = false
+    }
+  }
+  return
+})
+
+onBeforeMount(() => {
+  if (appDyn.packages.wordpackKey === '') {
+    navTo('packages')
+    return
+  }
+
+  let foundWordpack = null
+  if (appDyn.packages.wordpack) {
+    foundWordpack = JSON.parse(JSON.stringify(appDyn.packages.wordpack))
+  } else if (currentWordpack.value) {
+    foundWordpack = currentWordpack.value
+  }
+
+  if (foundWordpack) {
+    if (!foundWordpack.isCustom) {
+      wordpack.index = getNewIndex()
+    } else {
+      wordpack.index = foundWordpack.index
+    }
+    wordpack.tag = foundWordpack.tag
+    wordpack.name = foundWordpack.name
+    wordpack.targetLanguage = foundWordpack.targetLanguage
+    wordpack.supportedLanguages = Array.from(foundWordpack.supportedLanguages)
+    wordpack.categories = foundWordpack.categories
+  } else {
+    wordpack.index = parseInt(appDyn.packages.wordpackKey.split('_')[1])
+  }
+})
+
+function getNewIndex () {
+  return appConst.vocabulary.reduce((maxIndex, wordpack) => {
+    if (wordpack.isCustom) {
+      return wordpack.index >= maxIndex ? wordpack.index + 1 : maxIndex
+    }
+    return maxIndex
+  }, 1)
+}
+
+function showModal () {
+  appDyn.activeModal = {
+    name: 'message',
+    title: 'packagesEditModalTitle',
+    text: ['packagesEditModalText'],
+    buttons: [
+      {
+        icon: 'times',
+        text: 'packagesEditModalButton1',
+        color: 'red'
       },
-      notificationVisible: false
-    }
-  },
-  beforeRouteLeave (to, from, next) {
-    if (to.name === 'packages') {
-      if (this.$store.state.vueDict.selectedWordPackKey === '') {
-        next()
-        return
+      {
+        icon: 'check',
+        text: 'packagesEditModalButton2',
+        color: 'green'
       }
+    ]
+  }
+}
 
-      this.checkForChanges()
-      if (!this.modalVisible && this.$store.state.vueDict.selectedWordPackChanged) {
-        this.showModal()
-        next(false)
-      } else {
-        this.$store.commit('vueDict/closeModal')
-        this.$store.commit('vueDict/setSelectedWordPackKey', '')
-        this.$store.commit('vueDict/setSelectedWordPack', null)
-        this.$store.commit('vueDict/setSelectedWordPackChanged', false)
-        next()
-      }
-    } else {
-      next()
+watch(
+  () => appDyn.modalAnswer,
+  (newAnswer) => {
+    switch (newAnswer) {
+      case 'button1':
+        appDyn.activeModal = null
+        break
+      case 'button2':
+        navTo('packages')
+        break
+      default:
     }
-  },
-  beforeCreate () {
-    if (this.$store.state.vueDict.selectedWordPackKey === '') {
-      this.$router.push({ name: 'packages' })
-    }
-  },
-  created () {
-    let foundPack = null
-    if (this.$store.state.vueDict.selectedWordPack) {
-      foundPack = JSON.parse(JSON.stringify(this.$store.state.vueDict.selectedWordPack))
-    } else if (this.currentWordPack) {
-      foundPack = this.currentWordPack
-    }
+  }
+)
 
-    if (foundPack) {
-      if (!foundPack.isCustom) {
-        this.wordPack.index = this.getNewIndex()
-      } else {
-        this.wordPack.index = foundPack.index
-      }
-      this.wordPack.tag = foundPack.tag
-      this.wordPack.name = foundPack.name
-      this.wordPack.targetLanguage = foundPack.targetLanguage
-      this.wordPack.supportedLanguages = foundPack.supportedLanguages
-      this.wordPack.categories = foundPack.categories
-    } else {
-      this.wordPack.index = parseInt(this.$store.state.vueDict.selectedWordPackKey.split('_')[1])
+const wordpack = reactive({
+  index: 1,
+  tag: '',
+  name: '',
+  targetLanguage: 'japanese',
+  supportedLanguages: [],
+  isCustom: true,
+  categories: []
+})
+const currentWordpack = computed(() => {
+  return appConst.getWordpack(appDyn.packages.wordpackKey)
+})
+
+const targetLanguageOptions = computed(() => {
+  return Object.keys(appConst.targetLanguages)
+})
+
+function setTargetLanguage (newTargetLanguage) {
+  wordpack.targetLanguage = newTargetLanguage
+}
+
+function toggleSupportedLang (newLang) {
+  if (wordpack.supportedLanguages.includes(newLang)) {
+    wordpack.supportedLanguages = wordpack.supportedLanguages.filter(language => language !== newLang)
+  } else {
+    wordpack.supportedLanguages.push(newLang)
+  }
+  hideNotification()
+}
+
+function checkForChanges (navigation = false) {
+  let changed = false
+
+  if (currentWordpack.value) {
+    if (wordpack.tag !== currentWordpack.value.tag || wordpack.name !== currentWordpack.value.name ||
+        wordpack.targetLanguage !== currentWordpack.value.targetLanguage ||
+        wordpack.supportedLanguages.length !== currentWordpack.value.supportedLanguages.length) {
+      changed = true
     }
-  },
-  computed: {
-    answer () {
-      return this.$store.state.vueDict.currentModalAnswer
-    },
-    currentWordPack () {
-      return this.$store.getters['vueDict/getSelectedWordPack']
-    },
-    targetLanguageOptions () {
-      return Object.keys(this.$store.state.vueDict.targetLanguages)
-    }
-  },
-  methods: {
-    getNewIndex () {
-      return this.$store.state.vueDict.vocabulary.reduce((maxIndex, wordPack) => {
-        if (wordPack.isCustom) {
-          return wordPack.index >= maxIndex ? wordPack.index + 1 : maxIndex
-        }
-        return maxIndex
-      }, 1)
-    },
-    setTargetLanguage (value) {
-      this.wordPack.targetLanguage = value
-    },
-    toggleSupportedLang (lang) {
-      if (this.wordPack.supportedLanguages.includes(lang)) {
-        this.wordPack.supportedLanguages = this.wordPack.supportedLanguages.filter(language => language !== lang)
-      } else {
-        this.wordPack.supportedLanguages.push(lang)
+    for (let lang of currentWordpack.value.supportedLanguages) {
+      if (!wordpack.supportedLanguages.includes(lang)) {
+        changed = true
+        break
       }
-      this.hideNotification()
-    },
-    showNotification () {
-      this.notificationVisible = true
-    },
-    hideNotification () {
-      this.notificationVisible = false
-    },
-    checkForChanges (navigation = false) {
-      let changed = false
-      if (this.currentWordPack) {
-        if (this.wordPack.tag !== this.currentWordPack.tag || this.wordPack.name !== this.currentWordPack.name ||
-            this.wordPack.targetLanguage !== this.currentWordPack.targetLanguage ||
-            this.wordPack.supportedLanguages.length !== this.currentWordPack.supportedLanguages.length) {
-          changed = true
-        }
-        for (let lang of this.currentWordPack.supportedLanguages) {
-          if (!this.wordPack.supportedLanguages.includes(lang)) {
-            changed = true
-            break
+    }
+  }
+
+  if (changed) {
+    appDyn.packages.changed = true
+  }
+
+  if (navigation) {
+    navTo('packages')
+  }
+}
+
+const notificationVisible = ref(false)
+
+function showNotification () {
+  notificationVisible.value = true
+}
+
+function hideNotification () {
+  notificationVisible.value = false
+}
+
+function navTo (destination, saving = false) {
+  switch (destination) {
+    case 'packagesEditCategories':
+      appDyn.packages.wordpack = wordpack
+      router.push({ name: destination })
+      break
+    case 'packages':
+      if (saving) {
+        if (wordpack.tag === '' || wordpack.name === '' || wordpack.supportedLanguages.length === 0) {
+          showNotification()
+        } else {
+          if (!appDyn.packages.wordpackKey.startsWith('s')) {
+            appConst.deleteWordpack(appDyn.packages.wordpackKey, false)
           }
+          indexedDBStore.saveEntry({ name: 'wordpackdb', store: 'wordpacks', entry: wordpack })
+          appDyn.packages.wordpackKey = ''
+          appDyn.packages.wordpack = null
+          router.push({ name: destination })
         }
+      } else {
+        router.push({ name: destination })
       }
-
-      if (changed) {
-        this.$store.commit('vueDict/setSelectedWordPackChanged', true)
-      }
-
-      if (navigation) {
-        this.navTo('packages')
-      }
-    },
-    showModal () {
-      this.$store.commit('vueDict/showModal', {
-        name: 'message',
-        title: 'packagesEditModalTitle',
-        text: ['packagesEditModalText'],
-        buttons: [
-          {
-            icon: 'times',
-            text: 'packagesEditModalButton1',
-            color: 'red'
-          },
-          {
-            icon: 'check',
-            text: 'packagesEditModalButton2',
-            color: 'green'
-          }
-        ]
-      })
-      this.modalVisible = true
-    },
-    navTo (destination, saving = false) {
-      switch (destination) {
-        case 'packagesEditCategories':
-          this.$store.commit('vueDict/setSelectedWordPack', this.wordPack)
-          this.$router.push({ name: destination })
-          break
-        case 'packages':
-          if (saving) {
-            if (this.wordPack.tag === '' || this.wordPack.name === '' || this.wordPack.supportedLanguages.length === 0) {
-              this.showNotification()
-            } else {
-              if (!this.$store.state.vueDict.selectedWordPackKey.startsWith('s')) {
-                this.$store.commit('vueDict/removeWordPack', this.$store.state.vueDict.selectedWordPackKey)
-              }
-              this.$store.dispatch('saveEntry', { name: 'wordpackdb', store: 'wordPacks', entry: this.wordPack })
-              this.$store.commit('vueDict/setSelectedWordPackKey', '')
-              this.$store.commit('vueDict/setSelectedWordPack', null)
-              this.$router.push({ name: destination })
-            }
-          } else {
-            this.$router.push({ name: destination })
-          }
-          break
-        default:
-      }
-    }
-  },
-  watch: {
-    answer () {
-      switch (this.answer) {
-        case 'button1':
-          this.$store.commit('vueDict/closeModal')
-          this.modalVisible = false
-          break
-        case 'button2':
-          this.navTo('packages')
-          this.$store.commit('vueDict/closeModal')
-          break
-        default:
-      }
-    }
+      break
+    default:
   }
 }
 </script>

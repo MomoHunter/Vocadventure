@@ -1,14 +1,14 @@
 <template>
   <div class="slider flex-column" :class="getSizeClass('general')">
     <div class="title">
-      {{ getText(title) }}
+      {{ getText(props.title) }}
     </div>
     <div class="flex-row">
       <div class="icon flex-row">
-        <i class="fas" :class="'fa-' + icon"></i>
+        <i class="fas" :class="'fa-' + props.icon"></i>
       </div>
-      <input class="input-slider flex-grow" type="range" :min="min" :max="max" :step="step" :value="value"
-             @input="sendNewValue($event.target.value)">
+      <input class="input-slider flex-grow" type="range" :min="props.min" :max="props.max" :step="props.step"
+             :value="props.modelValue" @input="$emit('update:modelValue', parseFloat($event.target.value))">
       <div class="value text-center">
         {{ transformedValue }}
       </div>
@@ -16,79 +16,35 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'TheSlider',
-  props: {
-    title: String,
-    min: Number,
-    max: Number,
-    step: Number,
-    value: Number,
-    icon: String
-  },
-  data () {
-    return {
-      inputVisible: false
-    }
-  },
-  computed: {
-    transformedValue () {
-      if (parseInt(this.step) === this.step) {
-        return this.value
-      } else {
-        return this.value.toFixed(2)
-      }
-    }
-  },
-  methods: {
-    getText (id) {
-      return this.$store.getters.getText(id)
-    },
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
-    },
-    showInput () {
-      this.inputVisible = true
-    },
-    hideInput () {
-      this.inputVisible = false
-    },
-    sendNewValue (newValue) {
-      if (newValue <= this.max && newValue >= this.min) {
-        this.$emit('input', parseFloat(newValue))
-      }
-    }
+<script setup>
+import { computed } from 'vue'
+
+import { useAppConstStore } from '@/stores/appconst'
+
+const appConst = useAppConstStore()
+const props = defineProps({
+  title: String,
+  min: Number,
+  max: Number,
+  step: Number,
+  modelValue: Number,
+  icon: String
+})
+defineEmits(['update:modelValue'])
+
+const transformedValue = computed(() => {
+  if (parseInt(props.step) === props.step) {
+    return props.modelValue
+  } else {
+    return props.modelValue.toFixed(2)
   }
+})
+
+function getText (id) {
+  return appConst.getText(id)
+}
+
+function getSizeClass (type) {
+  return appConst.getSizeClass(type)
 }
 </script>
-
-<style lang="scss" scoped>
-.sliderBox {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  padding: .5rem;
-
-  .customIcon {
-    margin-right: .5rem;
-  }
-
-  .flexGrow {
-    flex-grow: 1;
-  }
-
-  .valueBox {
-    padding: .25rem;
-    min-width: 40px;
-    text-align: center;
-    margin-left: .5rem;
-  }
-
-  .inputWidth {
-    width: 20%;
-    margin-left: .5rem;
-  }
-}
-</style>

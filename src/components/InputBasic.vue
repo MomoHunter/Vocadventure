@@ -1,53 +1,56 @@
 <template>
-  <div class="input-text flex-column" :class="[getSizeClass('general'), color]">
+  <div class="input-text flex-column" :class="[getSizeClass('general'), props.color]">
     <div v-if="hasTitle" class="title">
-      {{ getText(title) }}
+      {{ getText(props.title) }}
     </div>
     <div class="flex-row">
       <span class="icon">
-        <i class="fas" :class="'fa-' + icon"></i>
+        <i class="fas" :class="'fa-' + props.icon"></i>
       </span>
-      <input v-focus class="input width-full" :type="type" @input="$emit('input', $event.target.value)" :value="value"
-             :maxlength="maxlength" :readonly="readonly" :nofocus="noFocus" />
+      <input v-focus class="input width-full" :type="props.type" @input="$emit('update:modelValue', $event.target.value)"
+             :value="props.modelValue" :maxlength="props.maxlength" :readonly="props.readonly"
+             :nofocus="props.noFocus" />
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'InputBasic',
-  props: {
-    title: {
-      type: String,
-      default: ''
-    },
+<script setup>
+import { computed } from 'vue'
+
+import { useAppConstStore } from '@/stores/appconst'
+
+const appConst = useAppConstStore()
+const props = defineProps({
+  title: {
     type: String,
-    icon: String,
-    readonly: Boolean,
-    noFocus: {
-      type: Boolean,
-      default: false
-    },
-    maxlength: {
-      type: Number,
-      default: 9999
-    },
-    color: String,
-    value: String
+    default: ''
   },
-  computed: {
-    hasTitle () {
-      return this.title !== ''
-    }
+  type: String,
+  icon: String,
+  readonly: Boolean,
+  noFocus: {
+    type: Boolean,
+    default: false
   },
-  methods: {
-    getText (id) {
-      return this.$store.getters.getText(id)
-    },
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
-    }
-  }
+  maxlength: {
+    type: Number,
+    default: 9999
+  },
+  color: String,
+  modelValue: String
+})
+defineEmits(['update:modelValue'])
+
+const hasTitle = computed(() => {
+  return props.title !== ''
+})
+
+function getText (id) {
+  return appConst.getText(id)
+}
+
+function getSizeClass (type) {
+  return appConst.getSizeClass(type)
 }
 </script>
 

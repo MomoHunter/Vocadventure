@@ -3,20 +3,20 @@
     <div class="flex-row">
       <ButtonIcon class="single-1" :icon="expandIcon" color="action" @click="$emit('expand')" />
       <div class="title flex-grow info">
-        {{ category[$store.state.lang] }}
+        {{ props.category[savestate.app.lang] }}
       </div>
       <ButtonIcon class="single-1" icon="pen" color="green" @click="$emit('edit', { type: 'category' })" />
       <ButtonIcon class="single-1" icon="trash" color="red" @click="$emit('delete', { type: 'category' })" />
     </div>
-    <ButtonBasic v-show="expanded" class="single-1" icon="plus" color="green" text="packagesEditCategoriesButton3"
+    <ButtonBasic v-show="props.expanded" class="single-1 new-word" icon="plus" color="green" text="packagesEditCategoriesButton3"
                  @click="$emit('new')" />
-    <div v-show="expanded" class="flex-row" v-for="(word, index) in category.words" :key="index">
+    <div v-show="props.expanded" class="flex-row" v-for="(word, index) in props.category.words" :key="index">
       <div class="details flex-grow flex-row">
         <div class="index">
           {{ index + 1 }}
         </div>
         <div class="word">
-          {{ word[$store.state.lang] }}
+          {{ word[savestate.app.lang] }}
         </div>
       </div>
       <ButtonIcon class="single-1" icon="pen" color="green" @click="$emit('edit', { type: 'word', index: index })" />
@@ -25,29 +25,28 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
+
 import ButtonIcon from '@/components/ButtonIcon.vue'
 import ButtonBasic from '@/components/ButtonBasic.vue'
 
-export default {
-  name: 'PackageCategoryEntry',
-  props: {
-    category: Object,
-    expanded: Boolean
-  },
-  components: {
-    ButtonIcon,
-    ButtonBasic
-  },
-  computed: {
-    expandIcon () {
-      return this.expanded ? 'angle-up' : 'angle-down'
-    }
-  },
-  methods: {
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
-    }
-  }
+import { useAppConstStore } from '@/stores/appconst'
+import { useSavestateStore } from '@/stores/savestate'
+
+const savestate = useSavestateStore()
+const appConst = useAppConstStore()
+const props = defineProps({
+  category: Object,
+  expanded: Boolean
+})
+defineEmits(['click', 'new', 'edit', 'delete', 'expand'])
+
+const expandIcon = computed(() => {
+  return props.expanded ? 'angle-up' : 'angle-down'
+})
+
+function getSizeClass (type) {
+  return appConst.getSizeClass(type)
 }
 </script>

@@ -1,4 +1,5 @@
 import * as Helper from '@/canvas/helper.js'
+import { savestate, appConst, gameDyn, gameConst } from '@/canvas/storeref.js'
 
 export const updateCalls = [
   p1Update,
@@ -86,6 +87,7 @@ let data = {
       },
       shake: 0,
       textShift: 0,
+      fade: 1,
       handShift: 0,
       pause: 0
     }
@@ -100,25 +102,31 @@ let data = {
       pause: 0,
       clock: {
         multiplicator: 1,
-        hour: 180,
-        minute: 180,
-        second: 180,
+        hour: 0,
+        minute: 0,
         years: 0,
         manipulated: false
       }
     }
   },
   p13: {
+    con: {
+      zoomFactor: 0.4
+    },
     dyn: {
       cars: [
         {
-          x: 450,
-          y: 200,
-          spriteKey: 'story_f0_woogle_truck',
+          pos: 40,
+          x: 112,
+          y: 238.5,
+          width: 135,
+          height: 57,
+          spriteKey: 'story_f0_woogle_car_l_1',
           directionUp: true
         }
       ],
-      newCarCountdown: 100
+      newCarCountdown: 50,
+      nextDirectionUp: false
     }
   },
   p14: {
@@ -193,15 +201,15 @@ let data = {
   }
 }
 
-export function update (that) {
-  if (updateCalls[that.$store.state.canvasDict.storyPart - 1] !== null) {
-    updateCalls[that.$store.state.canvasDict.storyPart - 1].call(that)
+export function update () {
+  if (updateCalls[savestate.game.storyPart - 1] !== null) {
+    updateCalls[savestate.game.storyPart - 1]()
   }
 }
 
-export function draw (that) {
-  if (drawCalls[that.$store.state.canvasDict.storyPart - 1] !== null) {
-    drawCalls[that.$store.state.canvasDict.storyPart - 1].call(that)
+export function draw () {
+  if (drawCalls[savestate.game.storyPart - 1] !== null) {
+    drawCalls[savestate.game.storyPart - 1]()
   }
 }
 
@@ -210,14 +218,13 @@ export function draw (that) {
  * @param {number} zoom zoom factor for screen
  */
 function p1Update (zoom = 1) {
-  const cD = this.$store.state.canvasDict
   const textLength = Helper.getTextWidthResizable(
-    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.p1.con.textSize * zoom, cD.context
+    appConst.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.p1.con.textSize * zoom, gameDyn.context
   )
 
   data.p1.dyn.eye.counter -= 1
   if (data.p1.dyn.eye.counter === 0) {
-    data.p1.dyn.eye.startFrame = cD.frameNo
+    data.p1.dyn.eye.startFrame = gameDyn.frameNo
   }
   if (data.p1.dyn.eye.finished) {
     data.p1.dyn.eye.finished = false
@@ -237,99 +244,110 @@ function p1Update (zoom = 1) {
  * @param {number} yShift shift distance of the screen in negative y-direction
  */
 function p1Draw (zoom = 1, yShift = 0) {
-  const cD = this.$store.state.canvasDict
   const textLength = Helper.getTextWidthResizable(
-    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.p1.con.textSize * zoom, cD.context
+    appConst.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.p1.con.textSize * zoom, gameDyn.context
   )
   const negZoom = 1 - zoom
-
-  let halfWidth = this.canvasWidth / 2
-  let halfHeight = this.canvasHeight / 2
+  const halfWidth = gameDyn.getCanvasWidth / 2
+  const halfHeight = gameDyn.getCanvasHeight / 2
 
   Helper.drawCanvasSmallImage(
-    halfWidth * negZoom, halfHeight * negZoom + yShift, zoom, 'story_f0_video_background', cD
+    halfWidth * negZoom, halfHeight * negZoom + yShift, zoom, 'story_f0_video_background', gameConst.spriteDict,
+    gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
   )
   Helper.drawCanvasSmallImage(
-    halfWidth - (260 * zoom), halfHeight - (120 * zoom) + yShift, 0.378 * zoom, 'story_f0_star_map', cD
+    halfWidth - (260 * zoom), halfHeight - (120 * zoom) + yShift, 0.378 * zoom, 'story_f0_star_map',
+    gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
   )
   Helper.drawCanvasSmallImage(
-    halfWidth * negZoom, halfHeight * negZoom + yShift, zoom, 'story_f0_video_foreground', cD
+    halfWidth * negZoom, halfHeight * negZoom + yShift, zoom, 'story_f0_video_foreground', gameConst.spriteDict,
+    gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
   )
 
   if (data.p1.dyn.eye.counter <= 0) {
     data.p1.dyn.eye.finished = Helper.drawCanvasSmallImageOnce(
-      halfWidth + (127 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes', cD,
-      data.p1.dyn.eye.startFrame, 4
+      halfWidth + (127 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes',
+      gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context, data.p1.dyn.eye.startFrame, 4
     )
   } else {
     Helper.drawCanvasSmallImage(
-      halfWidth + (127 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes_open', cD
+      halfWidth + (127 * zoom), halfHeight - (87 * zoom) + yShift, zoom, 'story_f0_video_moderator_eyes_open',
+      gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
     )
   }
 
-  if (cD.storyWritesText) {
+  if (gameDyn.storyWritesText) {
     Helper.drawCanvasSmallImage(
-      halfWidth + (136 * zoom), halfHeight - (60 * zoom) + yShift, zoom, 'story_f0_video_moderator_mouth', cD, 8
+      halfWidth + (136 * zoom), halfHeight - (60 * zoom) + yShift, zoom, 'story_f0_video_moderator_mouth',
+      gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context, 8
     )
   } else {
     Helper.drawCanvasSmallImage(
-      halfWidth + (136 * zoom), halfHeight - (60 * zoom) + yShift, zoom, 'story_f0_video_moderator_mouth_closed', cD
+      halfWidth + (136 * zoom), halfHeight - (60 * zoom) + yShift, zoom, 'story_f0_video_moderator_mouth_closed',
+      gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
     )
   }
 
   Helper.drawCanvasTextResizable(
     halfWidth - (259 * zoom), halfHeight + (-4 * zoom) + yShift,
-    this.$store.getters.getText('adventureStoryF0P1TitleSmall'), 'storyF0P1Title', 9 * zoom, cD.context
+    appConst.getText('adventureStoryF0P1TitleSmall'), 'storyF0P1Title', 9 * zoom, gameDyn.context
   )
   Helper.drawCanvasTextResizable(
-    halfWidth - (260 * zoom), halfHeight + (5 * zoom) + yShift, this.$store.getters.getText('adventureStoryF0P1Title'),
-    'storyF0P1Title', 20 * zoom, cD.context
+    halfWidth - (260 * zoom), halfHeight + (5 * zoom) + yShift, appConst.getText('adventureStoryF0P1Title'),
+    'storyF0P1Title', 20 * zoom, gameDyn.context
   )
 
-  cD.context.save()
+  gameDyn.context.save()
 
   Helper.clipCanvasRect(
-    halfWidth * negZoom, halfHeight * negZoom + yShift, this.canvasWidth * zoom, this.canvasHeight * zoom, cD.context
+    halfWidth * negZoom, halfHeight * negZoom + yShift, gameDyn.getCanvasWidth * zoom,
+    gameDyn.getCanvasHeight * zoom, gameDyn.context
   )
 
-  cD.context.clip()
+  gameDyn.context.clip()
 
   Helper.drawCanvasTextResizable(
     data.p1.dyn.textPos + halfWidth * negZoom, halfHeight + (120 * zoom) + yShift,
-    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.p1.con.textSize * zoom, cD.context
+    appConst.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.p1.con.textSize * zoom, gameDyn.context
   )
   Helper.drawCanvasTextResizable(
     data.p1.dyn.textPos + Math.ceil(textLength) + halfWidth * negZoom, halfHeight + (120 * zoom) + yShift,
-    this.$store.getters.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.p1.con.textSize * zoom, cD.context
+    appConst.getText('adventureStoryF0P1Text'), 'storyF0P1Text', data.p1.con.textSize * zoom, gameDyn.context
   )
 
-  cD.context.restore()
+  gameDyn.context.restore()
 }
 
 /**
  * moves the arrow position on the star map
  */
 function p2Update () {
-  data.p2.dyn.arrowPos.earth = 100 + Math.sin(this.$store.state.canvasDict.frameNo / 20) * 3
-  data.p2.dyn.arrowPos.destination = 35 + Math.sin(this.$store.state.canvasDict.frameNo / 20) * 3
+  data.p2.dyn.arrowPos.earth = 100 + Math.sin(gameDyn.frameNo / 20) * 3
+  data.p2.dyn.arrowPos.destination = 35 + Math.sin(gameDyn.frameNo / 20) * 3
 }
 
 /**
  * draws the star map with two arrows
  */
 function p2Draw () {
-  const cD = this.$store.state.canvasDict
-
-  Helper.drawCanvasImage(0, 0, 'story_f0_star_map', cD)
-  Helper.drawCanvasImage(49, data.p2.dyn.arrowPos.earth, 'story_f0_red_arrow', cD)
-  Helper.drawCanvasText(
-    61.5, data.p2.dyn.arrowPos.earth - 10, this.$store.getters.getText('adventureStoryF0P2Label1'),
-    'storyF0P2StarMap', cD.context
+  Helper.drawCanvasImage(
+    0, 0, 'story_f0_star_map', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
   )
-  Helper.drawCanvasImage(530, data.p2.dyn.arrowPos.destination, 'story_f0_red_arrow', cD)
+  Helper.drawCanvasImage(
+    49, data.p2.dyn.arrowPos.earth, 'story_f0_red_arrow', gameConst.spriteDict, gameDyn.frameNo,
+    gameConst.spritesheet, gameDyn.context
+  )
   Helper.drawCanvasText(
-    542.5, data.p2.dyn.arrowPos.destination - 10, this.$store.getters.getText('adventureStoryF0P2Label2'),
-    'storyF0P2StarMap', cD.context
+    61.5, data.p2.dyn.arrowPos.earth - 10, appConst.getText('adventureStoryF0P2Label1'),
+    'storyF0P2StarMap', gameDyn.context
+  )
+  Helper.drawCanvasImage(
+    530, data.p2.dyn.arrowPos.destination, 'story_f0_red_arrow', gameConst.spriteDict, gameDyn.frameNo,
+    gameConst.spritesheet, gameDyn.context
+  )
+  Helper.drawCanvasText(
+    542.5, data.p2.dyn.arrowPos.destination - 10, appConst.getText('adventureStoryF0P2Label2'),
+    'storyF0P2StarMap', gameDyn.context
   )
 }
 
@@ -347,9 +365,9 @@ function p4Update () {
     if (data.p4.dyn.zoom > data.p4.con.maxZoom) {
       data.p4.dyn.zoom = data.p4.con.maxZoom
     }
-    p1Update.call(this, 1 - (data.p4.dyn.zoom * ((5 / 6) / data.p4.con.maxZoom)))
+    p1Update(1 - (data.p4.dyn.zoom * ((5 / 6) / data.p4.con.maxZoom)))
   } else {
-    this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
+    savestate.game.storyPart += 1
   }
 }
 
@@ -357,16 +375,14 @@ function p4Update () {
  * draws the phone and the extra screen while they zoom out, also shifting to the ceiling and back and into the phone again
  */
 function p4Draw () {
-  const cD = this.$store.state.canvasDict
-
   let zoom = data.p4.dyn.zoom * (2.5 / data.p4.con.maxZoom)
   let actualZoom = (3.5 - zoom)
-  let halfWidth = this.canvasWidth / 2
-  let halfHeight = this.canvasHeight / 2
+  let halfWidth = gameDyn.getCanvasWidth / 2
+  let halfHeight = gameDyn.getCanvasHeight / 2
 
-  Helper.drawCanvasRect(0, 0, this.canvasWidth, this.canvasHeight, 'storyF0P4Space', cD.context)
+  Helper.drawCanvasRect(0, 0, gameDyn.getCanvasWidth, gameDyn.getCanvasHeight, 'storyF0P4Space', gameDyn.context)
   for (let star of data.p4.dyn.stars) {
-    let spriteData = Helper.getSpriteData(star.spriteKey, cD)
+    let spriteData = Helper.getSpriteData(star.spriteKey, gameConst.spriteDict)
     let spriteZoom = ((star.x - 222) / 378)
 
     let distFromCenter = (star.startY - data.p4.con.referenceY) * spriteZoom * actualZoom
@@ -375,39 +391,49 @@ function p4Draw () {
     Helper.drawCanvasSmallImage(
       halfWidth + (star.x - halfWidth) * actualZoom - ((spriteData.spriteWidth * spriteZoom) / 2),
       data.p4.con.referenceY + distFromCenter - halfSpriteHeight + data.p4.dyn.shift.y,
-      spriteZoom * actualZoom, star.spriteKey, cD
+      spriteZoom * actualZoom, star.spriteKey, gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+      gameDyn.context
     )
   }
   Helper.drawCanvasSmallImage(
-    -(this.canvasWidth * ((61 / 24) - zoom * (61 / 60))) - ((10 - data.p4.dyn.shift.x) * actualZoom),
-    -(this.canvasHeight * ((961 / 120) - zoom * (961 / 300))) - ((661 - data.p4.dyn.shift.y) * actualZoom),
-    6 - zoom * 2, 'story_f0_smartphone', cD
+    -(gameDyn.getCanvasWidth * ((61 / 24) - zoom * (61 / 60))) - ((10 - data.p4.dyn.shift.x) * actualZoom),
+    -(gameDyn.getCanvasHeight * ((961 / 120) - zoom * (961 / 300))) - ((661 - data.p4.dyn.shift.y) * actualZoom),
+    6 - zoom * 2, 'story_f0_smartphone', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
   )
 
-  if (this.$store.state.canvasDict.storyPart < 8) {
-    p1Draw.call(this, 1 - (data.p4.dyn.zoom * ((5 / 6) / data.p4.con.maxZoom)), data.p4.dyn.shift.y)
+  if (savestate.game.storyPart < 8) {
+    p1Draw(1 - (data.p4.dyn.zoom * ((5 / 6) / data.p4.con.maxZoom)), data.p4.dyn.shift.y)
   } else {
     let videoZoom = 1 - (data.p4.dyn.zoom * ((5 / 6) / data.p4.con.maxZoom))
 
     Helper.drawCanvasSmallImage(
       halfWidth * (1 - videoZoom), halfHeight * (1 - videoZoom) + data.p4.dyn.shift.y, videoZoom,
-      'story_f0_video_start_background', cD
+      'story_f0_video_start_background', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
     )
     if (data.p4.dyn.pause < 30) {
       Helper.drawCanvasSmallImage(
         halfWidth - 50 * videoZoom, halfHeight - 50 * videoZoom + data.p4.dyn.shift.y, videoZoom,
-        'story_f0_video_start_button', cD
+        'story_f0_video_start_button', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
+      )
+    } else {
+      Helper.drawCanvasLine(
+        20, gameDyn.getCanvasHeight - 15, 'storyF0P10Bar', gameDyn.context, data.p4.dyn.fade,
+        gameDyn.getCanvasWidth - 20, gameDyn.getCanvasHeight - 15
+      )
+      Helper.drawCanvasCircle(
+        26, gameDyn.getCanvasHeight - 15, 6, 'storyF0P10Handle', gameDyn.context, data.p4.dyn.fade
       )
     }
 
     Helper.drawCanvasSmallImage(
-      -139 + data.p4.dyn.handShift, 300 - data.p4.dyn.handShift + data.p4.dyn.shift.y, 6 - zoom * 2, 'story_f0_hand', cD
+      -139 + data.p4.dyn.handShift, 300 - data.p4.dyn.handShift + data.p4.dyn.shift.y, 6 - zoom * 2, 'story_f0_hand',
+      gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
     )
     Helper.drawCanvasTextResizable(
       halfWidth * (1 - videoZoom) + 10 * videoZoom,
       halfHeight * (1 - videoZoom) + data.p4.dyn.shift.y + 10 * videoZoom - data.p4.dyn.textShift,
-      this.$store.getters.getText('adventureStoryF0P10Title'), 'storyF0P10VideoTitle', 14 * videoZoom,
-      cD.context
+      appConst.getText('adventureStoryF0P10Title'), 'storyF0P10VideoTitle', 14 * videoZoom,
+      gameDyn.context
     )
   }
 }
@@ -454,7 +480,7 @@ function p5Update () {
     data.p4.dyn.zoom = data.p4.con.maxZoom
   }
   p4addStars()
-  p1Update.call(this, 1 - (data.p4.dyn.zoom * ((5 / 6) / 300)))
+  p1Update(1 - (data.p4.dyn.zoom * ((5 / 6) / 300)))
   for (let star of data.p4.dyn.stars) {
     star.x -= 0.1
   }
@@ -485,10 +511,10 @@ function p6Update () {
     }
     data.p4.dyn.shake += 1
   } else {
-    this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
+    savestate.game.storyPart += 1
   }
 
-  p5Update.call(this)
+  p5Update()
 }
 
 /**
@@ -514,10 +540,12 @@ function p8Update () {
  * draw the phone and the extra screen zoomed out
  */
 function p8Draw () {
-  const cD = this.$store.state.canvasDict
   let zoom = (Math.sin(data.p8.dyn.picZoom / 750) + 1) / 2
 
-  Helper.drawCanvasSmallImage(-zoom * 40, -zoom * 20, 1 - ((1 - zoom) * (2 / 17)), 'story_f0_parents', cD)
+  Helper.drawCanvasSmallImage(
+    -zoom * 40, -zoom * 20, 1 - ((1 - zoom) * (2 / 17)), 'story_f0_parents', gameConst.spriteDict, gameDyn.frameNo,
+    gameConst.spritesheet, gameDyn.context
+  )
 }
 
 /**
@@ -554,8 +582,9 @@ function p10Update () {
     data.p4.dyn.pause += 1
   } else if (data.p4.dyn.textShift < 60) {
     data.p4.dyn.textShift += 1
+    data.p4.dyn.fade = Math.max((40 - data.p4.dyn.textShift) / 40, 0)
     if (data.p4.dyn.textShift === 60) {
-      this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
+      savestate.game.storyPart += 1
     }
   }
 }
@@ -569,24 +598,21 @@ function p11Update () {
   } else {
     data.p11.dyn.clock.hour = (data.p11.dyn.clock.hour - (data.p11.dyn.clock.multiplicator * 0.008)) % 360
     data.p11.dyn.clock.minute = (data.p11.dyn.clock.minute - (data.p11.dyn.clock.multiplicator * 0.1)) % 360
-    data.p11.dyn.clock.second = (data.p11.dyn.clock.second - (data.p11.dyn.clock.multiplicator * 6)) % 360
     if (data.p11.dyn.clock.years <= 24.5) {
       data.p11.dyn.clock.multiplicator *= 1.02
     } else if (data.p11.dyn.clock.multiplicator > 1) {
       if (!data.p11.dyn.clock.manipulated) {
         data.p11.dyn.clock.hour -= 113.5
         data.p11.dyn.clock.minute += 23.5
-        data.p11.dyn.clock.second -= 36
         data.p11.dyn.clock.manipulated = true
       }
       data.p11.dyn.clock.multiplicator /= 1.02
     } else {
       data.p11.dyn.clock.multiplicator = 0
-      data.p11.dyn.clock.hour = 180
-      data.p11.dyn.clock.minute = 180
-      data.p11.dyn.clock.second = 180
+      data.p11.dyn.clock.hour = 0
+      data.p11.dyn.clock.minute = 0
       data.p11.dyn.clock.years = 50
-      this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
+      savestate.game.storyPart += 1
     }
     data.p11.dyn.clock.years += data.p11.dyn.clock.multiplicator / 7000
   }
@@ -596,30 +622,48 @@ function p11Update () {
  * draws the clock and the text above
  */
 function p11Draw () {
-  const cD = this.$store.state.canvasDict
+  const clockData = Helper.getSpriteData('story_f0_video_clock', gameConst.spriteDict)
+  let clockX = (gameDyn.getCanvasWidth - clockData.spriteWidth) / 2
+  let clockY = (gameDyn.getCanvasHeight - clockData.spriteHeight) / 2 + 30
 
-  Helper.drawCanvasImage(0, 0, 'story_f0_video_clock_base', cD)
   Helper.drawCanvasImage(
-    this.canvasWidth / 2 - 5, 175, 'story_f0_video_clock_hour', cD, 12, 0, data.p11.dyn.clock.hour, 1
+    0, 0, 'story_f0_video_start_background', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+    gameDyn.context
   )
   Helper.drawCanvasImage(
-    this.canvasWidth / 2 - 4, 175, 'story_f0_video_clock_minute', cD, 12, 0, data.p11.dyn.clock.minute, 1
+    clockX, clockY, 'story_f0_video_clock', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+    gameDyn.context
+  )
+  Helper.drawCanvasText(
+    gameDyn.getCanvasWidth / 2, gameDyn.getCanvasHeight / 2 - 15, appConst.getText('adventureStoryF0P11ClockName'),
+    'storyF0P11ClockName', gameDyn.context
   )
   Helper.drawCanvasImage(
-    this.canvasWidth / 2 - 1, 175, 'story_f0_video_clock_second', cD, 12, 0, data.p11.dyn.clock.second, 1
+    clockX, clockY, 'story_f0_video_clock_hour', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+    gameDyn.context, 12, 0, data.p11.dyn.clock.hour, 0
   )
-  Helper.drawCanvasImage(this.canvasWidth / 2 - 5, 170, 'story_f0_video_clock_center', cD)
+  Helper.drawCanvasImage(
+    clockX, clockY, 'story_f0_video_clock_minute', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+    gameDyn.context, 12, 0, data.p11.dyn.clock.minute, 0
+  )
+  Helper.drawCanvasImage(
+    clockX, clockY, 'story_f0_video_clock_center', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+    gameDyn.context
+  )
+
+  Helper.drawCanvasRect(0, 25, gameDyn.getCanvasWidth, 40, 'storyF0P11Text', gameDyn.context)
+  Helper.drawCanvasRectBorder(-5, 25, gameDyn.getCanvasWidth + 10, 40, 'storyF0P11Text', gameDyn.context)
 
   if (data.p11.dyn.clock.years > 0.5) {
     Helper.drawCanvasText(
-      this.canvasWidth / 2, 40,
-      this.$store.getters.getText('adventureStoryF0P11Before', Math.floor(data.p11.dyn.clock.years)),
-      'storyF0P11VideoText', cD.context
+      gameDyn.getCanvasWidth / 2, 40,
+      appConst.getText('adventureStoryF0P11Before', Math.floor(data.p11.dyn.clock.years)),
+      'storyF0P11VideoText', gameDyn.context
     )
   } else {
     Helper.drawCanvasText(
-      this.canvasWidth / 2, 40, this.$store.getters.getText('adventureStoryF0P11Today'), 'storyF0P11VideoText',
-      cD.context
+      gameDyn.getCanvasWidth / 2, 40, appConst.getText('adventureStoryF0P11Today'), 'storyF0P11VideoText',
+      gameDyn.context
     )
   }
 }
@@ -629,9 +673,9 @@ function p11Draw () {
  */
 function p12Update () {
   if (data.p11.dyn.clock.years !== 50) {
-    data.p11.dyn.clock.hour = 180
-    data.p11.dyn.clock.minute = 180
-    data.p11.dyn.clock.second = 180
+    data.p11.dyn.clock.hour = 0
+    data.p11.dyn.clock.minute = 0
+    data.p11.dyn.clock.second = 0
     data.p11.dyn.clock.years = 50
     data.p11.dyn.pause = 30
   }
@@ -643,44 +687,83 @@ function p12Update () {
 function p13Update () {
   for (let car of data.p13.dyn.cars) {
     if (car.directionUp) {
-      car.x += 4
-      car.y -= 1
+      if (car.pos < 20) {
+        car.x -= 7.5
+        car.y -= 1.5
+      } else if (car.pos < 35) {
+        car.x -= 6.8
+        car.y -= 1.5
+      } else if (car.pos < 45) {
+        car.x -= 6
+        car.y -= 1.5
+      } else if (car.pos < 55) {
+        car.x -= 5
+        car.y -= 1.5
+      } else if (car.pos < 65) {
+        car.x -= 4
+        car.y -= 1.4
+      } else {
+        car.x -= 2.7
+        car.y -= 1
+      }
+      car.pos += 1
     } else {
-      car.x -= 4
-      car.y += 1
+      if (car.pos < 30) {
+        car.x += 3
+        car.y += 1.5
+      } else if (car.pos < 60) {
+        car.x += 3
+        car.y += 1.2
+      } else {
+        car.x += 4
+        car.y += 1.33
+      }
+      car.pos += 1
     }
   }
 
   data.p13.dyn.cars = data.p13.dyn.cars.filter(car =>
-    (car.directionUp && car.x < this.canvasWidth) || (!car.directionUp && car.y < this.canvasHeight)
+    (car.directionUp && car.x + car.width > 0) ||
+    (!car.directionUp && car.y < gameDyn.getCanvasHeight)
   )
 
   data.p13.dyn.newCarCountdown -= 1
 
   if (data.p13.dyn.newCarCountdown <= 0) {
-    if (Math.random() < 0.5) {
-      const spriteKeys = ['story_f0_woogle_truck']
-
-      let spriteData = Helper.getSpriteData(
-        spriteKeys[Math.floor(spriteKeys.length * Math.random())], this.$store.state.canvasDict
+    if (data.p13.dyn.nextDirectionUp) {
+      const spriteKeys = ['story_f0_woogle_car_r_1', 'story_f0_woogle_car_r_2', 'story_f0_woogle_car_r_3']
+      const spriteData = Helper.getSpriteData(
+        spriteKeys[Math.floor(spriteKeys.length * Math.random())], gameConst.spriteDict
       )
+
       data.p13.dyn.cars.push({
-        x: 180 - spriteData.spriteWidth,
-        y: 300,
+        pos: 0,
+        x: -spriteData.spriteWidth,
+        y: 190,
+        width: spriteData.spriteWidth,
+        height: spriteData.spriteHeight,
+        spriteKey: spriteData.key,
+        directionUp: false
+      })
+      data.p13.dyn.nextDirectionUp = false
+    } else {
+      const spriteKeys = ['story_f0_woogle_car_l_1', 'story_f0_woogle_car_l_2', 'story_f0_woogle_car_l_3']
+      const spriteData = Helper.getSpriteData(
+        spriteKeys[Math.floor(spriteKeys.length * Math.random())], gameConst.spriteDict
+      )
+
+      data.p13.dyn.cars.unshift({
+        pos: 0,
+        x: 400,
+        y: gameDyn.getCanvasHeight,
+        width: spriteData.spriteWidth,
+        height: spriteData.spriteHeight,
         spriteKey: spriteData.key,
         directionUp: true
       })
-    } else {
-      const spriteKeys = ['story_f0_woogle_car']
-
-      data.p13.dyn.cars.unshift({
-        x: 600,
-        y: 170,
-        spriteKey: spriteKeys[Math.floor(spriteKeys.length * Math.random())],
-        directionUp: false
-      })
+      data.p13.dyn.nextDirectionUp = true
     }
-    data.p13.dyn.newCarCountdown = Math.floor(60 * Math.random()) + 40
+    data.p13.dyn.newCarCountdown = Math.floor(90 * Math.random()) + 30
   }
 }
 
@@ -688,13 +771,28 @@ function p13Update () {
  * draw the woogle headquarters and driving cars
  */
 function p13Draw () {
-  const cD = this.$store.state.canvasDict
-
-  Helper.drawCanvasImage(0, 0, 'story_f0_woogle', cD)
+  Helper.drawCanvasImage(
+    0, 0, 'story_f0_woogle', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
+  )
 
   for (let car of data.p13.dyn.cars) {
-    Helper.drawCanvasImage(car.x, car.y, car.spriteKey, cD)
+    let zoom = 1
+    if (car.directionUp) {
+      zoom = 1.2 - ((car.pos / 48) * data.p13.con.zoomFactor)
+    } else {
+      zoom = 0.4 + ((car.pos / 65) * data.p13.con.zoomFactor)
+    }
+    const xShift = (car.width * (1 - zoom)) / 2
+    const yShift = (car.height * (1 - zoom)) / 2
+    Helper.drawCanvasSmallImage(
+      car.x + xShift, car.y + yShift, zoom, car.spriteKey, gameConst.spriteDict, gameDyn.frameNo,
+      gameConst.spritesheet, gameDyn.context
+    )
   }
+
+  Helper.drawCanvasImage(
+    0, 0, 'story_f0_woogle_foreground', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
+  )
 }
 
 /**
@@ -730,7 +828,7 @@ function p14Update () {
       data.p14.dyn.opacity.eye = 1
     }
   } else {
-    this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
+    savestate.game.storyPart += 1
   }
 
   if (data.p14.dyn.opacity.logo > 0) {
@@ -743,30 +841,34 @@ function p14Update () {
  * shows the ad of woogle chromander
  */
 function p14Draw () {
-  const cD = this.$store.state.canvasDict
-  const logoData = Helper.getSpriteData('story_f0_chromander', cD)
-  const eyeData = Helper.getSpriteData('story_f0_chromander_eye', cD)
+  const logoData = Helper.getSpriteData('story_f0_chromander', gameConst.spriteDict)
+  const eyeData = Helper.getSpriteData('story_f0_chromander_eye', gameConst.spriteDict)
 
-  Helper.drawCanvasImage(0, 0, 'story_f0_video_start_background', cD)
-  Helper.drawCanvasText(
-    this.canvasWidth / 2, this.canvasHeight / 2, this.$store.getters.getText('adventureStoryF0P14NowNew'),
-    'storyF0P11VideoText', cD.context, data.p14.dyn.opacity.nowNew
+  Helper.drawCanvasImage(
+    0, 0, 'story_f0_video_start_background', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+    gameDyn.context
   )
   Helper.drawCanvasText(
-    this.canvasWidth / 2, 50, this.$store.getters.getText('adventureStoryF0P14Headline'), 'storyF0P11VideoText',
-    cD.context, data.p14.dyn.opacity.headline
+    gameDyn.getCanvasWidth / 2, gameDyn.getCanvasHeight / 2, appConst.getText('adventureStoryF0P14NowNew'),
+    'storyF0P11VideoText', gameDyn.context, data.p14.dyn.opacity.nowNew
+  )
+  Helper.drawCanvasText(
+    gameDyn.getCanvasWidth / 2, 50, appConst.getText('adventureStoryF0P14Headline'), 'storyF0P11VideoText',
+    gameDyn.context, data.p14.dyn.opacity.headline
   )
   Helper.drawCanvasImage(
-    this.canvasWidth / 2 - eyeData.spriteWidth / 2, this.canvasHeight / 2 - eyeData.spriteHeight / 2,
-    'story_f0_chromander_eye', cD, 12, 0, 0, 0, data.p14.dyn.opacity.eye
+    gameDyn.getCanvasWidth / 2 - eyeData.spriteWidth / 2, gameDyn.getCanvasHeight / 2 - eyeData.spriteHeight / 2,
+    'story_f0_chromander_eye', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context,
+    12, 0, 0, 0, data.p14.dyn.opacity.eye
   )
   Helper.drawCanvasImage(
-    this.canvasWidth / 2 - logoData.spriteWidth / 2, this.canvasHeight / 2 - logoData.spriteHeight / 2,
-    'story_f0_chromander', cD, 12, 0, data.p14.dyn.logoRotation, 0, data.p14.dyn.opacity.logo
+    gameDyn.getCanvasWidth / 2 - logoData.spriteWidth / 2, gameDyn.getCanvasHeight / 2 - logoData.spriteHeight / 2,
+    'story_f0_chromander', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context,
+    12, 0, data.p14.dyn.logoRotation, 0, data.p14.dyn.opacity.logo
   )
   Helper.drawCanvasText(
-    this.canvasWidth / 2, 250, this.$store.getters.getText('adventureStoryF0P14BottomText'), 'storyF0P11VideoText',
-    cD.context, data.p14.dyn.opacity.bottomText
+    gameDyn.getCanvasWidth / 2, 250, appConst.getText('adventureStoryF0P14BottomText'), 'storyF0P11VideoText',
+    gameDyn.context, data.p14.dyn.opacity.bottomText
   )
 }
 
@@ -816,16 +918,21 @@ function p16Update () {
  * draws two parks, one will be faded out and a grey one
  */
 function p16Draw () {
-  const cD = this.$store.state.canvasDict
-
   Helper.drawCanvasImage(
-    150 + data.p16.dyn.shift, 0, 'story_f0_park_chrome', cD, 12, 0, 0, 0, data.p16.dyn.opacity
+    150 + data.p16.dyn.shift, 0, 'story_f0_park_chrome', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+    gameDyn.context, 12, 0, 0, 0, data.p16.dyn.opacity
   )
-  Helper.drawCanvasImage(150 + data.p16.dyn.shift, 0, 'story_f0_park', cD, 12, 0, 0, 0, 1 - data.p16.dyn.opacity)
-  Helper.drawCanvasImage(150 - data.p16.dyn.shift, 0, 'story_f0_park', cD)
+  Helper.drawCanvasImage(
+    150 + data.p16.dyn.shift, 0, 'story_f0_park', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+    gameDyn.context, 12, 0, 0, 0, 1 - data.p16.dyn.opacity
+  )
+  Helper.drawCanvasImage(
+    150 - data.p16.dyn.shift, 0, 'story_f0_park', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+    gameDyn.context
+  )
 
   if (data.p16.dyn.shift === 150) {
-    Helper.drawCanvasLine(300, 0, 'standard', cD.context, 300, 300)
+    Helper.drawCanvasLine(300, 0, 'standard', gameDyn.context, 1, 300, 300)
   }
 }
 
@@ -833,7 +940,7 @@ function p16Draw () {
  * updates the crane and the roller on the construction site
  */
 function p17Update () {
-  let frames = this.$store.state.canvasDict.frameNo - data.p17.dyn.roller.startFrame
+  let frames = gameDyn.frameNo - data.p17.dyn.roller.startFrame
   let xDist = data.p17.con.tree.end.x - data.p17.con.tree.start.x
   let yDist = data.p17.con.tree.end.y - data.p17.con.tree.start.y
 
@@ -843,7 +950,7 @@ function p17Update () {
     data.p17.dyn.roller.pause += 1
   } else {
     data.p17.dyn.roller.pause = 0
-    data.p17.dyn.roller.startFrame = this.$store.state.canvasDict.frameNo
+    data.p17.dyn.roller.startFrame = gameDyn.frameNo
   }
 
   if (data.p17.dyn.crane.shift < xDist && data.p17.dyn.crane.pause === 0) {
@@ -908,20 +1015,24 @@ function p17Update () {
  * draws the construction site with a crane, a tree and a roller
  */
 function p17Draw () {
-  const cD = this.$store.state.canvasDict
-
-  Helper.drawCanvasImage(0, 0, 'story_f0_construction_site', cD)
   Helper.drawCanvasImage(
-    0 + data.p17.dyn.roller.shift, 150 + Math.sin(this.$store.state.canvasDict.frameNo) * 0.6,
-    'story_f0_construction_site_roller', cD
+    0, 0, 'story_f0_construction_site', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
+  )
+  Helper.drawCanvasImage(
+    0 + data.p17.dyn.roller.shift, 150 + Math.sin(gameDyn.frameNo) * 0.6, 'story_f0_construction_site_roller',
+    gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
   )
   Helper.drawCanvasLine(
-    123 + data.p17.dyn.crane.shift, 40, 'thick', cD.context,
+    123 + data.p17.dyn.crane.shift, 40, 'thick', gameDyn.context, 1,
     123 + data.p17.dyn.crane.shift, 70 + data.p17.dyn.crane.rope
   )
-  Helper.drawCanvasImage(0, 20, 'story_f0_construction_site_crane', cD)
   Helper.drawCanvasImage(
-    100 + data.p17.dyn.tree.x, 60 + data.p17.dyn.tree.y, 'story_f0_construction_site_tree', cD
+    0, 20, 'story_f0_construction_site_crane', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+    gameDyn.context
+  )
+  Helper.drawCanvasImage(
+    100 + data.p17.dyn.tree.x, 60 + data.p17.dyn.tree.y, 'story_f0_construction_site_tree', gameConst.spriteDict,
+    gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
   )
 }
 
@@ -941,23 +1052,28 @@ function p18Update () {
  * draws the diagram of the difference between inside explorer and woogle chromander
  */
 function p18Draw () {
-  const cD = this.$store.state.canvasDict
+  let logo1Data = Helper.getSpriteData('story_f0_inside_explorer', gameConst.spriteDict)
+  let logo2Data = Helper.getSpriteData('story_f0_chromander', gameConst.spriteDict)
 
-  let logo1Data = Helper.getSpriteData('story_f0_inside_explorer', cD)
-  let logo2Data = Helper.getSpriteData('story_f0_chromander', cD)
-
-  Helper.drawCanvasImage(0, 0, 'story_f0_video_start_background', cD)
   Helper.drawCanvasImage(
-    150 - logo1Data.spriteWidth / 2, 60 * data.p18.dyn.factor + 75, logo1Data.key, cD
-  )
-  Helper.drawCanvasRect(
-    100, 180 + 60 * data.p18.dyn.factor, 100, 60 + 60 * (1 - data.p18.dyn.factor), 'storyF0P18InsideExplorer', cD.context
+    0, 0, 'story_f0_video_start_background', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+    gameDyn.context
   )
   Helper.drawCanvasImage(
-    450 - logo2Data.spriteWidth / 2, 195 * (1 - data.p18.dyn.factor), logo2Data.key, cD
+    150 - logo1Data.spriteWidth / 2, 60 * data.p18.dyn.factor + 75, logo1Data.key, gameConst.spriteDict,
+    gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
   )
   Helper.drawCanvasRect(
-    400, 105 + 195 * (1 - data.p18.dyn.factor), 100, 195 * data.p18.dyn.factor, 'storyF0P18Chromander', cD.context
+    100, 180 + 60 * data.p18.dyn.factor, 100, 60 + 60 * (1 - data.p18.dyn.factor), 'storyF0P18InsideExplorer',
+    gameDyn.context
+  )
+  Helper.drawCanvasImage(
+    450 - logo2Data.spriteWidth / 2, 195 * (1 - data.p18.dyn.factor), logo2Data.key, gameConst.spriteDict,
+    gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
+  )
+  Helper.drawCanvasRect(
+    400, 105 + 195 * (1 - data.p18.dyn.factor), 100, 195 * data.p18.dyn.factor, 'storyF0P18Chromander',
+    gameDyn.context
   )
 }
 
@@ -970,11 +1086,12 @@ function p19Update () {}
  * draws chromeleon at the entrance of the chrome park
  */
 function p19Draw () {
-  const cD = this.$store.state.canvasDict
-
-  Helper.drawCanvasImage(0, 0, 'story_f0_entry_chromeleon', cD)
+  Helper.drawCanvasImage(
+    0, 0, 'story_f0_entry_chromeleon', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
+  )
   Helper.drawCanvasTextRound(
-    300, 800, 0, 755, this.$store.getters.getText('adventureStoryF0P19Sign'), 'storyF0P19Sign', cD, 1, 30
+    300, 800, 0, 755, appConst.getText('adventureStoryF0P19Sign'), 'storyF0P19Sign', gameDyn.frameNo,
+    gameDyn.context, 1, 30
   )
 }
 
@@ -1008,7 +1125,7 @@ function p20Update () {
   for (let p of data.p20.dyn.people) {
     if (p.ltr) {
       p.x += p.speed
-      if (p.x > this.canvasWidth + 10) {
+      if (p.x > gameDyn.getCanvasWidth + 10) {
         deletePeople.push(p)
       }
     } else {
@@ -1026,13 +1143,17 @@ function p20Update () {
  * draws the strange picture that chromeleon drew
  */
 function p20Draw () {
-  const cD = this.$store.state.canvasDict
-  const spriteData = Helper.getSpriteData('story_f0_weird_pic_man', cD)
+  const spriteData = Helper.getSpriteData('story_f0_weird_pic_man', gameConst.spriteDict)
 
-  Helper.drawCanvasImage(0, 0, 'story_f0_picture', cD)
+  Helper.drawCanvasImage(
+    0, 0, 'story_f0_picture', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
+  )
 
   for (let p of data.p20.dyn.people) {
-    Helper.drawCanvasImage(p.x, p.y - spriteData.spriteHeight, spriteData.key, cD)
+    Helper.drawCanvasImage(
+      p.x, p.y - spriteData.spriteHeight, spriteData.key, gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet,
+      gameDyn.context
+    )
   }
 }
 
@@ -1047,7 +1168,7 @@ function p21Update () {
  * draws the villa with chromeleon and the rich guy
  */
 function p21Draw () {
-  const cD = this.$store.state.canvasDict
-
-  Helper.drawCanvasImage(0, 0, 'story_f0_house_of_rich', cD)
+  Helper.drawCanvasImage(
+    0, 0, 'story_f0_house_of_rich', gameConst.spriteDict, gameDyn.frameNo, gameConst.spritesheet, gameDyn.context
+  )
 }

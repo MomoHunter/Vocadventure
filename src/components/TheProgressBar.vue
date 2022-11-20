@@ -1,5 +1,5 @@
 <template>
-  <div class="progress relative" :class="[getSizeClass('general'), color]">
+  <div class="progress relative" :class="[getSizeClass('general'), props.color]">
     <div class="background width-full"></div>
     <div class="foreground absolute" :style="{ width: percentage + '%' }"></div>
     <div class="text absolute height-full width-full text-center">
@@ -8,34 +8,35 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'TheProgressBar',
-  props: {
-    color: String,
-    value: Number,
-    maxValue: Number,
-    text: {
-      type: String,
-      default: ''
-    }
-  },
-  computed: {
-    percentage () {
-      return this.value / this.maxValue * 100
-    },
-    progressText () {
-      if (this.text === '') {
-        return this.value.toLocaleString() + ' / ' + this.maxValue.toLocaleString()
-      }
-      return this.text
-    }
-  },
-  methods: {
-    getSizeClass (type) {
-      return this.$store.getters.getSizeClass(type)
-    }
+<script setup>
+import { computed } from 'vue'
+
+import { useAppConstStore } from '@/stores/appconst'
+
+const appConst = useAppConstStore()
+const props = defineProps({
+  color: String,
+  value: Number,
+  maxValue: Number,
+  text: {
+    type: String,
+    default: ''
   }
+})
+
+const percentage = computed(() => {
+  return Math.min(props.value, props.maxValue) / props.maxValue * 100
+})
+
+const progressText = computed(() => {
+  if (props.text === '') {
+    return `${props.value.toLocaleString()} / ${props.maxValue.toLocaleString()}`
+  }
+  return props.text
+})
+
+function getSizeClass (type) {
+  return appConst.getSizeClass(type)
 }
 </script>
 

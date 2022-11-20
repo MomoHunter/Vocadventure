@@ -1,54 +1,102 @@
 @charset "utf-8";
 
+/*
+Sizes:
+small: 80%
+normal: 100%
+large: 140%
+giga: 200%
+*/
+
+$sizes: 0.8 1 1.4 2;
+$size-classes: is-small is-normal is-large is-giga;
+
+$distances: 100% 200% 300% 400% 500%;
+$dist-names: 1 2 3 4 5;
+
+$times: 100ms 200ms 300ms 350ms 400ms 500ms 700ms 800ms 1s 5s;
+
 .delay {
-  &-c-100ms {
-    animation-delay: 100ms;
-  }
-
-  &-c-350ms {
-    animation-delay: 350ms;
-  }
-
-  &-c-400ms {
-    animation-delay: 400ms;
-  }
-
-  &-c-500ms {
-    animation-delay: 500ms;
-  }
-
-  &-c-700ms {
-    animation-delay: 700ms;
-  }
-
-  &-c-800ms {
-    animation-delay: 800ms;
+  &-c- {
+    @for $i from 1 through length($times) {
+      &#{nth($times, $i)} {
+        animation-delay: nth($times, $i);
+      }
+    }
   }
 }
 
 .duration {
-  &-c-100ms {
-    animation-duration: 100ms;
+  &-c- {
+    @for $i from 1 through length($times) {
+      &#{nth($times, $i)} {
+        animation-duration: nth($times, $i);
+      }
+    }
+  }
+}
+
+.tr-origin {
+  &-top {
+    transform-origin: top;
+
+    &-left {
+      transform-origin: top left;
+    }
+
+    &-right {
+      transform-origin: top right;
+    }
   }
 
-  &-c-200ms {
-    animation-duration: 200ms;
+  &-bottom {
+    transform-origin: bottom;
+
+    &-left {
+      transform-origin: bottom left;
+    }
+
+    &-right {
+      transform-origin: bottom right;
+    }
+  }
+}
+
+.fill-mode- {
+  &forwards {
+    animation-fill-mode: forwards;
   }
 
-  &-c-350ms {
-    animation-duration: 350ms;
+  &backwards {
+    animation-fill-mode: backwards;
+  }
+}
+
+.tr- {
+  &p- {
+    &1 {
+      transition-property: height, top;
+    }
+  
+    &2 {
+      transition-property: margin-top, margin-bottom;
+    }
+
+    &3 {
+      transition-property: top;
+    }
+
+    &4 {
+      transition-property: height;
+    }
   }
 
-  &-c-400ms {
-    animation-duration: 400ms;
-  }
-
-  &-c-500ms {
-    animation-duration: 500ms;
-  }
-
-  &-c-700ms {
-    animation-duration: 700ms;
+  &d- {
+    @for $i from 1 through length($times) {
+      &#{nth($times, $i)} {
+        transition-duration: nth($times, $i);
+      }
+    }
   }
 }
 
@@ -170,4 +218,156 @@
 
 .slide-out-right-custom {
   animation-name: slideOutRightCustom;
+}
+
+@keyframes grow-all {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: 100%;
+  }
+}
+
+.grow {
+  &.all {
+    animation-name: grow-all;
+  }
+}
+
+@keyframes shrink-all {
+  from {
+    height: 100%;
+  }
+
+  to {
+    height: 0;
+  }
+}
+
+.shrink {
+  &.all {
+    animation-name: shrink-all;
+  }
+}
+
+@keyframes rotate-half-ccw {
+  from {
+    transform: rotate(180deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.rotate-half-ccw {
+  animation-name: rotate-half-ccw;
+}
+
+@keyframes rotate-half-cw {
+  from {
+    transform: rotate(-180deg);
+  }
+
+  to {
+    transform: rotate(0);
+  }
+}
+
+.rotate-half-cw {
+  animation-name: rotate-half-cw;
+}
+
+@for $i from 1 through length($sizes) {
+  @keyframes grow-#{nth($size-classes, $i)} {
+    from {
+      height: 0;
+    }
+
+    to {
+      height: calc(#{2.5rem * nth($sizes, $i)} + 3px);
+    }
+  }
+
+  .grow {
+    &.#{nth($size-classes, $i)}:not(.all) {
+      animation-name: grow-#{nth($size-classes, $i)};
+    }
+  }
+
+  @keyframes shrink-#{nth($size-classes, $i)} {
+    from {
+      height: calc(#{2.5rem * nth($sizes, $i)} + 3px);
+    }
+
+    to {
+      height: 0;
+    }
+  }
+
+  .shrink {
+    &.#{nth($size-classes, $i)}:not(.all) {
+      animation-name: shrink-#{nth($size-classes, $i)};
+    }
+  }
+}
+
+@for $i from 1 through length($distances) {
+  @keyframes slide-c-right-o-#{nth($dist-names, $i)} {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(#{nth($distances, $i)}, 0, 0);
+    }
+  }
+
+  @keyframes slide-c-left-o-#{nth($dist-names, $i)} {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(-#{nth($distances, $i)}, 0, 0);
+    }
+  }
+
+  @keyframes slide-c-right-i-#{nth($dist-names, $i)} {
+    from {
+      transform: translate3d(-#{nth($distances, $i)}, 0, 0);
+    }
+
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes slide-c-left-i-#{nth($dist-names, $i)} {
+    from {
+      transform: translate3d(#{nth($distances, $i)}, 0, 0);
+    }
+      
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .slide-c-right-o-#{nth($dist-names, $i)} {
+    animation-name: slide-c-right-o-#{nth($dist-names, $i)};
+  }
+
+  .slide-c-left-o-#{nth($dist-names, $i)} {
+    animation-name: slide-c-left-o-#{nth($dist-names, $i)};
+  }
+
+  .slide-c-right-i-#{nth($dist-names, $i)} {
+    animation-name: slide-c-right-i-#{nth($dist-names, $i)};
+  }
+
+  .slide-c-left-i-#{nth($dist-names, $i)} {
+    animation-name: slide-c-left-i-#{nth($dist-names, $i)};
+  }
 }
