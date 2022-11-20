@@ -23,10 +23,11 @@ export function drawCanvasRect (x, y, width, height, styleKey, context) {
  * @param {number} height
  * @param {string} styleKey defines the appearance of the rectangle
  * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
+ * @param {number} opacity sets the opacity of the line
  */
-export function drawCanvasRectBorder (x, y, width, height, styleKey, context) {
+export function drawCanvasRectBorder (x, y, width, height, styleKey, context, opacity = 1) {
   let style = Styles.border[styleKey]
-  context.strokeStyle = `rgba(${style.borderColor})`
+  context.strokeStyle = `rgba(${style.borderColor}, ${opacity})`
   context.lineWidth = style.borderSize
   context.setLineDash(style.lineDash)
   context.strokeRect(x, y, width, height)
@@ -38,11 +39,12 @@ export function drawCanvasRectBorder (x, y, width, height, styleKey, context) {
  * @param {number} startY y-coordinate of the start point
  * @param {string} styleKey defines the appearance of the rectangle
  * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
+ * @param {number} opacity sets the opacity of the line
  * @param {Array<number>} points an array of points where the line should go through
  */
-export function drawCanvasLine (startX, startY, styleKey, context, ...points) {
+export function drawCanvasLine (startX, startY, styleKey, context, opacity, ...points) {
   let design = Styles.border[styleKey]
-  context.strokeStyle = `rgba(${design.borderColor})`
+  context.strokeStyle = `rgba(${design.borderColor}, ${opacity})`
   context.lineWidth = design.borderSize
   context.lineCap = design.borderCap
   context.setLineDash(design.lineDash)
@@ -483,10 +485,11 @@ export function clipCanvasCircle (centerX, centerY, radius, context) {
  * @param {number} radius radius of the circle
  * @param {string} styleKey defines the appearance of the circle
  * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
+ * @param {number} opacity defines the opacity of the circle
  */
-export function drawCanvasCircle (centerX, centerY, radius, styleKey, context) {
+export function drawCanvasCircle (centerX, centerY, radius, styleKey, context, opacity = 1) {
   let design = Styles.rect[styleKey]
-  context.fillStyle = `rgba(${design.backgroundColor})`
+  context.fillStyle = `rgba(${design.backgroundColor}, ${opacity})`
   context.beginPath()
   context.arc(centerX, centerY, radius, 0, Math.PI * 2)
   context.fill()

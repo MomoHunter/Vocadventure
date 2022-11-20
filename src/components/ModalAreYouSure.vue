@@ -22,7 +22,7 @@ export default {
       this.$store.getters.getSizeClass(type)
     },
     deleteData () {
-      window.localStorage.removeItem('globalDict')
+      // window.localStorage.removeItem('globalDict')
       this.$router.push({ name: 'menu' })
       location.reload()
     }

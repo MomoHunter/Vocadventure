@@ -253,8 +253,8 @@ export default {
             pos = { x: 0, y: 0 }
         }
         Helper.drawCanvasLine(
-          this.lastPoint.x, this.lastPoint.y, this.$store.state.theme + 'Font' + this.$store.state.size, this.context,
-          pos.x, pos.y
+          this.lastPoint.x, this.lastPoint.y, this.$store.state.theme + 'Font' + this.$store.state.size,
+          this.context, 1, pos.x, pos.y
         )
 
         this.lastPoint = pos

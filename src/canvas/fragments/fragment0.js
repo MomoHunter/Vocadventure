@@ -86,6 +86,7 @@ let data = {
       },
       shake: 0,
       textShift: 0,
+      fade: 1,
       handShift: 0,
       pause: 0
     }
@@ -100,9 +101,8 @@ let data = {
       pause: 0,
       clock: {
         multiplicator: 1,
-        hour: 180,
-        minute: 180,
-        second: 180,
+        hour: 0,
+        minute: 0,
         years: 0,
         manipulated: false
       }
@@ -398,6 +398,14 @@ function p4Draw () {
         halfWidth - 50 * videoZoom, halfHeight - 50 * videoZoom + data.p4.dyn.shift.y, videoZoom,
         'story_f0_video_start_button', cD
       )
+    } else {
+      Helper.drawCanvasLine(
+        20, this.canvasHeight - 15, 'storyF0P10Bar', cD.context, data.p4.dyn.fade, this.canvasWidth - 20,
+        this.canvasHeight - 15
+      )
+      Helper.drawCanvasCircle(
+        26, this.canvasHeight - 15, 6, 'storyF0P10Handle', cD.context, data.p4.dyn.fade
+      )
     }
 
     Helper.drawCanvasSmallImage(
@@ -554,6 +562,7 @@ function p10Update () {
     data.p4.dyn.pause += 1
   } else if (data.p4.dyn.textShift < 60) {
     data.p4.dyn.textShift += 1
+    data.p4.dyn.fade = Math.max((40 - data.p4.dyn.textShift) / 40, 0)
     if (data.p4.dyn.textShift === 60) {
       this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
     }
@@ -569,22 +578,19 @@ function p11Update () {
   } else {
     data.p11.dyn.clock.hour = (data.p11.dyn.clock.hour - (data.p11.dyn.clock.multiplicator * 0.008)) % 360
     data.p11.dyn.clock.minute = (data.p11.dyn.clock.minute - (data.p11.dyn.clock.multiplicator * 0.1)) % 360
-    data.p11.dyn.clock.second = (data.p11.dyn.clock.second - (data.p11.dyn.clock.multiplicator * 6)) % 360
     if (data.p11.dyn.clock.years <= 24.5) {
       data.p11.dyn.clock.multiplicator *= 1.02
     } else if (data.p11.dyn.clock.multiplicator > 1) {
       if (!data.p11.dyn.clock.manipulated) {
         data.p11.dyn.clock.hour -= 113.5
         data.p11.dyn.clock.minute += 23.5
-        data.p11.dyn.clock.second -= 36
         data.p11.dyn.clock.manipulated = true
       }
       data.p11.dyn.clock.multiplicator /= 1.02
     } else {
       data.p11.dyn.clock.multiplicator = 0
-      data.p11.dyn.clock.hour = 180
-      data.p11.dyn.clock.minute = 180
-      data.p11.dyn.clock.second = 180
+      data.p11.dyn.clock.hour = 0
+      data.p11.dyn.clock.minute = 0
       data.p11.dyn.clock.years = 50
       this.$store.commit('canvasDict/setStoryPart', this.$store.state.canvasDict.storyPart + 1)
     }
@@ -597,18 +603,26 @@ function p11Update () {
  */
 function p11Draw () {
   const cD = this.$store.state.canvasDict
+  const clockData = Helper.getSpriteData('story_f0_video_clock', cD)
+  let clockX = (this.canvasWidth - clockData.spriteWidth) / 2
+  let clockY = (this.canvasHeight - clockData.spriteHeight) / 2 + 30
 
-  Helper.drawCanvasImage(0, 0, 'story_f0_video_clock_base', cD)
-  Helper.drawCanvasImage(
-    this.canvasWidth / 2 - 5, 175, 'story_f0_video_clock_hour', cD, 12, 0, data.p11.dyn.clock.hour, 1
+  Helper.drawCanvasImage(0, 0, 'story_f0_video_start_background', cD)
+  Helper.drawCanvasImage(clockX, clockY, 'story_f0_video_clock', cD)
+  Helper.drawCanvasText(
+    this.canvasWidth / 2, this.canvasHeight / 2 - 15, this.$store.getters.getText('adventureStoryF0P11ClockName'),
+    'storyF0P11ClockName', cD.context
   )
   Helper.drawCanvasImage(
-    this.canvasWidth / 2 - 4, 175, 'story_f0_video_clock_minute', cD, 12, 0, data.p11.dyn.clock.minute, 1
+    clockX, clockY, 'story_f0_video_clock_hour', cD, 12, 0, data.p11.dyn.clock.hour, 0
   )
   Helper.drawCanvasImage(
-    this.canvasWidth / 2 - 1, 175, 'story_f0_video_clock_second', cD, 12, 0, data.p11.dyn.clock.second, 1
+    clockX, clockY, 'story_f0_video_clock_minute', cD, 12, 0, data.p11.dyn.clock.minute, 0
   )
-  Helper.drawCanvasImage(this.canvasWidth / 2 - 5, 170, 'story_f0_video_clock_center', cD)
+  Helper.drawCanvasImage(clockX, clockY, 'story_f0_video_clock_center', cD)
+
+  Helper.drawCanvasRect(0, 25, this.canvasWidth, 40, 'storyF0P11Text', cD.context)
+  Helper.drawCanvasRectBorder(-5, 25, this.canvasWidth + 10, 40, 'storyF0P11Text', cD.context)
 
   if (data.p11.dyn.clock.years > 0.5) {
     Helper.drawCanvasText(
@@ -629,9 +643,9 @@ function p11Draw () {
  */
 function p12Update () {
   if (data.p11.dyn.clock.years !== 50) {
-    data.p11.dyn.clock.hour = 180
-    data.p11.dyn.clock.minute = 180
-    data.p11.dyn.clock.second = 180
+    data.p11.dyn.clock.hour = 0
+    data.p11.dyn.clock.minute = 0
+    data.p11.dyn.clock.second = 0
     data.p11.dyn.clock.years = 50
     data.p11.dyn.pause = 30
   }
@@ -825,7 +839,7 @@ function p16Draw () {
   Helper.drawCanvasImage(150 - data.p16.dyn.shift, 0, 'story_f0_park', cD)
 
   if (data.p16.dyn.shift === 150) {
-    Helper.drawCanvasLine(300, 0, 'standard', cD.context, 300, 300)
+    Helper.drawCanvasLine(300, 0, 'standard', cD.context, 1, 300, 300)
   }
 }
 
@@ -916,7 +930,7 @@ function p17Draw () {
     'story_f0_construction_site_roller', cD
   )
   Helper.drawCanvasLine(
-    123 + data.p17.dyn.crane.shift, 40, 'thick', cD.context,
+    123 + data.p17.dyn.crane.shift, 40, 'thick', cD.context, 1,
     123 + data.p17.dyn.crane.shift, 70 + data.p17.dyn.crane.rope
   )
   Helper.drawCanvasImage(0, 20, 'story_f0_construction_site_crane', cD)
