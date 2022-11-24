@@ -532,3 +532,20 @@ export function drawCanvasCircle (centerX, centerY, radius, styleKey, context, o
   context.arc(centerX, centerY, radius, 0, Math.PI * 2)
   context.fill()
 }
+
+/**
+ * Draws a circle onto the used Canvas, using custom designs.
+ * @param {number} centerX x-center of the circle
+ * @param {number} centerY y-center of the circle
+ * @param {number} radius radius of the circle
+ * @param {string} color defines the color of the circle
+ * @param {CanvasRenderingContext2D} context the context of the canvas (canvas.getContext('2d'))
+ * @param {number} opacity defines the opacity of the circle
+ */
+export function drawCanvasCircleCustom (centerX, centerY, radius, color, context, opacity = 1) {
+  context.fillStyle = `rgba(${color}, ${opacity})`
+  context.beginPath()
+  context.arc(centerX, centerY, radius, 0, Math.PI * 2)
+  context.fill()
+}
+

@@ -353,16 +353,47 @@ function endDraw (event, type) {
   canvasSettings.touchIdentifier = null
 
   const strokeIndex = animationData.currentStroke - 1
+
+  canvasSettings.lines[strokeIndex] = canvasSettings.lines[strokeIndex].filter((_, index) => index % 4 === 0)
+
   const svgStrokeLength = getLineLength('svg', strokeIndex)
   const drawStrokeLength = getLineLength('draw', strokeIndex)
+
+  if (Math.abs((drawStrokeLength / canvasSettings.scaleFactor) - svgStrokeLength) > svgStrokeLength * 0.1) {
+    canvasSettings.lines.pop()
+    redrawCanvas()
+    wrongStrokeAnimation()
+    console.log('length is too far apart', Math.abs((drawStrokeLength / canvasSettings.scaleFactor) - svgStrokeLength), svgStrokeLength * 0.1)
+    return
+  }
   
   const points = getPoints(strokeIndex, drawStrokeLength)
   const pointDiff = Math.abs(points.drawPoints.length - points.svgPoints.length)
+
+  console.log(points.drawPoints.length, points.svgPoints)
+
+  for (let i = 0; i < Math.max(points.drawPoints.length, points.svgPoints.length); i++) {
+    if (i < points.drawPoints.length) {
+      const point = points.drawPoints[i]
+      Helper.drawCanvasCircleCustom(
+        point.x, point.y, 3,
+        '0, 255, 0', canvasSettings.context
+      )
+    }
+    if (i < points.svgPoints.length) {
+      const point = points.svgPoints[i]
+      Helper.drawCanvasCircleCustom(
+        point.x * canvasSettings.scaleFactor, point.y * canvasSettings.scaleFactor, 3,
+        '255, 0, 0', canvasSettings.context
+      )
+    }
+  }
 
   if (Math.max(points.svgPoints.length * 0.2, 2) < pointDiff) {
     canvasSettings.lines.pop()
     redrawCanvas()
     wrongStrokeAnimation()
+    console.log('point amount too far apart', pointDiff)
     return
   }
 
@@ -382,10 +413,13 @@ function endDraw (event, type) {
     data.dist += distance
   }
 
+  console.log(canvasSettings.scaleFactor)
+
   if (data.dist > data.distances.length * 4) {
     canvasSettings.lines.pop()
     redrawCanvas()
     wrongStrokeAnimation()
+    console.log('overall distance is too far apart', data.dist, data.distances.length * 4)
     return
   }
   
@@ -395,6 +429,7 @@ function endDraw (event, type) {
       canvasSettings.lines.pop()
       redrawCanvas()
       wrongStrokeAnimation()
+      console.log('distance is too far away from the average or distance is too far away', Math.abs(distance - data.avgDist), distance)
       return
     }
   }
@@ -407,7 +442,7 @@ function endDraw (event, type) {
 }
 
 function redrawCanvas () {
-  canvasSettings.context.clearRect(0, 0, kanaCanvas.value.width, kanaCanvas.value.height)
+  // canvasSettings.context.clearRect(0, 0, kanaCanvas.value.width, kanaCanvas.value.height)
   for (const line of canvasSettings.lines) {
     const startPoint = line[0]
     let lineTail = line.slice(1).filter((_, index) => index % 4 === 0)
@@ -443,30 +478,29 @@ function getLineLength (type, index) {
 }
 
 function getPoints (index, drawStrokeLength, pointDist = 4) {
-  let svgPoints = []
   let drawPoints = []
+  let svgPoints = []
   let strokeLength = 0
   let strokeIndex = 0
   let strokeCopy = kanaSvgPaths.value[index].clone()
   strokeCopy = strokeCopy.transform(canvasSettings.scaleMatrix.toTransformString())
-  for (let len = 0; len <= Math.max(strokeCopy.getTotalLength(), drawStrokeLength / canvasSettings.scaleFactor); len += pointDist) {
-    if (len <= strokeCopy.getTotalLength()) {
-      svgPoints.push(strokeCopy.getPointAtLength(len))
-    }
-    while (strokeLength < len * canvasSettings.scaleFactor &&
-           strokeIndex < canvasSettings.lines[index].length - 1) {
+  for (let len = 0; len <= drawStrokeLength; len += pointDist * canvasSettings.scaleFactor) {
+    // if (len <= strokeCopy.getTotalLength()) {
+    //   svgPoints.push(strokeCopy.getPointAtLength(len))
+    // }
+    while (strokeLength < len && strokeIndex < canvasSettings.lines[index].length - 1) {
       const prevPoint = canvasSettings.lines[index][strokeIndex - 1]
       const point = canvasSettings.lines[index][strokeIndex]
       strokeLength += Math.sqrt(Math.pow(point[0] - prevPoint[0], 2) + Math.pow(point[1] - prevPoint[1], 2))
       strokeIndex += 1
     }
-    if (strokeLength === len * canvasSettings.scaleFactor) {
+    if (strokeLength === len) {
       drawPoints.push({
         x: canvasSettings.lines[index][strokeIndex][0],
         y: canvasSettings.lines[index][strokeIndex][1]
       })
       strokeIndex += 1
-    } else if (strokeLength < len * canvasSettings.scaleFactor) {
+    } else if (strokeLength < len) {
       continue
     } else {
       const prevPoint = canvasSettings.lines[index][strokeIndex - 1]
@@ -474,12 +508,23 @@ function getPoints (index, drawStrokeLength, pointDist = 4) {
       const dist = Math.sqrt(Math.pow(point[0] - prevPoint[0], 2) + Math.pow(point[1] - prevPoint[1], 2))
       const xDist = prevPoint[0] - point[0]
       const yDist = prevPoint[1] - point[1]
-      let percentage = (strokeLength - (len * canvasSettings.scaleFactor)) / dist
+      let percentage = (strokeLength - (len)) / dist
       drawPoints.push({
         x: point[0] + xDist * percentage,
         y: point[1] + yDist * percentage
       })
     }
+    console.log(strokeCopy.realPath)
+    const lastPoint = drawPoints[drawPoints.length - 1]
+    const closestPoint = Snap.closestPoint(
+      strokeCopy,
+      lastPoint.x / canvasSettings.scaleFactor,
+      lastPoint.y / canvasSettings.scaleFactor
+    )
+    svgPoints.push({
+      x: closestPoint.x,
+      y: closestPoint.y
+    })
   }
   return {
     svgPoints,
