@@ -1,53 +1,52 @@
 Snap.closestPoint = function (path, x, y) {
-    function distance2(p) {
-        var dx = p.x - x,
-            dy = p.y - y;
-        return dx * dx + dy * dy;
+  function distance2 (point) {
+      return (point.x - x) ** 2 + (point.y - y) ** 2
+  }
+  const pathNode = path.node
+  const pathLength = pathNode.getTotalLength()
+  let precision = pathLength / 20 
+  let bestPoint = { x: 0, y: 0 }
+  let bestLength = 0
+  let bestDistance = Infinity
+  
+  // linear scan for coarse approximation
+  const sectionLength = precision * 0.9
+  for (let len = 0; len <= pathLength; len += sectionLength) {
+    const newPoint = pathNode.getPointAtLength(len)
+    const newDistance = distance2(newPoint)
+    if (newDistance < bestDistance) {
+      bestPoint = newPoint
+      bestLength = len
+      bestDistance = newDistance
     }
-    let num = path.realPath.split('').filter(char => ['c', 'C'].includes(char))
-    var pathNode = path.node,
-        pathLength = pathNode.getTotalLength(),
-        precision = pathLength / num.length * .125,
-        best,
-        bestLength,
-        bestDistance = Infinity;
+  }
+  
+  // binary search for precise estimate
+  while (precision > .25) {
+    let beforeLength = Math.max(bestLength - precision, 0)
+    let beforePoint = pathNode.getPointAtLength(beforeLength)
+    let beforeDistance = distance2(beforePoint)
+    let afterLength = Math.min(bestLength + precision, pathLength)
+    let afterPoint = pathNode.getPointAtLength(afterLength)
+    let afterDistance = distance2(afterPoint)
 
-    // linear scan for coarse approximation
-    for (var scan, scanLength = 0, scanDistance; scanLength <= pathLength; scanLength += precision) {
-        if ((scanDistance = distance2(scan = pathNode.getPointAtLength(scanLength))) < bestDistance) {
-            best = scan;
-            bestLength = scanLength;
-            bestDistance = scanDistance;
-        }
+    if (beforeLength >= 0 && beforeDistance < bestDistance) {
+      bestPoint = beforePoint
+      bestLength = beforeLength
+      bestDistance = beforeDistance
+    } else if (afterLength <= pathLength && afterDistance < bestDistance) {
+      bestPoint = afterPoint
+      bestLength = afterLength
+      bestDistance = afterDistance
+    } else {
+      precision *= 0.65
     }
+  }
 
-    // binary search for precise estimate
-    precision *= .5;
-    while (precision > .5) {
-        var before,
-            after,
-            beforeLength,
-            afterLength,
-            beforeDistance,
-            afterDistance;
-        if ((beforeLength = bestLength - precision) >= 0 && (beforeDistance = distance2(before = pathNode.getPointAtLength(beforeLength))) < bestDistance) {
-            best = before;
-            bestLength = beforeLength;
-            bestDistance = beforeDistance;
-        } else if ((afterLength = bestLength + precision) <= pathLength && (afterDistance = distance2(after = pathNode.getPointAtLength(afterLength))) < bestDistance) {
-            best = after;
-            bestLength = afterLength;
-            bestDistance = afterDistance;
-        } else {
-            precision *= .5;
-        }
-    }
-
-    best = {
-        x: best.x,
-        y: best.y,
-        length: bestLength,
-        distance: Math.sqrt(bestDistance)
-    };
-    return best;
+  return {
+    x: bestPoint.x,
+    y: bestPoint.y,
+    length: bestLength,
+    distance: Math.sqrt(bestDistance)
+  }
 } // https://bl.ocks.org/mbostock/8027637

@@ -6,24 +6,72 @@
               :text="appConst.getCategoryName(currentWord.categoryKey)" color="info-2" />
       <TheTag title="writeKanjiDifficultyTag" :text="'difficulty' + currentWord.difficulty" color="info-2" />
     </div>
-    <div class="flex-column flex-grow flex-center" @mousedown="startDraw($event, 'mouse')"
-         @mouseup="endDraw($event, 'mouse')" @touchstart="startDraw($event, 'touch')"
-         @touchend="endDraw($event, 'touch')">
-      <div v-square class="special-font width-fifth-four height-fifth-four animate__animated duration-c-800ms"
-           :class="[getSizeClass('general'), { 'animate__shakeX': canvasSettings.wrongStrokeActive }]">
-        <div class="count">
-          {{ canvasSettings.strokeCount }} / {{ kanaSvgPaths.length }}
+    <div class="flex-column flex-grow flex-center"
+         @mousedown="startDraw($event, 'mouse')" @mouseup="endDraw($event, 'mouse')"
+         @touchstart="startDraw($event, 'touch')" @touchend="endDraw($event, 'touch')">
+      <div v-square class="write-kanji width-full height-full">
+        <div class="numbers">
+          <div class="entry">
+            <div class="title">
+              {{ getText('writeKanjiPracticeDrawAmount') }}
+            </div>
+            <div class="amount">
+              {{ drawAmount }} / 6
+            </div>
+          </div>
+          <div class="entry">
+            <div class="title">
+              {{ getText('writeKanjiPracticeStrokeNumber') }}
+            </div>
+            <div class="amount">
+              {{ canvasSettings.strokeCount }} / {{ kanaSvgPaths.length }}
+            </div>
+          </div>
         </div>
-        <div class="background">
-          <div class="top left has-alpha"></div>
-          <div class="top right has-alpha"></div>
-          <div class="bottom left has-alpha"></div>
-          <div class="bottom right has-alpha"></div>
+        <div class="draw-area">
+          <div class="background">
+            <div class="top left has-alpha"></div>
+            <div class="top right has-alpha"></div>
+            <div class="bottom left has-alpha"></div>
+            <div class="bottom right has-alpha"></div>
+          </div>
+          <svg v-fullsize id="kanaSvg2" class="svg"></svg>
+          <canvas v-fullsize ref="kanaCanvas" class="canvas" @mousemove="drawLine($event, 'mouse')"
+                  @touchmove="drawLine($event, 'touch')"></canvas>
         </div>
-        <svg v-fullsize id="kanaSvg2" class="text-gold svg"></svg>
-        <canvas v-fullsize ref="kanaCanvas" class="canvas" @mousemove="drawLine($event, 'mouse')"
-                @touchmove="drawLine($event, 'touch')"></canvas>
+        <div class="info">
+
+        </div>
       </div>
+      <!-- <transition enter-active-class="animate__animated slide-in-left-custom duration-c-350ms"
+                  leave-active-class="animate__animated slide-out-left-custom duration-c-350ms"
+                  @after-leave="showNumber()" @after-enter="startAnimation()">
+        <div v-show="canvasVisible" v-square class="special-font width-fifth-four height-fifth-four animate__animated duration-c-800ms"
+            :class="[getSizeClass('general'), { 'animate__shakeX': canvasSettings.wrongStrokeActive }]">
+          <div class="count">
+            {{ canvasSettings.strokeCount }} / {{ kanaSvgPaths.length }}
+          </div>
+          <div class="background">
+            <div class="top left has-alpha"></div>
+            <div class="top right has-alpha"></div>
+            <div class="bottom left has-alpha"></div>
+            <div class="bottom right has-alpha"></div>
+          </div>
+          <svg v-fullsize id="kanaSvg2" class="text-gold svg"></svg>
+          <canvas v-fullsize ref="kanaCanvas" class="canvas" @mousemove="drawLine($event, 'mouse')"
+                  @touchmove="drawLine($event, 'touch')"></canvas>
+        </div>
+      </transition>
+      <transition enter-active-class="animate__animated animate__backInUp duration-c-350ms"
+                  leave-active-class="animate__animated animate__backOutDown duration-c-350ms"
+                  @after-enter="increaseNumber()" @after-leave="showCanvas()">
+        <div v-show="numberVisible" class="flex-column flex-grow flex-center"
+            :class="{ 'animate__animated animate__pulse duration-c-300ms': highlightNumber }">
+          <span class="kanji-training-number" :class="getSizeClass('general')">
+            {{ drawAmount }} / 6
+          </span>
+        </div>
+      </transition> -->
     </div>
     <div class="button-container">
       <ButtonBasic class="width-full" icon="arrow-left" color="red" text="writeKanjiPracticeButton1" @click="navTo()" />
@@ -78,8 +126,7 @@ onMounted(() => {
   }
   kanaSnap.value = new Snap('#kanaSvg2')
   if (kanaSvgPaths.value.length > 0) {
-    animationData.running = true
-    animationLoop()
+    startAnimation()
   }
 })
 
@@ -167,6 +214,11 @@ const animationData = reactive({
   }
 })
 
+function startAnimation () {
+  animationData.running = true
+  animationLoop()
+}
+
 function animationLoop (timestamp = 0) {
   if (!animationData.running) {
     return
@@ -207,6 +259,7 @@ function animationUpdate () {
         animSpeed * Math.pow((negPercentage + 0.5), 2)
       )
       if (path.getTotalLength() <= animationData.currentStrokeLength) {
+        addSvgLine(path, animationData.currentStroke)
         animationData.currentStrokeLength = 0
         animationData.currentStroke += 1
         animationData.running = false
@@ -245,6 +298,22 @@ function animationDraw () {
   })
 }
 
+function addSvgLine (path, pathIndex) {
+  if (pathIndex === canvasSettings.svgLines.length) {
+    canvasSettings.svgLines.push([])
+  } else if (pathIndex < canvasSettings.svgLines.length) {
+    canvasSettings.svgLines[pathIndex] = []
+  }
+  for (let len = 0; len <= path.getTotalLength(); len += 2) {
+    canvasSettings.svgLines[pathIndex].push(path.getPointAtLength(len))
+  }
+  const lastPathPoint = path.getPointAtLength(path.getTotalLength())
+  const lastArrayPoint = canvasSettings.svgLines[pathIndex][canvasSettings.svgLines[pathIndex].length - 1]
+  if (lastPathPoint.x !== lastArrayPoint.x || lastPathPoint.y !== lastArrayPoint.y) {
+    canvasSettings.svgLines[pathIndex].push(lastPathPoint)
+  }
+}
+
 const canvasSettings = reactive({
   context: null,
   color: 'rgb(0, 0, 0)',
@@ -258,7 +327,12 @@ const canvasSettings = reactive({
   invalidTouch: false,
   strokeCount: 1,
   lines: [],
-  wrongStrokeActive: false
+  svgLines: [],
+  wrongStrokeActive: false,
+  reset: () => {
+    canvasSettings.strokeCount = 1
+    canvasSettings.lines = []
+  }
 })
 const kanaCanvas = ref(null)
 
@@ -301,7 +375,10 @@ function startDraw (event, type) {
       canvasSettings.lastPoint.y < 0 || canvasSettings.lastPoint.y > clientRect.height) {
     endDraw(event, type)
   } else {
-    canvasSettings.lines.push([[canvasSettings.lastPoint.x, canvasSettings.lastPoint.y]])
+    canvasSettings.lines.push([{
+      x: canvasSettings.lastPoint.x,
+      y: canvasSettings.lastPoint.y
+    }])
   }
 }
 
@@ -337,9 +414,10 @@ function drawLine (event, type) {
     [], canvasSettings.context, pos.x, pos.y
   )
   canvasSettings.lastPoint = pos
-  canvasSettings.lines[canvasSettings.lines.length - 1].push(
-    [canvasSettings.lastPoint.x, canvasSettings.lastPoint.y]
-  )
+  canvasSettings.lines[canvasSettings.lines.length - 1].push({
+    x: canvasSettings.lastPoint.x,
+    y: canvasSettings.lastPoint.y
+  })
 }
 
 function endDraw (event, type) {
@@ -354,100 +432,163 @@ function endDraw (event, type) {
 
   const strokeIndex = animationData.currentStroke - 1
 
-  canvasSettings.lines[strokeIndex] = canvasSettings.lines[strokeIndex].filter((_, index) => index % 4 === 0)
+  canvasSettings.lines[strokeIndex] = canvasSettings.lines[strokeIndex].filter(
+    (_, index, line) => index % 8 === 0 || index === line.length - 1
+  )
 
   const svgStrokeLength = getLineLength('svg', strokeIndex)
   const drawStrokeLength = getLineLength('draw', strokeIndex)
 
-  if (Math.abs((drawStrokeLength / canvasSettings.scaleFactor) - svgStrokeLength) > svgStrokeLength * 0.1) {
-    canvasSettings.lines.pop()
-    redrawCanvas()
-    wrongStrokeAnimation()
-    console.log('length is too far apart', Math.abs((drawStrokeLength / canvasSettings.scaleFactor) - svgStrokeLength), svgStrokeLength * 0.1)
+  if (Math.abs((drawStrokeLength / canvasSettings.scaleFactor) - svgStrokeLength) > svgStrokeLength * 0.2) {
+    resetLastLine(
+      'length is too far apart',
+      Math.abs((drawStrokeLength / canvasSettings.scaleFactor) - svgStrokeLength),
+      svgStrokeLength * 0.2
+    )
     return
   }
-  
-  const points = getPoints(strokeIndex, drawStrokeLength)
-  const pointDiff = Math.abs(points.drawPoints.length - points.svgPoints.length)
 
-  console.log(points.drawPoints.length, points.svgPoints)
+  let controlPoints = []
+  let strokeLength = 0
+  let pointIndex = 0
+  let accDist = 0
+  let strokeCopy = kanaSvgPaths.value[strokeIndex].clone()
+  for (let len = 0; len <= drawStrokeLength; len += 4 * canvasSettings.scaleFactor) {
+    let newPoint = null
+    while (strokeLength < len && pointIndex < canvasSettings.lines[strokeIndex].length - 1) {
+      pointIndex += 1
+      const prevPoint = canvasSettings.lines[strokeIndex][pointIndex - 1]
+      const point = canvasSettings.lines[strokeIndex][pointIndex]
+      strokeLength += getDist(prevPoint, point)
+    }
+    if (strokeLength === len) {
+      newPoint = {
+        x: canvasSettings.lines[strokeIndex][pointIndex].x,
+        y: canvasSettings.lines[strokeIndex][pointIndex].y
+      }
+    } else if (strokeLength < len) {
+      continue
+    } else {
+      const prevPoint = canvasSettings.lines[strokeIndex][pointIndex - 1]
+      const point = canvasSettings.lines[strokeIndex][pointIndex]
+      const dist = getDist(prevPoint, point)
+      const xDist = prevPoint.x - point.x
+      const yDist = prevPoint.y - point.y
+      const percentage = (strokeLength - len) / dist
+      newPoint = {
+        x: point.x + xDist * percentage,
+        y: point.y + yDist * percentage
+      }
+    }
 
-  for (let i = 0; i < Math.max(points.drawPoints.length, points.svgPoints.length); i++) {
-    if (i < points.drawPoints.length) {
-      const point = points.drawPoints[i]
-      Helper.drawCanvasCircleCustom(
-        point.x, point.y, 3,
-        '0, 255, 0', canvasSettings.context
+    newPoint.x /= canvasSettings.scaleFactor
+    newPoint.y /= canvasSettings.scaleFactor
+
+    Helper.drawCanvasCircleCustom(
+      newPoint.x * canvasSettings.scaleFactor, newPoint.y * canvasSettings.scaleFactor, 3, '0, 255, 0',
+      canvasSettings.context
+    )
+
+    const closestPoint = Snap.closestPoint(
+      strokeCopy,
+      newPoint.x,
+      newPoint.y
+    )
+    if (closestPoint.distance > 7) {
+      resetLastLine(
+        'point too far away from line',
+        closestPoint.distance,
+        7
       )
+      return
     }
-    if (i < points.svgPoints.length) {
-      const point = points.svgPoints[i]
-      Helper.drawCanvasCircleCustom(
-        point.x * canvasSettings.scaleFactor, point.y * canvasSettings.scaleFactor, 3,
-        '255, 0, 0', canvasSettings.context
+    controlPoints.push({
+      x: closestPoint.x,
+      y: closestPoint.y,
+      dist: closestPoint.distance,
+      posOnLine: closestPoint.length,
+      refX: newPoint.x,
+      refY: newPoint.y
+    })
+    accDist += closestPoint.distance
+  }
+
+  for (let i = 0; i < controlPoints.length; i++) {
+    Helper.drawCanvasCircleCustom(
+      controlPoints[i].x * canvasSettings.scaleFactor, controlPoints[i].y * canvasSettings.scaleFactor, 3, '255, 0, 0',
+      canvasSettings.context
+    )
+    Helper.drawCanvasCircleCustom(
+      controlPoints[i].refX * canvasSettings.scaleFactor, controlPoints[i].refY * canvasSettings.scaleFactor, 3, '255, 0, 0',
+      canvasSettings.context
+    )
+    Helper.drawCanvasLineCustom(
+      controlPoints[i].x * canvasSettings.scaleFactor, controlPoints[i].y * canvasSettings.scaleFactor, 'rgb(255, 255, 0)',
+      2, 'round', [], canvasSettings.context, controlPoints[i].refX * canvasSettings.scaleFactor, controlPoints[i].refY * canvasSettings.scaleFactor
+    )
+  }
+
+  if (accDist > controlPoints.length * 3) {
+    resetLastLine(
+      'accumulated distance is too far away',
+      accDist,
+      controlPoints.length * 3
+    )
+    return
+  }
+
+  const avgDist = accDist / controlPoints.length
+  for (let i = 0; i < controlPoints.length; i++) {
+    if (Math.abs(controlPoints[i].dist - avgDist) > 5) {
+      resetLastLine(
+        'too far away from the average distance',
+        Math.abs(controlPoints[i].dist - avgDist),
+        5
       )
+      return
     }
   }
 
-  if (Math.max(points.svgPoints.length * 0.2, 2) < pointDiff) {
-    canvasSettings.lines.pop()
-    redrawCanvas()
-    wrongStrokeAnimation()
-    console.log('point amount too far apart', pointDiff)
-    return
-  }
-
-  let data = {
-    dist: 0,
-    distances: [],
-    avgDist: 0
-  }
-  for (let i = 0; i < Math.min(points.svgPoints.length, points.drawPoints.length); i++) {
-    const svgPoint = points.svgPoints[i]
-    const normDrawPoint = {
-      x: points.drawPoints[i].x / canvasSettings.scaleFactor,
-      y: points.drawPoints[i].y / canvasSettings.scaleFactor
+  let evenOrLower = 0
+  const limit = Math.max(Math.ceil(controlPoints.length * 0.1), 2)
+  for (let i = 0; i < controlPoints.length - 1; i++) {
+    if (controlPoints[i].posOnLine >= controlPoints[i + 1].posOnLine) {
+      evenOrLower += 1
+    } else if (controlPoints[i].posOnLine < controlPoints[i + 1].posOnLine) {
+      evenOrLower = 0
     }
-    let distance = Math.sqrt(Math.pow(svgPoint.x - normDrawPoint.x, 2) + Math.pow(svgPoint.y - normDrawPoint.y, 2))
-    data.distances.push(distance)
-    data.dist += distance
-  }
 
-  console.log(canvasSettings.scaleFactor)
-
-  if (data.dist > data.distances.length * 4) {
-    canvasSettings.lines.pop()
-    redrawCanvas()
-    wrongStrokeAnimation()
-    console.log('overall distance is too far apart', data.dist, data.distances.length * 4)
-    return
-  }
-  
-  data.avgDist = data.dist / data.distances.length
-  for (let distance of data.distances) {
-    if (Math.abs(distance - data.avgDist) > 2 || distance > 5) {
-      canvasSettings.lines.pop()
-      redrawCanvas()
-      wrongStrokeAnimation()
-      console.log('distance is too far away from the average or distance is too far away', Math.abs(distance - data.avgDist), distance)
+    if (evenOrLower > limit) {
+      resetLastLine(
+        'too long in the wrong direction',
+        limit
+      )
       return
     }
   }
 
   if (animationData.currentStroke < kanaSvgPaths.value.length) {
     canvasSettings.strokeCount += 1
-    animationData.running = true
-    animationLoop()
+    startAnimation()
+  } else {
+    hideCanvas()
   }
 }
 
+function resetLastLine (...reason) {
+  canvasSettings.lines = canvasSettings.lines.slice(0, animationData.currentStroke - 1)
+  redrawCanvas()
+  wrongStrokeAnimation()
+  console.log(...reason)
+}
+
 function redrawCanvas () {
-  // canvasSettings.context.clearRect(0, 0, kanaCanvas.value.width, kanaCanvas.value.height)
+  canvasSettings.context.clearRect(0, 0, kanaCanvas.value.width, kanaCanvas.value.height)
   for (const line of canvasSettings.lines) {
     const startPoint = line[0]
-    let lineTail = line.slice(1).filter((_, index) => index % 4 === 0)
+    let lineTail = line.slice(1).map(point => [point.x, point.y])
     Helper.drawCanvasLineCustom(
-      startPoint[0], startPoint[1], canvasSettings.color, canvasSettings.width, 'round', [],
+      startPoint.x, startPoint.y, canvasSettings.color, canvasSettings.width, 'round', [],
       canvasSettings.context, ...lineTail.flat()
     )
   }
@@ -460,76 +601,59 @@ function wrongStrokeAnimation () {
   }, 1000)
 }
 
-function getLineLength (type, index) {
+function getLineLength (type, strokeIndex) {
+  let points = []
   if (type === 'svg') {
-    let strokeCopy = kanaSvgPaths.value[index].clone()
-    strokeCopy = strokeCopy.transform(canvasSettings.scaleMatrix.toTransformString())
-    return strokeCopy.getTotalLength()
+    points = canvasSettings.svgLines[strokeIndex]
   } else if (type === 'draw') {
-    return canvasSettings.lines[index].reduce((len, point, index, line) => {
-      if (index === 0) {
-        return len
-      }
-      const prevPoint = line[index - 1]
-      return Math.sqrt(Math.pow(point[0] - prevPoint[0], 2) + Math.pow(point[1] - prevPoint[1], 2)) + len
-    }, 0)
+    points = canvasSettings.lines[strokeIndex]
   }
-  return 0
+
+  return points.reduce((len, point, index, line) => {
+    if (index === 0) {
+      return len
+    }
+    const prevPoint = line[index - 1]
+    return getDist(prevPoint, point) + len
+  }, 0)
 }
 
-function getPoints (index, drawStrokeLength, pointDist = 4) {
-  let drawPoints = []
-  let svgPoints = []
-  let strokeLength = 0
-  let strokeIndex = 0
-  let strokeCopy = kanaSvgPaths.value[index].clone()
-  strokeCopy = strokeCopy.transform(canvasSettings.scaleMatrix.toTransformString())
-  for (let len = 0; len <= drawStrokeLength; len += pointDist * canvasSettings.scaleFactor) {
-    // if (len <= strokeCopy.getTotalLength()) {
-    //   svgPoints.push(strokeCopy.getPointAtLength(len))
-    // }
-    while (strokeLength < len && strokeIndex < canvasSettings.lines[index].length - 1) {
-      const prevPoint = canvasSettings.lines[index][strokeIndex - 1]
-      const point = canvasSettings.lines[index][strokeIndex]
-      strokeLength += Math.sqrt(Math.pow(point[0] - prevPoint[0], 2) + Math.pow(point[1] - prevPoint[1], 2))
-      strokeIndex += 1
-    }
-    if (strokeLength === len) {
-      drawPoints.push({
-        x: canvasSettings.lines[index][strokeIndex][0],
-        y: canvasSettings.lines[index][strokeIndex][1]
-      })
-      strokeIndex += 1
-    } else if (strokeLength < len) {
-      continue
-    } else {
-      const prevPoint = canvasSettings.lines[index][strokeIndex - 1]
-      const point = canvasSettings.lines[index][strokeIndex]
-      const dist = Math.sqrt(Math.pow(point[0] - prevPoint[0], 2) + Math.pow(point[1] - prevPoint[1], 2))
-      const xDist = prevPoint[0] - point[0]
-      const yDist = prevPoint[1] - point[1]
-      let percentage = (strokeLength - (len)) / dist
-      drawPoints.push({
-        x: point[0] + xDist * percentage,
-        y: point[1] + yDist * percentage
-      })
-    }
-    console.log(strokeCopy.realPath)
-    const lastPoint = drawPoints[drawPoints.length - 1]
-    const closestPoint = Snap.closestPoint(
-      strokeCopy,
-      lastPoint.x / canvasSettings.scaleFactor,
-      lastPoint.y / canvasSettings.scaleFactor
-    )
-    svgPoints.push({
-      x: closestPoint.x,
-      y: closestPoint.y
-    })
-  }
-  return {
-    svgPoints,
-    drawPoints
-  }
+function getDist (point1, point2) {
+  return Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2))
+}
+
+const drawAmount = ref(0)
+const canvasVisible = ref(true)
+function hideCanvas () {
+  canvasVisible.value = false
+}
+
+function showCanvas () {
+  canvasVisible.value = true
+}
+
+const numberVisible = ref(false)
+const highlightNumber = ref(false)
+function hideNumber () {
+  numberVisible.value = false
+  highlightNumber.value = false
+}
+
+function showNumber () {
+  numberVisible.value = true
+}
+
+function increaseNumber () {
+  setTimeout(() => { drawAmount.value += 1; highlightNumber.value = true }, 600)
+  setTimeout(hideNumber, 1400)
+  animationData.reset()
+  canvasSettings.reset()
+  kanaSnap.value.clear()
+  canvasSettings.context.clearRect(0, 0, kanaCanvas.value.width, kanaCanvas.value.height)
+}
+
+function getText (id) {
+  return appConst.getText(id)
 }
 
 function getSizeClass (type) {

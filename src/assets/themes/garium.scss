@@ -1114,6 +1114,13 @@ button {
   }
 }
 
+.write-kanji {
+  position: relative;
+  display: grid;
+  grid-template-columns: 10% 40% 40% 10%;
+  grid-template-rows: 10% 40% 40% 10%;
+}
+
 .special-font {
   position: relative;
 
@@ -2446,6 +2453,16 @@ button {
           }
         }
       }
+    }
+  }
+}
+
+.kanji-training-number {
+  font-weight: bold;
+
+  @for $i from 1 through length($sizes) {
+    &.#{nth($size-classes, $i)} {
+      font-size: 4cm * nth($sizes, $i);
     }
   }
 }
